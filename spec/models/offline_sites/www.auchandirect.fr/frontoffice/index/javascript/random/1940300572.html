@@ -1,0 +1,279 @@
+     /*******************************/
+    /* Instance des objets 'utils' */
+    /*******************************/
+    var oContexte       = new Contexte();
+    var oBanniere       = new Bannieres();
+    var oClient         = new Client();
+    var oCatalogue      = new Catalogue();
+    var oToolTip        = new ToolTip();
+    var oListes         = new Listes();
+    var oPanier         = new Panier();
+    var oCde            = new Cde();
+    var oPosition       = new PositionDOM();
+    var oEventManager   = new EventManager();
+
+    var oCarroussel     = new carroussel();
+    /********************************************************/
+    /* Variables globales issues du contexte de navigation */
+    /********************************************************/
+    oContexte.layout       = 'layout_m_layout1';
+    oContexte.action       = 'rayon';
+    oContexte.url_root     = 'http:\/\/www.auchandirect.fr\/frontoffice';
+    oContexte.url_front    = 'http:\/\/www.auchandirect.fr\/frontoffice\/index\/';
+    oContexte.url_root_js  = 'http:\/\/www.auchandirect.fr\/frontoffice';
+    oContexte.url_image    = 'http:\/\/www.auchandirect.fr\/frontoffice\/img';
+    oContexte.url_synchro  = 'http:\/\/images.auchandirect.fr\/synchro';
+    oContexte.url_static   = 'http:\/\/www.auchandirect.fr\/frontoffice\/static';
+    
+    // les URL dont on a besoin dans le panier
+    oContexte.url_identification_rapide = 'https://www.auchandirect.fr/frontoffice/index/identification_rapide/retour/cde_sortie_caisse';
+    oContexte.url_cde_derniere = 'https://www.auchandirect.fr/frontoffice/index/cde_derniere';
+    oContexte.url_cde_sortie_caisse = 'http://www.auchandirect.fr/frontoffice/index/cde_sortie_caisse';
+    oContexte.url_cde_modif = 'https://www.auchandirect.fr/frontoffice/index/cde_modif';
+    
+    oContexte.password_min = '6';
+    oContexte.password_max = '12';
+    oContexte.panier_max_articles = 10;
+    oContexte.panier_total_prix_mini = 60;
+    oContexte.panier_total_prix_maxi = 500;
+
+    /***********************/
+    /* Variables de Cookie */
+    /***********************/
+    var oCookiePanier       = new Cookie('AuchanDirect_Panier_0', 365, "/frontoffice",'',false,"Ce cookie permet de conserver vos choix de navigation sur ce site. Ainsi, lors de votre prochaine visite, vous retrouverez automatiquement vos choix de navigation prÃ©configurÃ©s.","http://www.auchandirect.fr/frontoffice/static/securite_a_propos.html");
+    var oCookieCarroussel   = new Cookie('AuchanDirect_Carroussel', 0, "/frontoffice",'',false,"Ce cookie permet de conserver vos choix de navigation sur ce site. Ainsi, lors de votre prochaine visite, vous retrouverez automatiquement vos choix de navigation prÃ©configurÃ©s.","http://www.auchandirect.fr/frontoffice/static/securite_a_propos.html");
+
+    /********************************************/
+    /* Paramètre de configuration des bannières */
+    /********************************************/
+    oBanniere.timer         = true;
+    oBanniere.interval      = 5000;
+    oBanniere.nbClick       = true;
+    oBanniere.url           = 'http://images.auchandirect.fr/synchro/imgpub/';
+    oBanniere.url_ajax      = 'http://www.auchandirect.fr/frontoffice/index/';
+    oBanniere._insParam(new BanParam(1, 2, false, 5000, true));
+    oBanniere._insParam(new BanParam(3, 5, true, 5000, true));
+    oBanniere._insParam(new BanParam(2, 1, false, 0, true));
+    oBanniere._insParam(new BanParam(4, 1, false, 0, true));
+
+    oBanniere.iNumBanniereContextuelleCourante = 215;
+    /************************************************/
+    /* Variables globales issues du contexte Client */
+    /************************************************/
+    
+    oClient.login        = '';
+    oClient.nom          = 'Visiteur';
+    oClient.prenom       = '';
+    oClient.typeimg      = '2';
+    oClient.modeAuth     = '';
+    oClient.cp           = 0;
+    oClient.id           = 0;
+    oClient.type         = 3;
+    oClient.catalogue    = new Array('1');
+    oClient.codeTarif    = 8;
+    oClient.csc          = 0;
+    oClient.stVente      = 1;
+    oClient.cdeEnCours   = 0;
+    oClient.avoirs       = 0;
+
+    /***************************************************/
+    /* Variables globales issues du contexte Catalogue */
+    /***************************************************/
+    oCatalogue.contexte      = 'catalogue';
+    oCatalogue.familleTotal  = 89;
+    oCatalogue.familleId     = 15131;
+    oCatalogue.familleType   = '0';
+    oCatalogue.rayonTotal    = 57;
+    oCatalogue.rayonId       = 16267;
+    oCatalogue.ssrayonId     = -1;
+    oCatalogue.articleTotal  = 50;
+    oCatalogue.articleId     = 50;
+    oCatalogue.articleType   = '';
+
+    oCatalogue._insFamille(new Famille("11821","1",""));
+    oCatalogue._insFamille(new Famille("16321","2",""));
+    oCatalogue._insFamille(new Famille("19022","0","Les produits Auchan, Pouce..."));
+    oCatalogue._insFamille(new Famille("15022","0","Légumes, Boucherie"));
+    oCatalogue._insFamille(new Famille("15039","0","Fromages, Oeufs, Yaourts"));
+    oCatalogue._insFamille(new Famille("15053","0","Traiteur"));
+    oCatalogue._insFamille(new Famille("15068","0","Plats, Légumes, Glaces"));
+    oCatalogue._insFamille(new Famille("15083","0","Conserves, Sauces"));
+    oCatalogue._insFamille(new Famille("15098","0","Pâtes, Riz, Potages, Sauces"));
+    oCatalogue._insFamille(new Famille("15116","0","Chocolats, Confiseries..."));
+    oCatalogue._insFamille(new Famille("15131","0","Pains, Viennoiseries"));
+    oCatalogue._insFamille(new Famille("15144","0","Eau, Jus de fruits, colas"));
+    oCatalogue._insFamille(new Famille("15158","0","Snacks apéritifs, Boissons"));
+    oCatalogue._insFamille(new Famille("15169","0","Bières, Champagnes"));
+    oCatalogue._insFamille(new Famille("15184","0","Alimentation, Soin, Hygiène"));
+    oCatalogue._insFamille(new Famille("15198","0","Allégé"));
+    oCatalogue._insFamille(new Famille("15213","0","Saveurs d ailleurs"));
+    oCatalogue._insFamille(new Famille("15225","0","Beauté, Parapharmacie"));
+    oCatalogue._insFamille(new Famille("15243","0","Maison, Informatique"));
+    oCatalogue._insFamille(new Famille("15258","0","Chats, Chiens, Autres"));
+    oCatalogue._insFamille(new Famille("11981","4",""));
+    oCatalogue._insFamille(new Famille("19001","5",""));
+    oCatalogue._insFamille(new Famille("19002","5",""));
+    oCatalogue._insFamille(new Famille("19003","5",""));
+    oCatalogue._insFamille(new Famille("17743","4",""));
+    oCatalogue._insFamille(new Famille("17704","4",""));
+    oCatalogue._insFamille(new Famille("17702","4","-10% sur toute la gamme"));
+    oCatalogue._insFamille(new Famille("17655","4",""));
+    oCatalogue._insFamille(new Famille("17646","4","-10% sur la gamme"));
+    oCatalogue._insFamille(new Famille("17633","4",""));
+    oCatalogue._insFamille(new Famille("17622","4",""));
+    oCatalogue._insFamille(new Famille("17602","4",""));
+    oCatalogue._insFamille(new Famille("17412","4",""));
+    oCatalogue._insFamille(new Famille("17409","4",""));
+    oCatalogue._insFamille(new Famille("19019","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("17405","4",""));
+    oCatalogue._insFamille(new Famille("17402","4",""));
+    oCatalogue._insFamille(new Famille("17390","4",""));
+    oCatalogue._insFamille(new Famille("17362","4",""));
+    oCatalogue._insFamille(new Famille("17325","4",""));
+    oCatalogue._insFamille(new Famille("17322","4",""));
+    oCatalogue._insFamille(new Famille("17226","4",""));
+    oCatalogue._insFamille(new Famille("17223","4",""));
+    oCatalogue._insFamille(new Famille("17184","4",""));
+    oCatalogue._insFamille(new Famille("16643","4",""));
+    oCatalogue._insFamille(new Famille("16486","4",""));
+    oCatalogue._insFamille(new Famille("16209","4","Découvrez notre gamme Auchan Baby"));
+    oCatalogue._insFamille(new Famille("14602","4",""));
+    oCatalogue._insFamille(new Famille("14162","4",""));
+    oCatalogue._insFamille(new Famille("13262","4","-5% sur la gamme"));
+    oCatalogue._insFamille(new Famille("12782","4",""));
+    oCatalogue._insFamille(new Famille("12088","4",""));
+    oCatalogue._insFamille(new Famille("19005","4","Découvrez nos produits pour votre apéritif"));
+    oCatalogue._insFamille(new Famille("19006","4","Découvrez nos produits pour la rentrée des classes"));
+    oCatalogue._insFamille(new Famille("19007","4","Découvrez les produits Auchandirect "));
+    oCatalogue._insFamille(new Famille("19008","4","Découvrez nos produits nomades"));
+    oCatalogue._insFamille(new Famille("19010","4","Découvrez nos produits Auchan"));
+    oCatalogue._insFamille(new Famille("19016","4","Promotion"));
+    oCatalogue._insFamille(new Famille("19017","4","Gamme Albert Ménès"));
+    oCatalogue._insFamille(new Famille("19018","4","Nos solutions moins chères"));
+    oCatalogue._insFamille(new Famille("19161","4","Les produits Pouce"));
+    oCatalogue._insFamille(new Famille("19021","4","Découvrez les alcools et vins pour les fêtes"));
+    oCatalogue._insFamille(new Famille("19162","4","Les Cartouches d'encre"));
+    oCatalogue._insFamille(new Famille("19163","4","Halloween"));
+    oCatalogue._insFamille(new Famille("19164","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19194","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19195","4","Les Promos gouters"));
+    oCatalogue._insFamille(new Famille("19196","4","Opération Minceur"));
+    oCatalogue._insFamille(new Famille("19201","4","Les produits Bébé"));
+    oCatalogue._insFamille(new Famille("19206","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19210","4","Les produits bio"));
+    oCatalogue._insFamille(new Famille("19211","4","Jusqu à 50% de gratuité"));
+    oCatalogue._insFamille(new Famille("19214","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19215","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19216","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19218","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19219","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19220","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19221","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19240","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19241","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19242","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19272","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19275","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19294","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19295","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19297","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19322","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19342","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("1111111","4","Nouveau - PhotoBox"));
+    oCatalogue._insFamille(new Famille("1111112","4"," Grosbill High-Tech"));
+    oCatalogue._insFamille(new Famille("1111113","4","Déstockage Gdes Marques"));
+    oCatalogue._insArticle(new Article( "d","p",34982,"AUCHAN","AUCHAN Toast rond nature 280 g","Toast rond nature au froment","&nbsp;","280 g",1.20,"4.29\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/34982",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58618,"AUCHAN","AUCHAN Brioche tranchée, 500 g","Brioche tranchée","&nbsp;","500 g",1.45,"2.90\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58618",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58612,"AUCHAN","AUCHAN Pains au lait x 10, 350 g","Pains au lait x 10","Pains au lait","350 g",1.25,"3.57\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58612",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58622,"HARRY'S","HARRY\'S Brioche tressée tout Choco, 400 g","Brioche tressée tout Choco","Brioche Choco","400 g",2.89,"7.23\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58622",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",41088,"HARRY'S","HARRY\'S Pains au lait aux pépites de chocolat x10, 350 g","Pains au lait aux pépites de chocolat","Pain au lait Choco","350 g",2.49,"7.11\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/41088",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58620,"HARRY'S","HARRY\'S Tendrissime Brioche au lait, 400 g","Brioche au Lait","Tendrissime","400 g",2.40,"6.00\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58620",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58611,"JACQUET","JACQUET Petite Fournée Pains Chocolat x4, 180 g","Petite Fournée Pains au Chocolat précuits","Pain Chocolat x4","180 g",2.15,"11.94\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58611",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58610,"JACQUET","JACQUET Petite Fournée Croissants x 4, 160 g","Petite Fournée Croissants précuits","Croissants x 4","160 g",1.99,"12.44\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58610",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",44034,"LA BOULANGERE","LA BOULANGERE Baguettes Viennoises fendues x 4, 340 g","Baguettes Viennoises déjà fendues","Baguettes Viennoises x4","340 g",2.10,"6.18\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/44034",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",44033,"LA BOULANGERE","LA BOULANGERE Pains Suédois, 180 g","Pains Suédois moëlleux x 6","Pains Suédois","180 g",2.53,"14.06\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/44033",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",44694,"LA BOULANGERE","LA BOULANGERE Tartines de Campagne, 450 g","Tartines de Campagne x 12 tranches","Tartines de Campagne","450 g",1.90,"4.22\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/44694",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58623,"LA BOULANGERE","PAIN MIE TOASTILIGNE COMPLET","Pain de Mie Complet Allégé en sucres et matières grasses","Toastiligne Complet","500 g",1.80,"3.60\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58623",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",54122,"LA BOULANGERE","LA BOULANGERE Pain de mie Complet Bio, 500 g","Pain de mie Complet Bio","Complet Bio","500 g",2.48,"4.96\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/54122",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",52038,"LA BOULANGERE","LA BOULANGERE Le Goûter en sachet, 340 g","Petits pains + barres de chocolat Poulain","Le Goûter","340 g",3.39,"9.97\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/52038",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58617,"LA BOULANGERE","LA BOULANGERE Pains au Chocolat x 8, 400 g","Pains au Chocolat","Pain Chocolat x8","400 g",2.63,"6.58\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58617",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",43116,"PANORIENT","PAINORIENT Pain Panini x4, 250 g","Pains spéciaux pour Paninis","Pain Panini x4","250 g",3.10,"12.40\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/43116",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58619,"PANORIENT","PANORIENT Wraps x 6, 370 g","Pains spéciaux pour Wraps","Wraps x 6","370 g",3.10,"8.38\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58619",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58615,"RIK & ROK","RIK & ROK Briochettes Pépites de Chocolat x6, 250 g","Briochettes Pépites de Chocolat au lait","Briochette Choco x6","250 g",1.50,"6.00\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58615",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",56957,"YARDEN","YARDEN Pain azyme 900 g","Pain azyme","Pain azyme 900 g","900 g",6.46,"7.18\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/56957",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",37510,"AUCHAN","AUCHAN Pain Grillé Sans Sel, 500g","Pain Grillé Sans Sel","&nbsp;","500 g",1.43,"2.86\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/37510",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58507,"INNOCENT","INNOCENT Fraises Mures, 1 L","Smoothie Fraises - Mures","Fraises Mures","1 L",3.69,"3.69\u20AC / l",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58507",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58506,"INNOCENT","INNOCENT Smoothie Kiwi/Pomme/Ananas, 1 L","Smoothie Kiwi/Pomme/Ananas","Kiwi/Pomme/Ananas","1 L",3.69,"3.69\u20AC / l",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58506",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58508,"INNOCENT","INNOCENT Orange/Carotte/Mangue, 1 L","Smoothie Orange-Carotte-Mangue","Orange/Carotte/Mangue","1 L",3.69,"3.69\u20AC / l",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58508",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58292,"MAISON DU CAFE","L\'OR ESPRESSO Capsules Splendente, 50g","10 capsules transparentes de café 100% arabica, pour machine Espresso","L'Or Espresso Splendente","10 Pièce",2.99,"0.30\u20AC / pièce",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58292",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58289,"MAISON DU CAFE","L\'OR ESPRESSO Capsules Decaffeinato, x10","10 capsules de café 100% arabica, pour machine Espresso","L'Or Espresso Decaffeinato","10 Pièce",2.99,"0.30\u20AC / pièce",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58289",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",625,"QUAKER OATS","QUAKER OATS Flocons d\'avoine paquet , 500 g","Céréales de flocons d\'avoine","&nbsp;",".5 Kg",1.78,"3.56\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/625",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",46861,"RICOLA","RICOLA Infuselle Bonne Nuit, 200g","Infuselle Bonne Nuit, 200g","&nbsp;",".2 Kg",4.26,"21.30\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/46861",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58616,"RICOLA","RICOLA Infuselle 5 plantes, 200g","Infuselle 5 plantes, 200g","&nbsp;","200 g",4.26,"21.30\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58616",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",51355,"TROPICANA","TROPICANA Smoothie Abricot Pêche Banane, 75 cl","Smoothie Abricot Pêche Banane","Abricot Pêche Banane","75 cl",3.26,"4.35\u20AC / l",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/51355",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",20052,"AUCHAN","AUCHAN Muffin\'s complet, 250 g","Muffin\'s complet","&nbsp;","250 g",1.66,"6.64\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/20052",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",55576,"AUCHAN","AUCHAN Infusion fruits rouges sachet, x 20","Infusion aux fruits rouges","Fruits rouges","40 g",1.36,"34.00\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/55576",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",54942,"BALISTO","BALISTO Barres lait - miel - amandes x9, 167 g","Barres chocolatées au lait, miel et amandes","Lait - miel - amandes","167 g",2.08,"12.46\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/54942",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",38828,"HARRY'S","HARRY\'S Brioche tranchée 500 g","Brioche tranchée pur beurre","Brioche tranchée","500 g",1.99,"3.98\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/38828",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",57692,"HEUDEBERT","HEUDEBERT Toast Froment, 130g","Toast au Froment","&nbsp;","130 g",1.14,"8.77\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/57692",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58155,"INNOCENT","INNOCENT Smoothie Mangue - Fruits passion, 50 cl","Smoothie Mangue - Fruits passion","Mangue Passion","50 cl",2.19,"4.38\u20AC / l",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58155",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",58156,"INNOCENT","INNOCENT Smoothie Fraise - Banane, 50 cl","Smoothie Fraise - Banane","Fraise Banane","50 cl",2.19,"4.38\u20AC / l",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58156",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",54125,"JACQUET","JACQUET Kebab, x 4","Pains à Kebab","&nbsp;",".32 Kg",2.23,"6.97\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/54125",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",54124,"JACQUET","JACQUET Hot Dog, x 4","Pains à Hot Dogs","&nbsp;","240 g",1.96,"8.17\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/54124",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "i","p",38612,"JACQUET","JACQUET Vollkornbrot, 500 g","Pain allemand au seigle","&nbsp;","500 g",2.02,"4.04\u20AC / kg",0,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/38612",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",46409,"JACQUET","JACQUET Hamburger Géant, x 4","Pains à Hamburgers Géants","&nbsp;","4 Pièce",1.53,"0.38\u20AC / pièce",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/46409",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",1042,"JOKER","JOKER Cocktail Passionata 1 l","Cocktail de fruits","Pur Jus 1L","1 L",2.67,"2.67\u20AC / l",10,1,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/1042",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",41922,"KELLOGG'S","KELLOGGS Coco Pop\'s 2 Chocolats, 350g","Céréales aux 2 chocolats","&nbsp;","350 g",2.60,"7.43\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/41922",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",56712,"KELLOGG'S","KELLOGG S Céréales Trésor Chocolat au Lait, 450g","Céréales au chocolat au lait","&nbsp;","450 g",3.05,"6.78\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/56712",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",109,"KELLOGG'S","KELLOGG\'S Muesli 3 céréales paq. 750 g","Muesli complet aux 3 céréales et aux fruits","Country Store","750 g",4.80,"6.40\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/109",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",58086,"KNORR","KNORR Vie Banane Raisin Rhubarbe, 3 x 10 cl","Jus de fruits Banane Raisin Rhubarbe","Knorr Vie","30 cl",2.14,"7.13\u20AC / l",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/58086",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",57681,"LU","LU Petit déjeuner coeur tout choco, 253 g","Petit déjeuner coeur tout choco","Petit Déjeuner","253 g",2.88,"11.38\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/57681",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",55721,"MELITTA","MELITTA Filte anti calc poudre, 6x20g","filtre anti calc","&nbsp;","6 pi",3.16,"0.53\u20AC / lot",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/55721",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",56516,"TASSIMO","TASSIMO expresso dk 16 dosettes, 118g","Expresso décaf 16 dosettes","&nbsp;","118 g",4.34,"36.78\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/56516",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",51880,"TETLEY","TETLEY Thé Vert 30 sachets, 45g","Thé vert","&nbsp;","45 g",2.73,"60.67\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/51880",0)); // article du catalogue
+    oCatalogue._insArticle(new Article( "d","p",38782,"YUNNAN TUOCHA","YUNNAN TUOCHA Thé ginseng 40 g","Thé au ginseng","Ginseng","40 g",4.75,"118.75\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/15131/rayon/16267/ssrayon/16268/article/38782",0)); // article du catalogue
+    /*****************************************/
+    /* Paramètres de configuration du panier */
+    /*****************************************/
+    oPanier.panier_type             = 'mini';
+    oPanier.type                    = 'P';
+    oPanier.id                      = 0;
+    oPanier.name                    = 'AuchanDirect_Panier_0';
+    oPanier.max_articles            = 10;
+    oPanier.total_pondereux_maxi    = 65;
+    oPanier.total_prix_mini         = 60;
+    oPanier.total_prix_maxi         = 500;
+    oPanier.panier_asynchrone = 1;
+    oPanier.alert_nb[0]             = 3;
+    oPanier.alert_nb[1]             = 4;
+    oPanier.alert_nb[2]             = 6;
+    oPanier.alert_url[0]            = 'http:\/\/www.auchandirect.fr\/frontoffice\/static\/pop_inscription1.html';
+    oPanier.alert_url[1]            = 'http:\/\/www.auchandirect.fr\/frontoffice\/static\/pop_inscription2.html';
+    oPanier.alert_url[2]            = 'https://www.auchandirect.fr/frontoffice/index/identification_rapide/rapide/1';
+    oPanier.alert_msg[0]            = 'inscrivez_vous1';
+    oPanier.alert_msg[1]            = 'inscrivez_vous2';
+    oPanier.alert_msg[2]            = '';
+    oPanier._panier_save            = 1;
+    oPanier._interval_save          = 0;
+    oPanier._interval_ms            = 10000;
+    oPanier._nbArt_save             = 0;
+    oPanier._nbArt_each             = 5;
+
+    /******************************************/
+    /* Paramètres de configuration des listes */
+    /******************************************/
+    oListes.AJAX_url_liste = 'http:\/\/www.auchandirect.fr\/frontoffice\/index\/' + oListes.AJAX_url_liste;
+    /*****************************************/
+    /* Paramètres de configuration commandes */
+    /*****************************************/
+    oCde.id             = 0;
+    oCde.adrLiv_total   = 0;
+    oCde.adrLiv_id      = 0;
+    oCde.adrLiv_type    = 0;
+
+    /*******************************************************/
+    /* Gestionnaire d'évenements DOM (@see frontoffice.js) */
+    /*******************************************************/
+    oEventManager._manage();
+
+    // Code JS dynamique généré en 0.13900303840637 seconde(s)

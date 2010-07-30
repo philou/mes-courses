@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>..:: AuchanDirect ::..</title>
+    <meta name="description" content="Retrouvez tous nos produits frais, surgeles mais aussi nos legumes en ligne sur Auchandirect. Faites vos courses en ligne et avec la livraison à domicile tous nos produits chez vous en un clin d'oeil." />
+    <meta name="keywords" content="supermarche en ligne, supermarche, course en ligne, course, livraison à domicile, livraison, produits frais, surgeles, legumes, Auchandirect" dir="ltr"/>
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta http-equiv="Content-language" content="fr" dir="ltr" />
+    <link rel="shortcut icon" href="http://images.auchandirect.fr/frontoffice/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/layout/layout2.css?20081208" charset="iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/global/tooltip.css?20081208" charset="iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/global/bandeau.css?20081208" charset="iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/catalogue/articles.css?20081208" charset="iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/commande/panier.css?20081208" charset="iso-8859-1" />
+    <link rel="stylesheet" type="text/css" media="all" href="http://images.auchandirect.fr/frontoffice/css/commande/panier_details.css?20081208" charset="iso-8859-1" />
+
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/utils.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetEvent.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetAjax.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetCookie.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetJson.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetContexte.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetPosition.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetListe.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetPanier.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetCde.js?20081208"></script>
+    <script type="text/javascript" src="http://images.auchandirect.fr/frontoffice/js/utils/objetToolTip.js?20081208"></script>
+
+    <script type="text/javascript" src="http://www.auchandirect.fr/frontoffice/index/javascript/random/1101585528"></script>
+
+  </head>
+  <body >
+    <div id="index">
+      <a id="retouraccueil" href="../index.html" title="retour à l'accueil AuchanDirect"><img src="http://images.auchandirect.fr/frontoffice/img/espaceur.gif" title="Retour à l'accueil AuchanDirect" alt="Retour à l'accueil AuchanDirect" /></a>
+        <div id="bandeau_moncompte">
+          <p><span class="blanc">Détail de votre panier</span> <span class="bleu">&nbsp;</span></p>
+        </div>
+        <div id="panier_detail">
+          <input type="hidden" name="panier_modif" id="panier_modif" value="0"/>
+          <p id="nombreArticles">Votre panier ne contient aucun article</p>
+          <div id="top">
+            <a href="../index.html" onclick="return oPanier._updPanierDetail(false);" title="Annuler les modifications"><img src="http://images.auchandirect.fr/frontoffice/img/static/global/but_annul.gif" style="border: none; height: 24px; width: 94px;" alt="Annuler" /></a>&nbsp;
+            <a href="../index.html" onclick="oPanier._updPanierDetail(true);" title="Valider les modifications"><img src="http://images.auchandirect.fr/frontoffice/img/static/global/but_confirm.gif" alt="Valider" style="border: none; height: 24px; width: 94px;" /></a>
+          </div>
+          <div id="blocs_articles">
+          </div>
+          <div id="bottom">
+            <a href="../index.html" onclick="return oPanier._updPanierDetail(false);" title="Annuler les modifications"><img src="http://images.auchandirect.fr/frontoffice/img/static/global/but_annul.gif" style="border: none; height: 24px; width: 94px;" alt="Annuler" /></a>&nbsp;
+            <a href="../index.html" onclick="oPanier._updPanierDetail(true);" title="Valider les modifications"><img src="http://images.auchandirect.fr/frontoffice/img/static/global/but_confirm.gif" alt="Valider" style="border: none; height: 24px; width: 94px;" /></a>
+          </div>
+        </div>
+
+    </div>
+
+    <div id="tooltip" style="display:none;">&nbsp;</div>
+    <p id="tooltip_label" style="display:none;" class="">&nbsp;</p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3062526-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+
+
+
+  </body>
+</html>    
+    <!-- Page générée en 0.090370178222656 seconde(s) -->

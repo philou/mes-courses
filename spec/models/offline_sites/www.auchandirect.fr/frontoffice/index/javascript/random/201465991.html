@@ -1,0 +1,230 @@
+     /*******************************/
+    /* Instance des objets 'utils' */
+    /*******************************/
+    var oContexte       = new Contexte();
+    var oBanniere       = new Bannieres();
+    var oClient         = new Client();
+    var oCatalogue      = new Catalogue();
+    var oToolTip        = new ToolTip();
+    var oListes         = new Listes();
+    var oPanier         = new Panier();
+    var oCde            = new Cde();
+    var oPosition       = new PositionDOM();
+    var oEventManager   = new EventManager();
+
+    var oCarroussel     = new carroussel();
+    /********************************************************/
+    /* Variables globales issues du contexte de navigation */
+    /********************************************************/
+    oContexte.layout       = 'layout_m_layout1';
+    oContexte.action       = 'produit';
+    oContexte.url_root     = 'http:\/\/www.auchandirect.fr\/frontoffice';
+    oContexte.url_front    = 'http:\/\/www.auchandirect.fr\/frontoffice\/index\/';
+    oContexte.url_root_js  = 'http:\/\/www.auchandirect.fr\/frontoffice';
+    oContexte.url_image    = 'http:\/\/www.auchandirect.fr\/frontoffice\/img';
+    oContexte.url_synchro  = 'http:\/\/images.auchandirect.fr\/synchro';
+    oContexte.url_static   = 'http:\/\/www.auchandirect.fr\/frontoffice\/static';
+    
+    // les URL dont on a besoin dans le panier
+    oContexte.url_identification_rapide = 'https://www.auchandirect.fr/frontoffice/index/identification_rapide/retour/cde_sortie_caisse';
+    oContexte.url_cde_derniere = 'https://www.auchandirect.fr/frontoffice/index/cde_derniere';
+    oContexte.url_cde_sortie_caisse = 'http://www.auchandirect.fr/frontoffice/index/cde_sortie_caisse';
+    oContexte.url_cde_modif = 'https://www.auchandirect.fr/frontoffice/index/cde_modif';
+    
+    oContexte.password_min = '6';
+    oContexte.password_max = '12';
+    oContexte.panier_max_articles = 10;
+    oContexte.panier_total_prix_mini = 60;
+    oContexte.panier_total_prix_maxi = 500;
+
+    /***********************/
+    /* Variables de Cookie */
+    /***********************/
+    var oCookiePanier       = new Cookie('AuchanDirect_Panier_0', 365, "/frontoffice",'',false,"Ce cookie permet de conserver vos choix de navigation sur ce site. Ainsi, lors de votre prochaine visite, vous retrouverez automatiquement vos choix de navigation prÃ©configurÃ©s.","http://www.auchandirect.fr/frontoffice/static/securite_a_propos.html");
+    var oCookieCarroussel   = new Cookie('AuchanDirect_Carroussel', 0, "/frontoffice",'',false,"Ce cookie permet de conserver vos choix de navigation sur ce site. Ainsi, lors de votre prochaine visite, vous retrouverez automatiquement vos choix de navigation prÃ©configurÃ©s.","http://www.auchandirect.fr/frontoffice/static/securite_a_propos.html");
+
+    /********************************************/
+    /* Paramètre de configuration des bannières */
+    /********************************************/
+    oBanniere.timer         = true;
+    oBanniere.interval      = 5000;
+    oBanniere.nbClick       = true;
+    oBanniere.url           = 'http://images.auchandirect.fr/synchro/imgpub/';
+    oBanniere.url_ajax      = 'http://www.auchandirect.fr/frontoffice/index/';
+    oBanniere._insParam(new BanParam(1, 2, false, 5000, true));
+    oBanniere._insParam(new BanParam(3, 5, true, 5000, true));
+    oBanniere._insParam(new BanParam(2, 1, false, 0, true));
+    oBanniere._insParam(new BanParam(4, 1, false, 0, true));
+
+    oBanniere.iNumBanniereContextuelleCourante = 85;
+    /************************************************/
+    /* Variables globales issues du contexte Client */
+    /************************************************/
+    
+    oClient.login        = '';
+    oClient.nom          = 'Visiteur';
+    oClient.prenom       = '';
+    oClient.typeimg      = '2';
+    oClient.modeAuth     = '';
+    oClient.cp           = 0;
+    oClient.id           = 0;
+    oClient.type         = 3;
+    oClient.catalogue    = new Array('1');
+    oClient.codeTarif    = 8;
+    oClient.csc          = 0;
+    oClient.stVente      = 1;
+    oClient.cdeEnCours   = 0;
+    oClient.avoirs       = 0;
+
+    /***************************************************/
+    /* Variables globales issues du contexte Catalogue */
+    /***************************************************/
+    oCatalogue.contexte      = 'detail';
+    oCatalogue.familleTotal  = 89;
+    oCatalogue.familleId     = 15258;
+    oCatalogue.familleType   = '0';
+    oCatalogue.rayonTotal    = 15;
+    oCatalogue.rayonId       = 15260;
+    oCatalogue.ssrayonId     = 19014;
+    oCatalogue.articleTotal  = 1;
+    oCatalogue.articleId     = 1;
+    oCatalogue.articleType   = '';
+
+    oCatalogue._insFamille(new Famille("11821","1",""));
+    oCatalogue._insFamille(new Famille("16321","2",""));
+    oCatalogue._insFamille(new Famille("19022","0","Les produits Auchan, Pouce..."));
+    oCatalogue._insFamille(new Famille("15022","0","Légumes, Boucherie"));
+    oCatalogue._insFamille(new Famille("15039","0","Fromages, Oeufs, Yaourts"));
+    oCatalogue._insFamille(new Famille("15053","0","Traiteur"));
+    oCatalogue._insFamille(new Famille("15068","0","Plats, Légumes, Glaces"));
+    oCatalogue._insFamille(new Famille("15083","0","Conserves, Sauces"));
+    oCatalogue._insFamille(new Famille("15098","0","Pâtes, Riz, Potages, Sauces"));
+    oCatalogue._insFamille(new Famille("15116","0","Chocolats, Confiseries..."));
+    oCatalogue._insFamille(new Famille("15131","0","Pains, Viennoiseries"));
+    oCatalogue._insFamille(new Famille("15144","0","Eau, Jus de fruits, colas"));
+    oCatalogue._insFamille(new Famille("15158","0","Snacks apéritifs, Boissons"));
+    oCatalogue._insFamille(new Famille("15169","0","Bières, Champagnes"));
+    oCatalogue._insFamille(new Famille("15184","0","Alimentation, Soin, Hygiène"));
+    oCatalogue._insFamille(new Famille("15198","0","Allégé"));
+    oCatalogue._insFamille(new Famille("15213","0","Saveurs d ailleurs"));
+    oCatalogue._insFamille(new Famille("15225","0","Beauté, Parapharmacie"));
+    oCatalogue._insFamille(new Famille("15243","0","Maison, Informatique"));
+    oCatalogue._insFamille(new Famille("15258","0","Chats, Chiens, Autres"));
+    oCatalogue._insFamille(new Famille("11981","4",""));
+    oCatalogue._insFamille(new Famille("19001","5",""));
+    oCatalogue._insFamille(new Famille("19002","5",""));
+    oCatalogue._insFamille(new Famille("19003","5",""));
+    oCatalogue._insFamille(new Famille("17743","4",""));
+    oCatalogue._insFamille(new Famille("17704","4",""));
+    oCatalogue._insFamille(new Famille("17702","4","-10% sur toute la gamme"));
+    oCatalogue._insFamille(new Famille("17655","4",""));
+    oCatalogue._insFamille(new Famille("17646","4","-10% sur la gamme"));
+    oCatalogue._insFamille(new Famille("17633","4",""));
+    oCatalogue._insFamille(new Famille("17622","4",""));
+    oCatalogue._insFamille(new Famille("17602","4",""));
+    oCatalogue._insFamille(new Famille("17412","4",""));
+    oCatalogue._insFamille(new Famille("17409","4",""));
+    oCatalogue._insFamille(new Famille("19019","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("17405","4",""));
+    oCatalogue._insFamille(new Famille("17402","4",""));
+    oCatalogue._insFamille(new Famille("17390","4",""));
+    oCatalogue._insFamille(new Famille("17362","4",""));
+    oCatalogue._insFamille(new Famille("17325","4",""));
+    oCatalogue._insFamille(new Famille("17322","4",""));
+    oCatalogue._insFamille(new Famille("17226","4",""));
+    oCatalogue._insFamille(new Famille("17223","4",""));
+    oCatalogue._insFamille(new Famille("17184","4",""));
+    oCatalogue._insFamille(new Famille("16643","4",""));
+    oCatalogue._insFamille(new Famille("16486","4",""));
+    oCatalogue._insFamille(new Famille("16209","4","Découvrez notre gamme Auchan Baby"));
+    oCatalogue._insFamille(new Famille("14602","4",""));
+    oCatalogue._insFamille(new Famille("14162","4",""));
+    oCatalogue._insFamille(new Famille("13262","4","-5% sur la gamme"));
+    oCatalogue._insFamille(new Famille("12782","4",""));
+    oCatalogue._insFamille(new Famille("12088","4",""));
+    oCatalogue._insFamille(new Famille("19005","4","Découvrez nos produits pour votre apéritif"));
+    oCatalogue._insFamille(new Famille("19006","4","Découvrez nos produits pour la rentrée des classes"));
+    oCatalogue._insFamille(new Famille("19007","4","Découvrez les produits Auchandirect "));
+    oCatalogue._insFamille(new Famille("19008","4","Découvrez nos produits nomades"));
+    oCatalogue._insFamille(new Famille("19010","4","Découvrez nos produits Auchan"));
+    oCatalogue._insFamille(new Famille("19016","4","Promotion"));
+    oCatalogue._insFamille(new Famille("19017","4","Gamme Albert Ménès"));
+    oCatalogue._insFamille(new Famille("19018","4","Nos solutions moins chères"));
+    oCatalogue._insFamille(new Famille("19161","4","Les produits Pouce"));
+    oCatalogue._insFamille(new Famille("19021","4","Découvrez les alcools et vins pour les fêtes"));
+    oCatalogue._insFamille(new Famille("19162","4","Les Cartouches d'encre"));
+    oCatalogue._insFamille(new Famille("19163","4","Halloween"));
+    oCatalogue._insFamille(new Famille("19164","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19194","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19195","4","Les Promos gouters"));
+    oCatalogue._insFamille(new Famille("19196","4","Opération Minceur"));
+    oCatalogue._insFamille(new Famille("19201","4","Les produits Bébé"));
+    oCatalogue._insFamille(new Famille("19206","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19210","4","Les produits bio"));
+    oCatalogue._insFamille(new Famille("19211","4","Jusqu à 50% de gratuité"));
+    oCatalogue._insFamille(new Famille("19214","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19215","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19216","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19218","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19219","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19220","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19221","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19240","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19241","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19242","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19272","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19275","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19294","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19295","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19297","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19322","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("19342","4","Informations WEB à rédéfinir"));
+    oCatalogue._insFamille(new Famille("1111111","4","Nouveau - PhotoBox"));
+    oCatalogue._insFamille(new Famille("1111112","4"," Grosbill High-Tech"));
+    oCatalogue._insFamille(new Famille("1111113","4","Déstockage Gdes Marques"));
+    oCatalogue._insArticle(new Article( "d","p",56286,"WHISKAS","WHISKAS Les Irrésistibles Saumon, 60 g","Délices au saumon","&nbsp;","60 g",1.99,"33.17\u20AC / kg",10,0,"http://www.auchandirect.fr/frontoffice/index/produit/famille/16321/rayon/15260/ssrayon/19014/article/56286",0)); // article du catalogue
+    /*****************************************/
+    /* Paramètres de configuration du panier */
+    /*****************************************/
+    oPanier.panier_type             = 'mini';
+    oPanier.type                    = 'P';
+    oPanier.id                      = 0;
+    oPanier.name                    = 'AuchanDirect_Panier_0';
+    oPanier.max_articles            = 10;
+    oPanier.total_pondereux_maxi    = 65;
+    oPanier.total_prix_mini         = 60;
+    oPanier.total_prix_maxi         = 500;
+    oPanier.panier_asynchrone = 1;
+    oPanier.alert_nb[0]             = 3;
+    oPanier.alert_nb[1]             = 4;
+    oPanier.alert_nb[2]             = 6;
+    oPanier.alert_url[0]            = 'http:\/\/www.auchandirect.fr\/frontoffice\/static\/pop_inscription1.html';
+    oPanier.alert_url[1]            = 'http:\/\/www.auchandirect.fr\/frontoffice\/static\/pop_inscription2.html';
+    oPanier.alert_url[2]            = 'https://www.auchandirect.fr/frontoffice/index/identification_rapide/rapide/1';
+    oPanier.alert_msg[0]            = 'inscrivez_vous1';
+    oPanier.alert_msg[1]            = 'inscrivez_vous2';
+    oPanier.alert_msg[2]            = '';
+    oPanier._panier_save            = 1;
+    oPanier._interval_save          = 0;
+    oPanier._interval_ms            = 10000;
+    oPanier._nbArt_save             = 0;
+    oPanier._nbArt_each             = 5;
+
+    /******************************************/
+    /* Paramètres de configuration des listes */
+    /******************************************/
+    oListes.AJAX_url_liste = 'http:\/\/www.auchandirect.fr\/frontoffice\/index\/' + oListes.AJAX_url_liste;
+    /*****************************************/
+    /* Paramètres de configuration commandes */
+    /*****************************************/
+    oCde.id             = 0;
+    oCde.adrLiv_total   = 0;
+    oCde.adrLiv_id      = 0;
+    oCde.adrLiv_type    = 0;
+
+    /*******************************************************/
+    /* Gestionnaire d'évenements DOM (@see frontoffice.js) */
+    /*******************************************************/
+    oEventManager._manage();
+
+    // Code JS dynamique généré en 0.14358878135681 seconde(s)
