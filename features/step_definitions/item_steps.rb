@@ -4,5 +4,5 @@ Given /^tomatoes for sale$/ do
 end
 
 Then /^there should be some products for sale$/ do
-  Item.exists?.should be_true
+  Item.should have_at_least(10).records
 end

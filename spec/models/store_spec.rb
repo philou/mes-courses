@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'models/store_spec_helper'
 
 describe Store do
 
@@ -13,31 +14,13 @@ describe Store do
   end
 
   context "After import" do
+    include StoreSpecHelper
     
-    def do_not_follow_online_links
-      def @store.skip_link?(uri)
-        uri =~ /^http:\/\//
-      end
-    end
-    def do_not_follow_more_than_3_similar_links
-      def @store.each_node(collection)
-        i = 0
-        collection.each do |item|
-          if 3 <= i
-            return
-          else
-            yield item
-          end
-          i = i+1
-        end
-      end
-    end
-
     before(:each) do
       @store = Store.create(@valid_attributes)
 
-      do_not_follow_online_links
-      do_not_follow_more_than_3_similar_links
+      do_not_follow_online_links_when_importing_from(@store)
+      do_not_follow_more_than_3_similar_links_when_importing_from(@store)
       
       @store.import
     end
