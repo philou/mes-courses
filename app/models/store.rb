@@ -9,7 +9,7 @@ class Store < ActiveRecord::Base
     agent = Mechanize.new
     mainPage = agent.get(url)
 
-    walkMainPage(mainPage)
+    walk_main_page(mainPage)
   end
 
 private
@@ -44,7 +44,7 @@ private
   end
 
   # Follows selected links and calls 'message' on the opened pages.
-  def followPageLinks(page, selector, message)
+  def follow_page_links(page, selector, message)
     each_node(links_with(page, selector)) do |link|
       begin
         self.send(message, link.click)
@@ -57,17 +57,21 @@ private
   end
 
   
-  def walkMainPage(page)
-    followPageLinks(page, '#carroussel > div a', :walkCataloguePage)
+  def walk_main_page(page)
+    follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
   end
 
-  def walkCataloguePage(page)
-    followPageLinks(page, '#blocCentral > div a', :walkRayonPage)
+  def walk_catalogue_page(page)
+    follow_page_links(page, '#blocCentral > div a', :walk_rayon_page)
   end
 
-  def walkRayonPage(page)
-    each_node(page.search('.nomProduit')) do |element|
-      name = element.search('.label2').first.content
+  def walk_rayon_page(page)
+    follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page)
+  end
+
+  def walk_produit_page(page)
+    each_node(page.search('.typeProduit')) do |element|
+      name = element.search('.nomRayon').first.content
       Item.create!(:name => name)
     end
   end

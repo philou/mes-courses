@@ -13,7 +13,7 @@ describe Store do
     Store.create!(@valid_attributes)
   end
 
-  context "After import" do
+  context "when importing" do
     include StoreSpecHelper
     
     before(:each) do
@@ -25,11 +25,19 @@ describe Store do
       @store.import
     end
 
-    it "should import many items" do
+    it "should create many items" do
       Item.should have_at_least(10).records
     end
 
-#    it "should import item XXX"
+    it "should create different items" do
+      set = Set.new(Item.find(:all).map {|item| item.name})
+      set.should have_at_least(10).items
+    end
+
+    it "should create full named items" do
+      items = Item.find(:all).find_all {|item| 20 <= item.name.length }
+      items.should have_at_least(1).item
+    end
 
   end
 
