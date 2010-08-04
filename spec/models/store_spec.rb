@@ -4,8 +4,9 @@ require 'models/store_spec_helper'
 describe Store do
 
   before(:each) do
+    dirname = File.expand_path(File.dirname(__FILE__))
     @valid_attributes = {
-      :url => "file://"+File.join(File.dirname(__FILE__),'offline_sites','www.auchandirect.fr', 'frontoffice', 'index.html')
+      :url => "file://"+File.join(dirname,'offline_sites','www.auchandirect.fr', 'frontoffice', 'index.html')
     }
   end
 
@@ -21,7 +22,7 @@ describe Store do
 
       do_not_follow_online_links_when_importing_from(@store)
       do_not_follow_more_than_3_similar_links_when_importing_from(@store)
-      
+
       @store.import
     end
 
