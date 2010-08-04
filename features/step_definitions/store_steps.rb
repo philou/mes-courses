@@ -1,5 +1,5 @@
 Given /^an online store "([^"]*)"$/ do |webStore|
-  @store = Store.create!(:url => webStore)
+  @store = Store.find_or_create_by_url(webStore)
 end
 
 When /^products from the online store are imported$/ do
