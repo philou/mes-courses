@@ -31,8 +31,9 @@ describe Store do
     end
 
     it "should create different items" do
-      set = Set.new(Item.find(:all).map {|item| item.name})
-      set.should have_at_least(10).items
+      items = Item.find(:all)
+      names = Set.new(items.map {|item| item.name})
+      names.should have_at_least(items.length * 0.7).unique_values
     end
 
     it "should create full named items" do

@@ -38,9 +38,11 @@ private
   def links_with(page, selector)
     uri2links = {}
     search_links(page,selector).each do |link|
-      uri2links[link.uri] = link unless skip_link? link.uri
+      uri = link.uri.to_s
+      uri2links[uri] = link unless skip_link? uri
     end
-    uri2links.values
+    # enforcing deterministicity for testing and debugging
+    uri2links.values.sort_by {|link| link.uri.to_s }
   end
 
   # Follows selected links and calls 'message' on the opened pages.
