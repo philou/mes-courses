@@ -20,8 +20,7 @@ describe Store do
     before(:each) do
       @store = Store.create(@valid_attributes)
 
-      do_not_follow_online_links_when_importing_from(@store)
-      do_not_follow_more_than_3_similar_links_when_importing_from(@store)
+      when_importing_from(@store, :skip_links_like => /^http:\/\//, :squeeze_loops_to => 3)
 
       @store.import
     end

@@ -3,7 +3,7 @@ Given /^an online store "([^"]*)"$/ do |webStore|
 end
 
 When /^products from the online store are imported$/ do
-  do_not_follow_more_than_3_similar_links_when_importing_from(@store)
+  when_importing_from(@store, :skip_links_like => /^http:\/\/auchandirect/, :squeeze_loops_to => 3)
   @store.import
 end
 
