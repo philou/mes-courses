@@ -1,2 +1,12 @@
 <h1>Panier</h1>
 
+<table>
+  <% @cart.items.each do |item| %>
+    <tr>
+      <td>
+	<%=h item.name %>
+      </td>
+    </tr>
+  <% end%>
+</table>
+

@@ -1,8 +1,8 @@
 
-Given /^tomatoes for sale$/ do
-  @tomatoes = Item.create!(:name => "Tomatoes")
+Given /^"([^"]*)" for sale$/ do |item_name|
+  @item_for_sale = Item.create!(:name => item_name)
 end
 
-Then /^there should be some products for sale$/ do
+Then /^there should be some items for sale$/ do
   Item.should have_at_least(10).records
 end

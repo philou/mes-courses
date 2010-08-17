@@ -14,6 +14,9 @@ module NavigationHelpers
     when /the full item catalog page/
       '/items/'
 
+    when /the cart page/
+      '/cart/'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

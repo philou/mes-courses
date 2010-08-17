@@ -4,17 +4,20 @@ require 'spec_helper'
 describe "items/show.html.erb" do
 
   before(:each) do
-    assigns[:items] = ["Tomatoes", "Potatoes"].map {|name| stub("Item", :name => name) }
+    @items = ["Tomates", "Pommes de terre"].map {|name| stub_model(Item, :name => name) }
+    assigns[:items] = @items
   end
 
-  it "displays the name of the first item" do
+  it "displays the name of each item" do
     render
-    response.should contain("Tomatoes")
+    @items.each {|item| response.should contain(item.name) }
   end
 
-  it "displays the name of the second item" do
+  it "displays a link to add items to the cart" do
     render
-    response.should contain("Potatoes")
+    @items.each {|item| response.should have_selector("a", :href => default_path(:controller => 'cart',
+                                                                                 :action => 'add_to_cart',
+                                                                                 :id => item.id)) }
   end
 
 end
