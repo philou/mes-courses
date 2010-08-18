@@ -12,7 +12,7 @@ describe Cart do
   end
 
   it "should contain added items" do
-    items = Array.new(5) {|i| stub(Item, :name => "item_#{i.to_s}") }
+    items = Array.new(5) {|i| stub(Item, :name => "item_#{i}") }
     items.each {|item| @cart.add_item(item) }
 
     items.each {|item| @cart.items.should include(item) }
