@@ -12,7 +12,7 @@ module NavigationHelpers
       '/'
 
     when /the full item catalog page/
-      '/items/'
+      '/item/'
 
     when /the cart page/
       '/cart/'

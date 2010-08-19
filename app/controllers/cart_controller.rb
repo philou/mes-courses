@@ -13,7 +13,7 @@ class CartController < ApplicationController
     item = Item.find(params[:id])
     @cart.add_item(item)
 
-    redirect_to show_all_path(:controller => "items")
+    redirect_to show_all_path(:controller => "item")
   end
 
   private

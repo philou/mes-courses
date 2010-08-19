@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "items/show.html.erb" do
+describe "item/show.html.erb" do
 
   before(:each) do
     @items = ["Tomates", "Pommes de terre"].map {|name| stub_model(Item, :name => name) }

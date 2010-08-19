@@ -10,7 +10,7 @@ describe CartController do
 
     post :add_to_cart, :id => stub_model(Item).object_id
 
-    response.should redirect_to show_all_path(:controller => "items")
+    response.should redirect_to show_all_path(:controller => "item")
   end
 
   context "concerning the session cart" do
