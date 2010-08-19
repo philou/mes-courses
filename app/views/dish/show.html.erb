@@ -1,0 +1,12 @@
+<h1>Plats</h1>
+
+<table>
+  <% @dishes.each do |dish| %>
+    <tr>
+      <td>
+	<div><%=h dish.name %></div>
+      </td>
+    </tr>
+  <% end%>
+</table>
+

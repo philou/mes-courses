@@ -17,6 +17,9 @@ module NavigationHelpers
     when /the cart page/
       '/cart/'
 
+    when /the full dish catalog page/
+      '/dish/'
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #
