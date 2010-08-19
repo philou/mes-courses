@@ -4,9 +4,10 @@ namespace :stores do
     stores = Store.find(:all)
     puts "Importing #{stores.length.to_s} stores"
     stores.each do |store|
-      puts "Importing items from #{store.url}"
-      store.import
-      puts "Done"
+      puts "[#{Time.now}]Importing items from #{store.url}"
+      # let's validate cron gives what we want before actually launching the import
+      #store.import
+      puts "[#{Time.now}]Done"
     end
   end
 end
