@@ -4,65 +4,58 @@ require 'stub_helper'
 describe CartController do
   include StubHelper
 
-  it "should redirect to products when adding to cart" do
-    stub_with_null_object!(Item, :new, :find)
-    stub_with_null_object!(Cart, :new)
-
-    post :add_to_cart, :id => stub_model(Item).object_id
-
-    response.should redirect_to show_all_path(:controller => "items")
+  before(:each) do
+    @cart = stub(Cart).as_null_object
+    Cart.stub(:new).and_return(@cart)
   end
 
-  context "concerning the session cart" do
+  after(:each) do
+    session[:cart].should be @cart
+    instance_variable_get(:@cart).should be @cart
+  end
 
-    before(:each) do
-      @cart = stub(Cart)
-    end
+  it "should show the session cart" do
+    get :show
+  end
 
-    after(:each) do
-      session[:cart].should be @cart
-    end
+  # maybe I could use a shared_example, but I am not sure it would be better
+  [Item, Dish].each do |model|
+    model_small = model.to_s.downcase
+    action = "add_#{model_small}_to_cart".intern
 
-    context "without an existing session cart" do
-
-      before(:each) do
-        Cart.should_receive(:new).and_return(@cart)
-      end
-
-      it "creates an empty session cart when shown" do
-        get :show
-      end
-
-      it "creates a session cart when a line is added" do
-        it_should_add_the_item_to_the_cart
-      end
-    end
-
-    context "with an existing session cart" do
+    context "when adding #{model_small} to cart" do
 
       before(:each) do
+        stub_with_null_object!(model, :new, :find)
+      end
+
+      it "should forward to the cart" do
+        thing = stub_model(model)
+        model.stub(:find).and_return(thing)
+        @cart.should_receive("add_#{model_small}".intern).with(thing)
+
+        post_item(action, thing)
+      end
+
+      it "should not create a new session when one already exists" do
         session[:cart] = @cart
         Cart.should_not_receive(:new)
+
+        post_a_stub(action, model)
       end
 
-      it "displays the existing session cart when shown" do
-        get :show
+      it "should redirect to products" do
+        post_a_stub(action, model)
+
+        response.should redirect_to show_all_path(:controller => model_small)
       end
-
-
-      it "adds new lines to the existing session cart" do
-        it_should_add_the_item_to_the_cart
-      end
-    end
-
-    private
-
-    def it_should_add_the_item_to_the_cart
-      item = stub_model(Item)
-      Item.should_receive(:find).once.and_return(item)
-      @cart.should_receive(:add_item).with(item)
-
-      post :add_to_cart, :id => item.object_id
     end
   end
+  def post_a_stub(action, model)
+    post_item(action, stub_model(model))
+  end
+  def post_item(action, item)
+    post( action, :id => item.object_id)
+  end
+
 end

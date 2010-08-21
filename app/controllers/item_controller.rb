@@ -1,4 +1,4 @@
-class ItemsController < ApplicationController
+class ItemController < ApplicationController
 
   def show
     @items = Item.find(:all)

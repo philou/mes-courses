@@ -1,0 +1,13 @@
+<h1>Plats</h1>
+
+<table>
+  <% @dishes.each do |dish| %>
+    <tr>
+      <td>
+	<div><%=h dish.name %></div>
+	<div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish_to_cart', :id => dish.id }%></div>
+      </td>
+    </tr>
+  <% end%>
+</table>
+

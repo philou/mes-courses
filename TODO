@@ -1,2 +1,7 @@
 TODO
 
+refactorer les tests de cart_controller
+add_dish_to_cart dans cart_controller
+cart_model.add_dish
+
+
