@@ -2,7 +2,6 @@ class CreateDishes < ActiveRecord::Migration
   def self.up
     create_table :dishes do |t|
       t.string :name
-
       t.timestamps
     end
   end

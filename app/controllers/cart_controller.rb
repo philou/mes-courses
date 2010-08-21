@@ -2,23 +2,33 @@
 # Controller for the shopping cart
 class CartController < ApplicationController
 
+  before_filter :find_cart
+
   # Displays the full session's cart
   def show
-    @cart = find_cart
   end
 
   # adds the item with params[:id] to the cart
-  def add_to_cart
-    @cart = find_cart
-    item = Item.find(params[:id])
-    @cart.add_item(item)
+  def add_item_to_cart
+    add_to_cart(Item)
+  end
 
-    redirect_to show_all_path(:controller => "item")
+  # adds the whole dish with params[:id] to the cart
+  def add_dish_to_cart
+    add_to_cart(Dish)
   end
 
   private
 
   def find_cart
-    session[:cart] ||= Cart.new
+    @cart = (session[:cart] ||= Cart.new)
   end
+
+  def add_to_cart(model)
+    thing = model.find(params[:id])
+    @cart.send("add_#{model.to_s.downcase}".intern, thing)
+ 
+    redirect_to show_all_path(:controller => model.to_s.downcase)
+  end
+
 end

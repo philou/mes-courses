@@ -5,7 +5,7 @@
     <tr>
       <td>
 	<div><%=h item.name %></div>
-	<div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_to_cart', :id => item.id }%></div>
+	<div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item_to_cart', :id => item.id }%></div>
       </td>
     </tr>
   <% end%>
