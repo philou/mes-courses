@@ -1,7 +1,7 @@
 TODO
 
-refactorer les tests de cart_controller
-add_dish_to_cart dans cart_controller
-cart_model.add_dish
+voir options de log pour ajouter un timestamps
+logger l'import de chaque item, avec les exceptions si il y en a
+relancer tout l'import
 
 
