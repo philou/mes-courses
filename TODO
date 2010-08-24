@@ -1,7 +1,6 @@
 TODO
 
-voir options de log pour ajouter un timestamps
-logger l'import de chaque item, avec les exceptions si il y en a
-relancer tout l'import
+- logs sur heroku : que les 100 dernières lignes, juste pour dire ... il faut tester en local
 
-
+- relancer tout l'import
+- changer l'environnement sur heroku: heroku config:add RACK_ENV=staging --app myapp-staging

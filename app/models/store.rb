@@ -6,13 +6,13 @@ class Store < ActiveRecord::Base
 
   # Imports the items sold from the online store to our db
   def import
+    logger.info "Starting import from #{url}"
     agent = Mechanize.new
     mainPage = agent.get(url)
-
-    walk_main_page(mainPage)
+    logger.with_tabs { walk_main_page(mainPage) }
   end
 
-private
+  private
 
   # Should the link be skipped when walking through the online store
   # This method can be overriden for testing purpose
@@ -49,10 +49,11 @@ private
   def follow_page_links(page, selector, message)
     each_node(links_with(page, selector)) do |link|
       begin
-        self.send(message, link.click)
+        logger.info "Following #{link.uri}"
+        logger.with_tabs { self.send(message, link.click)}
         
       rescue Exception
-        logger.warn 'Could not follow link "#{link.content}" because '+ $!
+        logger.warn "Could not follow link \"#{link.uri}\" because "+ $!
 
       end
     end
@@ -74,6 +75,7 @@ private
   def walk_produit_page(page)
     each_node(page.search('.typeProduit')) do |element|
       name = element.search('.nomRayon').first.content
+      logger.info "Found item #{name}"
       Item.create!(:name => name)
     end
   end
