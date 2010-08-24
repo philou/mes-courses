@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'active_support'
 
 # Helper functions to convert to and from severity codes
