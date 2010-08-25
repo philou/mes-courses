@@ -2,6 +2,8 @@
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
+
+# 'lib/' prefix required by heroku (could not find file to load)
 require 'lib/detailed_logger'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
