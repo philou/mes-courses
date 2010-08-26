@@ -1,0 +1,56 @@
+tomates:
+   name: Tomates
+
+boeuf_hache:
+   name: Viande de boeuf hachée
+
+spaghettis:
+   name: Spaghettis
+
+escalopes_de_poulet:
+   name: Escalopes de poulet
+
+riz:
+   name: Riz
+
+creme:
+   name: Crème
+
+echalottes:
+   name: Echalottes
+
+haricots_verts:
+   name: Haricots verts
+
+bavette:
+   name: Bavette de boeuf
+
+jambon:
+   name: Jambon blanc
+
+gnochis:
+   name: Gnochis
+
+chamignons:
+   name: Champignons de Paris
+
+poivron_vert:
+   name: Poivron vert
+
+feta:
+   name: Feta
+
+olives_noires:
+   name: Olives noires
+
+concombre:
+   name: Concombre
+
+# il faudra quelque chose de spécial pour les assaisonnements
+#huile:
+#vinaigre:
+#sel:
+#poivre:
+#curry
+#origan:
+

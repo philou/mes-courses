@@ -1,0 +1,24 @@
+tomates_farcies:
+   name:  Tomates farcies
+   items: tomates, boeuf_hache, riz
+
+poulet_au_curry:
+   name:  Poulet au curry
+   items: poulet, riz, crème
+
+spaghettis_bolognaises:
+   name:  Spaghetti bolognaises
+   items: spaghettis, boeuf_hache, tomates, echalottes
+
+bavette_aux_echalottes:
+   name:  Bavette aux échalottes
+   items: bavette, echalottes, haricots_verts
+
+gnochis_au_jambon:
+   name:  Gnochis au jambon
+   items: gnochis, jambon, champignons
+
+salade_greque:
+   name:  Salade greque
+   items: tomates, concombre, feta, poivron_vert, olives_noires
+
