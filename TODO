@@ -1,8 +1,4 @@
 TODO
 
-- logs sur heroku : que les 100 dernières lignes, juste pour dire ... il faut tester en local
-
-- voire comment logger ailleurs sur heroku (db, s3 ou un truc de log à eux ...)
-- relancer tout l'import
-- changer l'environnement sur heroku: heroku config:add RACK_ENV=staging --app myapp-staging
+logs sur heroku : que les 100 dernières lignes, il faut donc tester en local tout un week end
 
