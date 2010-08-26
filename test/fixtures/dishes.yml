@@ -4,7 +4,7 @@ tomates_farcies:
 
 poulet_au_curry:
    name:  Poulet au curry
-   items: poulet, riz, crème
+   items: escalopes_de_poulet, riz, creme
 
 spaghettis_bolognaises:
    name:  Spaghetti bolognaises
