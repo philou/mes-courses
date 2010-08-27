@@ -26,6 +26,12 @@ class Store < ActiveRecord::Base
     collection.each {|item| yield item }
   end
 
+  # Handles a newly dug up item.
+  # This method can be overriden for testing purpose
+  def found_item(params)
+    Item.create!(params)
+  end
+
   # Searches for links with a Nokogiri css or xpath selector
   def search_links(page, selector)
     page.search(selector).map do |xmlA|
@@ -58,7 +64,6 @@ class Store < ActiveRecord::Base
       end
     end
   end
-
   
   def walk_main_page(page)
     follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
@@ -76,7 +81,7 @@ class Store < ActiveRecord::Base
     each_node(page.search('.typeProduit')) do |element|
       name = element.search('.nomRayon').first.content
       logger.info "Found item #{name}"
-      Item.create!(:name => name)
+      found_item(:name => name)
     end
   end
 

@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe "cart/show.html.erb" do

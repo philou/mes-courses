@@ -26,7 +26,7 @@ describe CartController do
     context "when adding #{model_small} to cart" do
 
       before(:each) do
-        stub_with_null_object!(model, :new, :find)
+        stub_with_null_object!(model, :find)
       end
 
       it "should forward to the cart" do

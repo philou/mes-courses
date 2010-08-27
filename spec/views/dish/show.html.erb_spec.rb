@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "/dish/show.html.erb" do
+
   before(:each) do
     @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }
     assigns[:dishes] = @dishes
