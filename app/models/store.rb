@@ -26,6 +26,12 @@ private
     collection.each {|item| yield item }
   end
 
+  # Handles a newly dug up item.
+  # This method can be overriden for testing purpose
+  def found_item(params)
+    Item.create!(prams)
+  end
+
   # Searches for links with a Nokogiri css or xpath selector
   def search_links(page, selector)
     page.search(selector).map do |xmlA|
@@ -57,7 +63,6 @@ private
       end
     end
   end
-
   
   def walk_main_page(page)
     follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
@@ -74,7 +79,7 @@ private
   def walk_produit_page(page)
     each_node(page.search('.typeProduit')) do |element|
       name = element.search('.nomRayon').first.content
-      Item.create!(:name => name)
+      found_item(:name => name)
     end
   end
 

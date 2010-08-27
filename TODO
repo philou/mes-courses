@@ -1,7 +1,15 @@
 TODO
 
-refactorer les tests de cart_controller
-add_dish_to_cart dans cart_controller
-cart_model.add_dish
+spec spec: 11.7
+spec spec/models/store_spec.rb avec loops size of 3: 10.7
+spec spec/models/store_spec.rb avec loops size of 2: 5.8
+spec spec/models/store_spec.rb avec loops size of 2 without db : 5.2
+spec spec/models/store_spec.rb avec loops size of 2 without db, with a single import : 1.8
+spec spec 2.8
+
+let's try DbNull
+
+
+
 
 
