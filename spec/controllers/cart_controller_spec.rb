@@ -1,10 +1,8 @@
 require 'spec_helper'
 require 'stub_helper'
-require 'nulldb_rspec'
 
 describe CartController do
   include StubHelper
-  include NullDB::RSpec::NullifiedDatabase
 
   before(:each) do
     @cart = stub(Cart).as_null_object
@@ -28,7 +26,7 @@ describe CartController do
     context "when adding #{model_small} to cart" do
 
       before(:each) do
-        stub_with_null_object!(model, :new, :find)
+        stub_with_null_object!(model, :find)
       end
 
       it "should forward to the cart" do

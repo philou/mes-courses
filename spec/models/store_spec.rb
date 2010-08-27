@@ -1,9 +1,7 @@
 require 'spec_helper'
 require 'models/store_spec_helper'
-require 'nulldb_rspec'
 
 describe Store do
-  include NullDB::RSpec::NullifiedDatabase
 
   # setting static constants up
   before(:all) do

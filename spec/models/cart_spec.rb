@@ -1,10 +1,8 @@
 require 'spec_helper'
 require 'models/store_spec_helper'
-require 'nulldb_rspec'
 require 'include_all_matcher'
 
 describe Cart do
-  include NullDB::RSpec::NullifiedDatabase
 
   before(:each) do
     @cart = Cart.new
