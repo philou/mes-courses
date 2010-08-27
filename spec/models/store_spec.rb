@@ -7,9 +7,7 @@ describe Store do
 
   # setting static constants up
   before(:all) do
-    @valid_attributes = {
-      :url => "file://"+File.join(RAILS_ROOT,'offline_sites','www.auchandirect.fr', 'frontoffice', 'index.html')
-    }
+    @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE }
   end
 
   it "should create a new instance given valid attributes" do

@@ -29,7 +29,7 @@ private
   # Handles a newly dug up item.
   # This method can be overriden for testing purpose
   def found_item(params)
-    Item.create!(prams)
+    Item.create!(params)
   end
 
   # Searches for links with a Nokogiri css or xpath selector
