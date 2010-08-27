@@ -1,3 +1,4 @@
 rails -v 2.3.8
 mechanize -v 1.0.0
 nokogiri -v 1.4.2
+activerecord-nulldb-adapter -v 0.2.0

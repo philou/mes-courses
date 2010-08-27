@@ -1,6 +1,8 @@
 require 'spec_helper'
+require 'nulldb_rspec'
 
 describe "item/show.html.erb" do
+  include NullDB::RSpec::NullifiedDatabase
 
   before(:each) do
     @items = ["Tomates", "Pommes de terre"].map {|name| stub_model(Item, :name => name) }
