@@ -7,9 +7,8 @@ describe Store do
 
   # setting static constants up
   before(:all) do
-    dirname = File.expand_path(File.dirname(__FILE__))
     @valid_attributes = {
-      :url => "file://"+File.join(dirname,'offline_sites','www.auchandirect.fr', 'frontoffice', 'index.html')
+      :url => "file://"+File.join(RAILS_ROOT,'offline_sites','www.auchandirect.fr', 'frontoffice', 'index.html')
     }
   end
 
