@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 
 # Controller for the shopping cart
 class CartController < ApplicationController

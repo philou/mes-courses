@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 module NavigationHelpers
   # Maps a name to a path. Used by the
   #

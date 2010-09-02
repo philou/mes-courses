@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 # Monkey patches for store objects to speed up and adapt
 # catalog import
 module StoreSpecHelper

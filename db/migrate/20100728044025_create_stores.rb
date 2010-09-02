@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 class CreateStores < ActiveRecord::Migration
   def self.up
     create_table :stores do |t|

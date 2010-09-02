@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 
 # Session cart for a user
 class Cart

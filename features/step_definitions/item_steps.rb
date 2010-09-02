@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 
 Given /^"([^"]*)" for sale$/ do |item_name|
   @item_for_sale = Item.create!(:name => item_name)

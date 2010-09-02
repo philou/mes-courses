@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 require 'spec/models/store_spec_helper'
 require 'ping'
 

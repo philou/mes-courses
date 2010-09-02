@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 class CreateDishesItems < ActiveRecord::Migration
   def self.up
     create_table :dishes_items, {:id => false} do |t|

@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 desc "Performs nightly tasks, at the moment, importing items from stores"
 task :cron => :environment do
 

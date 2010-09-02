@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 require 'spec_helper'
 
 describe "item/show.html.erb" do

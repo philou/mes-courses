@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
 ENV["RAILS_ENV"] ||= 'test'

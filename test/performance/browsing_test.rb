@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 require 'test_helper'
 require 'performance_test_help'
 

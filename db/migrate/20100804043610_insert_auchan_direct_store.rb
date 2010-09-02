@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 class InsertAuchanDirectStore < ActiveRecord::Migration
   def self.up
     down

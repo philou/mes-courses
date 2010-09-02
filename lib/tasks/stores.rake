@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 namespace :stores do
   desc "Import all existing stores"
   task :import => :environment do

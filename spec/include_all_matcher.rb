@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 require 'spec_helper'
 
 # Matcher to verify that many elements are present in a collection

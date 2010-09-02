@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 Given /^an online store "([^"]*)"$/ do |webStore|
   url = "http://"+webStore
   @tweaks = {:skip_links_like => /^http:\/\/auchandirect/, :squeeze_loops_to => 3}

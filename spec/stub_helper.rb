@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 require 'spec_helper'
 
 # helper stub methods for spec examples

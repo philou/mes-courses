@@ -1,3 +1,5 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
 # Be sure to restart your server when you modify this file.
 
 # Your secret key for verifying the integrity of signed cookies.
