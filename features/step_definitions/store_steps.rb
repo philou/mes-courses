@@ -13,7 +13,7 @@ Given /^an online store "([^"]*)"$/ do |webStore|
 end
 
 When /^products from the online store are imported$/ do
-  when_importing_from(@store, @tweaks)
+  when_importing_from(@store.scrapper, @tweaks)
   @store.import
 end
 

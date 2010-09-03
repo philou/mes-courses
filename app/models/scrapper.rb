@@ -1,0 +1,92 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
+require 'rubygems'
+require 'mechanize'
+
+class Scrapper
+
+  # Imports the items sold from the online store to our db
+  def import(url, importer)
+    self.importer = importer
+
+    Rails.logger.info "Starting import from #{url}"
+    agent = Mechanize.new
+    mainPage = agent.get(url)
+    Rails.logger.with_tabs { walk_main_page(mainPage) }
+
+    self.importer = nil
+  end
+
+  private
+
+  attr_accessor :importer
+
+  # Should the link be skipped when walking through the online store
+  # This method can be overriden for testing purpose
+  def skip_link?(uri)
+    false
+  end
+
+  # 'each' synonym for html nodes
+  # This method can be overriden for testing purpose
+  def each_node(collection)
+    collection.each {|item| yield item }
+  end
+
+  # Searches for links with a Nokogiri css or xpath selector
+  def search_links(page, selector)
+    page.search(selector).map do |xmlA|
+      Mechanize::Page::Link.new(xmlA, page.mech, page)
+    end
+  end
+
+  # Filtered links with a Nokogiri css or xpath selector.
+  # The result should not contain two links with the same uri.
+  def links_with(page, selector)
+    uri2links = {}
+    search_links(page,selector).each do |link|
+      uri = link.uri.to_s
+      uri2links[uri] = link unless skip_link? uri
+    end
+    # enforcing deterministicity for testing and debugging
+    uri2links.values.sort_by {|link| link.uri.to_s }
+  end
+
+  # Follows selected links and calls 'message' on the opened pages.
+  def follow_page_links(page, selector, message)
+    each_node(links_with(page, selector)) do |link|
+      begin
+        Rails.logger.info "Following #{link.uri}"
+        Rails.logger.with_tabs { self.send(message, link.click)}
+
+      rescue Exception
+        Rails.logger.warn "Could not follow link \"#{link.uri}\" because "+ $!
+
+      end
+    end
+  end
+
+
+  def walk_main_page(page)
+    follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
+  end
+
+  def walk_catalogue_page(page)
+    # choper le nom du catalogue, inserer
+    follow_page_links(page, '#blocCentral > div a', :walk_rayon_page)
+  end
+
+  def walk_rayon_page(page)
+    # choper le nom du rayon, insérer avec un lien vers le catalogue
+    follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page)
+  end
+
+  def walk_produit_page(page)
+    each_node(page.search('.typeProduit')) do |element|
+      name = element.search('.nomRayon').first.content
+      Rails.logger.info "Found item #{name}"
+      importer.found_item(:name => name)
+    end
+  end
+
+end

@@ -1,5 +1,23 @@
-TODO - dev env
+TODO
 
-try autospec
-have alias commands (heroku, git diff …)
-have a source file header 
+Import:
+1. aprés l'import on veut des types et des sous types qui contiennent des items
+2. avoir des types, et subtypes de produits
+
+   migration
+   records
+   foreign keys
+
+3. enregister les types et sous types
+4. faire un espèce de mock de db pour pleins de truc (on fait quand même un truc d'import vers db ...) ou bien utiliser sql lite in memory
+
+  mock via builder    | sqlite
+  + more unit         | - involves a lot
+  - more code upfront | + straightforward
+  + may run quicker   |
+  + easier incr import|
+
+Affichage:
+1. on ajoute une feature pour explorer les produits par type, utiliser "type > subtype > item" pour designer rapidement un produit
+2. remanier les features du panier (on doit cliquer sur une page ...) -> aller directement à la page du sous type de l'item
+3. supprimer la page qui affiche tous les produits

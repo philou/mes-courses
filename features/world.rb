@@ -1,6 +1,6 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-require 'spec/models/store_spec_helper'
+require 'spec/models/scrapper_spec_helper'
 require 'ping'
 
 OFFLINE = !Ping.pingecho('google.com',1,80)
@@ -14,4 +14,4 @@ module OfflineOrNot
 end
 World(OfflineOrNot)
 
-World(StoreSpecHelper)
+World(ScrapperSpecHelper)
