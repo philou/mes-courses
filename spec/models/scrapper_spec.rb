@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'models/scrapper_spec_helper'
+require 'have_mostly_different_matcher'
 
 describe Scrapper do
   include ScrapperSpecHelper
@@ -18,17 +19,16 @@ describe Scrapper do
 
   # when the scrapper founds something, keep it for later testing
   def found_item_type(params)
-    result = ItemType.new(params)
-    @item_types.push(result)
-    result
+    @item_types.push(params)
+    params
   end
   def found_item_sub_type(params)
-    result = ItemSubType.new(params)
-    @item_sub_types.push(result)
-    result
+    @item_sub_types.push(params)
+    params
   end
   def found_item(params)
-    @items.push(Item.new(params))
+    @items.push(params)
+    params
   end
 
   it "should create many items" do
@@ -36,27 +36,33 @@ describe Scrapper do
   end
 
   it "should create different items" do
-    names = Set.new(@items.map {|item| item.name})
-    names.should have_at_least(@items.length * 0.7).unique_values
+    @items.should have_mostly_different(:name)
   end
 
   it "should create full named items" do
-    items = @items.find_all {|item| 20 <= item.name.length }
-    items.should_not be_empty
+    @items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
   end
 
   it "should create item types" do
     @item_types.should_not be_empty
   end
 
+  it "should create different items types" do
+    @item_types.should have_mostly_different(:name)
+  end
+
   it "should create item sub types" do
     @item_sub_types.should_not be_empty
   end
 
+  it "should create different items sub types" do
+    @item_sub_types.should have_mostly_different(:name)
+  end
+
   it "should organize items by type and subtype" do
     @items.each do |item|
-      item.item_sub_type.should_not be_nil
-      item.item_sub_type.item_type.should_not be_nil
+      item[:item_sub_type].should_not be_nil
+      item[:item_sub_type][:item_type].should_not be_nil
     end
   end
 

@@ -17,13 +17,10 @@ Spec::Matchers.define :include_all do |required_items|
     "expected a collection containing all elements from #{required_items}"
   end
 
+  #private
+
   def include_all?(collection,required_items)
-    required_items.each do |item|
-      if !collection.include?(item)
-        return false
-      end
-    end
-    true
+    missing_items(collection, required_items).empty?
   end
 
   def missing_items(collection, required_items)
