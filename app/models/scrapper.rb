@@ -3,23 +3,25 @@
 require 'rubygems'
 require 'mechanize'
 
+# Objects able to dig into an online store and notify their "importer" about
+# the items and item categories that they found for sale.
 class Scrapper
 
   # Imports the items sold from the online store to our db
   def import(url, importer)
-    self.importer = importer
+    @importer = importer
 
     Rails.logger.info "Starting import from #{url}"
     agent = Mechanize.new
     mainPage = agent.get(url)
     Rails.logger.with_tabs { walk_main_page(mainPage) }
 
-    self.importer = nil
+    @importer = nil
   end
 
   private
 
-  attr_accessor :importer
+  attr_reader :importer
 
   # Should the link be skipped when walking through the online store
   # This method can be overriden for testing purpose
@@ -53,11 +55,11 @@ class Scrapper
   end
 
   # Follows selected links and calls 'message' on the opened pages.
-  def follow_page_links(page, selector, message)
+  def follow_page_links(page, selector, message, *privateArgs)
     each_node(links_with(page, selector)) do |link|
       begin
         Rails.logger.info "Following #{link.uri}"
-        Rails.logger.with_tabs { self.send(message, link.click)}
+        Rails.logger.with_tabs { self.send(message, link.click, *privateArgs)}
 
       rescue Exception
         Rails.logger.warn "Could not follow link \"#{link.uri}\" because "+ $!
@@ -66,26 +68,31 @@ class Scrapper
     end
   end
 
-
   def walk_main_page(page)
     follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
   end
 
   def walk_catalogue_page(page)
-    # choper le nom du catalogue, inserer
-    follow_page_links(page, '#blocCentral > div a', :walk_rayon_page)
+    name = item_type_name(page)
+    item_type = importer.found_item_type(:name => name)
+    follow_page_links(page, '#blocCentral > div a', :walk_rayon_page, item_type)
   end
 
-  def walk_rayon_page(page)
-    # choper le nom du rayon, insérer avec un lien vers le catalogue
-    follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page)
+  def walk_rayon_page(page, item_type)
+    name = item_type_name(page)
+    item_sub_type = importer.found_item_sub_type(:name => name, :item_type => item_type)
+    follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page, item_sub_type)
   end
 
-  def walk_produit_page(page)
+  def item_type_name(page)
+    page.search("#bandeau_label_recherche").first.content
+  end
+
+  def walk_produit_page(page, item_sub_type)
     each_node(page.search('.typeProduit')) do |element|
       name = element.search('.nomRayon').first.content
       Rails.logger.info "Found item #{name}"
-      importer.found_item(:name => name)
+      importer.found_item(:name => name, :item_sub_type => item_sub_type)
     end
   end
 

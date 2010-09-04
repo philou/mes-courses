@@ -2,7 +2,7 @@ class CreateItemSubTypes < ActiveRecord::Migration
   def self.up
     create_table :item_sub_types do |t|
       t.string :name
-      t.integer :type_id
+      t.integer :item_type_id
 
       t.timestamps
     end

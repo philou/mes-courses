@@ -4,5 +4,5 @@
 # An item for sale
 class Item < ActiveRecord::Base
   has_and_belongs_to_many :dishes
-  belongs_to :sub_type, :class_name => ItemSubType
+  belongs_to :item_sub_type
 end

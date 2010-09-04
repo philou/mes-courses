@@ -1,21 +1,7 @@
 TODO
 
 Import:
-1. aprés l'import on veut des types et des sous types qui contiennent des items
-2. avoir des types, et subtypes de produits
-
-   migration
-   records
-   foreign keys
-
-3. enregister les types et sous types
-4. faire un espèce de mock de db pour pleins de truc (on fait quand même un truc d'import vers db ...) ou bien utiliser sql lite in memory
-
-  mock via builder    | sqlite
-  + more unit         | - involves a lot
-  - more code upfront | + straightforward
-  + may run quicker   |
-  + easier incr import|
+ ajouter des contraintes sur les noms et les types dans les models d'item (et les autres aussi)
 
 Affichage:
 1. on ajoute une feature pour explorer les produits par type, utiliser "type > subtype > item" pour designer rapidement un produit

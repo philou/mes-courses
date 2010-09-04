@@ -10,15 +10,18 @@ class Store < ActiveRecord::Base
     self.scrapper = Scrapper.new
   end
 
-  # voir si on peut faire des stubs temporaires avec spec mocks plutot que mon monkey patch
-
   # Imports the items sold from the online store to our db
   def import
     scrapper.import(url,self)
   end
 
-  # Handles a newly dug up item.
-  # This method can be overriden for testing purpose
+  # Methods called by the scrapper when he founds something
+  def found_item_type(params)
+    ItemType.create!(params)
+  end
+  def found_item_sub_type(params)
+    ItemSubType.create!(params)
+  end
   def found_item(params)
     Item.create!(params)
   end

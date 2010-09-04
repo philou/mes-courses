@@ -1,4 +1,4 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file,
+# This file is auto-generated from the current state of the database. Instead of editing this file, 
 # please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(:version => 20100902055246) do
 
   create_table "item_sub_types", :force => true do |t|
     t.string   "name"
-    t.integer  "type_id"
+    t.integer  "item_type_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(:version => 20100902055246) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sub_type_id"
+    t.integer  "item_sub_type_id"
   end
 
   create_table "stores", :force => true do |t|

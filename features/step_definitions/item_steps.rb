@@ -11,8 +11,8 @@ end
 Then /^all items should be organized by type and subtype$/ do
 
   Item.find(:all).each do |item|
-    item.sub_type.should_not be_nil
-    item.sub_type.type.should_not be_nil
+    item.item_sub_type.should_not be_nil
+    item.item_sub_type.item_type.should_not be_nil
   end
 
 end

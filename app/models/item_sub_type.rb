@@ -2,5 +2,5 @@
 
 class ItemSubType < ActiveRecord::Base
   has_many :items
-  belongs_to :type, :class_name => ItemType
+  belongs_to :item_type
 end
