@@ -9,58 +9,57 @@ describe Scrapper do
 
   # we are importing only once because it takes a lot of time. All the tests should be side effect free.
   before(:all) do
-    @item_types = []
-    @item_sub_types = []
-    @items = []
     @scrapper = Scrapper.new
     when_importing_from(@scrapper, :skip_links_like => /^http:\/\//, :squeeze_loops_to => 2)
-    @scrapper.import(AUCHAN_DIRECT_OFFLINE, self)
+
+    importer = stub("Importer")
+    record_calls(importer, :found_item_type, :found_item_sub_type, :found_item)
+
+    @scrapper.import(AUCHAN_DIRECT_OFFLINE, importer)
   end
 
-  # when the scrapper founds something, keep it for later testing
-  def found_item_type(params)
-    @item_types.push(params)
-    params
-  end
-  def found_item_sub_type(params)
-    @item_sub_types.push(params)
-    params
-  end
-  def found_item(params)
-    @items.push(params)
-    params
+  def record_calls(stub_object, *selectors)
+    selectors.each do |message|
+      collector = []
+      self.instance_variable_set("@#{message}s".intern, collector)
+
+      stub_object.stub(message) do |params|
+        collector.push(params)
+        params
+      end
+    end
   end
 
   it "should create many items" do
-    @items.should have_at_least(3).records
+    @found_items.should have_at_least(3).records
   end
 
   it "should create different items" do
-    @items.should have_mostly_different(:name)
+    @found_items.should have_mostly_different(:name)
   end
 
   it "should create full named items" do
-    @items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
+    @found_items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
   end
 
   it "should create item types" do
-    @item_types.should_not be_empty
+    @found_item_types.should_not be_empty
   end
 
   it "should create different items types" do
-    @item_types.should have_mostly_different(:name)
+    @found_item_types.should have_mostly_different(:name)
   end
 
   it "should create item sub types" do
-    @item_sub_types.should_not be_empty
+    @found_item_sub_types.should_not be_empty
   end
 
   it "should create different items sub types" do
-    @item_sub_types.should have_mostly_different(:name)
+    @found_item_sub_types.should have_mostly_different(:name)
   end
 
   it "should organize items by type and subtype" do
-    @items.each do |item|
+    @found_items.each do |item|
       item[:item_sub_type].should_not be_nil
       item[:item_sub_type][:item_type].should_not be_nil
     end

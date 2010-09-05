@@ -1,5 +1,8 @@
 TODO
 
+Import:
+ Ajouter un record(:method) au stub pour récupérer les @items et autres ...
+
 Affichage:
 1. on ajoute une feature pour explorer les produits par type, utiliser "type > subtype > item" pour designer rapidement un produit
 2. remanier les features du panier (on doit cliquer sur une page ...) -> aller directement à la page du sous type de l'item
