@@ -1,0 +1,13 @@
+<% # Copyright (C) 2010 by Philippe Bourgau %>
+
+<h1>Produits par familles</h1>
+
+<table>
+  <% @item_types.each do |item_type| %>
+    <tr>
+      <td>
+	<div><%= link_to item_type.name, item_type_path(item_type) %></div>
+      </td>
+    </tr>
+  <% end%>
+</table>

@@ -19,7 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route with sub-resources:
   #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-  
+
   # Sample resource route with more complex sub-resources
   #   map.resources :products do |products|
   #     products.resources :comments
@@ -37,9 +37,13 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  map.show_all ':controller', :action => 'show'
+  map.resources :item_type
+  map.resources :item_sub_type
+  map.resources :item
+  map.resources :dish
 
-  # Install the default routes as the lowest priority.
+  map.connect 'cart', :controller => 'cart', :action => 'show'
+
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
   map.default ':controller/:action/:id'

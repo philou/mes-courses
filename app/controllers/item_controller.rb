@@ -2,7 +2,7 @@
 
 class ItemController < ApplicationController
 
-  def show
+  def index
     @items = Item.find(:all)
   end
 

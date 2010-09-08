@@ -29,8 +29,7 @@ class CartController < ApplicationController
   def add_to_cart(model)
     thing = model.find(params[:id])
     @cart.send("add_#{model.to_s.downcase}".intern, thing)
- 
-    redirect_to show_all_path(:controller => model.to_s.downcase)
+    redirect_to :controller => model
   end
 
 end

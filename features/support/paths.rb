@@ -12,15 +12,16 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
-
     when /the full item catalog page/
       '/item/'
-
     when /the cart page/
       '/cart/'
-
     when /the full dish catalog page/
       '/dish/'
+    when /the item types page/
+      '/item_type/'
+    when /the "([^"]*)" item type page/
+      item_type_path(ItemType.find_by_name($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

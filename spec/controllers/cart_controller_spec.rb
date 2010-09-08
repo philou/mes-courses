@@ -49,7 +49,7 @@ describe CartController do
       it "should redirect to products" do
         post_a_stub(action, model)
 
-        response.should redirect_to show_all_path(:controller => model_small)
+        response.should redirect_to(ActionController::Routing::Routes.generate :controller => model_small)
       end
     end
   end

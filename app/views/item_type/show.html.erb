@@ -1,0 +1,13 @@
+<% # Copyright (C) 2010 by Philippe Bourgau %>
+
+<h1><%= @item_type.name %></h1>
+
+<table>
+  <% @item_type.item_sub_types.each do |item_sub_type| %>
+    <tr>
+      <td>
+	<div><%= item_sub_type.name %></div>
+      </td>
+    </tr>
+  <% end%>
+</table>

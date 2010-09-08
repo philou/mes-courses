@@ -2,7 +2,7 @@
 
 class DishController < ApplicationController
 
-  def show
+  def index
     @dishes = Dish.find(:all)
   end
 
