@@ -1,7 +1,9 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-Given /^"([^"]*)" for sale$/ do |item_name|
-  @item_for_sale = Item.create!(:name => item_name)
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item$/ do |item_type_name, item_sub_type_name, item_name|
+  item_type = ItemType.find_or_create_by_name(item_type_name)
+  item_sub_type = ItemSubType.create!(:name => item_sub_type_name, :item_type => item_type)
+  @item = Item.create!(:name => item_name, :item_sub_type => item_sub_type)
 end
 
 Then /^there should be some items for sale$/ do
@@ -9,10 +11,8 @@ Then /^there should be some items for sale$/ do
 end
 
 Then /^all items should be organized by type and subtype$/ do
-
   Item.find(:all).each do |item|
     item.item_sub_type.should_not be_nil
     item.item_sub_type.item_type.should_not be_nil
   end
-
 end

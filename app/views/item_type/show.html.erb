@@ -6,7 +6,7 @@
   <% @item_type.item_sub_types.each do |item_sub_type| %>
     <tr>
       <td>
-	<div><%= item_sub_type.name %></div>
+	<div><%= link_to item_sub_type.name, item_sub_type_path(item_sub_type) %></div>
       </td>
     </tr>
   <% end%>

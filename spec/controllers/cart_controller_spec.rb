@@ -21,7 +21,8 @@ describe CartController do
   end
 
   # maybe I could use a shared_example, but I am not sure it would be better
-  [Item, Dish].each do |model|
+  { Item => 'item_type',
+    Dish => 'dish'}.each do |model, redirection_controller|
     model_small = model.to_s.downcase
     action = "add_#{model_small}_to_cart".intern
 
@@ -49,10 +50,11 @@ describe CartController do
       it "should redirect to products" do
         post_a_stub(action, model)
 
-        response.should redirect_to(ActionController::Routing::Routes.generate :controller => model_small)
+        response.should redirect_to(ActionController::Routing::Routes.generate(:controller => redirection_controller))
       end
     end
   end
+
   def post_a_stub(action, model)
     post_item(action, stub_model(model))
   end

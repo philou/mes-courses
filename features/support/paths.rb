@@ -22,6 +22,10 @@ module NavigationHelpers
       '/item_type/'
     when /the "([^"]*)" item type page/
       item_type_path(ItemType.find_by_name($1))
+    when /the "([^"]*)" item sub type page/
+      item_sub_type_path(ItemSubType.find_by_name($1))
+    when /the "([^"]*)" item page/
+      item_sub_type_path(Item.find_by_name($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

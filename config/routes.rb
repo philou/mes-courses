@@ -39,7 +39,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :item_type
   map.resources :item_sub_type
-  map.resources :item
   map.resources :dish
 
   map.connect 'cart', :controller => 'cart', :action => 'show'

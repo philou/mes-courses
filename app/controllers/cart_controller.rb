@@ -13,11 +13,13 @@ class CartController < ApplicationController
   # adds the item with params[:id] to the cart
   def add_item_to_cart
     add_to_cart(Item)
+    redirect_to :controller => 'item_type'
   end
 
   # adds the whole dish with params[:id] to the cart
   def add_dish_to_cart
     add_to_cart(Dish)
+    redirect_to :controller => 'dish'
   end
 
   private
@@ -29,7 +31,6 @@ class CartController < ApplicationController
   def add_to_cart(model)
     thing = model.find(params[:id])
     @cart.send("add_#{model.to_s.downcase}".intern, thing)
-    redirect_to :controller => model
   end
 
 end

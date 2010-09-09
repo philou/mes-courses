@@ -11,11 +11,15 @@ describe "/item_type/index.html.erb" do
   end
 
   it "displays the name of each item type" do
-    @item_types.each {|item_type| response.should contain(item_type.name) }
+    @item_types.each do |item_type|
+      response.should contain(item_type.name)
+    end
   end
 
   it "displays a link to each item type" do
-    @item_types.each {|item_type| response.should have_selector("a", :href => item_type_path(item_type)) }
+    @item_types.each do |item_type|
+      response.should have_selector("a", :href => item_type_path(item_type))
+    end
   end
 
 end

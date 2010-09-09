@@ -1,9 +1,7 @@
-<% # Copyright (C) 2010 by Philippe Bourgau %>
-
-<h1>Produits</h1>
+<h1><%= @item_sub_type.name %></h1>
 
 <table>
-  <% @items.each do |item| %>
+  <% @item_sub_type.items.each do |item| %>
     <tr>
       <td>
 	<div><%=h item.name %></div>
@@ -12,3 +10,4 @@
     </tr>
   <% end%>
 </table>
+
