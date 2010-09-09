@@ -1,0 +1,12 @@
+fruit_legumes:
+  name: Fruits & Légumes
+
+viandes:
+  name: Viandes
+
+feculents:
+  name: Féculents
+
+produits_laitiers:
+  name: Produits laitiers
+
