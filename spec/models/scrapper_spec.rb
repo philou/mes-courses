@@ -34,14 +34,6 @@ describe Scrapper do
     @found_items.should have_at_least(3).records
   end
 
-  it "should create different items" do
-    @found_items.should have_mostly_different(:name)
-  end
-
-  it "should create full named items" do
-    @found_items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
-  end
-
   it "should create item types" do
     @found_item_types.should_not be_empty
   end
@@ -65,4 +57,37 @@ describe Scrapper do
     end
   end
 
+  it "should create different items" do
+    @found_items.should have_mostly_different(:name)
+  end
+
+  it "should create full named items" do
+    @found_items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
+  end
+
+  it "should create items with a price" do
+    @found_items.each do |item|
+      item[:price].should_not be_nil
+    end
+  end
+
+  it "should create most items with an image" do
+    items_with_image = []
+    @found_items.each do |item|
+      if !item[:image].nil?
+        items_with_image.push(item)
+      end
+    end
+    items_with_image.should have_at_least((0.7*@found_items.count).round).entries
+  end
+
+  it "should create most items with a summary" do
+    items_with_image = []
+    @found_items.each do |item|
+      if !item[:summary].nil?
+        items_with_image.push(item)
+      end
+    end
+    items_with_image.should have_at_least((0.7*@found_items.count).round).entries
+  end
 end

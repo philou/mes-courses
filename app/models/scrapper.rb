@@ -89,11 +89,18 @@ class Scrapper
   end
 
   def walk_produit_page(page, item_sub_type)
-    each_node(page.search('.typeProduit')) do |element|
-      name = element.search('.nomRayon').first.content
-      Rails.logger.info "Found item #{name}"
-      importer.found_item(:name => name, :item_sub_type => item_sub_type)
-    end
+    params = { :item_sub_type => item_sub_type }
+
+    # play with nokogiri in irb to know exactly how css, xpath and search methods work
+    type_produit = page.search('.typeProduit').first
+    params[:name] = type_produit.css('.nomRayon').first.content
+    params[:summary] = type_produit.css('.nomProduit').first.content
+    infos_produit = page.search('#infosProduit').first
+    params[:price] = infos_produit.css('.prixQteVal1').first.content
+    params[:image] = infos_produit.css('#imgProdDetail').first['src']
+
+    Rails.logger.info "Found item #{params}"
+    importer.found_item(params)
   end
 
 end

@@ -1,3 +1,10 @@
 TODO
 
+summary, photo and price of items
+- refactor the have_mostly rspec expectation to something like .should mostly have_different(:name) ou .should mostly have_non_null(:price)
+- display -> feature: verify that each item has a price, a summary and a photo displayed
+- download auchan's site with photos (or not ?)
 
+questions:
+ - Should the url for the photo be in the model ? -> yes
+ - What's in auchan's items ? -> photo, summary and price !
