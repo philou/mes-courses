@@ -1,6 +1,9 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
 require 'spec/models/scrapper_spec_helper'
+require 'spec/mostly_matcher'
+require 'spec/all_matcher'
+require 'spec/have_non_nil_matcher'
 require 'ping'
 
 def yellow(text)

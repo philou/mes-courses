@@ -1,7 +1,5 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-# Copyright (C) 2010 by Philippe Bourgau
-
 require 'spec_helper'
 
 # Matcher to verify that items names are mostly unique

@@ -2,7 +2,9 @@
 
 require 'spec_helper'
 require 'models/scrapper_spec_helper'
-require 'have_mostly_different_matcher'
+require 'mostly_matcher'
+require 'all_matcher'
+require 'have_unique_matcher'
 
 describe Scrapper do
   include ScrapperSpecHelper
@@ -39,7 +41,7 @@ describe Scrapper do
   end
 
   it "should create different items types" do
-    @found_item_types.should have_mostly_different(:name)
+    @found_item_types.should mostly have_unique(:name)
   end
 
   it "should create item sub types" do
@@ -47,7 +49,7 @@ describe Scrapper do
   end
 
   it "should create different items sub types" do
-    @found_item_sub_types.should have_mostly_different(:name)
+    @found_item_sub_types.should mostly have_unique(:name)
   end
 
   it "should organize items by type and subtype" do
@@ -58,7 +60,7 @@ describe Scrapper do
   end
 
   it "should create different items" do
-    @found_items.should have_mostly_different(:name)
+    @found_items.should mostly have_unique(:name)
   end
 
   it "should create full named items" do
@@ -66,28 +68,14 @@ describe Scrapper do
   end
 
   it "should create items with a price" do
-    @found_items.each do |item|
-      item[:price].should_not be_nil
-    end
+    @found_items.should all have_key(:price)
   end
 
   it "should create most items with an image" do
-    items_with_image = []
-    @found_items.each do |item|
-      if !item[:image].nil?
-        items_with_image.push(item)
-      end
-    end
-    items_with_image.should have_at_least((0.7*@found_items.count).round).entries
+    @found_items.should mostly have_key(:image)
   end
 
   it "should create most items with a summary" do
-    items_with_image = []
-    @found_items.each do |item|
-      if !item[:summary].nil?
-        items_with_image.push(item)
-      end
-    end
-    items_with_image.should have_at_least((0.7*@found_items.count).round).entries
+    @found_items.should mostly have_key(:summary)
   end
 end

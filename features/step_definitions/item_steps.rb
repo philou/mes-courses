@@ -12,20 +12,11 @@ Then /^all items should be organized by type and subtype$/ do
 end
 
 Then /^all items should have an? (.*)$/ do |attribute|
-  Item.find(:all).each do |item|
-    item.send(attribute.intern).should_not be_nil
-  end
+  Item.find(:all).should all have_non_nil(attribute)
 end
 
 Then /^most items should have an? (.*)$/ do |attribute|
-  all_items = Item.find(:all)
-  matching_items = []
-  all_items.each do |item|
-    if !item.send(attribute.intern).nil?
-      matching_items.push(item)
-    end
-  end
-  matching_items.should have_at_least((0.7*all_items.count).round).entries
+  Item.find(:all).should mostly have_non_nil(attribute)
 end
 
 Given /^"([^">]*) > ([^">]*) > ([^">]*)" item$/ do |item_type_name, item_sub_type_name, item_name|
