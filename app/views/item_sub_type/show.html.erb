@@ -4,7 +4,10 @@
   <% @item_sub_type.items.each do |item| %>
     <tr>
       <td>
+        <div><img src="<%= item.image %>"/></div>
 	<div><%=h item.name %></div>
+        <div><%= item.summary %></div>
+        <div><%= item.price.to_s %>€</div>
 	<div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item_to_cart', :id => item.id }%></div>
       </td>
     </tr>

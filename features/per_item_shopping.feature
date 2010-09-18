@@ -26,3 +26,10 @@ Feature: Per item shopping
     And   I am on the "Pommes de terre" item sub type page
     When  I follow "Ajouter au panier"
     Then  There should be "PdT Charlottes" in my cart
+
+  Scenario: Items should have a price, a summary and a photo
+    Given "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
+    When   I go to the "Pommes de terre" item sub type page
+    Then   I should see the "price" of "PdT Charlottes"
+    And    I should see the "summary" of "PdT Charlottes"
+    And    I should see the "image" of "PdT Charlottes" as img

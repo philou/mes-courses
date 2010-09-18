@@ -2,7 +2,11 @@ require 'spec_helper'
 
 describe "/item_sub_type/show.html.erb" do
   before(:each) do
-    items = ["Bavette", "Entrecôte"].map {|item| stub_model(Item, :name => item)}
+    items = ["Bavette", "Entrecôte"].map {|item| stub_model(Item,
+                                                            :name => item,
+                                                            :price => item.length/100.0,
+                                                            :summary => "#{item} extra",
+                                                            :image => "http://www.photofabric.com/#{item}")}
     @item_sub_type = ItemSubType.new(:name => "Viande de boeuf", :items => items)
     assigns[:item_sub_type] = @item_sub_type
     render
@@ -12,9 +16,11 @@ describe "/item_sub_type/show.html.erb" do
     response.should contain(@item_sub_type.name)
   end
 
-  it "displays the names of its items" do
-    @item_sub_type.items.each do |item|
-      response.should contain(item.name)
+  [:name, :price, :summary].each do |attribute|
+    it "displays the #{attribute} of its items" do
+      @item_sub_type.items.each do |item|
+        response.should contain(item.send(attribute).to_s)
+      end
     end
   end
 
@@ -23,6 +29,12 @@ describe "/item_sub_type/show.html.erb" do
       response.should have_selector("a", :href => default_path(:controller => 'cart',
                                                                :action => 'add_item_to_cart',
                                                                :id => item.id))
+    end
+  end
+
+  it "displays the image of its items" do
+    @item_sub_type.items.each do |item|
+      response.should have_selector("img", :src => item.image)
     end
   end
 

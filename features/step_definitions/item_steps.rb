@@ -19,8 +19,25 @@ Then /^most items should have an? (.*)$/ do |attribute|
   Item.find(:all).should mostly have_non_nil(attribute)
 end
 
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item$/ do |item_type_name, item_sub_type_name, item_name|
+Then /^I should see the "([^"]*)" of "([^"]*)"$/ do |attribute, item_name|
+  item = Item.find_by_name(item_name)
+  attribute_text = item.send(attribute).to_s
+  response.should contain(attribute_text)
+end
+
+Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name|
+  item = Item.find_by_name(item_name)
+  attribute_text = item.send(attribute).to_s
+  response.should have_selector("img", :src => attribute_text)
+end
+
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_type_name, item_name|
   item_type = ItemType.find_or_create_by_name(item_type_name)
   item_sub_type = ItemSubType.create!(:name => item_sub_type_name, :item_type => item_type)
-  @item = Item.create!(:name => item_name, :item_sub_type => item_sub_type)
+  @item = Item.create!(:name => item_name,
+                       :item_sub_type => item_sub_type,
+                       :price => item_name.length/100.0,
+                       :summary => "Fabuleux #{item_name}",
+                       :image => "http://www.photofabric.com/#{item_name}")
 end
+
