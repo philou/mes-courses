@@ -41,3 +41,14 @@ Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_t
                        :image => "http://www.photofabric.com/#{item_name}")
 end
 
+Then /^no new item should have been inserted$/ do
+  Item.maximum(:created_at).should ==(@previous_item_insertion_time)
+end
+
+Then /^no item should have been modified$/ do
+  Item.maximum(:updated_at).should ==(@previous_item_modification_time)
+end
+
+Then /^no item should have been deleted$/ do
+  Item.count.should ==(@previous_item_count)
+end

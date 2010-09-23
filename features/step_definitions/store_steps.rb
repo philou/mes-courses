@@ -1,6 +1,6 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-Given /^an online store "([^"]*)"$/ do |webStore|
+Given /^an online store "([^"]*)""?$/ do |webStore|
   url = "http://"+webStore
   @tweaks = {:skip_links_like => /^http:\/\/auchandirect/, :squeeze_loops_to => 3}
 
@@ -12,7 +12,15 @@ Given /^an online store "([^"]*)"$/ do |webStore|
   @store = Store.find_or_create_by_url(url)
 end
 
-When /^products from the online store are imported$/ do
+Given /^products from the online store were already imported$/ do
+  when_importing_from(@store.scrapper, @tweaks)
+  @store.import
+  @previous_item_count = Item.count
+  @previous_item_modification_time = Item.maximum(:updated_at)
+  @previous_item_insertion_time = Item.maximum(:created_at)
+end
+
+When /^products from the online store are (re-)?imported$/ do |_|
   when_importing_from(@store.scrapper, @tweaks)
   @store.import
 end

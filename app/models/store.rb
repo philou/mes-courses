@@ -1,5 +1,8 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
+require 'scrapper'
+require 'incremental_importer'
+
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
 
@@ -12,7 +15,7 @@ class Store < ActiveRecord::Base
 
   # Imports the items sold from the online store to our db
   def import
-    scrapper.import(url,self)
+    scrapper.import(url,IncrementalImporter.new(self))
   end
 
   # Methods called by the scrapper when he founds something
@@ -24,6 +27,9 @@ class Store < ActiveRecord::Base
   end
   def found_item(params)
     Item.create!(params)
+  end
+  def knows_item(params)
+    !Item.find_by_name(params[:name]).nil?
   end
 
 end
