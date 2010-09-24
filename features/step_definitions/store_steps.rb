@@ -25,3 +25,10 @@ When /^products from the online store are (re-)?imported$/ do |_|
   @store.import
 end
 
+When /^more products from the online store are (re-)?imported$/ do |_|
+  large_tweaks = @tweaks.clone
+  large_tweaks[:squeeze_loops_to => 4]
+  when_importing_from(@store.scrapper, large_tweaks)
+  @store.import
+end
+
