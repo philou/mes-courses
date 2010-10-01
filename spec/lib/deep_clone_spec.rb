@@ -61,18 +61,25 @@ describe "ActiveRecord deep clone" do
 
   it "should keep object identity when hashifying objects with references" do
     clones = ActiveRecord::Base.deep_clones([@sub_type])
-
-    type_clone = clones.find { |clone| clone.class == ItemType }
-    sub_type_clone = clones.find { |clone| clone.class == ItemSubType }
-
-    sub_type_clone.item_type.should equal type_clone
+    sub_type_should_reference_type(clones)
   end
 
   it "should not hashify twice two objects with the same identity" do
     @type.id = 666
     @type_copy = @type.clone
     @type_copy.id = 666
-    ActiveRecord::Base.deep_clones([@sub_type, @type_copy]).should have(2).entries
+
+    clones = ActiveRecord::Base.deep_clones([@sub_type, @type_copy])
+    sub_type_should_reference_type(clones)
+  end
+
+  def sub_type_should_reference_type(clones)
+    clones.should have(2).entries
+
+    type_clone = clones.find { |clone| clone.class == ItemType }
+    sub_type_clone = clones.find { |clone| clone.class == ItemSubType }
+
+    sub_type_clone.item_type.should equal type_clone
   end
 
   describe "identity token" do

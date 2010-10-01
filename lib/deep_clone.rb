@@ -10,15 +10,17 @@ class ActiveRecord::Base
   # An extra hash can be passed in to get the collection of all cloned
   # records indexed by their class and #id
   def deep_clone(clones = {})
-    result = clone
-    clones[self.identity_token] = result
+    result = (clones[self.identity_token] ||= clone)
+
     belongs_to = self.class.reflect_on_all_associations.find_all do |reflection|
       reflection.macro == :belongs_to
     end
+
     belongs_to.each do |reflection|
       ref_clone = ActiveRecord::Base.deep_clone(send(reflection.name), clones)
       result.send("#{reflection.name}=", ref_clone)
     end
+
     result
   end
 
