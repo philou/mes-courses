@@ -6,6 +6,6 @@ Feature: Catalog import organization
    sub types.
 
   Scenario: Items imported from an online store should be organized
-    Given an online store "www.auchandirect.fr"
-    When products from the online store are imported
+    Given the "www.auchandirect.fr" store
+    When products from the store are imported
     Then all items should be organized by type and subtype

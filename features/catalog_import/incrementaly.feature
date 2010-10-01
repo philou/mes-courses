@@ -8,15 +8,15 @@ Feature: Incremental catalog import
     updated from the online store.
 
   Scenario: Existing items are re-imported from the store
-    Given an online store "www.auchandirect.fr"
-    And   products from the online store were already imported
-    When  products from the online store are re-imported
+    Given the "www.auchandirect.fr" store
+    And   products from the store were already imported
+    When  products from the store are re-imported
     Then  no new item should have been inserted
     And   no item should have been modified
     And   no item should have been deleted
 
   Scenario: New items are re-imported from the store
-    Given an online store "www.auchandirect.fr"
-    And   products from the online store were already imported
-    When  more products from the online store are re-imported
+    Given the "www.auchandirect.fr" store
+    And   products from the store were already imported
+    When  more products from the store are re-imported
     Then  new items should have been inserted

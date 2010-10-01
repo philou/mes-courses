@@ -4,6 +4,7 @@ require 'spec/models/scrapper_spec_helper'
 require 'spec/mostly_matcher'
 require 'spec/all_matcher'
 require 'spec/have_non_nil_matcher'
+require 'lib/deep_clone'
 require 'ping'
 
 def yellow(text)
