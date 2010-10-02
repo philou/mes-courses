@@ -46,15 +46,19 @@ When /^products from the store are imported$/ do
   lazy_import_with(@store, @tweaks)
 end
 
+def reimport(store)
+  store.import
+end
+
 When /^products from the store are re-imported$/ do
   when_importing_from(@store.scrapper, @tweaks)
-  @store.import
+  reimport(@store)
 end
 
 When /^more products from the store are re-imported$/ do
   large_tweaks = @tweaks.clone
-  large_tweaks[:squeeze_loops_to => 4]
+  large_tweaks[:squeeze_loops_to] = 4
   when_importing_from(@store.scrapper, large_tweaks)
-  @store.import
+  reimport(@store)
 end
 

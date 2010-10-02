@@ -42,12 +42,15 @@ Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_t
 end
 
 Then /^new items should have been inserted$/ do
-  Item.maximum(:created_at).should >=(@previous_item_insertion_time)
+  Item.maximum(:created_at).should >(@previous_item_insertion_time)
 end
 Then /^no new item should have been inserted$/ do
   Item.maximum(:created_at).should ==(@previous_item_insertion_time)
 end
 
+Then /^some items should have been modified$/ do
+  Item.maximum(:updated_at).should >(@previous_item_modification_time)
+end
 Then /^no item should have been modified$/ do
   Item.maximum(:updated_at).should ==(@previous_item_modification_time)
 end
