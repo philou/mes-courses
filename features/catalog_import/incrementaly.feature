@@ -20,3 +20,9 @@ Feature: Incremental catalog import
     And   products from the store were already imported
     When  more products from the store are re-imported
     Then  new items should have been inserted
+
+  Scenario: Modified items are re-imported from the store
+    Given the "www.auchandirect.fr" store
+    And   products from the store were already imported
+    When  modified products from the store are re-imported
+    Then  some items should have been modified

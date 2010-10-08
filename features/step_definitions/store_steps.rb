@@ -62,3 +62,10 @@ When /^more products from the store are re-imported$/ do
   reimport(@store)
 end
 
+When /^modified products from the store are re-imported$/ do
+  large_tweaks = @tweaks.clone
+  large_tweaks[:increase_price_by] = 1.1
+  when_importing_from(@store.scrapper, large_tweaks)
+  reimport(@store)
+end
+

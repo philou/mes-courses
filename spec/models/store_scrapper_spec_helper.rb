@@ -1,8 +1,8 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-# Monkey patches for scrapper objects to speed up and adapt
+# Monkey patches for store scrapper objects to speed up and adapt
 # catalog import
-module ScrapperSpecHelper
+module StoreScrapperSpecHelper
 
   def when_importing_from(store, params = {})
     if params.include? :skip_links_like
@@ -13,9 +13,13 @@ module ScrapperSpecHelper
       do_not_follow_more_than_n_similar_links_when_importing_from(store, params[:squeeze_loops_to])
     end
 
+    if params.include? :increase_price_by
+      increase_price_when_importing_from(store, params[:increase_price_by])
+    end
+
   end
 
-  # Only work offline.
+  # When digging in the site, don't skip some links
   def do_not_follow_online_links_when_importing_from(store, regex)
     class <<store
       attr_accessor :skipped_links_regex
@@ -44,6 +48,20 @@ module ScrapperSpecHelper
       end
     end
     store.max_nodes = max
+  end
+
+  # When digging a website for items, increase the found items price
+  # Can be used to simulate change in the web site
+  def increase_price_when_importing_from(store, increment)
+    class <<store
+      attr_accessor :price_increment
+      def enrich_item(params)
+        result = params.clone
+        result[:price] += price_increment
+        result
+      end
+    end
+    store.price_increment = increment
   end
 
 end

@@ -1,5 +1,3 @@
 TODO
 
-Accelerer cucumber
-dump / load db : non intrusif, faut partager des données entre tests, timestamps de fichier ou bricoler le filesystem, cache une grosse partie
-log du scrapper : intrusif, partager données entre tests, intervention minimale !
+submitter avec la feature qui foire, ne pas dire que la story est finie, embrayer sur la feature d'increment des item types

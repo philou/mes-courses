@@ -15,7 +15,7 @@ describe Store do
 
   it "should ask its scrapper to import" do
     @store = Store.new(@valid_attributes)
-    @store.scrapper = mock(Scrapper)
+    @store.scrapper = mock(StoreScrapper)
     @store.scrapper.should_receive(:import).with(AUCHAN_DIRECT_OFFLINE, anything())
     @store.import
   end
