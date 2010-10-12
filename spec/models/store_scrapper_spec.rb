@@ -15,21 +15,50 @@ describe StoreScrapper do
     when_importing_from(@scrapper, :skip_links_like => /^http:\/\//, :squeeze_loops_to => 2)
 
     store = stub("Store")
-    record_calls(store, :register_item_type, :register_item_sub_type, :register_item)
+    record_calls(store, :starting_import, :finishing_import, :register_item_type, :register_item_sub_type, :register_item)
 
     @scrapper.import(AUCHAN_DIRECT_OFFLINE, store)
   end
 
   def record_calls(stub_object, *selectors)
-    selectors.each do |message|
-      collector = []
-      self.instance_variable_set("@#{message}s".intern, collector)
-
-      stub_object.stub(message) do |params|
-        collector.push(params)
-        params
-      end
+    @recorded_calls = []
+    selectors.each do |selector|
+      record_calls_to(stub_object, selector)
     end
+  end
+  def record_calls_to(stub_object, selector)
+    collector = []
+    self.instance_variable_set("@#{selector}s".intern, collector)
+
+    # warning because start_import and stop_import does not have any arguments ...
+    stub_object.stub(selector) do |*args|
+      recorded_args = arguments(args)
+
+      @recorded_calls.push({:selector => selector, :arguments => recorded_args})
+      collector.push(recorded_args)
+      recorded_args
+    end
+  end
+  def arguments(args)
+    if (args.count == 1)
+      args.first
+    else
+      args
+    end
+  end
+  def calls_with_selector(selector)
+    @recorded_calls.find_all do |call|
+      call[:selector] == selector
+    end
+  end
+
+  it "should call start_import before registering items" do
+    @recorded_calls.first[:selector].should == :starting_import
+    calls_with_selector(:starting_import).should have(1).entry
+  end
+  it "should call stop_import before registering items" do
+    @recorded_calls.last[:selector].should == :finishing_import
+    calls_with_selector(:finishing_import).should have(1).entry
   end
 
   it "should create many items" do
@@ -78,4 +107,5 @@ describe StoreScrapper do
   it "should create most items with a summary" do
     @register_items.should mostly have_key(:summary)
   end
+
 end

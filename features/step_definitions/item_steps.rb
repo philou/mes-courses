@@ -55,6 +55,9 @@ Then /^no item should have been modified$/ do
   Item.maximum(:updated_at).should ==(@previous_item_modification_time)
 end
 
+Then /^some items should have been deleted$/ do
+  Item.count.should <(@previous_item_count)
+end
 Then /^no item should have been deleted$/ do
   Item.count.should ==(@previous_item_count)
 end

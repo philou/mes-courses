@@ -10,12 +10,14 @@ class StoreScrapper
   # Imports the items sold from the online store to our db
   def import(url, store)
     @store = store
+    @store.starting_import
 
     Rails.logger.info "Starting import from #{url}"
     agent = Mechanize.new
     mainPage = agent.get(url)
     Rails.logger.with_tabs { walk_main_page(mainPage) }
 
+    @store.finishing_import
     @store = nil
   end
 

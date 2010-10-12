@@ -56,16 +56,23 @@ When /^products from the store are re-imported$/ do
 end
 
 When /^more products from the store are re-imported$/ do
-  large_tweaks = @tweaks.clone
-  large_tweaks[:squeeze_loops_to] = 4
-  when_importing_from(@store.scrapper, large_tweaks)
+  new_tweaks = @tweaks.clone
+  new_tweaks[:squeeze_loops_to] = 4
+  when_importing_from(@store.scrapper, new_tweaks)
   reimport(@store)
 end
 
 When /^modified products from the store are re-imported$/ do
-  large_tweaks = @tweaks.clone
-  large_tweaks[:increase_price_by] = 1.1
-  when_importing_from(@store.scrapper, large_tweaks)
+  new_tweaks = @tweaks.clone
+  new_tweaks[:increase_price_by] = 1.1
+  when_importing_from(@store.scrapper, new_tweaks)
+  reimport(@store)
+end
+
+When /^sold out products from the store are re-imported$/ do
+  new_tweaks = @tweaks.clone
+  new_tweaks[:squeeze_loops_to] = 2
+  when_importing_from(@store.scrapper, new_tweaks)
   reimport(@store)
 end
 

@@ -10,14 +10,29 @@ describe IncrementalStore do
     @i_store = IncrementalStore.new(@store)
   end
 
-  it "should forward found item types to its store" do
+  it "should mark existing items from the store when starting import" do
+    @store.stub(:mark_existing_items)
+    @store.should_receive(:mark_existing_items)
+    @i_store.starting_import
+  end
+  it "should deleted sold out items from the store when finished import" do
+    @store.stub(:delete_sold_out_items)
+    @store.should_receive(:delete_sold_out_items)
+    @i_store.finishing_import
+  end
+
+  it "should register found item types to its store" do
     should_register_in_store(:register_item_type, {}, ItemType)
   end
-  it "should forward found item sub types to its store" do
+  it "should register found item sub types to its store" do
     should_register_in_store(:register_item_sub_type, {}, ItemSubType)
   end
-  it "should forward found items to its store" do
+  it "should register found items to its store" do
     should_register_in_store(:register_item, {}, Item)
+  end
+
+  it "should tell the store that new items are not sold out" do
+    should_tell_the_store_that_item_is_not_sold_out({})
   end
 
   context "when importing known items" do
@@ -34,7 +49,7 @@ describe IncrementalStore do
 
     context "that did not change" do
       it "should not register any item" do
-        @store.should_not_receive(:register_item)
+        @store.should_not_receive(:register!)
         @i_store.register_item(@attributes)
       end
 
@@ -42,6 +57,10 @@ describe IncrementalStore do
         known_item = @i_store.register_item(@attributes)
         known_item.should be_an(Item)
         known_item.name.should == @attributes[:name]
+      end
+
+      it "should tell the store that new items are not sold out" do
+        should_tell_the_store_that_item_is_not_sold_out(@attributes)
       end
     end
     context "that have changed" do
@@ -55,21 +74,31 @@ describe IncrementalStore do
       end
 
       it "should register the modified item" do
-        @store.should_receive(:register_item).with(@known_item)
+        @store.should_receive(:register!).with(@known_item)
         @i_store.register_item(@attributes)
       end
 
       it "should return the updated item" do
         @i_store.register_item(@attributes).should == @known_item
       end
+
+      it "should tell the store that new items are not sold out" do
+        should_tell_the_store_that_item_is_not_sold_out(@attributes)
+      end
     end
   end
 
   private
   def should_register_in_store(message, argument, recordType)
-    @store.should_receive(message).with(instance_of(recordType))
+    @store.should_receive(:register!).with(instance_of(recordType))
     result = @i_store.send(message, argument)
     result.should be_an(recordType)
+  end
+
+  def should_tell_the_store_that_item_is_not_sold_out(item_hash)
+    @store.stub(:mark_not_sold_out)
+    @store.should_receive(:mark_not_sold_out).with(instance_of(Item))
+    @i_store.register_item(item_hash)
   end
 
 end
