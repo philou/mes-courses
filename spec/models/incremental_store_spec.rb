@@ -7,16 +7,17 @@ describe IncrementalStore do
   before(:each) do
     @store = stub_model(Store)
     @store.stub(:known_item).and_return(nil)
+    @store.stub(:mark_existing_items)
+    @store.stub(:mark_not_sold_out)
+    @store.stub(:delete_sold_out_items)
     @i_store = IncrementalStore.new(@store)
   end
 
   it "should mark existing items from the store when starting import" do
-    @store.stub(:mark_existing_items)
     @store.should_receive(:mark_existing_items)
     @i_store.starting_import
   end
   it "should deleted sold out items from the store when finished import" do
-    @store.stub(:delete_sold_out_items)
     @store.should_receive(:delete_sold_out_items)
     @i_store.finishing_import
   end
@@ -96,7 +97,6 @@ describe IncrementalStore do
   end
 
   def should_tell_the_store_that_item_is_not_sold_out(item_hash)
-    @store.stub(:mark_not_sold_out)
     @store.should_receive(:mark_not_sold_out).with(instance_of(Item))
     @i_store.register_item(item_hash)
   end
