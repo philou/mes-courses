@@ -17,6 +17,8 @@ class IncrementalStore
   end
   def finishing_import
     @store.delete_sold_out_items
+    @store.delete_empty_item_sub_types
+    @store.delete_empty_item_types
   end
 
   # Methods called by the scrapper when he founds something
@@ -33,12 +35,6 @@ class IncrementalStore
   end
 
   private
-  def is_new?(record)
-    record.nil?
-  end
-  def is_updated?(record,params)
-    !record.equal_to_attributes?(params)
-  end
   def register_item_class(model, params)
     record = @store.known(model, params[:name])
 
@@ -53,6 +49,11 @@ class IncrementalStore
     end
     record
   end
-
+  def is_new?(record)
+    record.nil?
+  end
+  def is_updated?(record,params)
+    !record.equal_to_attributes?(params)
+  end
 end
 

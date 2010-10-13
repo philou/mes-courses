@@ -39,8 +39,8 @@ Feature: Incremental catalog import
     When  products from the store are re-imported
     Then  item organization should not have changed
 
-  # Scenario: No empty item types and sub types are re-imported from the store
-  #   Given the "www.auchandirect.fr" store
-  #   And   products from the store were already imported
-  #   When  sold out products from the store are re-imported
-  #   Then  item organization should have shrank
+  Scenario: Emptied item types and sub types are re-imported from the store
+    Given the "www.auchandirect.fr" store
+    And   products from the store were already imported
+    When  sold out products from the store are re-imported
+    Then  item organization should have shrank

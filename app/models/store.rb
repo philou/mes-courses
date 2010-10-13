@@ -39,6 +39,12 @@ class Store < ActiveRecord::Base
     connection.execute("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
     remove_all_marks
   end
+  def delete_empty_item_sub_types
+    connection.execute("DELETE FROM item_sub_types WHERE id NOT IN (SELECT item_sub_type_id FROM items)")
+  end
+  def delete_empty_item_types
+    connection.execute("DELETE FROM item_types WHERE id NOT IN (SELECT item_type_id FROM item_sub_types)")
+  end
 
   private
   def remove_all_marks

@@ -7,9 +7,10 @@ describe IncrementalStore do
   before(:each) do
     @store = stub_model(Store)
     @store.stub(:known).and_return(nil)
-    @store.stub(:mark_existing_items)
-    @store.stub(:mark_not_sold_out)
-    @store.stub(:delete_sold_out_items)
+    [:mark_existing_items, :mark_not_sold_out, :delete_sold_out_items,
+     :delete_empty_item_types, :delete_empty_item_sub_types].each do |message|
+      @store.stub(message)
+    end
     @i_store = IncrementalStore.new(@store)
   end
 
@@ -17,9 +18,20 @@ describe IncrementalStore do
     @store.should_receive(:mark_existing_items)
     @i_store.starting_import
   end
-  it "should deleted sold out items from the store when finished import" do
-    @store.should_receive(:delete_sold_out_items)
-    @i_store.finishing_import
+  context "when finishing import" do
+    after(:each) do
+      @i_store.finishing_import
+    end
+
+    it "should delete sold out items from the store" do
+      @store.should_receive(:delete_sold_out_items)
+    end
+    it "should delete empty item sub types" do
+      @store.should_receive(:delete_empty_item_sub_types)
+    end
+    it "should delete empty item types" do
+      @store.should_receive(:delete_empty_item_types)
+    end
   end
 
   it "should register found item types to its store" do

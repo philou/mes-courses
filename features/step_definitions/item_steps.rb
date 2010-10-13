@@ -67,3 +67,9 @@ Then /^item organization should not have changed$/ do
     model.current_metrics.should == model.before_reimport
   end
 end
+
+Then /^item organization should have shrank$/ do
+  [ItemSubType,ItemType].each do |model|
+    model.current_metrics[:count].should < model.before_reimport[:count]
+  end
+end
