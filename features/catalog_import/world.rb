@@ -1,0 +1,54 @@
+# Copyright (C) 2010 by Philippe Bourgau
+
+# Imports the store using the tweaks
+def import_with(store, tweaks)
+  when_importing_from(store.scrapper, tweaks)
+  store.import
+end
+
+# Imports the store using tweaks, if the import was already done,
+# it just restores the database as after the import.
+def lazy_import_with(store, tweaks)
+  $import_clones ||= {}
+  import_key = {:store => store.url, :tweaks => tweaks}
+
+  if $import_clones.has_key?(import_key)
+    clones = ActiveRecord::Base.deep_clones($import_clones[import_key])
+    clones.each { |record| record.save }
+
+  else
+    import_with(store, tweaks)
+    records = ItemType.find(:all) | ItemSubType.find(:all) | Item.find(:all)
+    $import_clones[import_key] = ActiveRecord::Base.deep_clones(records)
+  end
+end
+
+# Add the capability to retreive and store db metrics in an active record model
+class ActiveRecord::Base
+  # Current db model metrics
+  def self.current_metrics
+    {
+      :count => count,
+      :updated_at => maximum(:updated_at),
+      :created_at => maximum(:created_at)
+    }
+  end
+
+  def self.before_reimport
+    @before_reimport
+  end
+
+  # Fills metrics from the db, NOW!
+  def self.collect_before_reimport_metrics
+    @before_reimport = current_metrics
+  end
+end
+
+# Reimports a store, again, does not use lazy import,
+# records db metrics before reimporting
+def reimport(store, tweaks, extra_tweaks = {})
+  [Item, ItemSubType, ItemType].each do |record|
+    record.collect_before_reimport_metrics
+  end
+  import_with(store, tweaks.merge(extra_tweaks))
+end

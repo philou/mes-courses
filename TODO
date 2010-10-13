@@ -1,2 +1,7 @@
 TODO
 
+clean up useless types and sub types at the end
+
+We have duplicate code around item_type and item_sub_type, check if it would not be better to have a unique item_type class
+  with a recursive and polymorphic hierarchy
+  this will mean changing the natural id of item_types from [:name] to [:name,:depth] or maybe we could getaway with name right now ...

@@ -1,5 +1,7 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
+require 'lib/attributes_comparison'
+
 # Objects deciding what to do with what the store scrapper found in
 # the online store's web page. They get hashes of parameters as input
 # and forward record instances to the store.
@@ -19,30 +21,37 @@ class IncrementalStore
 
   # Methods called by the scrapper when he founds something
   def register_item_type(params)
-    result = ItemType.new(params)
-    @store.register!(result)
-    result
+    register_item_class(ItemType, params)
   end
   def register_item_sub_type(params)
-    result = ItemSubType.new(params)
-    @store.register!(result)
-    result
+    register_item_class(ItemSubType, params)
   end
   def register_item(params)
-    item = @store.known_item(params[:name])
-    if item.nil?
-      item = Item.new(params)
-      @store.register!(item)
-    else
-      # TO REMOVE this is a tweak until we'll handle item types and sub types incrementaly,
-      params.delete(:item_sub_type)
-      if !item.equal_to_attributes?(params)
-        item.attributes= params
-        @store.register!(item)
-      end
-    end
+    item = register_item_class(Item, params)
     @store.mark_not_sold_out(item)
     item
+  end
+
+  private
+  def is_new?(record)
+    record.nil?
+  end
+  def is_updated?(record,params)
+    !record.equal_to_attributes?(params)
+  end
+  def register_item_class(model, params)
+    record = @store.known(model, params[:name])
+
+    if is_new?(record)
+      record = model.new(params)
+      @store.register!(record)
+
+    elsif is_updated?(record, params)
+      record.attributes= params
+      @store.register!(record)
+
+    end
+    record
   end
 
 end

@@ -42,22 +42,28 @@ Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_t
 end
 
 Then /^new items should have been inserted$/ do
-  Item.maximum(:created_at).should >(@previous_item_insertion_time)
+  Item.maximum(:created_at).should > Item.before_reimport[:created_at]
 end
 Then /^no new item should have been inserted$/ do
-  Item.maximum(:created_at).should ==(@previous_item_insertion_time)
+  Item.maximum(:created_at).should == Item.before_reimport[:created_at]
 end
 
 Then /^some items should have been modified$/ do
-  Item.maximum(:updated_at).should >(@previous_item_modification_time)
+  Item.maximum(:updated_at).should > Item.before_reimport[:updated_at]
 end
 Then /^no item should have been modified$/ do
-  Item.maximum(:updated_at).should ==(@previous_item_modification_time)
+  Item.maximum(:updated_at).should == Item.before_reimport[:updated_at]
 end
 
 Then /^some items should have been deleted$/ do
-  Item.count.should <(@previous_item_count)
+  Item.count.should < Item.before_reimport[:count]
 end
 Then /^no item should have been deleted$/ do
-  Item.count.should ==(@previous_item_count)
+  Item.count.should == Item.before_reimport[:count]
+end
+
+Then /^item organization should not have changed$/ do
+  [ItemSubType,ItemType].each do |model|
+    model.current_metrics.should == model.before_reimport
+  end
 end

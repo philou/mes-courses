@@ -19,20 +19,22 @@ class Store < ActiveRecord::Base
   end
 
   # Methods called by the importer when he founds something
-  def register!(record)
-    record.save!
-  end
-  def known_item(name)
-    Item.find_by_name(name)
-  end
-
   def mark_existing_items
     remove_all_marks
     connection.execute("INSERT INTO to_delete_items SELECT id from items")
   end
+
+  def known(model, name)
+    model.find_by_name(name)
+  end
+  def register!(record)
+    record.save!
+  end
+
   def mark_not_sold_out(item)
     connection.execute("DELETE FROM to_delete_items where item_id = #{item.id}")
   end
+
   def delete_sold_out_items
     connection.execute("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
     remove_all_marks

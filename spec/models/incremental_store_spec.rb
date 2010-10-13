@@ -6,7 +6,7 @@ describe IncrementalStore do
 
   before(:each) do
     @store = stub_model(Store)
-    @store.stub(:known_item).and_return(nil)
+    @store.stub(:known).and_return(nil)
     @store.stub(:mark_existing_items)
     @store.stub(:mark_not_sold_out)
     @store.stub(:delete_sold_out_items)
@@ -40,7 +40,7 @@ describe IncrementalStore do
     before(:each) do
       @attributes = {:name => "Truite", :price => 2.4}
       @known_item = Item.new(@attributes)
-      @store.stub(:known_item).with("Truite").and_return(@known_item)
+      @store.stub(:known).with(Item,"Truite").and_return(@known_item)
     end
 
     it "should check if the item has changed" do
@@ -89,6 +89,13 @@ describe IncrementalStore do
     end
   end
 
+  it "should not register known item types" do
+    should_not_register_known_item_class(:register_item_type, ItemType, "Viandes")
+  end
+  it "should not register known item sub types" do
+    should_not_register_known_item_class(:register_item_sub_type, ItemSubType, "Boeuf")
+  end
+
   private
   def should_register_in_store(message, argument, recordType)
     @store.should_receive(:register!).with(instance_of(recordType))
@@ -99,6 +106,13 @@ describe IncrementalStore do
   def should_tell_the_store_that_item_is_not_sold_out(item_hash)
     @store.should_receive(:mark_not_sold_out).with(instance_of(Item))
     @i_store.register_item(item_hash)
+  end
+
+  def should_not_register_known_item_class(selector, model, name)
+    attributes = {:name => name}
+    @store.should_receive(:known).with(model, name).and_return(model.new(attributes))
+    @store.should_not_receive(:register!)
+    @i_store.send(selector, attributes)
   end
 
 end

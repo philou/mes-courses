@@ -1,8 +1,10 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
 require 'spec_helper'
+require 'lib/attributes_comparison'
+require 'app/models/item'
 
-describe Item do
+describe "ActiveRecord attributes comparison" do
 
   before(:each) do
     @attributes = {:name => "Bavette de boeuf", :price => 5.4, :summary => "Viande française de qualité", :image => "http://ze_bavette.jpg" }
