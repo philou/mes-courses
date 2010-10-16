@@ -7,5 +7,5 @@ Feature: Catalog import
 
   Scenario: Items sold on an online store should be available
     Given the "www.auchandirect.fr" online store
-    When products from the store are imported
+    When items from the store are imported
     Then there should be some items for sale
