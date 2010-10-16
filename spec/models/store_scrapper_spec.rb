@@ -1,18 +1,17 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/store_scrapper_spec_helper'
+require 'models/store_scrapping_test_strategy'
 require 'mostly_matcher'
 require 'all_matcher'
 require 'have_unique_matcher'
 
 describe StoreScrapper do
-  include StoreScrapperSpecHelper
 
   # we are importing only once because it takes a lot of time. All the tests should be side effect free.
   before(:all) do
-    @scrapper = StoreScrapper.new
-    when_importing_from(@scrapper, :skip_links_like => /^http:\/\//, :squeeze_loops_to => 2)
+    strategy = StoreScrappingTestStrategy.new(:skip_links_like => /^http:\/\//, :squeeze_loops_to => 2, :continue_on_error => false)
+    @scrapper = StoreScrapper.new(:scrapping_strategy => strategy)
 
     store = stub("Store")
     record_calls(store, :starting_import, :finishing_import, :register_item_type, :register_item_sub_type, :register_item)

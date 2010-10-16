@@ -2,10 +2,20 @@
 
 require 'rubygems'
 require 'mechanize'
+require 'store_scrapping_strategy'
 
 # Objects able to dig into an online store and notify their "store" about
 # the items and item categories that they found for sale.
 class StoreScrapper
+
+  # Options can be passed in, such as a custom :scrapping_strategy
+  def initialize(options = {})
+    if options.has_key?(:scrapping_strategy)
+      @strategy = options[:scrapping_strategy]
+    else
+      @strategy = StoreScrappingStrategy.new
+    end
+  end
 
   # Imports the items sold from the online store to our db
   def import(url, store)
@@ -15,7 +25,9 @@ class StoreScrapper
     Rails.logger.info "Starting import from #{url}"
     agent = Mechanize.new
     mainPage = agent.get(url)
-    Rails.logger.with_tabs { walk_main_page(mainPage) }
+    Rails.logger.with_tabs do
+      walk_main_page(mainPage)
+    end
 
     @store.finishing_import
     @store = nil
@@ -23,7 +35,7 @@ class StoreScrapper
 
   private
 
-  attr_reader :store
+  attr_reader :store, :strategy
 
   # Searches for links with a Nokogiri css or xpath selector
   def search_links(page, selector)
@@ -38,7 +50,7 @@ class StoreScrapper
     uri2links = {}
     search_links(page,selector).each do |link|
       uri = link.uri.to_s
-      uri2links[uri] = link unless skip_link? uri
+      uri2links[uri] = link unless strategy.skip_link? uri
     end
     # enforcing deterministicity for testing and debugging
     uri2links.values.sort_by {|link| link.uri.to_s }
@@ -46,15 +58,23 @@ class StoreScrapper
 
   # Follows selected links and calls 'message' on the opened pages.
   def follow_page_links(page, selector, message, *privateArgs)
-    each_node(links_with(page, selector)) do |link|
-      begin
-        Rails.logger.info "Following #{link.uri}"
-        Rails.logger.with_tabs { self.send(message, link.click, *privateArgs)}
-
-      rescue Exception
-        Rails.logger.warn "Could not follow link \"#{link.uri}\" because "+ $!
-
+    strategy.each_node(links_with(page, selector)) do |link|
+      with_rescue "Following link #{link.uri}" do
+        Rails.logger.with_tabs do
+          self.send(message, link.click, *privateArgs)
+        end
       end
+    end
+  end
+  # Does something, logging before and handling and logging failure
+  def with_rescue(summary)
+    begin
+      Rails.logger.info summary
+      yield
+
+    rescue Exception
+      Rails.logger.warn "Failed: \"#{summary}\" because "+ $!
+      strategy.handle_exception
     end
   end
 
@@ -88,26 +108,10 @@ class StoreScrapper
     infos_produit = page.search('#infosProduit').first
     params[:price] = infos_produit.css('.prixQteVal1').first.content.to_f
     params[:image] = infos_produit.css('#imgProdDetail').first['src']
-    params = enrich_item(params)
+    params = strategy.enrich_item(params)
 
     Rails.logger.info "Found item #{params}"
     store.register_item(params)
   end
 
-# testing hooks
-
-  # Should the link be skipped when walking through the online store
-  def skip_link?(uri)
-    false
-  end
-
-  # 'each' synonym for html nodes
-  def each_node(collection)
-    collection.each {|item| yield item }
-  end
-
-  # 'each' synonym for html nodes
-  def enrich_item(params)
-    params
-  end
 end

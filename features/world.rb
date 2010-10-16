@@ -1,6 +1,6 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
-require 'spec/models/store_scrapper_spec_helper'
+require 'spec/models/store_scrapping_test_strategy'
 require 'spec/mostly_matcher'
 require 'spec/all_matcher'
 require 'spec/have_non_nil_matcher'
@@ -22,4 +22,3 @@ module OfflineOrNot
 end
 World(OfflineOrNot)
 
-World(StoreScrapperSpecHelper)

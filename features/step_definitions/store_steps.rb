@@ -2,7 +2,7 @@
 
 Given /^the "([^"]*)"( online)? store"?$/ do |webStore, online_store|
   url = AUCHAN_DIRECT_OFFLINE
-  @tweaks = {:skip_links_like => /^http:\/\//, :squeeze_loops_to => 3}
+  @tweaks = {:skip_links_like => /^http:\/\//, :squeeze_loops_to => 3, :continue_on_error => false}
 
   if !online_store.blank? && !offline?
     url = "http://"+webStore

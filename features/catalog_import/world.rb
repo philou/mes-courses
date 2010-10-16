@@ -2,8 +2,7 @@
 
 # Imports the store using the tweaks
 def import_with(store, tweaks)
-  when_importing_from(store.scrapper, tweaks)
-  store.import
+  store.import(:scrapping_strategy => StoreScrappingTestStrategy.new(tweaks))
 end
 
 # Imports the store using tweaks, if the import was already done,
