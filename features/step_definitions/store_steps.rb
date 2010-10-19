@@ -16,8 +16,16 @@ Given /^items from the store were already imported$/ do
   lazy_import_with(@store, @tweaks)
 end
 
+Given /^last store import was unexpectedly interrupted$/ do
+  begin
+    import_with(@store, @tweaks.merge(:network_down_at_node => 7))
+  rescue Exception
+    # fake network error
+  end
+end
+
 When /^items from the store are imported$/ do
-  lazy_import_with(@store, @tweaks)
+  import_with(@store, @tweaks)
 end
 
 When /^items from the store are re-imported$/ do

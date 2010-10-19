@@ -29,17 +29,18 @@ class ActiveRecord::Base
     {
       :count => count,
       :updated_at => maximum(:updated_at),
-      :created_at => maximum(:created_at)
+      :created_at => maximum(:created_at),
+      :all => find(:all)
     }
   end
 
-  def self.before_reimport
-    @before_reimport
+  def self.past_metrics
+    @past_metrics
   end
 
   # Fills metrics from the db, NOW!
-  def self.collect_before_reimport_metrics
-    @before_reimport = current_metrics
+  def self.collect_past_metrics
+    @past_metrics = current_metrics
   end
 end
 
@@ -47,7 +48,7 @@ end
 # records db metrics before reimporting
 def reimport(store, tweaks, extra_tweaks = {})
   [Item, ItemSubType, ItemType].each do |record|
-    record.collect_before_reimport_metrics
+    record.collect_past_metrics
   end
   import_with(store, tweaks.merge(extra_tweaks))
 end

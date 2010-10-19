@@ -42,34 +42,41 @@ Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_t
 end
 
 Then /^new items should have been inserted$/ do
-  Item.maximum(:created_at).should > Item.before_reimport[:created_at]
+  Item.maximum(:created_at).should > Item.past_metrics[:created_at]
 end
 Then /^no new item should have been inserted$/ do
-  Item.maximum(:created_at).should == Item.before_reimport[:created_at]
+  Item.maximum(:created_at).should == Item.past_metrics[:created_at]
 end
 
 Then /^some items should have been modified$/ do
-  Item.maximum(:updated_at).should > Item.before_reimport[:updated_at]
+  Item.maximum(:updated_at).should > Item.past_metrics[:updated_at]
 end
 Then /^no item should have been modified$/ do
-  Item.maximum(:updated_at).should == Item.before_reimport[:updated_at]
+  Item.maximum(:updated_at).should == Item.past_metrics[:updated_at]
 end
 
 Then /^some items should have been deleted$/ do
-  Item.count.should < Item.before_reimport[:count]
+  Item.count.should < Item.past_metrics[:count]
 end
 Then /^no item should have been deleted$/ do
-  Item.count.should == Item.before_reimport[:count]
+  Item.count.should == Item.past_metrics[:count]
+end
+
+Then /^existing items should not have been modified$/ do
+  Item.past_metrics[:all].each do |item|
+    item.reload
+    item.updated_at.should < Item.past_metrics[:updated_at]
+  end
 end
 
 Then /^item organization should not have changed$/ do
   [ItemSubType,ItemType].each do |model|
-    model.current_metrics.should == model.before_reimport
+    model.current_metrics.should == model.past_metrics
   end
 end
 
 Then /^item organization should have shrank$/ do
   [ItemSubType,ItemType].each do |model|
-    model.current_metrics[:count].should < model.before_reimport[:count]
+    model.current_metrics[:count].should < model.past_metrics[:count]
   end
 end

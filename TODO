@@ -1,3 +1,16 @@
 TODO
 
-Rename products to items
+une table pour la position : [Record, url]
+    Record : Store, ItemType, ItemSubType ou Item
+y insérer le store aprés la mark au début de l'import
+y insérer les autres record juste aprés les avoir importés
+vider la table à la toute fin
+
+dans le scrapper, on va pouvoir sauter les étapes déjà finies
+  si il existe store dans la table => on ne fait pas l'initialisation
+  si il existe item_type => on passe au suivant dans la liste
+  si il existe item_sub_type => on passe au suivant dans la liste
+  si il existe item => on passe au suivant dans la liste
+
+Essayer de voir comment spliter le robust du scrapping
+
