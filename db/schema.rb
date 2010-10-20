@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101011165723) do
+ActiveRecord::Schema.define(:version => 20101020043539) do
 
   create_table "dishes", :force => true do |t|
     t.string   "name"
@@ -52,6 +52,10 @@ ActiveRecord::Schema.define(:version => 20101011165723) do
   end
 
   create_table "to_delete_items", :primary_key => "item_id", :force => true do |t|
+  end
+
+  create_table "visited_urls", :force => true do |t|
+    t.string "url"
   end
 
 end

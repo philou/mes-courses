@@ -19,6 +19,7 @@ class IncrementalStore
     @store.delete_sold_out_items
     @store.delete_empty_item_sub_types
     @store.delete_empty_item_types
+    @store.delete_visited_urls
   end
 
   # Methods called by the scrapper when he founds something
@@ -32,6 +33,11 @@ class IncrementalStore
     item = register_item_class(Item, params)
     @store.mark_not_sold_out(item)
     item
+  end
+
+  # Methods called by the scrapper to notify that he visited an url
+  def register_visited_url(url)
+    @store.register_visited_url(url)
   end
 
   private

@@ -49,6 +49,15 @@ class Store < ActiveRecord::Base
     connection.execute("DELETE FROM item_types WHERE id NOT IN (SELECT item_type_id FROM item_sub_types)")
   end
 
+  # Stores a visited url to be able to resume
+  def register_visited_url(url)
+    VisitedUrl.create!(:url => url)
+  end
+  # Deletes visited urls, so the next import can restart from the begining
+  def delete_visited_urls
+    VisitedUrl.delete_all
+  end
+
   private
   def remove_all_marks
     connection.execute("DELETE FROM to_delete_items")

@@ -80,18 +80,24 @@ class StoreScrapper
 
   def walk_main_page(page)
     follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
+
+    register_visited_url(page)
   end
 
   def walk_catalogue_page(page)
     name = item_type_name(page)
     item_type = store.register_item_type(:name => name)
     follow_page_links(page, '#blocCentral > div a', :walk_rayon_page, item_type)
+
+    register_visited_url(page)
   end
 
   def walk_rayon_page(page, item_type)
     name = item_type_name(page)
     item_sub_type = store.register_item_sub_type(:name => name, :item_type => item_type)
     follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page, item_sub_type)
+
+    register_visited_url(page)
   end
 
   def item_type_name(page)
@@ -112,6 +118,12 @@ class StoreScrapper
 
     Rails.logger.info "Found item #{params}"
     store.register_item(params)
+
+    register_visited_url(page)
+  end
+
+  def register_visited_url(page)
+    store.register_visited_url(page.uri.to_s)
   end
 
 end

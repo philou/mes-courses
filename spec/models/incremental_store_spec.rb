@@ -5,12 +5,8 @@ require 'spec_helper'
 describe IncrementalStore do
 
   before(:each) do
-    @store = stub_model(Store)
+    @store = mock_model(Store).as_null_object
     @store.stub(:known).and_return(nil)
-    [:mark_existing_items, :mark_not_sold_out, :delete_sold_out_items,
-     :delete_empty_item_types, :delete_empty_item_sub_types].each do |message|
-      @store.stub(message)
-    end
     @i_store = IncrementalStore.new(@store)
   end
 
@@ -32,6 +28,9 @@ describe IncrementalStore do
     it "should delete empty item types" do
       @store.should_receive(:delete_empty_item_types)
     end
+    it "should delete visited urls" do
+      @store.should_receive(:delete_visited_urls)
+    end
   end
 
   it "should register found item types to its store" do
@@ -46,6 +45,12 @@ describe IncrementalStore do
 
   it "should tell the store that new items are not sold out" do
     should_tell_the_store_that_item_is_not_sold_out({})
+  end
+
+  it "should register visited urls to its store" do
+    url = "http://www.store.com/Viandes/Boeuf/Bavette"
+    @store.should_receive(:register_visited_url).with(url)
+    @i_store.register_visited_url(url)
   end
 
   context "when importing known items" do
@@ -107,6 +112,8 @@ describe IncrementalStore do
   it "should not register known item sub types" do
     should_not_register_known_item_class(:register_item_sub_type, ItemSubType, "Boeuf")
   end
+
+
 
   private
   def should_register_in_store(message, argument, recordType)

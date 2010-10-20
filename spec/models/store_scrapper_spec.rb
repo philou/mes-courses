@@ -14,7 +14,7 @@ describe StoreScrapper do
     @scrapper = StoreScrapper.new(:scrapping_strategy => strategy)
 
     store = stub("Store")
-    record_calls(store, :starting_import, :finishing_import, :register_item_type, :register_item_sub_type, :register_item)
+    record_calls(store, :starting_import, :finishing_import, :register_item_type, :register_item_sub_type, :register_item, :register_visited_url)
 
     @scrapper.import(AUCHAN_DIRECT_OFFLINE, store)
   end
@@ -49,6 +49,15 @@ describe StoreScrapper do
     @recorded_calls.find_all do |call|
       call[:selector] == selector
     end
+  end
+
+  def first_index_where(array)
+    array.each_with_index do |item, i|
+      if yield item
+        return i
+      end
+    end
+    return -1
   end
 
   it "should call start_import before registering items" do
@@ -107,4 +116,16 @@ describe StoreScrapper do
     @register_items.should mostly have_key(:summary)
   end
 
+  it "should register a visited url for every registered thing" do
+    @register_visited_urls.count.should == (@register_item_types.count + @register_item_sub_types.count + @register_items.count + 1)
+    # +1 for the whole site ... if this breaks too often, use an inequality
+  end
+  it "should register visited urls as instances of uri" do
+    @register_visited_urls.should all be_instance_of(String)
+  end
+  it "should register visited url AFTER the item was registered" do
+    item_save_call = first_index_where(@recorded_calls) { |item| item[:selector] == :register_item }
+    # If this breaks too often, search the next item save, and verify there is a register_url between them
+    @recorded_calls[item_save_call+1][:selector].should == :register_visited_url
+  end
 end
