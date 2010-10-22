@@ -2,11 +2,11 @@
 
 Given /^the "([^"]*)"( online)? store"?$/ do |webStore, online_store|
   url = AUCHAN_DIRECT_OFFLINE
-  @tweaks = {:skip_links_like => /^http:\/\//, :squeeze_loops_to => 3, :continue_on_error => false}
+  @tweaks = {}
 
   if !online_store.blank? && !offline?
     url = "http://"+webStore
-    @tweaks[:skip_links_like] = /^http:\/\/auchandirect/
+    @tweaks[:skip_link_regex] = /^http:\/\/auchandirect/
   end
 
   @store = Store.find_or_create_by_url(url)
@@ -33,14 +33,14 @@ When /^items from the store are re-imported$/ do
 end
 
 When /^more items from the store are re-imported$/ do
-  reimport(@store, @tweaks, :squeeze_loops_to => 4)
+  reimport(@store, @tweaks, :max_loop_nodes => 4)
 end
 
 When /^modified items from the store are re-imported$/ do
-  reimport(@store, @tweaks, :increase_price_by => 1.1)
+  reimport(@store, @tweaks, :price_increment => 1.1)
 end
 
 When /^sold out items from the store are re-imported$/ do
-  reimport(@store, @tweaks, :squeeze_loops_to => 2)
+  reimport(@store, @tweaks, :max_loop_nodes => 2)
 end
 

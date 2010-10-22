@@ -10,10 +10,19 @@ describe IncrementalStore do
     @i_store = IncrementalStore.new(@store)
   end
 
-  it "should mark existing items from the store when starting import" do
-    @store.should_receive(:mark_existing_items)
-    @i_store.starting_import
+  context "when starting import" do
+    it "should mark existing items from the store when starting import" do
+      @store.should_receive(:mark_existing_items)
+      @i_store.starting_import
+    end
+
+    it "should check if there are visited urls to know if the last import finished" do
+      finished = true
+      @store.should_receive(:are_there_visited_urls?).and_return(finished)
+      @i_store.last_import_finished?.should == !finished
+    end
   end
+
   context "when finishing import" do
     after(:each) do
       @i_store.finishing_import
@@ -47,10 +56,21 @@ describe IncrementalStore do
     should_tell_the_store_that_item_is_not_sold_out({})
   end
 
-  it "should register visited urls to its store" do
-    url = "http://www.store.com/Viandes/Boeuf/Bavette"
-    @store.should_receive(:register_visited_url).with(url)
-    @i_store.register_visited_url(url)
+  context "when resuming previous import" do
+    before(:each) do
+      @url = "http://www.store.com/Viandes/Boeuf/Bavette"
+    end
+
+    it "should ask to its store if an url was already visited" do
+      visited = true
+      @store.should_receive(:already_visited_url?).with(@url).and_return(visited)
+      @i_store.already_visited_url?(@url).should be(visited)
+    end
+
+    it "should register visited urls to its store" do
+      @store.should_receive(:register_visited_url).with(@url)
+      @i_store.register_visited_url(@url)
+    end
   end
 
   context "when importing known items" do

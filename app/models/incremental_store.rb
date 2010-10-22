@@ -36,6 +36,12 @@ class IncrementalStore
   end
 
   # Methods called by the scrapper to notify that he visited an url
+  def last_import_finished?
+    !@store.are_there_visited_urls?
+  end
+  def already_visited_url?(url)
+    @store.already_visited_url?(url)
+  end
   def register_visited_url(url)
     @store.register_visited_url(url)
   end

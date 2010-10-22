@@ -65,7 +65,7 @@ end
 Then /^existing items should not have been modified$/ do
   Item.past_metrics[:all].each do |item|
     item.reload
-    item.updated_at.should < Item.past_metrics[:updated_at]
+    item.updated_at.should == Item.past_metrics[:updated_at]
   end
 end
 

@@ -20,9 +20,13 @@ class StoreScrapper
   # Imports the items sold from the online store to our db
   def import(url, store)
     @store = store
-    @store.starting_import
+    if @store.last_import_finished?
+      Rails.logger.info "Starting new import from #{url}"
+      @store.starting_import
+    else
+      Rails.logger.info "Resuming import from #{url}"
+    end
 
-    Rails.logger.info "Starting import from #{url}"
     agent = Mechanize.new
     mainPage = agent.get(url)
     Rails.logger.with_tabs do
@@ -79,25 +83,25 @@ class StoreScrapper
   end
 
   def walk_main_page(page)
-    follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
-
-    register_visited_url(page)
+    unless_already_visited(page) do
+      follow_page_links(page, '#carroussel > div a', :walk_catalogue_page)
+    end
   end
 
   def walk_catalogue_page(page)
-    name = item_type_name(page)
-    item_type = store.register_item_type(:name => name)
-    follow_page_links(page, '#blocCentral > div a', :walk_rayon_page, item_type)
-
-    register_visited_url(page)
+    unless_already_visited(page) do
+      name = item_type_name(page)
+      item_type = store.register_item_type(:name => name)
+      follow_page_links(page, '#blocCentral > div a', :walk_rayon_page, item_type)
+    end
   end
 
   def walk_rayon_page(page, item_type)
-    name = item_type_name(page)
-    item_sub_type = store.register_item_sub_type(:name => name, :item_type => item_type)
-    follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page, item_sub_type)
-
-    register_visited_url(page)
+    unless_already_visited(page) do
+      name = item_type_name(page)
+      item_sub_type = store.register_item_sub_type(:name => name, :item_type => item_type)
+      follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page, item_sub_type)
+    end
   end
 
   def item_type_name(page)
@@ -105,24 +109,37 @@ class StoreScrapper
   end
 
   def walk_produit_page(page, item_sub_type)
-    params = { :item_sub_type => item_sub_type }
+    unless_already_visited(page) do
+      params = { :item_sub_type => item_sub_type }
 
-    # play with nokogiri in irb to know exactly how css, xpath and search methods work
-    type_produit = page.search('.typeProduit').first
-    params[:name] = type_produit.css('.nomRayon').first.content
-    params[:summary] = type_produit.css('.nomProduit').first.content
-    infos_produit = page.search('#infosProduit').first
-    params[:price] = infos_produit.css('.prixQteVal1').first.content.to_f
-    params[:image] = infos_produit.css('#imgProdDetail').first['src']
-    params = strategy.enrich_item(params)
+      # play with nokogiri in irb to know exactly how css, xpath and search methods work
+      type_produit = page.search('.typeProduit').first
+      params[:name] = type_produit.css('.nomRayon').first.content
+      params[:summary] = type_produit.css('.nomProduit').first.content
+      infos_produit = page.search('#infosProduit').first
+      params[:price] = infos_produit.css('.prixQteVal1').first.content.to_f
+      params[:image] = infos_produit.css('#imgProdDetail').first['src']
+      params = strategy.enrich_item(params)
 
-    Rails.logger.info "Found item #{params}"
-    store.register_item(params)
-
-    register_visited_url(page)
+      Rails.logger.info "Found item #{params}"
+      store.register_item(params)
+    end
   end
 
-  def register_visited_url(page)
+  def unless_already_visited(page)
+    if already_visited?(page)
+      Rails.logger.info "Skipping #{page.uri}"
+    else
+      yield
+      register_visited(page)
+    end
+  end
+
+  def already_visited?(page)
+    store.already_visited_url?(page.uri.to_s)
+  end
+
+  def register_visited(page)
     store.register_visited_url(page.uri.to_s)
   end
 

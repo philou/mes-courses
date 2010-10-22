@@ -1,11 +1,8 @@
 TODO
 
-test du scrapper
-  verifier qu'il demande bien les urls déjà importées
-  verifier qu'il skip
-  verifier si il y a quelque chose à skipper dans l'initialisation
-test de l'incremental store
-  verifier qu'il forward bien les demandes d'url
-
 Essayer de voir comment spliter le robust du scrapping
 
+a terme:
+- les types et sous types devront être absents du scrapper et dans un classeur statistique
+- avoir un truc genre visiteur qui skip
+- avoir un record pour "import" avec une liste d'url, le store, le scrapper ... why not ?

@@ -10,38 +10,35 @@ class StoreScrappingTestStrategy
 
   # Default accepted options
   def self.default_params
-    { :skip_links_like => /^$/,            # Regex to match skiped links
-      :squeeze_loops_to => fixnum_max,     # Max count of nodes that can be iterated when scrapping
-      :increase_price_by => 0.0,           # Price increment to all found items
-      :continue_on_error => true,          # Should we continue on a scrapping error ?
+    { :skip_link_regex => /^http:\/\//,    # Regex to match links to be skipped
+      :max_loop_nodes => 3,                # Max count of nodes that can be iterated when scrapping
+      :price_increment => 0.0,             # Price increment to all found items
+      :continue_on_error => false,         # Should we continue on a scrapping error ?
       :network_down_at_node => fixnum_max} # Simulate a network when scrapping nth node
   end
 
-  def initialize(params)
-    # TODO to simplify
-    #  use params directly as unique member
-    #  use meaningfull test default values
-    params = StoreScrappingTestStrategy.default_params.merge(params)
-    @skipped_links_regex = params[:skip_links_like]
-    @max_nodes = params[:squeeze_loops_to]
-    @price_increment = params[:increase_price_by]
-    @continue_on_error = params[:continue_on_error]
-    @network_down_at_node = params[:network_down_at_node]
+  default_params.each_key do |param_name|
+    attr_accessor param_name
+  end
 
+  def initialize(params = {})
+    StoreScrappingTestStrategy.default_params.merge(params).each do |name, value|
+      self.send((name.to_s+"=").intern, value)
+    end
     @node_index = 0
   end
 
   def skip_link?(uri)
-    uri =~ @skipped_links_regex
+    uri =~ skip_link_regex
   end
   def each_node(collection)
     i = 0
     collection.each do |item|
-      if @max_nodes <= i
+      if max_loop_nodes <= i
         return
       else
         @node_index = @node_index + 1
-        raise Exception.new("Network down test mock error.") unless @node_index < @network_down_at_node
+        raise Exception.new("Network down test mock error.") unless @node_index < network_down_at_node
 
         yield item
       end
@@ -50,11 +47,11 @@ class StoreScrappingTestStrategy
   end
   def enrich_item(params)
     result = params.clone
-    result[:price] += @price_increment
+    result[:price] += price_increment
     result
   end
   def handle_exception
-    raise unless @continue_on_error
+    raise unless continue_on_error
   end
 end
 
