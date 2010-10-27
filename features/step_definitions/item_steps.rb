@@ -31,14 +31,22 @@ Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name
   response.should have_selector("img", :src => attribute_text)
 end
 
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_type_name, item_name|
+
+def given_item(item_type_name, item_sub_type_name, item_name, price)
   item_type = ItemType.find_or_create_by_name(item_type_name)
   item_sub_type = ItemSubType.create!(:name => item_sub_type_name, :item_type => item_type)
   @item = Item.create!(:name => item_name,
                        :item_sub_type => item_sub_type,
-                       :price => item_name.length/100.0,
+                       :price => price,
                        :summary => "Fabuleux #{item_name}",
                        :image => "http://www.photofabric.com/#{item_name}")
+end
+
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_type_name, item_name|
+  given_item(item_type_name, item_sub_type_name, item_name, item_name.length/100.0)
+end
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |item_type_name, item_sub_type_name, item_name, price|
+  given_item(item_type_name, item_sub_type_name, item_name, price.to_f)
 end
 
 Then /^new items should have been inserted$/ do
@@ -65,7 +73,7 @@ end
 Then /^existing items should not have been modified$/ do
   Item.past_metrics[:all].each do |item|
     item.reload
-    item.updated_at.should == Item.past_metrics[:updated_at]
+    item.updated_at.should <= Item.past_metrics[:updated_at]
   end
 end
 

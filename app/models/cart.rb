@@ -4,19 +4,34 @@
 # Session cart for a user
 class Cart
 
-  attr_reader :items
-
   def initialize
-    @items = []
+    @items = {}
+  end
+
+  def items
+    @items.values
   end
 
   def add_item(item)
-    stop = true
-    @items.push(item)
+    if !@items.include?(item)
+      @items[item] = CartItem.new(item)
+    else
+      @items[item].increment_quantity
+    end
   end
 
   def add_dish(dish)
-    dish.items.each {|item| add_item(item) }
+    dish.items.each do |item|
+      add_item(item)
+    end
   end
-  
+
+  def total_price
+    result = 0
+    items.each do |item|
+      result += item.price
+    end
+    result
+  end
+
 end

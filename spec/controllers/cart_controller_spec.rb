@@ -23,6 +23,7 @@ describe CartController do
   # maybe I could use a shared_example, but I am not sure it would be better
   { Item => 'item_type',
     Dish => 'dish'}.each do |model, redirection_controller|
+
     model_small = model.to_s.downcase
     action = "add_#{model_small}_to_cart".intern
 

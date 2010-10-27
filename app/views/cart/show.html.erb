@@ -5,10 +5,12 @@
 <table>
   <% @cart.items.each do |item| %>
     <tr>
-      <td>
-	<%=h item.name %>
-      </td>
+      <!-- use number_to_currency with valid settings to write the € string correctly -->
+      <td><%= item.quantity%> x </td><td><%=h item.name %></td><td><%= item.price %>€</td>
     </tr>
   <% end %>
+  <tr>
+    <td></td><td>Total price</td><td><%= @cart.total_price %>€</td>
+  </tr>
 </table>
 

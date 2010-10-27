@@ -1,8 +1,5 @@
 TODO
 
-Essayer de voir comment spliter le robust du scrapping
 
-a terme:
-- les types et sous types devront être absents du scrapper et dans un classeur statistique
-- avoir un truc genre visiteur qui skip
-- avoir un record pour "import" avec une liste d'url, le store, le scrapper ... why not ?
+
+
