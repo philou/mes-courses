@@ -1,5 +1,16 @@
 TODO
 
+Deployment
+- test importing the whole auchan site with the new import, then deploy
+       make a rake task to import the whole offline site
+       import the whole online site
+
+- if we found errors:
+       insert other stories/defects/tasks to do it before anything else
+       start doing continuous integration ... with a full import
+
+
+
 
 
 

@@ -6,6 +6,9 @@ require 'incremental_store'
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
 
+  validates_presence_of :url
+  validates_uniqueness_of :url
+
   # Imports the items sold from the online store to our db
   # Options can be passed in, such as a custom :scrapping_strategy
   def import(options={})
