@@ -121,7 +121,7 @@ class StoreScrapper
       params[:image] = infos_produit.css('#imgProdDetail').first['src']
       params = strategy.enrich_item(params)
 
-      Rails.logger.info "Found item #{params}"
+      Rails.logger.info "Found item #{params.inspect}"
       store.register_item(params)
     end
   end

@@ -1,66 +1,82 @@
 tomates:
    name: Tomates
    item_sub_type: tomates
+   price: 2.5
 
 boeuf_hache:
    name: Viande de boeuf hachée
    item_sub_type: boeuf
+   price: 3.3
 
 spaghettis:
    name: Spaghettis
    item_sub_type: pates
+   price: 1.2
 
 escalopes_de_poulet:
    name: Escalopes de poulet
    item_sub_type: volailles
+   price: 4.5
 
 riz:
    name: Riz
    item_sub_type: riz
+   price: 1
 
 creme:
    name: Crème
    item_sub_type: cremes
+   price: 0.6
 
 echalottes:
    name: Echalottes
    item_sub_type: legumes_frais
+   price: 2
 
 haricots_verts:
    name: Haricots verts
    item_sub_type: legumes_congeles
+   price: 1
 
 bavette:
    name: Bavette de boeuf
    item_sub_type: boeuf
+   price: 5.5
 
 jambon:
    name: Jambon blanc
    item_sub_type: charcuterie
+   price: 2.9
 
 gnochis:
    name: Gnochis
    item_sub_type: pates
+   price: 2
 
-chamignons:
+champignons:
    name: Champignons de Paris
    item_sub_type: legumes_frais
+   price: 1
 
 poivron_vert:
    name: Poivron vert
    item_sub_type: legumes_frais
+   price: 3.2
 
 feta:
    name: Feta
    item_sub_type: fromages
+   price: 2.5
 
 olives_noires:
    name: Olives noires
    item_sub_type: legumes_prepares
+   price: 1.2
 
 concombre:
    name: Concombre
    item_sub_type: legumes_frais
+   price: 1
 
 # il faudra quelque chose de spécial pour les assaisonnements
 #huile:

@@ -2,6 +2,7 @@
 
 require 'store_scrapper'
 require 'incremental_store'
+require 'visited_url'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
