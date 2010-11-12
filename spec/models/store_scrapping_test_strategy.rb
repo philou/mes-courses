@@ -10,11 +10,13 @@ class StoreScrappingTestStrategy
 
   # Default accepted options
   def self.default_params
-    { :skip_link_regex => /^http:\/\//,    # Regex to match links to be skipped
-      :max_loop_nodes => 3,                # Max count of nodes that can be iterated when scrapping
-      :price_increment => 0.0,             # Price increment to all found items
-      :continue_on_error => false,         # Should we continue on a scrapping error ?
-      :network_down_at_node => fixnum_max} # Simulate a network when scrapping nth node
+    { :skip_link_regex => /^http:\/\//,      # Regex to match links to be skipped
+      :max_loop_nodes => 3,                  # Max count of nodes that can be iterated when scrapping
+      :price_increment => 0.0,               # Price increment to all found items
+      :continue_on_error => false,           # Should we continue on a scrapping error ?
+      :simulate_error_at_node => fixnum_max, # Simulate an error at the nth node
+      :simulated_error => RuntimeError       # Type of the error to simulate
+    }
   end
 
   default_params.each_key do |param_name|
@@ -37,8 +39,8 @@ class StoreScrappingTestStrategy
       if max_loop_nodes <= i
         return
       else
+        raise simulated_error.new("Test mock simulated error.") unless @node_index != simulate_error_at_node
         @node_index = @node_index + 1
-        raise Exception.new("Network down test mock error.") unless @node_index < network_down_at_node
 
         yield item
       end
@@ -51,7 +53,9 @@ class StoreScrappingTestStrategy
     result
   end
   def handle_exception
-    raise unless continue_on_error
+    if !continue_on_error
+      raise
+    end
   end
 end
 

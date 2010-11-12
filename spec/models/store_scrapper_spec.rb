@@ -184,4 +184,13 @@ describe StoreScrapper do
 
   end
 
+  it "should let interrupts and other fatal exception climb up the stack" do
+    initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => Interrupt)
+    lambda { scrap }.should raise_error(Interrupt)
+  end
+
+  it "should catch standard errors and continue" do
+    initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :continue_on_error => true)
+    lambda { scrap }.should_not raise_error
+  end
 end

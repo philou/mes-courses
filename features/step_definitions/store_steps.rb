@@ -18,8 +18,8 @@ end
 
 Given /^last store import was unexpectedly interrupted$/ do
   begin
-    import_with(@store, @tweaks.merge(:network_down_at_node => 7))
-  rescue Exception
+    import_with(@store, @tweaks.merge(:simulate_error_at_node => 7))
+  rescue RuntimeError
     # fake network error
   end
 end

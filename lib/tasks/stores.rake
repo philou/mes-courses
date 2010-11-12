@@ -3,13 +3,18 @@
 namespace :stores do
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
   task :import => :environment do
-    stores = stores_to_import()
-    Rails.logger.info "Importing #{stores.length.to_s} stores"
-    stores.each do |store|
-      Rails.logger.info "Importing items from #{store.url}"
-      store.import
-      Rails.logger.info "Done"
-    end
+    begin
+      stores = stores_to_import()
+      Rails.logger.info "Importing #{stores.length.to_s} stores"
+      stores.each do |store|
+        Rails.logger.info "Importing items from #{store.url}"
+        store.import
+        Rails.logger.info "Done"
+      end
+     rescue Exception => e
+      Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
+      raise
+     end
   end
 
   private

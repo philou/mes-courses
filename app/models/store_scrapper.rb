@@ -29,9 +29,7 @@ class StoreScrapper
 
     agent = Mechanize.new
     mainPage = agent.get(url)
-    Rails.logger.with_tabs do
-      walk_main_page(mainPage)
-    end
+    walk_main_page(mainPage)
 
     @store.finishing_import
     @store = nil
@@ -40,47 +38,6 @@ class StoreScrapper
   private
 
   attr_reader :store, :strategy
-
-  # Searches for links with a Nokogiri css or xpath selector
-  def search_links(page, selector)
-    page.search(selector).map do |xmlA|
-      Mechanize::Page::Link.new(xmlA, page.mech, page)
-    end
-  end
-
-  # Filtered links with a Nokogiri css or xpath selector.
-  # The result should not contain two links with the same uri.
-  def links_with(page, selector)
-    uri2links = {}
-    search_links(page,selector).each do |link|
-      uri = link.uri.to_s
-      uri2links[uri] = link unless strategy.skip_link? uri
-    end
-    # enforcing deterministicity for testing and debugging
-    uri2links.values.sort_by {|link| link.uri.to_s }
-  end
-
-  # Follows selected links and calls 'message' on the opened pages.
-  def follow_page_links(page, selector, message, *privateArgs)
-    strategy.each_node(links_with(page, selector)) do |link|
-      with_rescue "Following link #{link.uri}" do
-        Rails.logger.with_tabs do
-          self.send(message, link.click, *privateArgs)
-        end
-      end
-    end
-  end
-  # Does something, logging before and handling and logging failure
-  def with_rescue(summary)
-    begin
-      Rails.logger.info summary
-      yield
-
-    rescue Exception
-      Rails.logger.warn "Failed: \"#{summary}\" because "+ $!
-      strategy.handle_exception
-    end
-  end
 
   def walk_main_page(page)
     unless_already_visited(page) do
@@ -126,12 +83,42 @@ class StoreScrapper
     end
   end
 
+  # Searches for links with a Nokogiri css or xpath selector
+  def search_links(page, selector)
+    page.search(selector).map do |xmlA|
+      Mechanize::Page::Link.new(xmlA, page.mech, page)
+    end
+  end
+
+  # Filtered links with a Nokogiri css or xpath selector.
+  # The result should not contain two links with the same uri.
+  def links_with(page, selector)
+    uri2links = {}
+    search_links(page,selector).each do |link|
+      uri = link.uri.to_s
+      uri2links[uri] = link unless strategy.skip_link? uri
+    end
+    # enforcing deterministicity for testing and debugging
+    uri2links.values.sort_by {|link| link.uri.to_s }
+  end
+
+  # Follows selected links and calls 'message' on the opened pages.
+  def follow_page_links(page, selector, message, *privateArgs)
+    strategy.each_node(links_with(page, selector)) do |link|
+      self.send(message, link.click, *privateArgs)
+    end
+  end
+
   def unless_already_visited(page)
     if already_visited?(page)
       Rails.logger.info "Skipping #{page.uri}"
     else
-      yield
-      register_visited(page)
+      with_rescue "Following link #{page.uri}" do
+        Rails.logger.with_tabs do
+          yield
+        end
+        register_visited(page)
+      end
     end
   end
 
@@ -141,6 +128,20 @@ class StoreScrapper
 
   def register_visited(page)
     store.register_visited_url(page.uri.to_s)
+  end
+
+  def with_rescue(summary)
+    begin
+      Rails.logger.info summary
+      yield
+
+    rescue StandardError => e
+      Rails.logger.warn "Failed: \"#{summary}\" because "+ e
+      strategy.handle_exception
+    rescue Exception => e
+      Rails.logger.warn "Failed: \"#{summary}\" because "+ e
+      raise
+    end
   end
 
 end
