@@ -18,14 +18,14 @@ module NavigationHelpers
       '/cart/'
     when /the full dish catalog page/
       '/dish/'
-    when /the item types page/
-      '/item_type/'
-    when /the "([^"]*)" item type page/
-      item_type_path(ItemType.find_by_name($1))
-    when /the "([^"]*)" item sub type page/
-      item_sub_type_path(ItemSubType.find_by_name($1))
+    when /the item categories page/
+      '/item_category/'
+    when /the "([^"]*)" item category page/
+      item_category_path(ItemCategory.find_by_name_and_parent_id($1, nil))
+    when /the "([^"]*)" item sub category page/
+      item_category_path(ItemCategory.find_by_name($1))
     when /the "([^"]*)" item page/
-      item_sub_type_path(Item.find_by_name($1))
+      item_category_path(Item.find_by_name($1))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -44,13 +44,12 @@ class Store < ActiveRecord::Base
     connection.execute("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
     remove_all_marks
   end
-  # Cleans up useless item sub types
-  def delete_empty_item_sub_types
-    connection.execute("DELETE FROM item_sub_types WHERE id NOT IN (SELECT item_sub_type_id FROM items)")
-  end
-  # Cleans up useless item types
-  def delete_empty_item_types
-    connection.execute("DELETE FROM item_types WHERE id NOT IN (SELECT item_type_id FROM item_sub_types)")
+  # Cleans up useless item categories
+  def delete_empty_item_categories
+    connection.execute(%{DELETE FROM item_categories
+                         WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
+                           AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
+                        })
   end
 
   # Are there already visited urls from a previous import ?

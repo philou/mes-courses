@@ -21,7 +21,7 @@ describe CartController do
   end
 
   # maybe I could use a shared_example, but I am not sure it would be better
-  { Item => 'item_type',
+  { Item => 'item_category',
     Dish => 'dish'}.each do |model, redirection_controller|
 
     model_small = model.to_s.downcase

@@ -3,7 +3,7 @@ Feature: Catalog import organization
   In order to be able to manage the quantity of imported item
   A webmaster
   Wants the import mechanism to organize items into types and
-   sub types.
+   sub categories.
 
   Scenario: Items imported from an online store should be organized
     Given the "www.auchandirect.fr" store

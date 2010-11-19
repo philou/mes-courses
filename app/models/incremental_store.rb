@@ -17,17 +17,13 @@ class IncrementalStore
   end
   def finishing_import
     @store.delete_sold_out_items
-    @store.delete_empty_item_sub_types
-    @store.delete_empty_item_types
+    delete_empty_item_categories
     @store.delete_visited_urls
   end
 
   # Methods called by the scrapper when he founds something
-  def register_item_type(params)
-    register_item_class(ItemType, params)
-  end
-  def register_item_sub_type(params)
-    register_item_class(ItemSubType, params)
+  def register_item_category(params)
+    register_item_class(ItemCategory, params)
   end
   def register_item(params)
     item = register_item_class(Item, params)
@@ -66,6 +62,13 @@ class IncrementalStore
   end
   def is_updated?(record,params)
     !record.equal_to_attributes?(params)
+  end
+
+  def delete_empty_item_categories
+    items_to_delete = 1
+    while 0 < items_to_delete
+      items_to_delete = @store.delete_empty_item_categories.size
+    end
   end
 end
 

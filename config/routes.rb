@@ -37,8 +37,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  map.resources :item_type
-  map.resources :item_sub_type
+  map.resources :item_category
   map.resources :dish
 
   map.connect 'cart', :controller => 'cart', :action => 'show'

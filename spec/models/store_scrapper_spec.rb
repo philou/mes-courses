@@ -24,7 +24,7 @@ describe StoreScrapper do
     # we are importing only once because it takes a lot of time. All the tests should be side effect free.
     before(:all) do
       initialize_scrapper(:max_loop_nodes => 2)
-      record_calls(@store, :starting_import, :finishing_import, :register_item_type, :register_item_sub_type, :register_item, :register_visited_url)
+      record_calls(@store, :starting_import, :finishing_import, :register_item_category, :register_item, :register_visited_url)
 
       scrap
     end
@@ -37,7 +37,7 @@ describe StoreScrapper do
     end
     def record_calls_to(stub_object, selector)
       collector = []
-      self.instance_variable_set("@#{selector}s".intern, collector)
+      self.instance_variable_set("@#{selector.to_s.pluralize}".intern, collector)
 
       # warning because start_import and stop_import does not have any arguments ...
       stub_object.stub(selector) do |*args|
@@ -83,26 +83,18 @@ describe StoreScrapper do
       @register_items.should have_at_least(3).records
     end
 
-    it "should create item types" do
-      @register_item_types.should_not be_empty
+    it "should create item categories" do
+      @register_item_categories.should_not be_empty
     end
 
-    it "should create different items types" do
-      @register_item_types.should mostly have_unique(:name)
+    it "should create different items categories" do
+      @register_item_categories.should mostly have_unique(:name)
     end
 
-    it "should create item sub types" do
-      @register_item_sub_types.should_not be_empty
-    end
-
-    it "should create different items sub types" do
-      @register_item_sub_types.should mostly have_unique(:name)
-    end
-
-    it "should organize items by type and subtype" do
+    it "should organize items with a category hierarchy" do
       @register_items.each do |item|
-        item[:item_sub_type].should_not be_nil
-        item[:item_sub_type][:item_type].should_not be_nil
+        item[:item_category].should_not be_nil
+        item[:item_category][:parent].should_not be_nil
       end
     end
 
@@ -127,7 +119,7 @@ describe StoreScrapper do
     end
 
     it "should register a visited url for every registered thing" do
-      @register_visited_urls.count.should == (@register_item_types.count + @register_item_sub_types.count + @register_items.count + 1)
+      @register_visited_urls.count.should == (@register_item_categories.count + @register_items.count + 1)
       # +1 for the whole site ... if this breaks too often, use an inequality
     end
     it "should register visited urls as instances of uri" do
@@ -161,16 +153,9 @@ describe StoreScrapper do
       scrap
     end
 
-    it "should not register item types if urls were visited" do
+    it "should not register item categories if urls were visited" do
       @store.should_receive(:already_visited_url?).with(instance_of(String)).and_return(true)
-      @store.should_not_receive(:register_item_type)
-
-      scrap
-    end
-
-    it "should not register item sub types if urls were visited" do
-      @store.should_receive(:already_visited_url?).exactly(3).times.with(instance_of(String)).and_return(false, false, true)
-      @store.should_not_receive(:register_item_sub_type)
+      @store.should_not_receive(:register_item_category)
 
       scrap
     end

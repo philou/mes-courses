@@ -6,8 +6,8 @@ end
 
 Then /^all items should be organized by type and subtype$/ do
   Item.find(:all).each do |item|
-    item.item_sub_type.should_not be_nil
-    item.item_sub_type.item_type.should_not be_nil
+    item.item_category.should_not be_nil
+    item.item_category.parent.should_not be_nil
   end
 end
 
@@ -32,21 +32,21 @@ Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name
 end
 
 
-def given_item(item_type_name, item_sub_type_name, item_name, price)
-  item_type = ItemType.find_or_create_by_name(item_type_name)
-  item_sub_type = ItemSubType.create!(:name => item_sub_type_name, :item_type => item_type)
+def given_item(category_name, sub_category_name, item_name, price)
+  category = ItemCategory.find_or_create_by_name_and_parent_id(category_name,nil)
+  sub_category = ItemCategory.create!(:name => sub_category_name, :parent => category)
   @item = Item.create!(:name => item_name,
-                       :item_sub_type => item_sub_type,
+                       :item_category => sub_category,
                        :price => price,
                        :summary => "Fabuleux #{item_name}",
                        :image => "http://www.photofabric.com/#{item_name}")
 end
 
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |item_type_name, item_sub_type_name, item_name|
-  given_item(item_type_name, item_sub_type_name, item_name, item_name.length/100.0)
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
+  given_item(category_name, sub_category_name, item_name, item_name.length/100.0)
 end
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |item_type_name, item_sub_type_name, item_name, price|
-  given_item(item_type_name, item_sub_type_name, item_name, price.to_f)
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |category_name, sub_category_name, item_name, price|
+  given_item(category_name, sub_category_name, item_name, price.to_f)
 end
 
 Then /^new items should have been inserted$/ do
@@ -78,13 +78,9 @@ Then /^existing items should not have been modified$/ do
 end
 
 Then /^item organization should not have changed$/ do
-  [ItemSubType,ItemType].each do |model|
-    model.current_metrics.should == model.past_metrics
-  end
+  ItemCategory.current_metrics.should == ItemCategory.past_metrics
 end
 
 Then /^item organization should have shrank$/ do
-  [ItemSubType,ItemType].each do |model|
-    model.current_metrics[:count].should < model.past_metrics[:count]
-  end
+  ItemCategory.current_metrics[:count].should < ItemCategory.past_metrics[:count]
 end

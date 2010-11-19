@@ -1,0 +1,57 @@
+fruit_legumes:
+  name: Fruits & Légumes
+
+viandes:
+  name: Viandes
+
+feculents:
+  name: Féculents
+
+produits_laitiers:
+  name: Produits laitiers
+
+
+tomates:
+  name: Tomates
+  parent: fruit_legumes
+
+boeuf:
+  name: Boeuf
+  parent: viandes
+
+pates:
+  name: Pates
+  parent: feculents
+
+volailles:
+  name: Volailles
+  parent: viandes
+
+riz:
+  name: Riz
+  parent: feculents
+
+cremes:
+  name: Crèmes
+  parent: produits_laitiers
+
+legumes_frais:
+  name: Légumes frais
+  parent: fruit_legumes
+
+legumes_congeles:
+  name: Légumes congelés
+  parent: fruit_legumes
+
+charcuterie:
+  name: Charcuterie
+  parent: viandes
+
+fromages:
+  name: Fromages
+  parent: produits_laitiers
+
+legumes_prepares:
+  name: Légumes préparés
+  parent: fruit_legumes
+

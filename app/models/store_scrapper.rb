@@ -45,29 +45,29 @@ class StoreScrapper
     end
   end
 
-  def walk_catalogue_page(page)
+  def walk_catalogue_page(page, parent)
+    walk_category_page(page, '#blocCentral > div a', :walk_rayon_page, parent)
+  end
+
+  def walk_rayon_page(page, parent)
+    walk_category_page(page, '#blocs_articles a.lienArticle', :walk_produit_page, parent)
+  end
+
+  def walk_category_page(page, selector, message, parent)
     unless_already_visited(page) do
-      name = item_type_name(page)
-      item_type = store.register_item_type(:name => name)
-      follow_page_links(page, '#blocCentral > div a', :walk_rayon_page, item_type)
+      name = category_name(page)
+      item_category = store.register_item_category(:name => name, :parent => parent)
+      follow_page_links(page, selector, message, item_category)
     end
   end
 
-  def walk_rayon_page(page, item_type)
-    unless_already_visited(page) do
-      name = item_type_name(page)
-      item_sub_type = store.register_item_sub_type(:name => name, :item_type => item_type)
-      follow_page_links(page, '#blocs_articles a.lienArticle', :walk_produit_page, item_sub_type)
-    end
-  end
-
-  def item_type_name(page)
+  def category_name(page)
     page.search("#bandeau_label_recherche").first.content
   end
 
-  def walk_produit_page(page, item_sub_type)
+  def walk_produit_page(page, item_category)
     unless_already_visited(page) do
-      params = { :item_sub_type => item_sub_type }
+      params = { :item_category => item_category }
 
       # play with nokogiri in irb to know exactly how css, xpath and search methods work
       type_produit = page.search('.typeProduit').first
@@ -103,9 +103,9 @@ class StoreScrapper
   end
 
   # Follows selected links and calls 'message' on the opened pages.
-  def follow_page_links(page, selector, message, *privateArgs)
+  def follow_page_links(page, selector, message, parent = nil)
     strategy.each_node(links_with(page, selector)) do |link|
-      self.send(message, link.click, *privateArgs)
+      self.send(message, link.click, parent)
     end
   end
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101103174032) do
+ActiveRecord::Schema.define(:version => 20101115052357) do
 
   create_table "dishes", :force => true do |t|
     t.string   "name",       :null => false
@@ -31,37 +31,27 @@ ActiveRecord::Schema.define(:version => 20101103174032) do
   add_index "dishes_items", ["item_id"], :name => "altered_dishes_items_item_id"
   add_index "dishes_items", ["item_id"], :name => "dishes_items_item_id"
 
-  create_table "item_sub_types", :force => true do |t|
-    t.string   "name",         :null => false
-    t.integer  "item_type_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "item_sub_types", ["name", "item_type_id"], :name => "altered_item_sub_types_name_item_type_id", :unique => true
-  add_index "item_sub_types", ["name", "item_type_id"], :name => "item_sub_types_name_item_type_id", :unique => true
-
-  create_table "item_types", :force => true do |t|
+  create_table "item_categories", :force => true do |t|
     t.string   "name",       :null => false
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "item_types", ["name"], :name => "altered_item_types_name", :unique => true
-  add_index "item_types", ["name"], :name => "item_types_name", :unique => true
+  add_index "item_categories", ["name", "parent_id"], :name => "altered_item_sub_types_name_item_type_id", :unique => true
+  add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id", :unique => true
 
   create_table "items", :force => true do |t|
     t.string   "name",             :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "item_sub_type_id", :null => false
+    t.integer  "item_category_id", :null => false
     t.decimal  "price",            :null => false
     t.string   "image"
     t.string   "summary"
   end
 
-  add_index "items", ["name", "item_sub_type_id"], :name => "altered_items_name_item_sub_type_id", :unique => true
-  add_index "items", ["name", "item_sub_type_id"], :name => "items_name_item_sub_type_id", :unique => true
+  add_index "items", ["name", "item_category_id"], :name => "altered_items_name_item_sub_type_id", :unique => true
 
   create_table "stores", :force => true do |t|
     t.string   "url",        :null => false
@@ -80,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20101103174032) do
     t.string "url", :null => false
   end
 
+  add_index "visited_urls", ["url"], :name => "altered_visited_urls_url", :unique => true
   add_index "visited_urls", ["url"], :name => "visited_urls_url", :unique => true
 
 end

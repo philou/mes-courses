@@ -7,6 +7,7 @@ describe IncrementalStore do
   before(:each) do
     @store = mock_model(Store).as_null_object
     @store.stub(:known).and_return(nil)
+    @store.stub(:delete_empty_item_categories).and_return([])
     @i_store = IncrementalStore.new(@store)
   end
 
@@ -31,22 +32,19 @@ describe IncrementalStore do
     it "should delete sold out items from the store" do
       @store.should_receive(:delete_sold_out_items)
     end
-    it "should delete empty item sub types" do
-      @store.should_receive(:delete_empty_item_sub_types)
+    it "should delete empty item categories" do
+      @store.should_receive(:delete_empty_item_categories).once.and_return([])
     end
-    it "should delete empty item types" do
-      @store.should_receive(:delete_empty_item_types)
+    it "should delete categories until no more are empty" do
+      @store.should_receive(:delete_empty_item_categories).twice.and_return([{}],[])
     end
     it "should delete visited urls" do
       @store.should_receive(:delete_visited_urls)
     end
   end
 
-  it "should register found item types to its store" do
-    should_register_in_store(:register_item_type, {}, ItemType)
-  end
-  it "should register found item sub types to its store" do
-    should_register_in_store(:register_item_sub_type, {}, ItemSubType)
+  it "should register found item categories to its store" do
+    should_register_in_store(:register_item_category, {}, ItemCategory)
   end
   it "should register found items to its store" do
     should_register_in_store(:register_item, {}, Item)
@@ -126,14 +124,9 @@ describe IncrementalStore do
     end
   end
 
-  it "should not register known item types" do
-    should_not_register_known_item_class(:register_item_type, ItemType, "Viandes")
+  it "should not register known item categories" do
+    should_not_register_known_item_class(:register_item_category, ItemCategory, "Boeuf")
   end
-  it "should not register known item sub types" do
-    should_not_register_known_item_class(:register_item_sub_type, ItemSubType, "Boeuf")
-  end
-
-
 
   private
   def should_register_in_store(message, argument, recordType)

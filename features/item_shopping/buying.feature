@@ -6,7 +6,7 @@ Feature: Item buying
 
   Scenario: It should be possible to add items to the cart
     Given "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
-    And   I am on the "Pommes de terre" item sub type page
+    And   I am on the "Pommes de terre" item sub category page
     When  I follow "Ajouter au panier"
     Then  There should be "PdT Charlottes" in my cart
 

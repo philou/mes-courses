@@ -9,7 +9,7 @@ describe "ActiveRecord attributes comparison" do
   before(:each) do
     @attributes = {:name => "Bavette de boeuf", :price => 5.4, :summary => "Viande française de qualité", :image => "http://ze_bavette.jpg" }
     @item = Item.new(@attributes)
-    @item_sub_type = ItemSubType.new(:name => "Boeuf")
+    @item_category = ItemCategory.new(:name => "Boeuf")
   end
 
   it "should have attributes equal to initials" do
@@ -27,8 +27,8 @@ describe "ActiveRecord attributes comparison" do
   end
 
   it "should have attributes equal to initials with an actual reference" do
-    @item.item_sub_type = @item_sub_type
-    @attributes[:item_sub_type] = @item_sub_type
+    @item.item_category = @item_category
+    @attributes[:item_category] = @item_category
     @item.should be_equal_to_attributes(@attributes)
   end
 

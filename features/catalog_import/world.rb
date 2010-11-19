@@ -17,7 +17,7 @@ def lazy_import_with(store, tweaks)
 
   else
     import_with(store, tweaks)
-    records = ItemType.find(:all) | ItemSubType.find(:all) | Item.find(:all)
+    records = ItemCategory.find(:all) | Item.find(:all)
     $import_clones[import_key] = ActiveRecord::Base.deep_clones(records)
   end
 end
@@ -47,7 +47,7 @@ end
 # Reimports a store, again, does not use lazy import,
 # records db metrics before reimporting
 def reimport(store, tweaks, extra_tweaks = {})
-  [Item, ItemSubType, ItemType].each do |record|
+  [Item, ItemCategory].each do |record|
     record.collect_past_metrics
   end
   import_with(store, tweaks.merge(extra_tweaks))

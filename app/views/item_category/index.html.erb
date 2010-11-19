@@ -3,10 +3,10 @@
 <h1>Produits par familles</h1>
 
 <table>
-  <% @item_types.each do |item_type| %>
+  <% @item_categories.each do |category| %>
     <tr>
       <td>
-	<div><%= link_to item_type.name, item_type_path(item_type) %></div>
+	<div><%= link_to category.name, item_category_path(category) %></div>
       </td>
     </tr>
   <% end%>
