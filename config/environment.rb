@@ -10,7 +10,7 @@ gem 'rails', "= #{RAILS_GEM_VERSION}"
 gem 'rspec', '= 1.3.0'
 gem 'rspec-rails', '= 1.3.2'
 gem 'mechanize', '= 1.0.0'
-gem 'nokogiri', '= 1.4.2'
+gem 'nokogiri', '= 1.4.4'
 
 # 'lib/' prefix required by heroku (could not find file to load)
 require 'lib/detailed_logger'
