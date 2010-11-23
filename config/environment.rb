@@ -5,6 +5,13 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
+require 'rubygems'
+gem 'rails', "= #{RAILS_GEM_VERSION}"
+gem 'rspec', '= 1.3.0'
+gem 'rspec-rails', '= 1.3.2'
+gem 'mechanize', '= 1.0.0'
+gem 'nokogiri', '= 1.4.2'
+
 # 'lib/' prefix required by heroku (could not find file to load)
 require 'lib/detailed_logger'
 
