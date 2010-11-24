@@ -1,0 +1,9 @@
+NOTES
+
+  Error with stack :
+ActionView::TemplateError (Read-only file system -
+/disk1/home/slugs/261976_f884c4e_6faa/mnt/public/javascripts/admin/all.js
+- Heroku has a read-only filesystem...
+
+see http://groups.google.com/group/radiantcms/browse_thread/thread/7029c654f500fc0f
+
