@@ -1,5 +1,8 @@
 NOTES
 
+  How to install to heroku:
+https://github.com/radiant/radiant/wiki/Installing-on-Heroku
+
   Error with stack :
 ActionView::TemplateError (Read-only file system -
 /disk1/home/slugs/261976_f884c4e_6faa/mnt/public/javascripts/admin/all.js

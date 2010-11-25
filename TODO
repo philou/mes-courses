@@ -1,5 +1,7 @@
 TODO
 
-  faire un lien depuis http://cms.mes-courses.fr
-  ajouter une page
-  changer le style
+  hoster la stylesheet et les images dans le cms -> comment ? par l'interface ou dans git ?
+  faire un layout pres
+  avoir 2 pages : main et subscribed qui spécialisent le layout
+  utiliser la mailer-extension pour envoyer les mails
+
