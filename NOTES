@@ -1,12 +1,16 @@
 NOTES
 
-  How to install to heroku:
+* How to install to heroku:
 https://github.com/radiant/radiant/wiki/Installing-on-Heroku
 
-  Error with stack :
+* Error with stack :
 ActionView::TemplateError (Read-only file system -
-/disk1/home/slugs/261976_f884c4e_6faa/mnt/public/javascripts/admin/all.js
-- Heroku has a read-only filesystem...
+/disk1/home/slugs/261976_f884c4e_6faa/mnt/public/javascripts/admin/all.js - Heroku has a read-only filesystem...
+http://groups.google.com/group/radiantcms/browse_thread/thread/7029c654f500fc0f
 
-see http://groups.google.com/group/radiantcms/browse_thread/thread/7029c654f500fc0f
+* How to install extensions to heroku
+Heroku does not handle submodules, and extensions are installed as git submodules -> there are not pushed correctly to heroku
+Here is how to remove the submodule, then we just have to add the files to the main repo
+http://stackoverflow.com/questions/894647/radiant-extensions-on-heroku
+http://stackoverflow.com/questions/1260748/how-do-i-remove-a-git-submodule
 
