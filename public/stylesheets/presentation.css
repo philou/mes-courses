@@ -109,7 +109,12 @@ p.status {
     margin: 0 auto;
     text-align: center;
 }
-#subscription input {
+#contact-details {
     margin: 1em 0;
     text-align: left;
+}
+
+#subscription input.text {
+    text-align: left;
+    width: 20em;
 }
