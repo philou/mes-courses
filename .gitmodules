@@ -1,3 +1,0 @@
-[submodule "vendor/extensions/mailer"]
-	path = vendor/extensions/mailer
-	url = git://github.com/radiant/radiant-mailer-extension.git
