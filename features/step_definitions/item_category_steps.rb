@@ -1,4 +1,4 @@
-Given /^"([^"]*)" item category$/ do |name|
+Given /^"([^"]*)" item category"?$/ do |name|
   ItemCategory.create!(:name => name)
 end
 

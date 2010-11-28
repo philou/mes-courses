@@ -1,5 +1,13 @@
 # Copyright (C) 2010 by Philippe Bourgau
 
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
+  @item = categorized_item(category_name, sub_category_name, :name => item_name)
+end
+Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |category_name, sub_category_name, item_name, price|
+  @item = categorized_item(category_name, sub_category_name, :name => item_name, :price => price.to_f)
+end
+
+
 Then /^there should be some items for sale$/ do
   Item.should have_at_least(10).records
 end
@@ -29,24 +37,6 @@ Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
   response.should have_selector("img", :src => attribute_text)
-end
-
-
-def given_item(category_name, sub_category_name, item_name, price)
-  category = ItemCategory.find_or_create_by_name_and_parent_id(category_name,nil)
-  sub_category = ItemCategory.create!(:name => sub_category_name, :parent => category)
-  @item = Item.create!(:name => item_name,
-                       :item_category => sub_category,
-                       :price => price,
-                       :summary => "Fabuleux #{item_name}",
-                       :image => "http://www.photofabric.com/#{item_name}")
-end
-
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
-  given_item(category_name, sub_category_name, item_name, item_name.length/100.0)
-end
-Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |category_name, sub_category_name, item_name, price|
-  given_item(category_name, sub_category_name, item_name, price.to_f)
 end
 
 Then /^new items should have been inserted$/ do
