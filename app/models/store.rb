@@ -46,10 +46,16 @@ class Store < ActiveRecord::Base
   end
   # Cleans up useless item categories
   def delete_empty_item_categories
-    connection.execute(%{DELETE FROM item_categories
-                         WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
-                           AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
-                        })
+    res = connection.execute(%{DELETE FROM item_categories
+                               WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
+                               AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
+                              })
+    if !res.respond_to?(:size)
+      # special case for postgre ...
+      res.cmd_tuples
+    else
+      res.size
+    end
   end
 
   # Are there already visited urls from a previous import ?

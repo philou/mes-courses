@@ -67,7 +67,7 @@ class IncrementalStore
   def delete_empty_item_categories
     items_to_delete = 1
     while 0 < items_to_delete
-      items_to_delete = @store.delete_empty_item_categories.size
+      items_to_delete = @store.delete_empty_item_categories
     end
   end
 end
