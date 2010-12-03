@@ -1,5 +1,12 @@
 TODO
 
+try with central_logger
+try to use the ENV['MONGODBHQ'] from the yml file on heroku, maybe it will work -> it works
+    or branch central logger to allow a custom hard coded config
+check that the scrapping logs work with mongo logger
+see if heroku keeps database.yml files or if it is ignored, maybe we could work with another config file (mongoid.yml or whatever)
+try to use console on heroku and to get logs from it
+if it works, update gems localy ... gloups!
 
 
 

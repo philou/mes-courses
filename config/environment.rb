@@ -12,12 +12,13 @@ gem 'rspec-rails', '= 1.3.2'
 gem 'mechanize', '= 1.0.0'
 gem 'nokogiri', '= 1.4.4'
 gem 'factory_girl', '= 1.2.4'
-
-# 'lib/' prefix required by heroku (could not find file to load)
-require 'lib/detailed_logger'
+gem 'central_logger', '= 0.2.0'
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+
+require 'lib/detailed_logger'
+require 'central_logger'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
@@ -53,8 +54,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 
   # Custom logger
-  config.logger = RAILS_DEFAULT_LOGGER =
-    DetailedLogger.new(config.log_path,
-                       ActiveSupport::BufferedLogger::Severity.from_token(config.log_level))
+  CentralLogger::Initializer.initialize_deprecated_logger(config)
 
 end
