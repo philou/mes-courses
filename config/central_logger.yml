@@ -4,7 +4,7 @@ development: &development
   host: localhost
   port: 27017
   database: mes_courses
-  capsize: <%= 10.megabytes %>
+  capsize: <%= 100.megabytes %>
 
 test: &test
   <<: *development
@@ -14,7 +14,7 @@ production:
   host: <%= URI.parse(ENV['MONGOHQ_URL']).host %>
   port: <%= URI.parse(ENV['MONGOHQ_URL']).port %>
   database: <%= URI.parse(ENV['MONGOHQ_URL']).path[1..-1] %>
-  user: <%= URI.parse(ENV['MONGOHQ_URL']).user %>
+  username: <%= URI.parse(ENV['MONGOHQ_URL']).user %>
   password: <%= URI.parse(ENV['MONGOHQ_URL']).password %>
   capsize: <%= 15.megabytes %>
 
