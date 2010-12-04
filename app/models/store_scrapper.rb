@@ -32,6 +32,7 @@ class StoreScrapper
     walk_main_page(mainPage)
 
     @store.finishing_import
+    Rails.logger.info "Finished import"
     @store = nil
   end
 
@@ -114,9 +115,7 @@ class StoreScrapper
       Rails.logger.info "Skipping #{page.uri}"
     else
       with_rescue "Following link #{page.uri}" do
-        Rails.logger.with_tabs do
-          yield
-        end
+        yield
         register_visited(page)
       end
     end

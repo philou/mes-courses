@@ -1,22 +1,22 @@
 <% require 'uri' %>
 
-development:
-  database: mes_courses
-  capsize: <%= 10.megabytes %>
+development: &development
   host: localhost
   port: 27017
-
-test:
-  <<: *development
-
-<% ENV['MONGOHQ_URL'] ||= "http://localhost:27017" %>
-production:
   database: mes_courses
   capsize: <%= 10.megabytes %>
+
+test: &test
+  <<: *development
+
+<% ENV['MONGOHQ_URL'] ||= "http://localhost:27017/mes-courses" %>
+production:
   host: <%= URI.parse(ENV['MONGOHQ_URL']).host %>
   port: <%= URI.parse(ENV['MONGOHQ_URL']).port %>
+  database: <%= URI.parse(ENV['MONGOHQ_URL']).path[1..-1] %>
   user: <%= URI.parse(ENV['MONGOHQ_URL']).user %>
   password: <%= URI.parse(ENV['MONGOHQ_URL']).password %>
+  capsize: <%= 15.megabytes %>
 
 cucumber:
   <<: *test

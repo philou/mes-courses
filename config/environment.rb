@@ -17,7 +17,6 @@ gem 'central_logger', '= 0.2.0'
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-require 'lib/detailed_logger'
 require 'central_logger'
 
 Rails::Initializer.run do |config|
