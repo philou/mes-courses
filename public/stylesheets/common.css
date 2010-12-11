@@ -19,11 +19,14 @@ h1 {
     font-size: 3em;
 }
 h2 {
-    font-size: 3em;
+    color: #a0db54;
+    font-size: 2em;
+    padding-top: 1em;
 }
 h3 {
     color: #a0db54;
-    font-size: 2em;
+    font-size: 1.8em;
+    padding-top: 0.7em;
 }
 p {
     font-size: 1.4em;
@@ -114,13 +117,57 @@ html, body {
     margin: 0 0 0 4em;
     list-style-type: circle;
 }
-#content {
+#content-wrapper {
     margin: 0 auto;
     max-width: 100em;
 }
 
+/* Presentation */
+li {
+    font-size: 1.4em;
+}
+li li {
+    font-size: 1em;
+}
+
+.problem {
+    padding: 1em 0 0 0;
+    font-weight: bold;
+    color: #a0db54;
+}
+.highlighted {
+    font-weight: bold;
+    color: #993366;
+}
+
+p.status {
+    color: #00AA00;
+    font-weight: bold;
+}
+
+#subscription {
+    padding: 5em 0 0 0;
+}
+#subscription * {
+    margin: 0 auto;
+    text-align: center;
+}
+#contact-details {
+    margin: 1em 0;
+    text-align: left;
+}
+
+#subscription input.text {
+    text-align: left;
+    width: 20em;
+}
+
 /* Blog pages */
-p.info {
-    font-size: 1.1em;
+p.author {
+    font-size: 1.2em;
     font-style: italic;
+}
+
+#comments {
+    margin-left: 1em;
 }
