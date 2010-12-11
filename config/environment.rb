@@ -77,6 +77,7 @@ Radiant::Initializer.run do |config|
   config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
   config.gem 'fastercsv', :version => '~> 1.5.3'
   config.gem 'mollom', :version => '~> 0.2.3'
+  config.gem 'sanitize', :version => '~> 1.2.1'
 
   config.after_initialize do
     # Add new inflection rules using the following format:

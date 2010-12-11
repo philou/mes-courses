@@ -4,3 +4,4 @@ will_paginate --version '~> 2.3.11'
 radiant --version 0.9.1
 fastercsv --version 1.5.3
 mollom --version 0.2.3
+sanitize --version 1.2.1
