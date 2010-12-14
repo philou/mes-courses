@@ -1,0 +1,38 @@
+  <body id="index">
+
+    <div id="header-n-body">
+
+      <div id="header">
+        <div class="top0">
+          <div id="logo">
+            <h1>Mes courses</h1><p id="subtitle">en seulement 3 clics !</p>
+          </div>
+          <div id="places">
+            <r:navigation urls="A propos: / | Blog: /blog">
+              <r:normal><a href="<r:url />"><r:title /></a></r:normal>
+              <r:selected><a href="<r:url />" class="selected"><r:title /></a></r:selected>
+              <r:here><span class="here"><r:title /></span></r:here>
+              <r:between><span class="separator"> | </span></r:between>
+              </r:navigation>          </div>
+        </div>
+        <div class="top1"></div>
+        <div class="top2"></div>
+      </div>
+
+      <div id="content-wrapper">
+
+        <r:yield />
+
+      </div>
+    <div id="footer-placeholder"></div>
+    </div>
+
+    <div id="footer">
+      <div class="bottom2"></div>
+      <div class="bottom1"></div>
+      <div class="bottom0">
+        <p>Copyright (c) 2010</p>
+      </div>
+    </div>
+  </body>
+
