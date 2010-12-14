@@ -1,6 +1,19 @@
 TODO
 
-check why central logger tries to write to log/production.log on heroku
+Styling the site
+- find a way to include or share content (stylesheet, html and images) from the cms
+  - install file_system extension to commercial site
+  - extract html header and footer snippets
+  - extract public directory to its own repo
+  - reference the repo from MainSite
+  - make it a subtree
+  - add symbolic links where needed
+  - check that all this git devilery is working fine
+- use the headers and footers from the cms
+- use the colors from the cms
+- style the lists of categories
+- style the tables of items
+- style the cart
 
 
 
