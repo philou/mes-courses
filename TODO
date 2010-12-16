@@ -6,14 +6,18 @@ Styling the site
   - * reference the repo from MainSite
   - * make it a subtree
   - * add symbolic links where needed
-  - check that all this git devilery works
+  - * check that all this git devilery works
     - * add a copyright to the stylesheet
-    - extract html header and footer snippets
-- use the headers and footers from the cms
+    - * extract html header and footer snippets
+- * use the headers and footers from the cms how to get snippets in rails ?
+  - * create shared partials for the body header and footer (using symbolic links)
+  - * create a application template rendering header, footer and the page
+  - * check if html-head could be reused from the cms (not sure it needs to)
+  - find a way to reuse the html-head from cms
 - use the colors from the cms
+  - pass the title to the layout
+- use the template for the main page
 - style the lists of categories
 - style the tables of items
 - style the cart
-
-
 
