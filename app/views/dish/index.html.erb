@@ -1,14 +1,12 @@
 <!-- Copyright (C) 2010 by Philippe Bourgau -->
 
-<h1>Plats</h1>
+<% @title = "Plats" %>
 
 <table>
   <% @dishes.each do |dish| %>
     <tr>
-      <td>
-	<div><%=h dish.name %></div>
-	<div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish_to_cart', :id => dish.id }%></div>
-      </td>
+      <td><%=h dish.name %></td>
+      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish_to_cart', :id => dish.id }%></td>
     </tr>
   <% end%>
 </table>

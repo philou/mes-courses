@@ -10,6 +10,10 @@
   <body id="store" >
     <%= render(:partial => "shared/html_body_header") %>
 
+    <% unless @title.nil? %>
+      <h2><%= @title %></h2>
+    <% end %>
+
     <%= yield :layout %>
 
     <%= render(:partial => "shared/html_body_footer") %>

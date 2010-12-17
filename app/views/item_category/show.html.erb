@@ -1,25 +1,19 @@
-<h1><%= @item_category.name %></h1>
+<% @title = @item_category.name %>
 
-<table>
+<ul>
   <% @item_category.children.each do |item_category| %>
-    <tr>
-      <td>
-	<div><%= link_to item_category.name, item_category_path(item_category) %></div>
-      </td>
-    </tr>
+    <li><%= link_to item_category.name, item_category_path(item_category) %></li>
   <% end%>
-</table>
+</ul>
 
 <table>
   <% @item_category.items.each do |item| %>
     <tr>
-      <td>
-        <div><img src="<%= item.image %>"/></div>
-        <div><%=h item.name %></div>
-        <div><%= item.summary %></div>
-        <div><%= item.price.to_s %>€</div>
-        <div><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item_to_cart', :id => item.id }%></div>
-      </td>
+      <td><img src="<%= item.image %>" /></td>
+      <td><%=h item.name %></td>
+      <td><%= item.summary %></td>
+      <td><%= item.price.to_s %>€</td>
+      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item_to_cart', :id => item.id }%></td>
     </tr>
   <% end%>
 </table>
