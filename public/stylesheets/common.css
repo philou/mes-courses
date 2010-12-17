@@ -23,7 +23,7 @@ h1 {
 h2 {
     color: #a0db54;
     font-size: 2em;
-    padding-top: 1em;
+    padding-bottom: 1em;
 }
 h3 {
     color: #a0db54;
@@ -172,4 +172,23 @@ p.author {
 
 #comments {
     margin-left: 1em;
+}
+
+/* Store */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+td {
+    font-size: 1.2em;
+    padding: 1em;
+    border-bottom: 1px dashed #CC4488;
+}
+
+td.buy-button {
+    text-align: right;
+}
+
+table img {
+    height: 50px;
 }
