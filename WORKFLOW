@@ -1,13 +1,15 @@
 I want to be able to merge user and design modifications
+  - use file system extension
+  - work localy in a dev_branch
+  - pull and get from heroku with a heroku or release_branch
   - pull db
   - modify the design
   - users addes posts and comments
   - merge time ???
-    - dump to file system and commit to a new_branch -> file system extension
     - turn maintenance mode on
     - pull db
     - dump to file
-    - merge new_branch
+    - merge dev_branch
     - commit
     - push the db
     - turn maintenance mode off
