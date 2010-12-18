@@ -1,2 +1,13 @@
 TODO
 
+commit push origin
+push db
+
+
+go to MainSite
+pull cms
+merge
+commit
+push origin
+push dev
+push beta
