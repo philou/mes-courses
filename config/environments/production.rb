@@ -28,3 +28,7 @@ config.action_view.cache_template_loading            = true
 
 # Enable threaded mode
 # config.threadsafe!
+
+# Custom logger
+CentralLogger::Initializer.initialize_deprecated_logger(config)
+

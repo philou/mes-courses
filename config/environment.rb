@@ -52,7 +52,4 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  # Custom logger
-  CentralLogger::Initializer.initialize_deprecated_logger(config)
-
 end
