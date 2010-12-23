@@ -2,14 +2,6 @@ require 'spec_helper'
 
 describe "/item_category/show.html.erb" do
 
-  it "displays the name of the item category" do
-    @item_category = stub_model(ItemCategory, :name => "Fruits & Légumes")
-    assigns[:item_category] = @item_category
-    render
-
-    response.should contain(@item_category.name)
-  end
-
   describe "of a category with children" do
     before(:each) do
       sub_categories = ["Pommes de terre", "Tomates", "Pommes"].map {|category| stub_model(ItemCategory, :name => category)}
