@@ -9,3 +9,8 @@ Feature: Catalog import
     Given the "www.auchandirect.fr" online store
     When items from the store are imported
     Then there should be some items for sale
+
+  Scenario: Items sold on an offline store copy should be available
+    Given the "www.auchandirect.fr" store
+    When items from the store are imported
+    Then there should be some items for sale
