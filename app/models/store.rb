@@ -50,8 +50,8 @@ class Store < ActiveRecord::Base
                                WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
                                AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
                               })
-    if !res.respond_to?(:size)
-      # special case for postgre ...
+    case ActiveRecord::Base.connection.adapter_name
+    when 'PostgreSQL'
       res.cmd_tuples
     else
       res.size
