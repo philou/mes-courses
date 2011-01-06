@@ -1,22 +1,14 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
-require 'rubygems'
-gem 'rails', "= #{RAILS_GEM_VERSION}"
-gem 'rspec', '= 1.3.0'
-gem 'rspec-rails', '= 1.3.2'
-gem 'mechanize', '= 1.0.0'
-gem 'nokogiri', '= 1.4.4'
-gem 'factory_girl', '= 1.2.4'
-gem 'central_logger', '= 0.2.0'
-
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+# MongoDB logger
 require 'central_logger'
 
 Rails::Initializer.run do |config|

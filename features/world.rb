@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec/models/store_scrapping_test_strategy'
 require 'spec/mostly_matcher'
@@ -24,9 +24,4 @@ module OfflineOrNot
 end
 World(OfflineOrNot)
 
-# Enable factory girl
-Before do
-  require 'factory_girl'
-  Dir.glob(File.join(File.dirname(__FILE__), '../spec/factories/*.rb')).each { |f| require f }
-end
 
