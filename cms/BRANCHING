@@ -1,0 +1,39 @@
+CMS BRANCH ORGANISATION
+=======================
+
+cms subdir in master branch is an image from cms_branch as a subtree
+
+to merge from cms_branch to master cms, git checkout master, git merge -s subtree cms_branch
+to merge from master cms to cms_branch, git checkout cms_branch, git merge -s subtree master
+
+# to get latest cms mods from heroku
+
+(heroku maintenance:on --app mes-courses-cms)
+
+git checkout cms_branch
+git pull
+heroku db:pull --app mes-courses-cms
+rake db:to_fs
+git commit -m "..."
+git checkout master
+git merge -s subtree cms_branch
+
+## change things if needed
+
+# to push cms to heroku
+
+git checkout cms_branch
+git merge -s subtree cms_branch
+rake fs:to_db
+git commit -m "..."
+git push
+heroku db:push --app mes-courses-cms
+
+(heroku maintenance:off --app mes-courses-cms)
+
+
+
+# to get diffs from cms_branch
+git checkout master
+git diff-tree -p cms_branch
+
