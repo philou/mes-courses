@@ -1,0 +1,5945 @@
+<?xml version="1.0"?>
+<root>
+  <quiz>
+    
+    <solution>
+      <author>Frank Fischer</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291379</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Douglas Seifert</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291383</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Justin Ethier</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291384</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291395</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291396</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291397</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291404</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291406</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291419</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291548</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291662</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291780</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291796</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Rick DeNatale</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291855</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (4)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/292012</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+  <description>Your task this week sounds simple enough, but may be more difficult
+than it first appears. Given a set of points on a plane, your goal is
+to find the smallest circle that encloses those points. 
+
+You are to provide a function, *encircle*, that takes an array of
+points and returns the smallest circle surrounding those points. Start
+with the following base code and extend as needed to solve the
+problem: 
+
+    class Point &lt; Struct.new(:x, :y) 
+      def self.random 
+        Point.new(rand, rand) 
+      end 
+
+      def to_s 
+        "(#{x}, #{y})" 
+      end 
+    end 
+
+    class Circle &lt; Struct.new(:center, :radius) 
+      def to_s 
+        "{center:#{center}, radius:#{radius}}" 
+      end 
+    end 
+
+    def encircle(points)        # takes array of Point objects 
+      # returns a Circle object 
+    end 
+
+I will be running several tests on the submitted solutions, with
+various point sets, to see how well they perform at this task. I
+recommend you you test your algorithm with a variety of sample sets,
+from small sets consisting of just 1-5 points, up to medium and larger
+sets, containing a few thousand points. 
+
+To generate an array of random points, start with the above code and
+add: 
+
+    def generate_samples(n) 
+      (1..n).map { Point.random } 
+    end 
+
+And then you may test your implementation like this: 
+
+    # encircle 10 random points 
+    puts encircle( generate_samples(10) ) 
+
+As mentioned, this one may be more difficult than it seems. Feel free
+to estimate the smallest circle, if you get stuck on getting the exact
+solution. 
+
+</description><summary>First, I want to thank everyone participating and watching this week for
+being patient with me while I was down with the flu. I am almost completely
+recovered at this point, and I hope that doesn't come back for a good, long
+time.
+
+Second, thanks to all quizzers who made an attempt at the quiz, even after
+the scary warning I made about the difficulty.
+
+Third, I had hoped to provide a set of tests to help quizzers check their
+solutions, but the flu hit me pretty hard and I was unable. A special thanks
+go to Bill Kelly, Thomas ML and Lionel Bouton; they took time to benchmark
+the solutions for both speed and accuracy, when I didn't have the ability to
+do it. 
+
+Now, about the smallest enclosing circle problem... I warned from the start
+that the problem might prove more difficult than it appears. It's a problem
+that has been [attacked][1] [and][2] [solved][3] [numerous][4] [times][5].
+
+One easy to understand algorithm was originally described by [Welzl][6], and
+Rick DeNatale *almost* came up with the same answer: 
+
+&gt; The basic approach is to start with a circle containing only the first
+&gt; point, and then add the points one by one changing the circle as
+&gt; necessary.  So:
+&gt; 
+&gt; First point 
+&gt;&gt; Set center to the point and radius to zero. 
+&gt; 
+&gt; Subsequent points. 
+&gt;&gt; If the point is already in the circle then the point is simply added to
+&gt;&gt; the collection of points and the circle is unchanged....
+&gt;&gt; 
+&gt;&gt; If the point is further from the center than the radius, the we know that
+&gt;&gt; it must lie on the circumference of the new circle which will contain all
+&gt;&gt; of the points examined thus far.
+
+The point where Rick's propsed algorithm fails is in determining what other
+points will be part of the circle's boundary.
+
+I don't intend to get into the finer details of these algorithms here; I've
+provided a number of references for those who are interested in crafting an
+exact solution. In particular, Douglas Seifert did provide such a solution.
+
+The solution I am going to examine here is that of Frank Fischer, whose
+solution is actually the slowest according to the benchmarks. However, his
+solution was consistently close, simple to understand, and provides a
+technique that can be used for many kinds of problems, perhaps not always
+for speed but sometimes for sanity.
+
+Frank's Circle class is identical to that provided by the quiz, so I'll skip
+that. Let's look at his modified Point class:
+
+    class Point 
+      def initialize( *coords ) 
+        @coords = coords.map{|x| x.to_f} 
+      end 
+
+The initializer takes an array of numbers, rather than just the two that my
+original Point class (derived from Struct) provided. Frank's goal is to
+support more than just two dimensions; in fact, his solution will work with
+any dimensions. The asterisk placed in front of the parameter name means
+that the caller doesn't need to specifically provide an array... just the
+content. So the call:
+
+    p = Point.new(1, 2, 3, 4, 5)
+
+Will set coords to the array `[1, 2, 3, 4, 5]` inside the initializer. The
+initializer stores these numbers away after ensuring they all look like
+floats.
+
+      def size 
+        @coords.size 
+      end 
+
+      def []( index ) 
+        @coords[index] 
+      end 
+
+      def []= ( index, x ) 
+        @coords[index] = x 
+      end 
+
+      def self.random( n = 2 ) 
+        Point.new( *(1..n).map{ 0.5 - rand } ) 
+      end 
+
+      def +(p) 
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} ) 
+      end 
+
+      def -(p) 
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} ) 
+      end 
+
+      def *(a) 
+        return Point.new( *@coords.map{|x| x * a} ) 
+      end 
+
+      def /(a) 
+        return Point.new( *@coords.map{|x| x / a} ) 
+      end 
+
+      # calculate the inner product if this point with p 
+      def ip(p) 
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] } 
+      end 
+
+      def to_s 
+        "(#{@coords.join(', ')})" 
+      end 
+    end 
+
+Frank adds a number of arithmetic support functions for his Point class.
+Looking at this reminds me of the standard library class Vector... and it's
+not surprising, as the intent of the Point class overlaps significantly with
+the Vector class. I hoped someone might make use of Vector; alas, I think
+the starting code I provided was probably a bit too suggestive. Lesson
+learned.
+
+Next we break down Frank's evaluation function.
+
+    def evaluate( m, points )
+      y_big = nil
+      grad = nil
+
+Here, m is a point to evaluate as the center of a circle, and points is the
+list of points that need to be enclosed. This function aims to calculate two
+things. First, y_big is the minimum radius of a circle centered at m that
+would enclose all the points. (Actually, it's the square of the radius,
+which is a simpler calculation that avoids the costly Math.sqrt function.)
+Second, grad is the gradient, which I'll explain later.
+
+y_big and grad both start out invalid, but provided we have at least one
+point to enclose, they will both have values at the end. Now we loop over
+all the points.
+
+      points.each do |p|
+        d = (m - p)
+
+Here, d is the delta between the circle's center and the current point. It's
+a vector, which means it has direction (pointing at m from p) and length
+(the distance from p to m).
+
+        y = d.ip( d )
+
+Function ip is documented by Frank as the inner product (also known as the
+dot product). The inner product has a number of uses. In this particular
+case, taking the inner product of d against itself gives us the squared
+length of d. If we come back to the idea that we're trying to find a circle,
+if m is the center and p is on the circle, then the length of d would be the
+radius. So y is the radius squared.
+
+        if y_big.nil? or y &gt; y_big
+          y_big = y
+          grad = d*2
+        end
+      end
+
+Now we check to see if y is the largest squared radius we've found so far;
+if so, remember it. Otherwise, keep the existing largest squared radius
+y_big. Hit the end of the loop and keep checking points.
+
+In order to enclose all the points, we remember the largest squared radius
+y_big. One way to shrink that radius in a future iteration is to move the
+center towards the point farthest away from our current center m. Above, we
+mentioned that d was a vector that pointed away from p towards m. That's
+exactly the direction we're looking for... well, exactly the opposite
+direction, but that's easily remedied by using subtraction later rather than
+addition. So d is scaled (by two, maintaining direction but with length
+equal to the diameter) and assigned to grad.
+
+      return [y_big, grad]
+    end
+
+Once all points have been examined, we return the largest squared radius and
+the corresponding gradient. Now let's look at Frank's final function that
+makes use of this evaluation.
+
+    def encircle( points,
+                  x_start = Point.new( *([0]*points[0].size) ),
+                  max_iter = 100 )    
+
+Frank's encircle function takes extra arguments, but provides sensible
+defaults so that it still matches the quiz's requirements. x_start is a
+point at the origin (i.e. all components are zero) which Frank uses as the
+initial guess for the circle's center. max_iter is the number of iterations
+performed in an attempt to narrow down the best answer.
+
+      x = x_start
+      y, g = nil, nil
+    
+      for k in 1..max_iter do
+        y, g = evaluate( x, points )     # step 1
+        x = x - g/k                      # step 2
+      end
+
+We run in a loop max_iter times, repeating two simple steps.
+
+First, we evaluate the "fitness" of the current circle center x given the
+list of points that we need to enclose. This function we described above,
+and gives us back y as the squared radius of the circle and g as the
+gradient used for improving upon our initial guess.
+
+Second, we compute a new circle center x by moving it along the gradient. As
+mentioned earlier, the gradient points toward the circle's center and away
+from the furthest point; by subtracting it here, that moves the new circle's
+center towards the furthest point in the hope that will reduce the largest
+radius.
+
+If we kept moving the circle's center about by the full length of the
+gradient, we'd keep jumping around without ever narrowing in on a solution.
+The answer to this problem is to scale down the gradient by k which
+increases each iteration. So initial jumps are large, but each additional
+jump is less and less.
+
+      return Circle.new(x, Math.sqrt(y))
+    end
+
+After all iterations are done, we now have a circle. Since y has always been
+the square of the radius, we finally take its square root to get the true
+radius.
+
+Note that this is not an exact solution to the quiz problem, but it has
+shown to consistently come reasonably close to the exact solution. And
+sometimes reasonably close is sufficient. The reason I picked Frank's
+solution is not for its exactness nor its speed, but because it is an
+elegant demonstration of a general technique. If you can provide a fitness
+function (in our case, the circle radius) and some sort of gradient, you can
+consider this technique for other problems.
+
+Thanks to everyone who participated in this first quiz of mine. Tomorrow
+we'll have something very simple that'll get everyone saying, "Hello!".
+
+
+
+[1]: http://www.personal.kent.edu/~rmuhamma/Compgeometry/MyCG/CG-Applets/Center/centercli.htm
+[2]: http://www.cgal.org/Manual/3.2/doc_html/cgal_manual/Optimisation_ref/Class_Min_sphere_of_spheres_d.html
+[3]: http://www.inf.ethz.ch/personal/gaertner/miniball.html
+[4]: http://www.cs.mcgill.ca/~cs507/projects/1998/jacob/problem.html
+[5]: http://citeseer.ist.psu.edu/cache/papers/cs/30066/http:zSzzSzpage.inf.fu-berlin.dezSz~svenzSzown_workzSzmin-circle_impl_tr-b-98-04.pdf/smallest-enclosing-circles-an.pdf
+[6]: http://citeseer.ist.psu.edu/235065.html
+
+</summary></quiz>
+  <quiz>
+    
+    <solution>
+      <author>Frank Fischer</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291379</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Douglas Seifert</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291383</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Justin Ethier</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291384</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291395</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291396</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291397</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291404</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291406</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291419</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291548</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291662</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291780</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291796</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Rick DeNatale</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291855</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (4)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/292012</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+  <description>&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;301 Moved Permanently&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Moved Permanently&lt;/h1&gt;
+&lt;p&gt;The document has moved &lt;a href="http://splatbang.com/rubyquiz/158_Hello,_world%3f?/quiz.txt"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</description><summary>&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;title&gt;301 Moved Permanently&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Moved Permanently&lt;/h1&gt;
+&lt;p&gt;The document has moved &lt;a href="http://splatbang.com/rubyquiz/158_Hello,_world%3f?/summ.txt"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+</summary></quiz>
+  <quiz>
+    
+    <solution>
+      <author>Frank Fischer</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291379</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Douglas Seifert</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291383</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Justin Ethier</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291384</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291395</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291396</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291397</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291404</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Bill Kelly (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291406</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291419</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291548</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Philipp Hofmann (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291662</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (2)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291780</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Lionel Bouton (3)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291796</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Rick DeNatale</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/291855</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+    <solution>
+      <author>Thomas ML (4)</author>
+      <ruby_talk_reference>http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/292012</ruby_talk_reference>
+      <text>Hi,
+
+here's my solution of this nice quiz. It's heavily inspired by the last
+week's quiz, i.e. solving a non-linear equation. This time the program
+solves the non-smooth convex optimization problem 
+
+    min{max{|p_i-x|^2: p_i the given points}: x in R^k}, 
+
+where k=1,2,3,... (dimension), using a simple subgradient algorithm. 
+Therefore, it works for an arbitrary number of points 
+(up to 10000 in about 40s on my 5 year old notebook) and an 
+arbitrary dimension (number of coordinates) of the points. The solutions
+are usually a good approximation of the optimal ones.
+
+
+================================================================
+# extends point-class with an arbitrary dimension
+# and simple vector-operations
+class Point 
+    def initialize( *coords )
+        @coords = coords.map{|x| x.to_f}
+    end
+
+    def size
+        @coords.size
+    end
+
+    def []( index )
+        @coords[index]
+    end
+
+    def []= ( index, x )
+        @coords[index] = x
+    end
+    
+    def self.random( n = 2 )
+        Point.new( *(1..n).map{ 0.5 - rand } )
+    end
+
+    def +(p)
+        return Point.new( *(0...size).map{|i| @coords[i] + p[i]} )
+    end
+
+    def -(p)
+        return Point.new( *(0...size).map{|i| @coords[i] - p[i]} )
+    end
+
+    def *(a)
+        return Point.new( *@coords.map{|x| x * a} )
+    end
+
+    def /(a)
+        return Point.new( *@coords.map{|x| x / a} )
+    end
+
+    # calculate the inner product if this point with p
+    def ip(p)
+        (0...size).inject(0) { |sum, i| sum + @coords[i] * p[i] }
+    end
+
+    def to_s
+        "(#{@coords.join(', ')})"
+    end
+end
+
+class Circle &lt; Struct.new(:center, :radius)
+    def to_s
+        "{center:#{center}, radius:#{radius}}"
+    end
+end
+
+def generate_samples(n, dim = 2)
+    (1..n).map { Point.random(dim) }
+end
+
+
+# calculate value and subgradient of
+# f(x,y) = max{(x-x_i)^2 + (y-y_i)^2: (x_i,y_i) in points}
+def evaluate( m, points )
+    y_big = nil
+    grad = nil
+    points.each do |p|
+        d = (m - p)
+        y = d.ip( d ) # y = sum (m_i-p_i)^2
+        if y_big.nil? or y &gt; y_big
+            y_big = y
+            grad = d*2
+        end
+    end
+
+    return [y_big, grad]
+end
+
+# perform simple subgradient algorithm
+# with given starting-point and number of iterations
+def encircle( points,
+              x_start = Point.new( *([0]*points[0].size) ),
+              max_iter = 100 )    
+    x = x_start
+    y, g = nil, nil
+
+    for k in 1..max_iter do
+        y, g = evaluate( x, points )
+        x = x - g/k
+    end
+
+    return Circle.new(x, Math.sqrt(y))
+end
+
+puts encircle( generate_samples(10000, 3) )
+================================================================
+
+Bye, 
+Frank</text>
+    </solution>
+  <description>A word search puzzle presents a grid of seemingly random letters and a list
+of words. The goal of the puzzle is to find and mark all the words from the
+list hidden within the grid, searching along straight lines (horizontal,
+vertical and diagonal).
+
+Your task for this week's quiz is to write a Ruby program that generates
+word search puzzles, given a list of words and the desired width and height
+for the puzzle. A call to the script will look like this:
+
+    genpuzzle.rb words.txt 6x8
+
+The first argument is the list of words, one word per line in a text file.
+The second argument is the dimensions of the puzzle, width by height.
+
+Your program should output two files. The first file, search.txt, should
+contain the puzzle itself. All characters should be separated by spaces to
+allow the puzzle solver room to mark found words. As an example, here is a
+6x8 puzzle containing the words from "zero" to "nine".
+
+    e a e g g w
+    e e n i n t
+    r n o h h f
+    h q e g i r
+    t z i v u q
+    o e e o e l
+    w r f g e s
+    t o u s i x
+
+The second file, solution.txt, should contain the same puzzle with the
+answers marked, like this:
+
+    e . e . . .
+    | |
+    e e-n-i-n t
+    | | /
+    r n o . h f
+    | \ / /
+    h . e g i r
+    | X / /
+    t z i v u .
+    |/ / X
+    o e e o e .
+    | | / \
+    w r f . . s
+    | |
+    t o . s-i-x
+
+</description><summary>**Adam Shelly** was our sole submission this week, so we are going to take a
+look at his solution to the quiz. 
+
+Adam's first bit of code is a simple class, `CrossWord`:
+
+    class CrossWord
+      attr_accessor :word, :place, :dir
+      def initialize w
+        @word=w
+        @dir=0
+        @place=nil
+      end
+      def unplaced?
+        @place==nil
+      end
+    end
+    
+This class maintains information about each word to be placed into the
+puzzle, including the word itself but also the direction and placement. The
+rest of the code works with this class rather than with raw strings.
+
+Let's jump for a moment to the main code.
+
+    gridsize = ARGV[1].split('x').map{|v|v.to_i}
+    g = CharGrid.new *gridsize
+    words=File.open(ARGV[0],"r").read.split.sort_by{|s|s.length}.reverse
+    puts "unsolvable!" or exit if (words[0].size&gt;gridsize.max)
+    
+    g.fill words
+    File.open("search.txt","w"){|f|f.puts g.to_s}
+    File.open("solution.txt","w"){|f|f.puts g.solution}
+
+Most of this should be fairly obvious work. The dimensions (e.g. "24x20")
+are retrieved from the second command-line argument, split over the 'x' and
+converted to integers. These dimensions are then used to construct a new
+`CharGrid` object (which will be examined shortly).
+
+The search words are read from the provided file and sorted from longest to
+shortest. Presumably, the intent here is to place the longest words into the
+puzzle first; the shortest (and more easily placed) words are placed last.
+
+A quick sanity check is done by comparing the length of the longest word
+against the longest dimension of the grid. If the word is longer, a puzzle
+would be impossible to generate. Adam uses a neat, if perhaps confusing,
+technique to alert the user and exit out. To understand how it works, I had
+to parenthesize according to operator precedence:
+
+    ((puts "unsolvable!") or exit) if (words[0].size &gt; gridsize.max)
+
+*Now*, realizing that the `puts` statement returns nil, this made sense. So,
+while this construct both outputs the warning message and exits the program,
+this might have been clearer:
+
+    if (words[0].size &gt; gridsize.max)
+      puts "unsolvable!"
+		  exit
+    end
+
+Getting back to Adam's main code, the words -- now sorted and checked -- are
+handed off to the grid's `fill` method, which does the bulk of the work.
+Once done, the final step is to output the two text files as requested, the
+puzzle itself using the `to_s` method, and the solution via the `solution`
+method.
+
+Most of Adam's code lives in the `CharGrid` class. The main algorithm is
+found in the `fill` method:
+
+    def fill words
+      iterations = 0
+      @words = words.map{|w| CrossWord.new(w)}
+      words_todo = @words.select{|w|w.unplaced?}
+
+The master list of all words is kept in `@words`, which, as mentioned
+earlier, is converted and kept as `CrossWord` instances rather than raw
+strings). Then Adam loops until his `words_todo` array is empty. For the
+first iteration of the loop, this array contains all of the words sorted
+from longest to shortest.
+
+      until words_todo.empty?
+        words_todo.each{|cw| place cw }
+
+The first step is an attempt to place all of the words that have not yet
+been placed into the puzzle. We'll come back to the `place` method in a bit.
+
+        words_todo = @words.select{|w|w.unplaced?}.sort_by{rand}
+
+Adam reevaluates what words still remain to be placed. Unlike before, where
+words were sorted from longest to shortest (in an attempt to place the more
+complex words first), remaining words are now randomized. I imagine this is
+an attempt to add a bit of chaos where order (i.e. word length) failed, but
+I question how much of a benefit this is, considering words are placed
+within the word grid mostly at random.
+
+       if (iterations+=1) %(@w+@h)==0
+         #if we are getting stuck, try removing some words
+         puts "#{togo = words_todo.size} to go..."
+         words_done = (@words-words_todo).sort_by{rand}
+         (togo*2).times{|i| words_todo&lt;&lt; remove(words_done[i]) if words_done[i]}
+        end
+      end
+    end
+
+As per Adam's comment, if the loop continues for a long while without
+placing all the words in our list, some words are put back into the todo
+list. `togo` indicates how many words are currently unplaced, and twice as
+many are removed from the puzzle and put back into the `words_todo` list.
+The hope here is that, when the next loop iteration begins, the code will
+attempt to place the words remaining, in a location and orientation that
+differs from prior iterations of the loop.
+
+Let's look at the `place` method next:
+
+    def place cw
+      @words.sort_by{rand}.each{|otherword|
+        startpt = find_overlap(cw, otherword)
+        return if test_place(cw, startpt)
+      }
+    end
+
+In an effort do provide an interesting puzzle, where words overlap
+frequently, the word to be placed is checked against all of the other words
+in random order.  If the word is successfully placed, `test_place` returns a
+non-false value and the function exits.
+
+  def find_overlap cw, testword
+    return nil if testword.unplaced?
+    if (offset = testword.word.index cw.word[0])
+      startpt = testword.place
+      offset.times{startpt=nextp(startpt,testword.dir)}
+    else
+      startpt = nil
+    end
+    startpt
+  end
+
+`find_overlap` determines if the first character of the word to be placed
+can be found in another, already placed word. If so, the location of that
+character in the grid is determined by walking along  `testword` using
+`nextp`, which calculates the next grid index in a given direction. That
+index is returned, or nil if the character is not found.
+
+This is certainly a good first step in trying to overlap words, though I
+think more work needs to be done to create an *interesting* word search
+puzzle...  but I'll come back to that at the end of this summary.
+
+    def test_place cw, suggestion=nil
+      dir=randDir
+      start= suggestion || randStart(cw.word[0])
+
+Calling `test_place` attempts to place the supplied word. A random direction
+and starting point are chosen; the latter is random if no suggestion was
+made by `find_overlap` (i.e. there were no characters in common between the
+two compared words).
+
+      8.times do
+        pt = start
+        good = true
+
+The loop will attempt all eight directions to place the word from the
+starting location (but will exit the function as soon as the first good
+direction is found). 
+
+        cw.word.each_byte{|chr|
+          good = (@g[pt]==?. ||  @g[pt]==chr) &amp;&amp; (pt=nextp(pt,dir))
+          break unless good
+        }
+
+Looking at each character of the word to place, and the corresponding grid
+spaces, we determine if each character either fills in an empty grid space
+(currently occupied by periods `?.`) or matches existing grid characters. As
+long as all characters of the word fulfill this criteria, the variable
+`good` remains true.
+
+        return add(cw, start, dir) if good
+
+After examining the whole word, a true value for `good` indicates that the
+word fits into the grid and can be placed. The `add` method accomplishes
+this, and we exit `test_place` early, now that we have actually placed the
+word.
+
+        dir=(dir+1)%8
+      end
+      nil
+    end
+
+Finishing the loop, the next direction is tried if the previous direction
+did not allow the word to fit. If no direction works, nil is returned, and
+the `place` method moves onto the next word.
+
+That covers the bulk of the algorithm; the rest of the class is bookkeeping,
+filling in characters or removing them, checking directions, and more. I'm
+going to move onto looking at the output, however please take a look at
+Adam's code if you want to see in more detail how he manipulates the data.
+
+Here now is the solution.txt output from one run of Adam's generator, using
+the word list provided earlier:
+
+
+    e-x-p-r-e-s-s-i-o-n v-i-r-t-u-a-l . . .
+                                           
+    . e-c-n-a-t-s-n-i p . . e-t-a-l-p-m-e-t
+                     \ \                   
+    i c-o-n-d-i-t-i-o-n r e-v-a-l-u-a-t-e s
+    |                  \ \            |   |
+    n e c-o-n-s-t-a-n-t h i e . . . . c n c
+    | |                  \ \ \        | | |
+    t c p-a-r-a-m-e-t-e-r e m r . . . e o o
+    | |                    \ \ \      | | |
+    e n y-r-o-t-c-a-f . . . r i u . . j i p
+    | |                      \ \ \    | | |
+    r e . d-a-o-l-r-e-v-o . . i t s . b t e
+    | |                        \ \ \  | |  
+    f r . e-l-b-a-t-u-m-m-i . . t i o o p .
+    | |                          \ \ \  |  
+    a e . . t-c-a-r-t-s-b-a . . . a v l e .
+    | |                            \ \ \|  
+    c f p-r-o-t-o-t-y-p-e s-t-a-c-k n e c l
+    | |                              \  | |
+    e e . . . . n-o-i-t-a-u-n-i-t-n-o-c x i
+      |                                \| |
+    o r . a m . m-s-i-h-p-r-o-m-y-l-o-p e t
+    |     | |                             |
+    p . k r h l k-c-o-l-b . m-e-s-s-a-g-e e
+    |   | | | |                         | |
+    e g e g t a m-e-t-h-o-d s-s-a-l-c . t r
+    | | | | | |                         | |
+    r l y u i c r-e-f-l-e-c-t-i-o-n t . a a
+    | | | | | |                     |   | |
+    a o w m r o . n-o-i-t-c-n-u-f . y . g l
+    | | | | | |                     |   |  
+    t b o e o l g-e-n-e-r-a-t-o-r . p . e .
+    | | | | |                       |   |  
+    o a r n g t-n-e-m-e-t-a-t-s . . e . l .
+    | | | | |                           |  
+    r l d t l . . . r-e-c-u-r-s-i-o-n . e .
+            |                           |  
+    i-t-e-r-a-t-o-r i-d-e-n-t-i-f-i-e-r d .
+                                       
+
+A congratulations to Adam whose solution does indeed generate word search
+puzzles. His solution to the quiz worked better than my own (incomplete)
+code, and managed to get it into a tighter space and complete more often,
+due in large part to his algorithm that will remove and replace words in the
+hopes that they will fit better.
+
+However, one thing that is very similar between Adam's solution and my own
+is the output. As you'll see, there are some very obvious groupings of words
+parallel to one another. For the list of 44 words, this particular word
+search has less than ten intersections, and the parallel groupings make
+finding words easier than might be expected. Handcrafted puzzles tend to be
+more difficult, visually interesting (i.e. no parallel groupings) and many
+more intersections of words.
+
+My initial thought was that Adam's overlap code would provide more
+interesting puzzles than my very rough generator, as mine had no metrics or
+heuristics beyond "Does it fit?" But there was very little difference
+between Adam's output and my own. I have two suspicions.
+
+First, Adam checks only the *first* character of one word against all of the
+characters of another. I think that might have been two limiting, and to my
+recollection, word search puzzles tend to have intersections in the interior
+of words, and not at the ends.
+
+Second, I suspect that a simple two-word intersection test like Adam's won't
+be sufficient for interesting puzzles. I think three-word (triangle), and
+perhaps four-word (rectangle), overlap tests might be required. These are
+common patterns in word search puzzles, and the triangle pattern would
+better fend off the uninteresting parallel groupings. 
+
+</summary></quiz>
+</root>
