@@ -1,7 +1,7 @@
-Souvent, par faute de temps, l'un de nous passe rapidement au supermarché le soir après une journée de travail. On achète le minimum pour survivre pendant deux jours. Ca dépanne, mais finalement, on y passe plus de temps qu'en faisant une seule et bonne fois les courses, on mange ce dont on a envie sur le coup, qui n'est pas toujours très équilibré.
+Souvent, par faute de temps, l'un de nous passe rapidement au supermarché le soir après une journée de travail. On achète le minimum pour survivre pendant deux jours. Ca dépanne, mais finalement, on y passe plus de temps qu'en faisant une seule et bonne fois les courses, on dépense plus d'argent, et certes, on mange ce dont on a envie sur le coup, mais ce n'est pas toujours très équilibré.
 
-J'ai pensé que les courses par internet étaient la solution. J'ai essayé un célèbre cybermarché ... pour abandonner au bout de 5 minutes, c'était trop pénible d'aller chercher chaque ingrédient au fin fond des rayons. D'autant plus qu'on a aucune garantie sur la qualité de ce qu'on va recevoir et que le choix n'est pas toujours là.
+J'ai pensé que les courses par internet étaient la solution. J'ai essayé un célèbre site de courses en ligne ... pour abandonner au bout de 5 minutes : trop pénible d'aller chercher chaque ingrédient au fin fond des rayons pour constituer ma liste. D'autant plus qu'on a aucune garantie sur la qualité de ce qu'on va recevoir et que le choix n'est pas toujours là.
 
-Visiblement, les courses sont toujours une corvée pour beaucoup de monde (en commençant par nous). Comme j'adore cuisiner et trouver des solutions aux problèmes qui m'embêtent, j'ai eu l'idée de construire un site web pour que les courses soient faites en 5 minutes par semaine, sans sortir de chez soi, en mangeant des plats variés et équilibrés, pour toute la famille.
+Visiblement, les courses sont toujours une corvée pour beaucoup de monde (en commençant par nous). Comme j'adore cuisiner et trouver des solutions aux problèmes , j'ai eu l'idée de construire un site web pour que les courses soient faites en 5 minutes par semaine, sans sortir de chez soi, en mangeant des plats variés et équilibrés, pour toute la famille.
 
-Il y a mieux à faire pour passer son temps que ses courses !
+Il y a mieux à faire pour passer son temps que de faire ses courses !
