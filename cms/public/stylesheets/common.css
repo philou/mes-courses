@@ -23,7 +23,7 @@ h1 {
 h2 {
     color: #a0db54;
     font-size: 2em;
-    padding-bottom: 1em;
+    padding-bottom: 0.5em;
 }
 h3 {
     color: #a0db54;
@@ -133,13 +133,13 @@ li li {
 }
 
 .problem {
+    font-size: 1.8em;
     padding: 1em 0 0 0;
     font-weight: bold;
     color: #a0db54;
 }
 .highlighted {
     font-weight: bold;
-    color: #993366;
 }
 
 p.status {
@@ -172,6 +172,9 @@ p.author {
 
 #comments {
     margin-left: 1em;
+}
+div.entry + div.entry {
+    margin-top: 1.4em;
 }
 
 /* Store tables */

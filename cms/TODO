@@ -1,13 +1,30 @@
 TODO
 
-commit push origin
-push db
+#écrire l'article
+rake db:to_fs
+git add .
+git commit -m "Wrote new article"
+git push origin master
+git checkout heroku_branch
+git pull heroku master
+heroku db:pull
+rake db:to_fs
+git merge master
+rake fs:to_db
+git push heroku heroku_branch:master
+heroku db:push
 
 
-go to MainSite
-pull cms
-merge
-commit
-push origin
-push dev
-push beta
+trouver où poster des commentaires vers mon site
+chercher via google.fr
+keywords: repas pratique enfants poisson
+
+http://www.pratique.fr/idees-faire-manger-poisson-petits.html
+http://www.doctissimo.fr/html/nutrition/mag_2003/mag0530/nu_6789_saviez_vous_poisson_enfants.htm
+http://www.magicmaman.com/,comment-faire-manger-du-poisson-aux-enfants,81,7534.asp - commentable !
+
+-> liens via facebook ... -> acheter un bouquin pour comprendre comment ça marche !
+-> il faut faire un logo, et une image neutre pour mon profil de travailleur à mes-courses.fr
+
+
+
