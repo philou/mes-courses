@@ -1,4 +1,4 @@
-/*Copyright (C) 2010 by Philippe Bourgau*/
+/*Copyright (C) 2010, 2011 by Philippe Bourgau*/
 
 * {
     margin: 0;
@@ -14,7 +14,7 @@ html {
 body {
     font-family: Verdana, Trebuchet MS, Palatino, Times, sans-serif;
     color: #993366;
-    background: #DDFFDD;
+    background: #FFFFFF;
     font-size: 62.5%;
 }
 h1 {
@@ -41,7 +41,7 @@ a {
 /* Page header */
 #header > .top0 {
     background: #993366;
-    color: #DDFFDD;
+    color: #FFFFFF;
     padding: 1em
 }
 #header > .top1 {
@@ -63,13 +63,13 @@ a {
     text-align:right;
     top:0.5em;
     font-size: 1.4em;
-    color: #DDFFDD;
+    color: #FFFFFF;
 }
 #presentation #place-presentation, #blog #place-blog {
     font-weight: bold;
 }
 #places a {
-    color: #DDFFDD;
+    color: #FFFFFF;
 }
 #places a:hover {
     color: #FFFFFF;
@@ -101,7 +101,7 @@ html, body {
 #footer > .bottom0 {
     height: 5em;
     background: #993366;
-    color: #DDFFDD;
+    color: #FFFFFF;
 }
 .bottom0 > p {
     padding: 1em;
@@ -174,7 +174,7 @@ p.author {
     margin-left: 1em;
 }
 
-/* Store */
+/* Store tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -182,7 +182,9 @@ table {
 td {
     font-size: 1.2em;
     padding: 1em;
-    border-bottom: 1px dashed #993366;
+}
+tr+tr {
+    border-top: 1px dashed #993366;
 }
 
 td.buy-button {
@@ -191,4 +193,63 @@ td.buy-button {
 
 table img {
     height: 50px;
+}
+
+/* Store general */
+div.section {
+    border: 1px solid #a0db54;
+    margin: 2px;
+    padding: 1em;
+}
+div.section+div.section {
+    margin-top: 20px;
+}
+div.section > * {
+    position: relative;
+    top: -1.4em;
+}
+div.section .section-title {
+    color: #a0db54;
+    font-size: 1.8em;
+    left: 10px;
+    padding: 0 0.5em;
+    background: white;
+}
+
+/* Store dish search */
+.search form {
+    width: 80em;
+}
+.search span.entry {
+    padding: 0 10px;
+}
+.search input, .search select {
+    margin-left: 1em;
+}
+.navigation .previous {
+    float: left;
+}
+.navigation .next {
+     float: right;
+}
+.agenda td+td {
+    border-left: 1px dashed #993366;
+}
+
+.tree span {
+    margin-left: 0.3em;
+    padding: 0.1em 0.3em;
+    position: relative;
+    top: -0.7em;
+    border-left: 1px solid;
+}
+.tree span.tree-spacer {
+    margin-right: 1em;
+}
+.tree span.tree-child {
+    border-bottom: 1px solid;
+}
+
+.tree a {
+    color: #993366;
 }

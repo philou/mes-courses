@@ -1,0 +1,93 @@
+<!--Copyright (C) 2011 by Philippe Bourgau-->
+
+<!-- This page is a mock up -->
+
+<% @title = "Agenda des menus" %>
+
+<div class="section search">
+  <span class="section-title">Préférences</span>
+  <form>
+    <p>
+      <span class="entry">
+        <span>Nombre de couverts</span>
+        <input type="text" name="people" size="2"/>
+      </span>
+      <span class="entry">
+        <span>Temps de préparation</span>
+        <select name="preparation-time">
+          <option>&lt;5 minutes</option>
+          <option selected="selected">~ 10 minutes</option>
+          <option>&gt;20 minutes</option>
+        </select>
+      </span>
+      <span class="entry">
+        <span>Difficulté</span>
+        <select name="difficulty">
+          <option>*</option>
+          <option selected="selected">**</option>
+          <option>***</option>
+        </select>
+      </span>
+    </p>
+    <p>
+      <span class="entry"><span>Préparable à l'avance</span><input type="checkbox" name="advance"/></span>
+      <span class="entry"><span>Equilibré</span><input type="checkbox" name="healthy"/></span>
+      <span class="entry"><span>De saison</span><input type="checkbox" name="season"/></span>
+      <span class="entry"><span>Froid</span><input type="checkbox" name="cold"/></span>
+    </p>
+    <p>
+      <input type="submit" value="Quelques suggestions"></input>
+    </p>
+  </form>
+</div>
+
+<div class="section results">
+  <span class="section-title">Suggestions</span>
+  <table>
+      <tr><td>Emincé de poulet aux chamignons, courgettes dorées</td><td class="buy-button"><a href="planifier">Planifier</a></td></tr>
+      <tr><td>Saumon cuit tagliatelles</td><td class="buy-button"><a href="planifier">Planifier</a></td></tr>
+      <tr><td>Pierrade de boeuf, pommes de terres roties</td><td class="buy-button"><a href="planifier">Planifier</a></td></tr>
+  </table>
+</div>
+
+<div class="section agenda">
+  <span class="section-title">Agenda des menus</span>
+
+  <table>
+      <tr>
+        <td></td>
+        <td>Lundi 2/05</td>
+        <td>Mardi 3/05</td>
+        <td>Mercredi 4/05</td>
+        <td>Jeudi 5/05</td>
+        <td>Vendredi 6/05</td>
+        <td>Samedi 7/05</td>
+        <td>Dimanche 8/05</td>
+      </tr>
+      <tr>
+        <td>Déjeuner</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>X</td>
+        <td>Salade césar</td>
+        <td>Cabillaud et petits légumes</td>
+      </tr>
+      <tr>
+        <td>Diner</td>
+        <td>Soupe</td>
+        <td>Croques monsieur</td>
+        <td>Gnochis aux champignons</td>
+        <td>Salade avocat crevettes</td>
+        <td>?</td>
+        <td>?</td>
+        <td>?</td>
+      </tr>
+  </table>
+  <div class="navigation">
+    <span class="previous"><a href="before">Avant</a></span>
+    <span class="next"><a href="after">Aprés</a></span>
+  </div>
+
+</div>

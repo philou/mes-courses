@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
@@ -39,6 +39,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :item_category
   map.resources :dish
+  map.resources :agenda
+  map.resources :preferences
 
   map.connect 'cart', :controller => 'cart', :action => 'show'
 
