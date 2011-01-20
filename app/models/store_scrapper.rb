@@ -135,11 +135,20 @@ class StoreScrapper
       yield
 
     rescue StandardError => e
-      Rails.logger.warn "Failed: \"#{summary}\" because "+ e
+      warn summary, e
       strategy.handle_exception
     rescue Exception => e
-      Rails.logger.warn "Failed: \"#{summary}\" because "+ e
+      warn summary, e
       raise
+    end
+  end
+
+  def warn(summary, exception)
+    message = "Failed: \"#{summary}\" because "+ exception
+    if Rails.logger.level < Logger::WARN
+      Rails.logger.info message
+    else
+      Rails.logger.warn message
     end
   end
 

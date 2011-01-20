@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'store_scrapper'
 require 'incremental_store'
@@ -36,26 +36,36 @@ class Store < ActiveRecord::Base
 
   # Removes the deletion mark on an item
   def mark_not_sold_out(item)
-    connection.execute("DELETE FROM to_delete_items where item_id = #{item.id}")
+    execute_delete("DELETE FROM to_delete_items where item_id = #{item.id}")
   end
 
   # Delete all marked items
   def delete_sold_out_items
-    connection.execute("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
+    result = execute_delete("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
     remove_all_marks
+    result
   end
   # Cleans up useless item categories
   def delete_empty_item_categories
-    res = connection.execute(%{DELETE FROM item_categories
-                               WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
-                               AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
-                              })
+    execute_delete(%{DELETE FROM item_categories
+                     WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
+                     AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
+                    })
+  end
+
+  def execute_delete(statement)
+    result = result_size connection.execute(statement)
+    logger.info "Delete statement '#{statement}' removed #{result} rows"
+    result
+  end
+  def result_size(sql_result)
     case ActiveRecord::Base.connection.adapter_name
     when 'PostgreSQL'
-      res.cmd_tuples
+      sql_result.cmd_tuples
     else
-      res.size
+      sql_result.size
     end
+
   end
 
   # Are there already visited urls from a previous import ?
@@ -77,7 +87,7 @@ class Store < ActiveRecord::Base
 
   private
   def remove_all_marks
-    connection.execute("DELETE FROM to_delete_items")
+    execute_delete("DELETE FROM to_delete_items")
   end
 
 end

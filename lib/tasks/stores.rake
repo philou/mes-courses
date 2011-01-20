@@ -1,9 +1,9 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 namespace :stores do
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
-  task :import => :environment do
-    Rails.logger.mongoize do
+  task :import => [:environment, :update_stats] do
+    mongoize_logs do
       begin
         stores = stores_to_import()
         Rails.logger.info "Importing #{stores.length.to_s} stores"
@@ -19,6 +19,13 @@ namespace :stores do
     end
   end
 
+  desc "Updates and reports import models (item and categories) statistics."
+  task :update_stats => :environment do
+    mongoize_logs do
+      ImportReporter.update_stats_and_report
+    end
+  end
+
   private
   # array of stores to import, according to the 'url' environment variable
   def stores_to_import
@@ -26,6 +33,14 @@ namespace :stores do
       Store.find(:all)
     else
       [Store.find_or_create_by_url(ENV['url'])]
+    end
+  end
+
+  def mongoize_logs
+    if Rails.logger.respond_to?(:mongoize)
+      Rails.logger.mongoize { yield }
+    else
+      yield
     end
   end
 

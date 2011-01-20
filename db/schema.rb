@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101115052357) do
+ActiveRecord::Schema.define(:version => 20110118070447) do
 
   create_table "dishes", :force => true do |t|
     t.string   "name",       :null => false
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(:version => 20101115052357) do
   end
 
   add_index "items", ["name", "item_category_id"], :name => "altered_items_name_item_sub_type_id", :unique => true
+
+  create_table "model_stats", :force => true do |t|
+    t.string   "name",       :null => false
+    t.integer  "count",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "model_stats", ["name"], :name => "model_name_name_index", :unique => true
 
   create_table "stores", :force => true do |t|
     t.string   "url",        :null => false

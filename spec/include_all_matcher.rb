@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -8,7 +8,7 @@ Spec::Matchers.define :include_all do |required_items|
     include_all?(actual,required_items)
   end
   failure_message_for_should do |actual|
-    "#{missing_items(actual,required_items)} are missing"
+    "#{missing_items(actual,required_items).inspect} are missing"
   end
   failure_message_for_should_not do |actual|
     "at least one element of #{required_items} should be absent"

@@ -44,4 +44,7 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
+  # By default, don't send emails
+  config.action_mailer.delivery_method = :test
+
 end
