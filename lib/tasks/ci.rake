@@ -2,10 +2,10 @@
 
 desc "Checks all specs, then drops, creates, and migrates the db, finaly runs all scenarios"
 task :behaviours => [:ci,
-                     :spec,
                      'db:drop',
                      'db:create',
                      'db:migrate',
+                     :spec,
                      :cucumber]
 
 desc "Sets rails in ci mode"
