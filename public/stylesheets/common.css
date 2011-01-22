@@ -37,6 +37,13 @@ p {
 a {
     color: #a0db54;
 }
+ul, ol {
+    list-style-position: inside;
+}
+ul ul {
+    margin: 0 0 0 4em;
+    list-style-type: circle;
+}
 
 /* Page header */
 #header > .top0 {
@@ -112,13 +119,10 @@ html, body {
     padding: 1em 2em;
     overflow: auto;
 }
-#content-wrapper ul {
+#content-wrapper > ul {
     list-style: none outside;
 }
-#content-wrapper ul ul {
-    margin: 0 0 0 4em;
-    list-style-type: circle;
-}
+
 #content-wrapper {
     margin: 0 auto;
     max-width: 100em;
