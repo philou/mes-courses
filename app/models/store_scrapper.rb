@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'rubygems'
 require 'mechanize'
@@ -21,18 +21,21 @@ class StoreScrapper
   def import(url, store)
     @store = store
     if @store.last_import_finished?
-      Rails.logger.info "Starting new import from #{url}"
+      log_info "Starting new import from #{url}"
       @store.starting_import
     else
-      Rails.logger.info "Resuming import from #{url}"
+      log_info "Resuming import from #{url}"
     end
 
-    agent = Mechanize.new
+    agent = Mechanize.new do |agent|
+      # NOTE: by default Mechanize has infinite history, and causes memory leaks
+      agent.history.max_size = 0
+    end
     mainPage = agent.get(url)
     walk_main_page(mainPage)
 
     @store.finishing_import
-    Rails.logger.info "Finished import"
+    log_info "Finished import"
     @store = nil
   end
 
@@ -79,7 +82,7 @@ class StoreScrapper
       params[:image] = infos_produit.css('#imgProdDetail').first['src']
       params = strategy.enrich_item(params)
 
-      Rails.logger.info "Found item #{params.inspect}"
+      log_info "Found item #{params.inspect}"
       store.register_item(params)
     end
   end
@@ -112,7 +115,7 @@ class StoreScrapper
 
   def unless_already_visited(page)
     if already_visited?(page)
-      Rails.logger.info "Skipping #{page.uri}"
+      log_info "Skipping #{page.uri}"
     else
       with_rescue "Following link #{page.uri}" do
         yield
@@ -131,25 +134,35 @@ class StoreScrapper
 
   def with_rescue(summary)
     begin
-      Rails.logger.info summary
+      log_info summary
       yield
 
     rescue StandardError => e
-      warn summary, e
+      log_exception summary, e
       strategy.handle_exception
     rescue Exception => e
-      warn summary, e
+      log_exception summary, e
       raise
     end
   end
 
-  def warn(summary, exception)
-    message = "Failed: \"#{summary}\" because "+ exception
-    if Rails.logger.level < Logger::WARN
-      Rails.logger.info message
-    else
-      Rails.logger.warn message
+  def log_exception(summary, exception)
+    log_warning "Failed: \"#{summary}\" because "+ exception
+  end
+
+  def log_info(message)
+    log Logger::INFO, message
+  end
+
+  def log_warning(message)
+    log Logger::WARN, message
+  end
+
+  def log(level, message)
+    if (Rails.logger.instance_of?(CentralLogger) && (Logger::INFO <= level))
+      Rails.logger.info(message)
     end
+    Rails.logger.add(level) { message }
   end
 
 end
