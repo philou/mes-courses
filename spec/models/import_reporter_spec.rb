@@ -5,22 +5,22 @@ require 'include_all_matcher'
 
 describe ImportReporter do
 
-  @@UPDATE_DATE = Time.new
-  @@PREVIOUS_DATE = @@UPDATE_DATE - 1.day
-  @@STATS = { 'Root item category' => {'previous count' => 1, 'updated count' => 2},
+  UPDATE_DATE = Time.new
+  PREVIOUS_DATE = UPDATE_DATE - 1.day
+  STATS = { 'Root item category' => {'previous count' => 1, 'updated count' => 2},
               'Item category' => {'previous count' => 4, 'updated count' => 8},
               'Item' => {'previous count' => 20, 'updated count' => 27},}
 
   before(:each) do
-    Item.stub(:count).and_return(@@STATS['Item']['updated count'])
-    ItemCategory.stub(:count).and_return(@@STATS['Root item category']['updated count'], @@STATS['Item category']['updated count'])
+    Item.stub(:count).and_return(STATS['Item']['updated count'])
+    ItemCategory.stub(:count).and_return(STATS['Root item category']['updated count'], STATS['Item category']['updated count'])
 
-    previous_stats = @@STATS.map do |model, stat|
+    previous_stats = STATS.map do |model, stat|
       ModelStat.new(:name => model, :count => stat['previous count'])
     end
     ModelStat.stub(:find).and_return(previous_stats)
     ModelStat.stub(:create_or_update_by_name!)
-    ModelStat.stub(:maximum).and_return(@@PREVIOUS_DATE, @@UPDATE_DATE)
+    ModelStat.stub(:maximum).and_return(PREVIOUS_DATE, UPDATE_DATE)
 
     ENV['APP_NAME'] = "mes-courses-tests"
 
@@ -29,9 +29,9 @@ describe ImportReporter do
   end
 
   it "should save item stats before importing" do
-    ModelStat.should_receive(:create_or_update_by_name!).with("Root item category", :count => @@STATS['Root item category']['updated count'])
-    ModelStat.should_receive(:create_or_update_by_name!).with("Item category", :count => @@STATS['Item category']['updated count'])
-    ModelStat.should_receive(:create_or_update_by_name!).with("Item", :count => @@STATS['Item']['updated count'])
+    ModelStat.should_receive(:create_or_update_by_name!).with("Root item category", :count => STATS['Root item category']['updated count'])
+    ModelStat.should_receive(:create_or_update_by_name!).with("Item category", :count => STATS['Item category']['updated count'])
+    ModelStat.should_receive(:create_or_update_by_name!).with("Item", :count => STATS['Item']['updated count'])
 
     ImportReporter.update_stats_and_report
   end
@@ -52,7 +52,7 @@ describe ImportReporter do
     end
 
     it "subjet should be descriptive" do
-      @subject.should == "Import report for app '#{ENV['APP_NAME']}' between #{@@PREVIOUS_DATE} and #{@@UPDATE_DATE}"
+      @subject.should == "Import report for app '#{ENV['APP_NAME']}' between #{PREVIOUS_DATE} and #{UPDATE_DATE}"
     end
 
     it "should contain stats for models" do
@@ -61,19 +61,19 @@ describe ImportReporter do
 
     it "should report past stats" do
       @body.each do |model, stats|
-        stats['previous count'].should == @@STATS[model]['previous count']
+        stats['previous count'].should == STATS[model]['previous count']
       end
     end
 
     it "should report updated stats" do
       @body.each do |model, stats|
-        stats['updated count'].should == @@STATS[model]['updated count']
+        stats['updated count'].should == STATS[model]['updated count']
       end
     end
 
     it "should report delta stats" do
       @body.each do |model, stats|
-        stats['delta'].should == @@STATS[model]['updated count'].to_f / @@STATS[model]['previous count'].to_f
+        stats['delta'].should == STATS[model]['updated count'].to_f / STATS[model]['previous count'].to_f
       end
     end
   end

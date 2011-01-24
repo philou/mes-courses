@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'mechanize'
 require 'store_scrapping_strategy'
+require 'lib/logging'
 
 # Objects able to dig into an online store and notify their "store" about
 # the items and item categories that they found for sale.
@@ -21,10 +22,10 @@ class StoreScrapper
   def import(url, store)
     @store = store
     if @store.last_import_finished?
-      log_info "Starting new import from #{url}"
+      log :info, "Starting new import from #{url}"
       @store.starting_import
     else
-      log_info "Resuming import from #{url}"
+      log :info, "Resuming import from #{url}"
     end
 
     agent = Mechanize.new do |agent|
@@ -35,7 +36,7 @@ class StoreScrapper
     walk_main_page(mainPage)
 
     @store.finishing_import
-    log_info "Finished import"
+    log :info, "Finished import"
     @store = nil
   end
 
@@ -82,7 +83,7 @@ class StoreScrapper
       params[:image] = infos_produit.css('#imgProdDetail').first['src']
       params = strategy.enrich_item(params)
 
-      log_info "Found item #{params.inspect}"
+      log :info, "Found item #{params.inspect}"
       store.register_item(params)
     end
   end
@@ -115,7 +116,7 @@ class StoreScrapper
 
   def unless_already_visited(page)
     if already_visited?(page)
-      log_info "Skipping #{page.uri}"
+      log :info, "Skipping #{page.uri}"
     else
       with_rescue "Following link #{page.uri}" do
         yield
@@ -134,7 +135,7 @@ class StoreScrapper
 
   def with_rescue(summary)
     begin
-      log_info summary
+      log :info, summary
       yield
 
     rescue StandardError => e
@@ -147,22 +148,14 @@ class StoreScrapper
   end
 
   def log_exception(summary, exception)
-    log_warning "Failed: \"#{summary}\" because "+ exception
-  end
-
-  def log_info(message)
-    log Logger::INFO, message
-  end
-
-  def log_warning(message)
-    log Logger::WARN, message
+    log :warn, "Failed: \"#{summary}\" because "+ exception
   end
 
   def log(level, message)
-    if (Rails.logger.instance_of?(CentralLogger) && (Logger::INFO <= level))
-      Rails.logger.info(message)
+    if (Rails.logger.respond_to?(:mongoize) && (Rails.logger.level < Logger::SYMBOL_2_LEVEL[level]))
+      Rails.logger.send(Logger::LEVEL_2_SYMBOL[Rails.logger.level], message)
     end
-    Rails.logger.add(level) { message }
+    Rails.logger.send(level, message)
   end
 
 end

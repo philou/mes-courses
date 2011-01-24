@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Settings specified here will take precedence over those in config/environment.rb
 
@@ -29,4 +29,5 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
-config.gem 'rspec-rails', :version => '>= 1.3.2', :lib => false unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
+# Use a different logger for distributed setups
+CentralLogger::Initializer.initialize_deprecated_logger(config)

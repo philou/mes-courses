@@ -2,7 +2,7 @@
 
 # Configuration for continuous integration, mostly like production, but
 #  - with rspec and cucumber
-#  - without mongo logger
+#  - without mongo logger, NOTE: cc.rb overrides the logger
 
 # Settings specified here will take precedence over those in config/environment.rb
 
