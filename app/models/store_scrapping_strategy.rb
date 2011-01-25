@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Provides implementation for store scrapping specific elementary actions
 # allows overriding to customize the scrapping
@@ -19,8 +19,4 @@ class StoreScrappingStrategy
     params
   end
 
-  # Handles an exception thrown by the scrapper (should not programming errors)
-  def handle_exception
-    # by default, just continue
-  end
 end

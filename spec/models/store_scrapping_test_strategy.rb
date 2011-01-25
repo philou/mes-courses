@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # maximum fixnum value
 def fixnum_max
@@ -13,7 +13,6 @@ class StoreScrappingTestStrategy
     { :skip_link_regex => /^http:\/\//,      # Regex to match links to be skipped
       :max_loop_nodes => 3,                  # Max count of nodes that can be iterated when scrapping
       :price_increment => 0.0,               # Price increment to all found items
-      :continue_on_error => false,           # Should we continue on a scrapping error ?
       :simulate_error_at_node => fixnum_max, # Simulate an error at the nth node
       :simulated_error => RuntimeError       # Type of the error to simulate
     }
@@ -51,11 +50,6 @@ class StoreScrappingTestStrategy
     result = params.clone
     result[:price] += price_increment
     result
-  end
-  def handle_exception
-    if !continue_on_error
-      raise
-    end
   end
 end
 

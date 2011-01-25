@@ -3,6 +3,7 @@
 *.log
 .#*
 *.sqlite3
+*.sqlite3-journal
 *.dump
 TODO
 tmp

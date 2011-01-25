@@ -138,17 +138,10 @@ class StoreScrapper
       log :info, summary
       yield
 
-    rescue StandardError => e
-      log_exception summary, e
-      strategy.handle_exception
     rescue Exception => e
-      log_exception summary, e
+      log :error, "Failed: \"#{summary}\" because "+ e
       raise
     end
-  end
-
-  def log_exception(summary, exception)
-    log :warn, "Failed: \"#{summary}\" because "+ exception
   end
 
   def log(level, message)
