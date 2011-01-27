@@ -100,11 +100,16 @@ class StoreScrapper
   def links_with(page, selector)
     uri2links = {}
     search_links(page,selector).each do |link|
-      uri = link.uri.to_s
-      uri2links[uri] = link unless strategy.skip_link? uri
+      target_uri = link.uri
+      uri2links[target_uri.to_s] = link if keep_link? page.uri, target_uri
     end
     # enforcing deterministicity for testing and debugging
     uri2links.values.sort_by {|link| link.uri.to_s }
+  end
+
+  # Should the link be kept or skipped when walking through the online store
+  def keep_link?(source_uri, target_uri)
+    target_uri.relative? || (source_uri.domain == target_uri.domain)
   end
 
   # Follows selected links and calls 'message' on the opened pages.

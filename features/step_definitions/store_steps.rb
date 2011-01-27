@@ -1,12 +1,13 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
-Given /^the "([^"]*)"( online)? store"?$/ do |webStore, online_store|
+Given /^the "([^"]*)" *(online)? store"?$/ do |webStore, online_store|
+  test_online_if_possible = !online_store.blank?
+
   url = AUCHAN_DIRECT_OFFLINE
   @tweaks = {}
 
-  if !online_store.blank? && !offline?
+  if test_online_if_possible && online?
     url = "http://"+webStore
-    @tweaks[:skip_link_regex] = /^http:\/\/auchandirect/
   end
 
   @store = Store.find_or_create_by_url(url)

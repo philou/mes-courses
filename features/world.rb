@@ -21,6 +21,9 @@ module OfflineOrNot
   def offline?
     OFFLINE
   end
+  def online?
+    !offline?
+  end
 end
 World(OfflineOrNot)
 
