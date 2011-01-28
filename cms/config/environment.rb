@@ -95,3 +95,6 @@ Radiant::Initializer.run do |config|
     }
   end
 end
+
+# Auto approve comments
+Radiant::Config['comments.auto_approve'] = 'true'

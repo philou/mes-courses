@@ -19,6 +19,10 @@ config.action_controller.perform_caching             = true
 # config.action_mailer.raise_delivery_errors = false
 
 # Cache your content for a longer time, the default is 5.minutes
-# config.after_initialize do 
+# config.after_initialize do
 #   SiteController.cache_timeout = 12.hours
 # end
+
+# Use mollom against spam and auto approve comments
+Radiant::Config['comments.mollom_publickey'] = 'e03fa9b3589ec6f18040b90c50bcf1d8'
+Radiant::Config['comments.mollom_privatekey'] = '451a5de0abc7414d8b81eec5915e7e8e'
