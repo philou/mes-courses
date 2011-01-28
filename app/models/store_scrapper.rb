@@ -4,6 +4,7 @@ require 'rubygems'
 require 'mechanize'
 require 'store_scrapping_strategy'
 require 'lib/logging'
+require 'lib/uri_domain'
 
 # Objects able to dig into an online store and notify their "store" about
 # the items and item categories that they found for sale.
