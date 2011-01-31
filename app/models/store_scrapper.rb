@@ -68,7 +68,7 @@ class StoreScrapper
   end
 
   def category_name(page)
-    page.search("#bandeau_label_recherche").first.content
+    get_one(page, "#bandeau_label_recherche").content
   end
 
   def walk_produit_page(page, item_category)
@@ -76,12 +76,12 @@ class StoreScrapper
       params = { :item_category => item_category }
 
       # play with nokogiri in irb to know exactly how css, xpath and search methods work
-      type_produit = page.search('.typeProduit').first
-      params[:name] = type_produit.css('.nomRayon').first.content
-      params[:summary] = type_produit.css('.nomProduit').first.content
-      infos_produit = page.search('#infosProduit').first
-      params[:price] = infos_produit.css('.prixQteVal1').first.content.to_f
-      params[:image] = infos_produit.css('#imgProdDetail').first['src']
+      type_produit = get_one(page, '.typeProduit')
+      params[:name] = get_one_css(page, type_produit, '.nomRayon').content
+      params[:summary] = get_one_css(page, type_produit, '.nomProduit').content
+      infos_produit = get_one(page, '#infosProduit')
+      params[:price] = get_one_css(page, infos_produit, '.prixQteVal1').content.to_f
+      params[:image] = get_one_css(page, infos_produit, '#imgProdDetail')['src']
       params = strategy.enrich_item(params)
 
       log :info, "Found item #{params.inspect}"
@@ -144,6 +144,9 @@ class StoreScrapper
       log :info, summary
       yield
 
+    rescue ScrappingError => e
+      log :warn, "Failed: \"#{summary}\" because "+ e
+      # continue
     rescue Exception => e
       log :error, "Failed: \"#{summary}\" because "+ e
       raise
@@ -155,6 +158,20 @@ class StoreScrapper
       Rails.logger.send(Logger::LEVEL_2_SYMBOL[Rails.logger.level], message)
     end
     Rails.logger.send(level, message)
+  end
+
+  # searching xpath and css wrappers
+  def get_one(page, selector)
+    check_one("Page \"#{page.uri}\"", selector, page.search(selector))
+  end
+  def get_one_css(page, element, selector)
+    check_one("In page \"#{page.uri}\", element \"#{element.path}\"", selector, element.css(selector))
+  end
+  def check_one(element_string, selector, elements)
+    if elements.empty?()
+      raise ScrappingError.new("#{element_string} does not contain any elements like \"#{selector}\"")
+    end
+    elements.first
   end
 
 end

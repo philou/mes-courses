@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 require 'models/store_scrapping_test_strategy'
@@ -181,4 +181,17 @@ describe StoreScrapper do
     initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
     lambda { scrap }.should raise_error(exception_class)
   end
+
+  it "should continue on \"malformed\" store pages" do
+    new_page = Mechanize::Page.method(:new)
+    Mechanize::Page.stub!(:new).and_return do |*args|
+      result = new_page.call(*args)
+      result.stub!(:search).and_return([])
+      result
+    end
+
+    initialize_scrapper(:max_loop_nodes => 3)
+    lambda { scrap }.should_not raise_error
+  end
+
 end
