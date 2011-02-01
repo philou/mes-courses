@@ -93,8 +93,8 @@ Radiant::Initializer.run do |config|
       :password       => ENV['SENDGRID_PASSWORD'],
       :domain         => ENV['SENDGRID_DOMAIN']
     }
+
+    # Auto approve comments
+    Radiant::Config['comments.auto_approve'] = 'true'
   end
 end
-
-# Auto approve comments
-Radiant::Config['comments.auto_approve'] = 'true'
