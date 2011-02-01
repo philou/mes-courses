@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+  <title>Mes-courses.fr</title>
+  <description>Les courses en 3 clics, pour gens pressés et parents débordés. Gagnez du temps pour vous.</description>
+  <link>http://www.mes-courses.fr<r:url /></link>
+  <language>en-us</language>
+  <ttl>40</ttl>
+  <r:find url="/blog/">
+  <r:children:each by="published_at" order="desc" limit="10">
+    <item>
+      <title><r:escape_html><r:title /></r:escape_html></title>
+      <description><r:escape_html><r:content /></r:escape_html></description>
+      <pubDate><r:rfc1123_date /></pubDate>
+      <guid>http://www.mes-courses.fr<r:url /></guid>
+      <link>http://www.mes-courses.fr<r:url /></link>
+    </item>
+  </r:children:each>
+  </r:find>
+</channel>
+</rss>
