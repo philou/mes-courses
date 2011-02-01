@@ -182,7 +182,7 @@ describe StoreScrapper do
     lambda { scrap }.should raise_error(exception_class)
   end
 
-  it "should continue on \"malformed\" store pages" do
+  it "should continue on unscrappable store pages" do
     new_page = Mechanize::Page.method(:new)
     Mechanize::Page.stub!(:new).and_return do |*args|
       result = new_page.call(*args)
@@ -191,6 +191,12 @@ describe StoreScrapper do
     end
 
     initialize_scrapper(:max_loop_nodes => 3)
+    lambda { scrap }.should_not raise_error
+  end
+
+  it "should continue badly formed store items" do
+    initialize_scrapper(:max_loop_nodes => 3)
+    @store.stub!(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
     lambda { scrap }.should_not raise_error
   end
 

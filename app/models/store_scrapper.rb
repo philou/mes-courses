@@ -73,20 +73,25 @@ class StoreScrapper
 
   def walk_produit_page(page, item_category)
     unless_already_visited(page) do
-      params = { :item_category => item_category }
-
-      # play with nokogiri in irb to know exactly how css, xpath and search methods work
-      type_produit = get_one(page, '.typeProduit')
-      params[:name] = get_one_css(page, type_produit, '.nomRayon').content
-      params[:summary] = get_one_css(page, type_produit, '.nomProduit').content
-      infos_produit = get_one(page, '#infosProduit')
-      params[:price] = get_one_css(page, infos_produit, '.prixQteVal1').content.to_f
-      params[:image] = get_one_css(page, infos_produit, '#imgProdDetail')['src']
+      params = extract_product_attributes(page)
+      params[:item_category] = item_category
       params = strategy.enrich_item(params)
 
       log :info, "Found item #{params.inspect}"
       store.register_item(params)
     end
+  end
+
+  def extract_product_attributes(page)
+    type_produit = get_one(page, '.typeProduit')
+    infos_produit = get_one(page, '#infosProduit')
+
+    return {
+      :name => get_one_css(page, type_produit, '.nomRayon').content,
+      :summary => get_one_css(page, type_produit, '.nomProduit').content,
+      :price => get_one_css(page, infos_produit, '.prixQteVal1').content.to_f,
+      :image => get_one_css(page, infos_produit, '#imgProdDetail')['src']
+    }
   end
 
   # Searches for links with a Nokogiri css or xpath selector
@@ -144,9 +149,10 @@ class StoreScrapper
       log :info, summary
       yield
 
-    rescue ScrappingError => e
+    rescue ScrappingError, ActiveRecord::RecordInvalid => e
+      # this  should mean a page was not in a scrappable format
       log :warn, "Failed: \"#{summary}\" because "+ e
-      # continue
+      # continue, this will eventually delete the faulty items
     rescue Exception => e
       log :error, "Failed: \"#{summary}\" because "+ e
       raise
