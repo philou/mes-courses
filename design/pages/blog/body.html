@@ -1,10 +1,12 @@
 <r:children:each limit="5" order="desc">
-<div class="entry">
-  <r:link><h2><r:child:title /></h2></r:link>
-  <r:content />
-  <r:if_content part="extended">
-    <p><r:link anchor="extended">Poursuivre la lecture &#8230;</r:link></p>
-  </r:if_content>
-  <p class="author">Posté par <r:author /> le <r:date format="%d/%m/%Y" /></p>
-</div>
+  <r:unless_content part="hidden_mark">
+    <div class="entry">
+      <r:link><h2><r:child:title /></h2></r:link>
+      <r:content />
+      <r:if_content part="extended">
+        <p><r:link anchor="extended">Poursuivre la lecture &#8230;</r:link></p>
+      </r:if_content>
+      <p class="author">Posté par <r:author /> le <r:date format="%d/%m/%Y" /></p>
+    </div>
+  </r:unless_content>
 </r:children:each>
