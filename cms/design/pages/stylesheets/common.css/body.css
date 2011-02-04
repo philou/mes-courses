@@ -6,7 +6,6 @@
     text-align: left;
 }
 
-
 html {
     font-size: 100%;
 }
@@ -32,6 +31,8 @@ h3 {
 }
 p {
     font-size: 1.4em;
+}
+p + p {
     padding-top: 0.5em;
 }
 a {
@@ -168,17 +169,52 @@ p.status {
     width: 20em;
 }
 
-/* Blog pages */
+/* Blog */
+.blog-post {
+    width: 60em;
+    margin: 0 auto;
+    margin-bottom: 2.4em;
+}
+
+.blog-post h2 {
+    border-bottom: 1px solid;
+    margin-bottom: 1em;
+}
+
+.blog-post p, .blog-post li {
+    text-align: justify;
+    line-height: 1.6em;
+}
+
+.blog-post a.link-with-image {
+    float: right;
+    margin-left: 2em;
+}
+
+.blog-post img {
+    border-style: none;
+}
+/* we don't want images to be too big in blog summary */
+#blog.summary .blog-post a img {
+    height: 10em;
+}
+
+.blog-post ul {
+    margin-left: 3em;
+    padding-top: 0.5em;
+    list-style-position: outside;
+}
+.blog-post table {
+    width: auto;
+    margin: 1em auto;
+}
+
 p.author {
     font-size: 1.2em;
     font-style: italic;
 }
-
 #comments {
-    margin-left: 1em;
-}
-div.entry + div.entry {
-    margin-top: 1.4em;
+    margin: 1em;
 }
 
 /* Store tables */

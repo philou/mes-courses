@@ -95,6 +95,7 @@ Radiant::Initializer.run do |config|
     }
 
     # Auto approve comments
-    Radiant::Config['comments.auto_approve'] = 'true'
+    Radiant::Config['comments.auto_approve'] = true
+    Radiant::Config['comments.simple_spam_filter_required?'] = false
   end
 end
