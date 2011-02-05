@@ -5,7 +5,7 @@ Si la logique me semble bonne, la pratique est plus compliquée ! Il est très d
 !http://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Salmon_sushi_cut.jpg/120px-Salmon_sushi_cut.jpg(Sushis)!:http://fr.wikipedia.org/wiki/Fichier:Salmon_sushi_cut.jpg
 J'ai donc cherché autre chose. Je n'ai pas confiance dans les régimes modernes (et très rentables pour leur inventeur ...), en revanche, je fais confiance aux régimes qui ont fait leurs preuves avec le temps. J'ai trouvé deux autres régimes traditionnels et reconnus pour leurs bienfaits sur la santé: "Crétois":http://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=mediterraneen_regime et "d'Okinawa":http://www.passeportsante.net/fr/Nutrition/Regimes/Fiche.aspx?doc=okinawa_regime. Je vous encourage à visiter ces pages pour avoir des détails.
 
-Si je pense qu'il est très compliqué de suivre un régime à la lettre (ne serait ce que lorsqu'on est invité), on peut tout de même s'en inspirer pour privilégier certains aliments. Du point de vue de chaque régime, j'ai noté les différentes classes d'ingrédients : 10 pour à volonté, et 0 pour formellement interdit. J'ai ensuite calculer et classer les moyennes, voilà ce que j'ai obtenu :
+Si je pense qu'il est très compliqué de suivre un régime à la lettre (ne serait ce que lorsqu'on est invité), on peut tout de même s'en inspirer pour privilégier certains aliments. Du point de vue de chaque régime, j'ai noté les différentes classes d'ingrédients : 10 pour à volonté, et 0 pour formellement interdit. J'ai ensuite calculé et classé les moyennes, voilà ce que j'ai obtenu :
 
 |*Aliment* |*Paléolithique* |*Okinawa* |*Méditerranéen* |*Moyenne*|
 |Fruits & légumes |10 |10 |10 |10,0|
@@ -23,7 +23,6 @@ Si je pense qu'il est très compliqué de suivre un régime à la lettre (ne ser
 |viandes maigres |10 |3 |3 |5,3|
 |légumineuses |0 |7 |7 |4,7|
 |huiles pressées à froid |5 |1 |7 |4,3|
-|alcool |5 |3 |5 |4,3|
 |pain |0 |3 |10 |4,3|
 |fruits secs |5 |3 | |4,0|
 |produits laitiers |0 | |7 |3,5|
@@ -33,6 +32,8 @@ Si je pense qu'il est très compliqué de suivre un régime à la lettre (ne ser
 |conserves |0||		 |0,0|
 |soda |0||		 |0,0|
 |aliments salés |0||		 |0,0|
+
+J'ai volontairement enlever l'alcool de ce tableau, parce qu'il était aberrant de dire qu'il faut boire plus de vin que de manger de pain ! Ces régimes n'interdisent pas l'alcool, mais privilégient une consommation modérée et de qualité.
 
 Mon régime pour la suite : manger beaucoup de légumes, préférer du poisson à la viande, manger moins de féculents, privilégier les laitages de chèvres et brebis, et cuisiner simplement. Ma méthode fera surement bondir les nutritionnistes, mais ne dit on pas qu'il faut manger de tout ?
 
