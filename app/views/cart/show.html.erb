@@ -1,16 +1,33 @@
-<!-- Copyright (C) 2010 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
 <% @title = "Panier" %>
 
-<table>
-  <% @cart.items.each do |item| %>
+<div class="section">
+  <span class="section-title">Produits</span>
+  <table>
+    <% @cart.items.each do |item| %>
+      <tr>
+        <!-- use number_to_currency with valid settings to write the € string correctly -->
+        <td><%= item.quantity%> x </td><td><%=h item.name %></td><td><%= item.price %>€</td>
+      </tr>
+    <% end %>
     <tr>
-      <!-- use number_to_currency with valid settings to write the € string correctly -->
-      <td><%= item.quantity%> x </td><td><%=h item.name %></td><td><%= item.price %>€</td>
+      <td></td><td>Total</td><td><%= @cart.total_price %>€</td>
     </tr>
-  <% end %>
-  <tr>
-    <td></td><td>Total</td><td><%= @cart.total_price %>€</td>
-  </tr>
-</table>
+  </table>
+</div>
+<% @stores.each do |store| %>
+  <div class="section">
+    <span class="section-title"><%= store.url %></span>
+      <% form_for :store, :url => { :action => 'forward_to_store', :id => store.id }, :html => {:class => "store-login"} do |form| %>
+      <span>Nom d'utilisateur:</span>
+      <%= form.text_field "login", :size => 40 %> </input>
+      <span>Mot de passe:</span>
+      <%= form.password_field "password", :size => 20 %> </input>
+      <%= submit_tag "Transférer le panier" %> </input>
+    <% end %>
+  </div>
+<% end %>
+
+
 

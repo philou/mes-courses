@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -17,7 +17,7 @@ describe "/dish/index.html.erb" do
   it "displays a link to add items to the cart" do
     render
     @dishes.each {|dish| response.should have_selector("a", :href => default_path(:controller => 'cart',
-                                                                                  :action => 'add_dish_to_cart',
+                                                                                  :action => 'add_dish',
                                                                                   :id => dish.id)) }
   end
 

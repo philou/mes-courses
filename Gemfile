@@ -6,6 +6,7 @@ gem "nokogiri", "1.4.4"
 gem "central_logger", "0.2.0"
 
 gem "activerecord-nulldb-adapter", "0.2.0", :group => :test
+gem "selenium-client", "1.2.18", :group => :test
 
 gem "cucumber-rails", "0.3.2", :groups => [:cucumber, :ci]
 gem "database_cleaner", "0.5.2", :groups => [:cucumber, :ci]

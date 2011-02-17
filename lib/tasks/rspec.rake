@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 gem 'test-unit', '1.2.3' if RUBY_VERSION.to_f >= 1.9
 rspec_gem_dir = nil
@@ -60,6 +60,12 @@ desc "Run all specs in spec directory (excluding plugin specs)"
 Spec::Rake::SpecTask.new(:spec => spec_prereq) do |t|
   t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
   t.spec_files = FileList['spec/**/*_spec.rb']
+end
+
+desc "Run all specs in all *spec directories (excluding plugin specs)"
+Spec::Rake::SpecTask.new(:remote_spec => spec_prereq) do |t|
+  t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
+  t.spec_files = FileList['remote_spec/**/*_spec.rb']
 end
 
 namespace :spec do

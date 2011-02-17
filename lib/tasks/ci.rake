@@ -6,7 +6,8 @@ task :behaviours => [:ci,
                      'db:create',
                      'db:migrate',
                      :spec,
-                     :cucumber]
+                     :cucumber,
+                     :remote_spec]
 
 desc "Sets rails in ci mode"
 task :ci do

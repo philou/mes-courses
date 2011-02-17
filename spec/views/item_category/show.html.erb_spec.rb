@@ -46,7 +46,7 @@ describe "/item_category/show.html.erb" do
     it "displays a link to add each of its items to the cart" do
       @item_category.items.each do |item|
         response.should have_selector("a", :href => default_path(:controller => 'cart',
-                                                                 :action => 'add_item_to_cart',
+                                                                 :action => 'add_item',
                                                                  :id => item.id))
       end
     end

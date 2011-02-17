@@ -1,16 +1,29 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-Given /^the "([^"]*)" *(online)? store"?$/ do |webStore, online_store|
+Given /^the "([^"]*)" *(online)? store"?$/ do |web_store, online_store|
   test_online_if_possible = !online_store.blank?
 
   url = AUCHAN_DIRECT_OFFLINE
   @tweaks = {}
 
   if test_online_if_possible && online?
-    url = "http://"+webStore
+    url = "http://"+web_store
   end
 
   @store = Store.find_or_create_by_url(url)
+end
+
+# NOTE : I had to create another where the online url would not be overriden with
+#        a local file because rails does not handle redirection to file://... well
+# TODO : setup a real StoreAPIFactory, with a full blown TestStoreAPI, this could
+#        clean the design and remove the stubs from cucumber
+Given /^the "([^"]*)" store with api"?$/ do |web_store|
+  @storeAPI = nil
+  StoreAPI.stub!(:login) do |login, password|
+    @storeAPI = StoreAPIMock.new(login, password)
+  end
+
+  @store = Store.find_or_create_by_url("http://"+web_store)
 end
 
 Given /^items from the store were already imported$/ do
@@ -45,3 +58,6 @@ When /^sold out items from the store are re-imported$/ do
   reimport(@store, @tweaks, :max_loop_nodes => 2)
 end
 
+Then /^an empty cart should be created in the store account of the user$/ do
+  @storeAPI.log.should include(:empty_the_cart)
+end

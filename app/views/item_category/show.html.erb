@@ -13,7 +13,7 @@
       <td><%=h item.name %></td>
       <td><%= item.summary %></td>
       <td><%= item.price.to_s %>€</td>
-      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item_to_cart', :id => item.id }%></td>
+      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item', :id => item.id }%></td>
     </tr>
   <% end%>
 </table>

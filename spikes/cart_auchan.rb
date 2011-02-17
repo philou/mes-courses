@@ -3,8 +3,6 @@
 require 'rubygems'
 require 'mechanize'
 
-SHOPPING_LIST_NAME = "mes-courses.fr"
-
 attempt = 1
 
 begin
