@@ -11,7 +11,11 @@
     <r:unless_content part="hidden_mark">
       <item>
         <title><r:escape_html><r:title /></r:escape_html></title>
-        <description><r:escape_html><r:content /></r:escape_html></description>
+        <description>
+          <r:escape_html>
+            <r:content /><r:link> Poursuivre la lecture &#8230;</r:link>
+          </r:escape_html>
+        </description>
         <pubDate><r:rfc1123_date /></pubDate>
         <guid>http://www.mes-courses.fr<r:url /></guid>
         <link>http://www.mes-courses.fr<r:url /></link>

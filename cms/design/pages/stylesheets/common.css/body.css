@@ -126,7 +126,7 @@ html, body {
 
 #content-wrapper {
     margin: 0 auto;
-    max-width: 100em;
+    width: 100em;
 }
 
 /* Presentation */
@@ -159,24 +159,27 @@ p.status {
     margin: 0 auto;
     text-align: center;
 }
-#contact-details {
-    margin: 1em 0;
-    text-align: left;
-}
-
-#subscription input.text {
-    text-align: left;
+#subscription input.email-field {
     width: 20em;
+    text-align: left;
 }
 
 /* Blog */
-.blog-post {
+#blog-posts {
     width: 60em;
-    margin: 0 auto;
-    margin-bottom: 2.4em;
+    float: left;
+    padding-right: 2em;
+    border-right: 1px solid #a0db54;
+}
+#blog-sidebar {
+    width: 30em;
+    float: right;
 }
 
-.blog-post h2 {
+.blog-post {
+    margin-bottom: 2.4em;
+}
+ .blog-post h2 {
     border-bottom: 1px solid;
     margin-bottom: 1em;
 }
@@ -184,6 +187,10 @@ p.status {
 .blog-post p, .blog-post li {
     text-align: justify;
     line-height: 1.6em;
+}
+
+#blog #subscription *{
+    text-align: left;
 }
 
 .blog-post a.link-with-image {
