@@ -6,25 +6,25 @@
 
   <body id="blog" class="single">
 
-    <r:snippet name="html-body">
+    <r:snippet name="blog-body">
 
-      <div class="blog-post">
-        <h2><r:title /></h2>
-        <div id="main-content">
-          <r:content />
-        </div>
-        <r:if_content part="extended">
-          <div id="extended">
-            <r:content part="extended" />
+        <div class="blog-post">
+          <h2><r:title /></h2>
+          <div id="main-content">
+            <r:content />
           </div>
-        </r:if_content>
-        <p class="author">Posté par <r:author /> le <r:date format="%d/%m/%Y" /></p>
+          <r:if_content part="extended">
+            <div id="extended">
+              <r:content part="extended" />
+            </div>
+          </r:if_content>
+          <p class="author">Posté par <r:author /> le <r:date format="%d/%m/%Y" /></p>
 
-        <div id="comments">
-          <r:snippet name="comments" />
+          <div id="comments">
+            <r:snippet name="comments" />
+          </div>
+
         </div>
-
-      </div>
 
     </r:snippet>
 
