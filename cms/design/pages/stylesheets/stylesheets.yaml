@@ -1,7 +1,7 @@
 --- 
 class_name: ""
 slug: stylesheets
-updated_by_id: 1
+updated_by_id: 
 layout_name: <inherit> [presentation]
 title: stylesheets
 virtual: false
