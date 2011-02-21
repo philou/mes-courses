@@ -1,11 +1,11 @@
----
+--- 
 class_name: ""
 slug: common.css
-updated_by_id: 1
+updated_by_id: 
 layout_name: CSS
 title: common.css
 virtual: false
-created_by_id:
+created_by_id: 
 breadcrumb: common.css
 enable_comments: false
 comments_count: 0
