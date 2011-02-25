@@ -197,6 +197,9 @@ p.status {
     float: right;
     margin-left: 2em;
 }
+.blog-post p.centered-image {
+    text-align: center;
+}
 
 .blog-post img {
     border-style: none;
