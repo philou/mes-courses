@@ -177,11 +177,6 @@ describe StoreScrapper do
     exception_should_climb_up_the_stack(SocketError)
   end
 
-  def exception_should_climb_up_the_stack(exception_class)
-    initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
-    lambda { scrap }.should raise_error(exception_class)
-  end
-
   it "should continue on unscrappable store pages" do
     new_page = Mechanize::Page.method(:new)
     Mechanize::Page.stub!(:new).and_return do |*args|
@@ -190,13 +185,22 @@ describe StoreScrapper do
       result
     end
 
-    initialize_scrapper(:max_loop_nodes => 3)
-    lambda { scrap }.should_not raise_error
+    no_exception_should_climb_up_the_stack
   end
 
-  it "should continue badly formed store items" do
-    initialize_scrapper(:max_loop_nodes => 3)
+  it "should continue on badly formed store items" do
     @store.stub!(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
+
+    no_exception_should_climb_up_the_stack
+  end
+
+  def exception_should_climb_up_the_stack(exception_class)
+    initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
+    lambda { scrap }.should raise_error(exception_class)
+  end
+
+  def no_exception_should_climb_up_the_stack
+    initialize_scrapper(:max_loop_nodes => 1)
     lambda { scrap }.should_not raise_error
   end
 
