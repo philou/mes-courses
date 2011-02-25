@@ -1,0 +1,18 @@
+En revanche, si je ne lui avais jamais laissé l'occasion d'expérimenter avec, il aurait, déjà à son âge, accumulé un retard en informatique. C'est pourquoi nous essayons de lui laisser régulièrement l'opportunité de toucher aux ordinateurs. On a remarqué qu'il adorait faire des dessins pour les imprimer (avec Paint par exemple).
+
+[Paint screenshot]
+
+Pour que ce soit plus accessible pour lui, j'ai cherché si il existait un équivalent spécialement adapté aux enfants, et j'ai trouvé "TuxPaint":http://www.tuxpaint.org
+
+[TuxPaint screenshot]
+
+C'est comme Paint, mais avec des icônes plus grosses et plus parlantes pour des enfants. Il peut même sauvegarder et imprimer ses dessins. J'ai été réellement surpris par la vitesse avec laquelle il s'est débrouillé. Tout est pensé pour les enfants, même les quelques rares popup "Oui" ou "Non", sont affichées avec des couleurs et des icônes vertes et rouges très explicites qui permettent aux enfants de s'y retrouver.
+
+Pour l'installer il suffit de le télécharger ici. Après l'installation, j'ai modifié deux options qui me semblent plus adaptées à son âge :
+* La première, en créant une nouvelle sauvegarde à chaque enregistrement, évite que votre enfants ne perde ses anciens dessins.
+* La deuxième affiche le logiciel en plein écran.
+Pour cela, il suffit de sauvegarder ce fichier "tuxpaint.cfg":<r:slug />/tuxpaint.cfg dans votre répertoire C:\Program Files\TuxPaint si vous êtes sur Windows, ou dans Library/Application Support/TuxPaint si vous êtes sur Mac (click droit sur le lien, puis "enregistrer la cible du lien sous"). Vous pouvez voir la liste complète des options disponibles "ici":http://www.tuxpaint.org/docs/html/OPTIONS.html.
+
+Depuis qu'il s'amuse avec, notre fils a imprimé beaucoup de bonhommes pour sa mamie, mais il a aussi appris à naviguer dans l'ordinateur pour démarrer son programme de dessin.
+
+PS: n'hésitez pas à me poser des questions si vous avez des problèmes pour l'installation.
