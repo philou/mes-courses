@@ -1,0 +1,80 @@
+TODO
+
+dev env:
+* install a textile mode to emacs, and maybe a TODO mode
+* spike getting the cart amount without selenium [DONE, passed]
+* experiment the logs on heroku
+* clean up stories in the backlog
+
+
+needs:
+* scripts to set up full dev ( test and productions ?) environments, including gems and debs, compatible with heroku standards
+* discover as soon as possible that a foreign scrapped website changed: daily import report
+* test in live conditions (out of memory error while importing ...) -> heroku cron
+* use synchronous integration for other cases
+* have everything in the repo (marketing and docs)
+* automatic deployment scripts, especialy for cms but also to trigger synchronous integration
+  For cms:
+  - merge op from live to local file system
+  - merge op from local filesystem to live (using maintenance mode, might fail and rollback)
+* something to backup dbs
+* deploy automaticaly once all tests pass
+
+features:
+* setup an automatic daily app backup (human error prevention)
+* have scripts for cms deployment (human error prevention)
+* speed up store api tests by getting rid of selenium (needs exposing scrapping through store api)
+* scripts to set up full dev ( test and productions ?) environments, including gems and debs, compatible with heroku standards (productivity)
+* have a script for synchronous integration, with an heroku integration env (productivity)
+ - use a synchronous continuous integration env on heroku (RACK_ENV=test)
+* daily import and api test, with an email report, launched on heroku through the cron and the asynchronous integration rake task (auchan site change detection)
+ - use Exceptional.rescue + more filtered logging and drop central_logger
+ - improve import report
+ - write store api tests as rake tasks like stores:api:check and run them in cron, make sure errors climb up to Exceptional
+* deploy automaticaly once all tests pass (human error prevention)
+* put everything in the repo (error recovery)
+
+showstoppers to spike:
+* find a way to test the apis on heroku, without selenium if it is not supported [OK]
+  - use a javascript engine with no browser
+  - do some contract verification
+    + find a way to get the cart amount without the browser : find the detailed cart page, or emit the good request, and parse some js [DONE]
+    + expose item discovery (scrapping) to the api -> refactoring and class extracting
+    + allow to add an item to the cart through the api
+    + It would detect that the api has not changed
+    + Maybe we could remove remote_spec dir
+    ! It would not actually prove that the cart is forwarded
+* check that we can get a meaning full log from an heroku rake testing task
+  - create a special app !
+  - remove central_logger
+  - create a bogus request
+  - create bogus rake and cron tasks
+  - use Exceptional.rescue ... in rake tasks
+  - use heroku expanded logging
+  - use exceptional
+  - deploy
+  - test exceptional through the bogus request
+  - test exceptional through rake
+  - check logs tomorrow for cron detailed traces
+  - tests don't run from heroku rake -> try to change database.yml or Config RACK_ENV=test
+  - check if test errors appear as exceptions or not
+
+  - findings:
+    - exceptional works for exceptions in requests
+    - they don't by default for exceptions in rake tasks
+    - heroku rake forwards logs to remote desktop, but not to logging addon ...
+    - adding Exceptional.rescue traps rake exceptions in exceptional
+    - after setting RACK_ENV=test, test do run on heroku
+    - test errors do not climb up as exceptions and are not caught by exceptional
+
+  - possibilities
+    - integrity promises a lot, but did not work last time I tried, and doesn't seem to work with git hub private repos ...
+    - how could I publish spec and cucumber reports as html ? -> don't need it really ...
+    - no per build log ...
+
+alternatives:
+* use 2 integration envs (heroku and another one)
+* -extract apis (cart api and scrapper) to there gem, and test them independently (using different envs)- -> not good, the scrapper got out of memory on heroku
+* dump mongo loging for heroku advanced logging and exceptional
+* dump heroku for engine yard or another if it provided better logging
+
