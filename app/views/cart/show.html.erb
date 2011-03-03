@@ -5,10 +5,10 @@
 <div class="section">
   <span class="section-title">Produits</span>
   <table>
-    <% @cart.items.each do |item| %>
+    <% @cart.lines.each do |line| %>
       <tr>
         <!-- use number_to_currency with valid settings to write the € string correctly -->
-        <td><%= item.quantity%> x </td><td><%=h item.name %></td><td><%= item.price %>€</td>
+        <td><%= line.quantity%> x </td><td><%=h line.name %></td><td><%= line.price %>€</td>
       </tr>
     <% end %>
     <tr>

@@ -40,15 +40,12 @@ begin
              # 'IdProdUpd' => '',
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
 
-  # 3° on ajoute tout ce qu'on veut acheter
-
-  # TODO: try this, if it does not work, try to use a row of hashes instead of the string for Articles
-  #       when it works, try to remove dispensable arguments, and to find how to control quantity
+  3° on ajoute tout ce qu'on veut acheter
   agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
              { 'Action' => 'liste_ins',
                # indispensables
-               'ClientId' => '785619',
-               'ListeId' => '9365085',
+               'ClientId' => 785619,
+               'ListeId' => 9365085,
                'ListeType' => 'P',
                'Articles' => '[{'+
                # indispensables
@@ -81,8 +78,6 @@ begin
              #             'IdProdUpd' => '59713',
              #             'ListeNom' => 'AuchanDirect_Panier_785619'},
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-
-
 
 
   # 4° récupérer le prix du panier

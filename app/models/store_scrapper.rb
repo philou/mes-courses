@@ -83,14 +83,17 @@ class StoreScrapper
   end
 
   def extract_product_attributes(page)
-    type_produit = get_one(page, '.typeProduit')
-    infos_produit = get_one(page, '#infosProduit')
+    product_type = get_one(page, '.typeProduit')
+    product_infos = get_one(page, '#infosProduit')
+
+    remote_id = /article\/(\d+)(\.html)?$/.match(page.uri.to_s)[1].to_i
 
     return {
-      :name => get_one_css(page, type_produit, '.nomRayon').content,
-      :summary => get_one_css(page, type_produit, '.nomProduit').content,
-      :price => get_one_css(page, infos_produit, '.prixQteVal1').content.to_f,
-      :image => get_one_css(page, infos_produit, '#imgProdDetail')['src']
+      :name => get_one_css(page, product_type, '.nomRayon').content,
+      :summary => get_one_css(page, product_type, '.nomProduit').content,
+      :price => get_one_css(page, product_infos, '.prixQteVal1').content.to_f,
+      :image => get_one_css(page, product_infos, '#imgProdDetail')['src'],
+      :remote_id => remote_id
     }
   end
 

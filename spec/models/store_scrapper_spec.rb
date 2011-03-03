@@ -98,6 +98,16 @@ describe StoreScrapper do
       end
     end
 
+    it "should create valid items params" do
+      lambda do
+        @register_items.each do |item|
+          params = item.clone
+          params.delete(:item_category)
+          Item.new(params)
+        end
+      end.should_not raise_error
+    end
+
     it "should create different items" do
       @register_items.should mostly have_unique(:name)
     end
@@ -116,6 +126,10 @@ describe StoreScrapper do
 
     it "should create most items with a summary" do
       @register_items.should mostly have_key(:summary)
+    end
+
+    it "should create items with a remote id" do
+      @register_items.should all have_key(:remote_id)
     end
 
     it "should register a visited url for every registered thing" do

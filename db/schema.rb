@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110118070447) do
+ActiveRecord::Schema.define(:version => 20110302054303) do
 
   create_table "dishes", :force => true do |t|
     t.string   "name",       :null => false
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(:version => 20110118070447) do
     t.decimal  "price",            :null => false
     t.string   "image"
     t.string   "summary"
+    t.integer  "remote_id"
   end
 
   add_index "items", ["name", "item_category_id"], :name => "altered_items_name_item_sub_type_id", :unique => true

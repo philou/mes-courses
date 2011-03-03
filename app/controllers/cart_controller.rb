@@ -27,12 +27,7 @@ class CartController < ApplicationController
   def forward_to_store
     store = Store.find_by_id(params[:id])
 
-    store_api = StoreAPI.login(params[:store][:login], params[:store][:password])
-    begin
-      store_api.empty_the_cart
-    ensure
-      store_api.logout
-    end
+    @cart.forward_to_store(params[:store][:login], params[:store][:password])
 
     redirect_to store.url
   end

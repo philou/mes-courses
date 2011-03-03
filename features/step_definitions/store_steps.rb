@@ -61,3 +61,7 @@ end
 Then /^an empty cart should be created in the store account of the user$/ do
   @storeAPI.log.should include(:empty_the_cart)
 end
+
+Then  /^a non empty cart should be created in the store account of the user$/ do
+  @storeAPI.log.should include(:set_item_quantity_in_cart)
+end

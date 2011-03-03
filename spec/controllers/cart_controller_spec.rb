@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 require 'stub_helper'
+require 'models/store_api_mock'
 
 describe CartController do
   include StubHelper
@@ -71,21 +72,8 @@ describe CartController do
 
   context "forwarding to a store" do
 
-    VALID_LOGIN = "valid-login"
-    VALID_PASSWORD = "valid-password"
-
-    before :each do
-      @store_api = stub(StoreAPI).as_null_object
-      StoreAPI.stub(:login).and_return(@store_api)
-    end
-
-    it "should login to the store" do
-      StoreAPI.should_receive(:login).with(VALID_LOGIN, VALID_PASSWORD)
-      forward_to_valid_store_account
-    end
-
-    it "should empty the remote cart" do
-      @store_api.should_receive(:empty_the_cart)
+    it "should forward the cart instance to the store" do
+      @cart.should_receive(:forward_to_store).with(StoreAPI.valid_login, StoreAPI.valid_password)
       forward_to_valid_store_account
     end
 
@@ -94,19 +82,8 @@ describe CartController do
       response.should redirect_to @store.url
     end
 
-    it "should eventually logout from the store" do
-      @store_api.should_receive(:logout)
-      forward_to_valid_store_account
-    end
-
-    it "should logout from the store even if something went bad" do
-      @store_api.stub(:empty_the_cart).and_raise(SocketError.new("Connection lost"))
-      @store_api.should_receive(:logout)
-      lambda { forward_to_valid_store_account }.should raise_error(SocketError)
-    end
-
     def forward_to_valid_store_account
-      post 'forward_to_store', :id => @store.id, :store => {:login => VALID_LOGIN, :password => VALID_PASSWORD}
+      post 'forward_to_store', :id => @store.id, :store => {:login => StoreAPI.valid_login, :password => StoreAPI.valid_password}
     end
 
   end

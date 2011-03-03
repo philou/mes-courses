@@ -26,7 +26,19 @@ else
         api.logout
       end
 
-      cart_should_be_empty
+      cart_value.should == 0.0
+    end
+
+    it "should fill in the cart" do
+      make_sure_cart_is_empty
+      item = sample_item
+
+      set_item_quantity_in_cart(1, item)
+      item_price = cart_value
+      item_price.should_not == 0.0
+
+      set_item_quantity_in_cart(3, item)
+      cart_value.should == 3*item_price
     end
 
     LOGIN = "philippe.bourgau@free.fr"
@@ -54,33 +66,62 @@ else
 
     private
 
-    def make_sure_cart_is_not_empty
-      while_logged do
-        click_and_wait "link=Produits laitiers"
-        click_and_wait "link=Laits demi-écrémés"
-        store_page.click "//img[@alt='Ajouter au panier']"
-        cart_value.should_not == 0.0
+    def make_sure_cart_is_empty
+      api = StoreAPI.login(LOGIN, PASSWORD)
+      begin
+        api.empty_the_cart
+      ensure
+        api.logout
       end
     end
 
-    def cart_should_be_empty
-      while_logged do
-        cart_value.should == 0.0
+    def set_item_quantity_in_cart(quantity, item)
+      api = StoreAPI.login(LOGIN, PASSWORD)
+      begin
+        api.set_item_quantity_in_cart(quantity, item)
+      ensure
+        api.logout
+      end
+    end
+
+    def make_sure_cart_is_not_empty
+      login_and do
+        click_and_wait "link=Produits laitiers"
+        click_and_wait "link=Laits demi-écrémés"
+        store_page.click "//img[@alt='Ajouter au panier']"
+        current_cart_value.should_not == 0.0
+      end
+    end
+
+    def sample_item
+      login_and do
+        click_and_wait "link=Produits laitiers"
+        click_and_wait "link=Laits demi-écrémés"
+        click_and_wait "//a[contains(@class,'lienArticle')]"
+
+        id = /\d+$/.match(store_page.location).to_s.to_i
+        return Item.new(:name => 'Lait', :remote_id => id, :price => 5.89)
       end
     end
 
     def cart_value
+      login_and do
+        current_cart_value
+      end
+    end
+
+    def current_cart_value
       store_page.get_text("panier_prix").delete('€').strip.to_f
     end
 
-    def while_logged
+    def login_and
       store_page.open "/frontoffice/"
       store_page.type "Username", LOGIN
       store_page.type "Password", PASSWORD
       click_and_wait "accueilIdentifier"
 
       begin
-        yield
+        return yield
 
       ensure
         click_and_wait "//img[@alt=\"Retour à l'accueil AuchanDirect\"]"

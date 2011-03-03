@@ -5,10 +5,10 @@ require 'spec_helper'
 describe "cart/show.html.erb" do
 
   before(:each) do
-    @tomates = stub(CartItem, :name => "Tomates", :price => 2.4, :quantity => 7)
-    @pdt = stub(CartItem, :name => "Pommes de terre", :price => 0.99, :quantity => 1)
+    @tomates = stub(CartLine, :name => "Tomates", :price => 2.4, :quantity => 7)
+    @pdt = stub(CartLine, :name => "Pommes de terre", :price => 0.99, :quantity => 1)
     @total_price = @tomates.price + @pdt.price
-    @cart = stub(Cart, :items => [@tomates, @pdt], :total_price => @total_price)
+    @cart = stub(Cart, :lines => [@tomates, @pdt], :total_price => @total_price)
     assigns[:cart] = @cart
 
     @stores = [stub_model(Store, :url => "http://www.auchandirect.fr"),
