@@ -18,5 +18,9 @@ Feature: Cart Forwarding
     When  I forward the cart to the store account of a valid user
     Then  a non empty cart should be created in the store account of the user
 
-  # Scenario: A customer is redirected to the store after his cart is forwarded
+  Scenario: A customer is redirected to the store after his cart is forwarded
+    Given the "www.dummy-store.fr" store with api
+    And   I am on the cart page
+    When  I forward the cart to the store account of a valid user
+    Then  I should be redirected to the store website
 

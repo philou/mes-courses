@@ -65,3 +65,7 @@ end
 Then  /^a non empty cart should be created in the store account of the user$/ do
   @storeAPI.log.should include(:set_item_quantity_in_cart)
 end
+
+Then  /^I should be redirected to the store website$/ do
+  response.should redirect_to(@store.url)
+end
