@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 describe "cart/show.html.erb" do
+  include ApplicationHelper
 
   before(:each) do
     @tomates = stub(CartLine, :name => "Tomates", :price => 2.4, :quantity => 7)
@@ -46,7 +47,7 @@ describe "cart/show.html.erb" do
   it "displays a store forwarding forms" do
     @stores.each do |store|
       response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.url}\"]/form",
-                                 :action => default_path(:controller => 'cart', :action => 'forward_to_store', :id => store.id))
+                                 :action => https_url_for(:controller => 'cart', :action => 'forward_to_store', :id => store.id))
     end
   end
 
