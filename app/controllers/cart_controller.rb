@@ -7,6 +7,8 @@ class CartController < ApplicationController
   before_filter :find_cart
   before_filter :find_store
 
+  protect_from_forgery :except => :forward_to_store
+
   # Displays the full session's cart
   def show
   end
