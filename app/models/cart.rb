@@ -34,20 +34,17 @@ class Cart
     result
   end
 
-  def forward_to_store(login, password)
-    store_api = StoreAPI.login(login, password)
+  def forward_to(store, login, password)
+    StoreAPI.with_login(store.url, login, password) do |store_api|
 
-    begin
       store_api.empty_the_cart
 
       lines.each do |line|
         line.forward_to(store_api)
       end
 
-    ensure
-      store_api.logout
+      return store_api.logout_url
     end
-
   end
 
 end

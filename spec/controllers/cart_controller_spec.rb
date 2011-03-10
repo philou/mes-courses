@@ -72,14 +72,19 @@ describe CartController do
 
   context "forwarding to a store" do
 
+    before(:each) do
+      @logout_url = "#{@store.url}/deconnexion"
+      @cart.stub(:forward_to).and_return(@logout_url)
+    end
+
     it "should forward the cart instance to the store" do
-      @cart.should_receive(:forward_to_store).with(StoreAPI.valid_login, StoreAPI.valid_password)
+      @cart.should_receive(:forward_to).with(@store, StoreAPI.valid_login, StoreAPI.valid_password)
       forward_to_valid_store_account
     end
 
     it "should redirect response to the store" do
       forward_to_valid_store_account
-      response.should redirect_to @store.url
+      response.should redirect_to(@logout_url)
     end
 
     def forward_to_valid_store_account

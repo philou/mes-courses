@@ -29,9 +29,9 @@ class CartController < ApplicationController
   def forward_to_store
     store = Store.find_by_id(params[:id])
 
-    @cart.forward_to_store(params[:store][:login], params[:store][:password])
+    redirect_url = @cart.forward_to(store, params[:store][:login], params[:store][:password])
 
-    redirect_to store.url
+    redirect_to redirect_url
   end
 
   private

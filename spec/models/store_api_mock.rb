@@ -6,10 +6,11 @@
 #      or make a generic class of this logger
 class StoreAPIMock
 
-  attr_reader :login, :password, :log
+  attr_reader :store_url, :login, :password, :log
 
-  def initialize(login, password)
+  def initialize(store_url, login, password)
     @log = []
+    @store_url = store_url
     @login = login
     @password = password
   end
@@ -24,6 +25,10 @@ class StoreAPIMock
 
   def set_item_quantity_in_cart(quantity, item)
     @log.push(:set_item_quantity_in_cart)
+  end
+
+  def logout_url
+    @store_url+"/logout"
   end
 end
 

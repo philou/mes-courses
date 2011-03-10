@@ -19,8 +19,8 @@ end
 #        clean the design and remove the stubs from cucumber
 Given /^the "([^"]*)" store with api"?$/ do |web_store|
   @storeAPI = nil
-  StoreAPI.stub!(:login) do |login, password|
-    @storeAPI = StoreAPIMock.new(login, password)
+  StoreAPI.stub!(:login) do |store_url, login, password|
+    @storeAPI = StoreAPIMock.new(store_url, login, password)
   end
 
   @store = Store.find_or_create_by_url("http://"+web_store)
@@ -67,5 +67,6 @@ Then  /^a non empty cart should be created in the store account of the user$/ do
 end
 
 Then  /^I should be redirected to the store website$/ do
-  response.should redirect_to(@store.url)
+  response.should be_redirect
+  response.redirect_url.should =~ Regexp.new("^#{@store.url}.*$")
 end

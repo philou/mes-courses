@@ -17,13 +17,10 @@ else
   describe StoreAPI do
 
     it "should empty the cart" do
-      make_sure_cart_is_not_empty
+      login_and { make_sure_cart_is_not_empty }
 
-      api = StoreAPI.login(LOGIN, PASSWORD)
-      begin
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
         api.empty_the_cart
-      ensure
-        api.logout
       end
 
       cart_value.should == 0.0
@@ -33,12 +30,32 @@ else
       make_sure_cart_is_empty
       item = sample_item
 
-      set_item_quantity_in_cart(1, item)
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
+        api.set_item_quantity_in_cart(1, item)
+      end
       item_price = cart_value
       item_price.should_not == 0.0
 
-      set_item_quantity_in_cart(3, item)
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
+        api.set_item_quantity_in_cart(3, item)
+      end
       cart_value.should == 3*item_price
+    end
+
+    it "should have a logout url to force refresh the client cart" do
+      login_and do
+        make_sure_cart_is_not_empty
+
+        logout_url = StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
+          api.empty_the_cart
+
+          api.logout_url
+        end
+
+        store_page.open logout_url
+        login
+        current_cart_value.should == 0
+      end
     end
 
     LOGIN = "philippe.bourgau@free.fr"
@@ -67,30 +84,23 @@ else
     private
 
     def make_sure_cart_is_empty
-      api = StoreAPI.login(LOGIN, PASSWORD)
-      begin
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
         api.empty_the_cart
-      ensure
-        api.logout
       end
     end
 
     def set_item_quantity_in_cart(quantity, item)
-      api = StoreAPI.login(LOGIN, PASSWORD)
-      begin
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
         api.set_item_quantity_in_cart(quantity, item)
-      ensure
-        api.logout
+        return api.logout_url
       end
     end
 
     def make_sure_cart_is_not_empty
-      login_and do
-        click_and_wait "link=Produits laitiers"
-        click_and_wait "link=Laits demi-écrémés"
-        store_page.click "//img[@alt='Ajouter au panier']"
-        current_cart_value.should_not == 0.0
-      end
+      click_and_wait "link=Produits laitiers"
+      click_and_wait "link=Laits demi-écrémés"
+      store_page.click "//img[@alt='Ajouter au panier']"
+      current_cart_value.should_not == 0.0
     end
 
     def sample_item
@@ -115,18 +125,24 @@ else
     end
 
     def login_and
-      store_page.open "/frontoffice/"
-      store_page.type "Username", LOGIN
-      store_page.type "Password", PASSWORD
-      click_and_wait "accueilIdentifier"
-
+      login
       begin
         return yield
 
       ensure
+        logout
+      end
+    end
+
+    def login
+      store_page.open "/frontoffice/"
+      store_page.type "Username", LOGIN
+      store_page.type "Password", PASSWORD
+      click_and_wait "accueilIdentifier"
+    end
+    def logout
         click_and_wait "//img[@alt=\"Retour à l'accueil AuchanDirect\"]"
         click_and_wait "link=cliquez ici"
-      end
     end
 
     def click_and_wait(selector)

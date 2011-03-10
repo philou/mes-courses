@@ -7,24 +7,33 @@ class StoreAPI
 
   STORE_URL = "http://www.auchandirect.fr"
 
-  # Logs in the store account of a user and returns a StoreAPI instance
-  def self.login(login, password)
-    agent = Mechanize.new
-    page = agent.get(STORE_URL)
-
-    login_form = Mechanize::Form.new(page.search('#formIdentification').first,
-                                     page.mech,
-                                     page)
-    login_form.Username = login
-    login_form.Password = password
-    login_form.submit()
-
-    StoreAPI.new(agent)
+  # Logins, executes the block, and logs out.
+  def self.with_login(store_url, login, password)
+    api = self.login(store_url, login, password)
+    begin
+      return yield api
+    ensure
+      api.logout
+    end
   end
 
+  # Logs in the store account of a user and returns a StoreAPI instance
+  def self.login(store_url, login, password)
+    if store_url == STORE_URL
+      StoreAPI.new(login, password)
+    else
+      raise ArgumentError "StoreAPI does not handle store at '#{store_url}'"
+    end
+  end
+
+  # logs out from the store
   def logout
-    page = @agent.get(STORE_URL)
-    page.link_with(:text => "cliquez ici").click
+    @agent.get(logout_url)
+  end
+
+  # url at which a client browser can logout
+  def logout_url
+    STORE_URL+"/frontoffice/index/deconnexion/"
   end
 
   # empties the cart of the current user
@@ -49,8 +58,17 @@ class StoreAPI
 
   private
 
-  def initialize(agent)
-    @agent = agent
+  def initialize(login, password)
+    @agent = Mechanize.new
+    page = @agent.get(STORE_URL)
+
+    login_form = Mechanize::Form.new(page.search('#formIdentification').first,
+                                     page.mech,
+                                     page)
+    login_form.Username = login
+    login_form.Password = password
+    login_form.submit()
+
     @client_id, @panier_id = extract_ids
   end
 

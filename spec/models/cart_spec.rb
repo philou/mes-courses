@@ -62,12 +62,14 @@ describe Cart do
 
     before :each do
       @cart = Cart.new
+      @store = Store.new(:url => "http://www.a-store.com")
       @store_api = stub(StoreAPI).as_null_object
       StoreAPI.stub(:login).and_return(@store_api)
+      @store_api.stub(:logout_url).and_return("http://www.a-store.com/logout")
     end
 
     it "should login to the store" do
-      StoreAPI.should_receive(:login).with(StoreAPI.valid_login, StoreAPI.valid_password)
+      StoreAPI.should_receive(:login).with(@store.url, StoreAPI.valid_login, StoreAPI.valid_password)
       forward_to_store
     end
 
@@ -99,8 +101,12 @@ describe Cart do
       lambda { forward_to_store }.should raise_error(SocketError)
     end
 
+    it "should return the log out url of the store" do
+      forward_to_store.should == @store_api.logout_url
+    end
+
     def forward_to_store
-      @cart.forward_to_store(StoreAPI.valid_login, StoreAPI.valid_password)
+      @cart.forward_to(@store, StoreAPI.valid_login, StoreAPI.valid_password)
     end
   end
 
