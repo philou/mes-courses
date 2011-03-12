@@ -36,6 +36,18 @@ class StoreAPI
     STORE_URL+"/frontoffice/index/deconnexion/"
   end
 
+  # total value of the remote cart
+  def value_of_the_cart
+    js = get_embedded_js
+
+    result = 0.0
+    js.scan(/oPanier\s*\.\s*_insArticle\s*\(\s*"p_(\d+)"\s*,\s*(\d+)/).each do |id, quantity|
+      price = Regexp.compile('oCatalogue._insArticle\(.*,\s*'+id+'\s*,.*,\s*(\d+.\d\d)\s*,').match(js)[1]
+      result += quantity.to_i * price.to_f
+    end
+    result
+  end
+
   # empties the cart of the current user
   def empty_the_cart
     @agent.post(STORE_URL+"/frontoffice/index/ajax_liste",
@@ -73,16 +85,20 @@ class StoreAPI
   end
 
   def extract_ids
-    page = @agent.get(STORE_URL)
-    scripts = page.search('script')
-
-    script = scripts.find {|script| !script.inner_text.empty? }
-    js = script.inner_text
+    js = get_embedded_js
 
     client_id = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
     panier_id = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
 
     [client_id, panier_id]
+  end
+
+  def get_embedded_js
+    page = @agent.get(STORE_URL)
+    scripts = page.search('script')
+
+    script = scripts.find {|script| !script.inner_text.empty? }
+    return script.inner_text
   end
 
 end

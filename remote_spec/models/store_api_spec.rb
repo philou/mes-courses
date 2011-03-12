@@ -16,66 +16,74 @@ else
 
   describe StoreAPI do
 
-    it "should empty the cart" do
-      login_and { make_sure_cart_is_not_empty }
-
-      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-        api.empty_the_cart
-      end
-
-      cart_value.should == 0.0
+    before(:each) do
+      @api = StoreAPI.login(StoreAPI::STORE_URL, LOGIN, PASSWORD)
+    end
+    after(:each) do
+      @api.logout
     end
 
-    it "should fill in the cart" do
-      make_sure_cart_is_empty
-      item = sample_item
+    it "should set the cart value to 0 when emptying the cart" do
+      @api.set_item_quantity_in_cart(1, sample_item)
 
-      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-        api.set_item_quantity_in_cart(1, item)
-      end
-      item_price = cart_value
-      item_price.should_not == 0.0
-
-      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-        api.set_item_quantity_in_cart(3, item)
-      end
-      cart_value.should == 3*item_price
+      @api.empty_the_cart
+      @api.value_of_the_cart.should == 0
     end
 
-    it "should have a logout url to force refresh the client cart" do
-      login_and do
-        make_sure_cart_is_not_empty
+    it "should set the cart value to something greater than 0 when adding items to the cart" do
+      @api.empty_the_cart
 
-        logout_url = StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-          api.empty_the_cart
+      @api.set_item_quantity_in_cart(1, sample_item)
+      @api.value_of_the_cart.should >  0
+    end
 
-          api.logout_url
-        end
+    it "should set the cart value to 3 times that of one item when adding 3 items" do
+      @api.empty_the_cart
 
-        store_page.open logout_url
-        login
-        current_cart_value.should == 0
+      @api.set_item_quantity_in_cart(1, sample_item)
+      item_price = @api.value_of_the_cart
+
+      @api.set_item_quantity_in_cart(3, sample_item)
+      @api.value_of_the_cart.should == 3*item_price
+    end
+
+    it "should synchronize different sessions with logout login" do
+      @api.set_item_quantity_in_cart(1, sample_item)
+
+      StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api_2|
+        api_2.empty_the_cart
       end
+
+      @api.logout
+      @api = StoreAPI.login(StoreAPI::STORE_URL, LOGIN, PASSWORD)
+
+      @api.value_of_the_cart.should == 0
     end
 
     LOGIN = "philippe.bourgau@free.fr"
     PASSWORD = "NoahRules78"
 
-    attr_reader :selenium_driver
+    attr_reader :selenium_driver, :sample_item
     alias :store_page :selenium_driver
 
     before(:all) do
       start_selenium_server
       start_selenium_driver
-    end
-
-    before(:each) do
       selenium_driver.start_new_browser_session
+      begin
+        @sample_item = extract_sample_item
+      ensure
+        selenium_driver.close_current_browser_session
+      end
     end
 
-    append_after(:each) do
-      selenium_driver.close_current_browser_session
-    end
+    # before(:each) do
+    #   selenium_driver.start_new_browser_session
+    # end
+
+    # append_after(:each) do
+    #   selenium_driver.close_current_browser_session
+    # end
 
     after(:all) do
       stop_selenium_server
@@ -103,7 +111,7 @@ else
       current_cart_value.should_not == 0.0
     end
 
-    def sample_item
+    def extract_sample_item
       login_and do
         click_and_wait "link=Produits laitiers"
         click_and_wait "link=Laits demi-écrémés"

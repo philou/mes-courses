@@ -13,9 +13,18 @@ describe Cart do
     @items = Array.new(5) {|i| stub(Item, :name => "item_#{i.to_s}", :price => 0.5 + i.to_f) }
   end
 
+  it "should be empty when created" do
+    @cart.should be_empty
+  end
+
   it "should have no items when created" do
     @cart.lines.should be_empty
   end
+
+  it "should not be empty once items were added" do
+    @cart.add_item(@bavette)
+    @cart.should_not be_empty
+ end
 
   it "should contain added items" do
     @items.each {|item| @cart.add_item(item) }

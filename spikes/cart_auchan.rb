@@ -40,8 +40,8 @@ begin
              # 'IdProdUpd' => '',
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
 
-  3° on ajoute tout ce qu'on veut acheter
-  agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
+  #3° on ajoute tout ce qu'on veut acheter
+  res = agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
              { 'Action' => 'liste_ins',
                # indispensables
                'ClientId' => 785619,
@@ -51,7 +51,7 @@ begin
                # indispensables
                '"maxcde":10,'+ # ça marche aussi avec 100 ...
                '"type":"p",'+
-               '"id":57985,'+ # on le trouve dans l'url du produit
+               '"id":66666666,'+ # on le trouve dans l'url du produit
                '"qte":1,'+
                '"prix_total":2.5'+ # on l'a pour chaque produit, quoi qu'on mette, il met le prix du magasin !
 
@@ -78,7 +78,7 @@ begin
              #             'IdProdUpd' => '59713',
              #             'ListeNom' => 'AuchanDirect_Panier_785619'},
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-
+  puts res
 
   # 4° récupérer le prix du panier
 

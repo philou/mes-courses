@@ -5,7 +5,7 @@
 class CartController < ApplicationController
 
   before_filter :find_cart
-  before_filter :find_store
+  before_filter :find_stores
 
   protect_from_forgery :except => :forward_to_store
 
@@ -37,6 +37,7 @@ class CartController < ApplicationController
   private
 
   def find_cart
+    Rails.logger.warn("Creating a new session cart") unless session[:cart]
     @cart = session[:cart] ||= Cart.new
   end
 
@@ -45,7 +46,7 @@ class CartController < ApplicationController
     @cart.send("add_#{model.to_s.downcase}".intern, thing)
   end
 
-  def find_store
+  def find_stores
     @stores = Store.find(:all)
   end
 
