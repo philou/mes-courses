@@ -37,8 +37,13 @@ class CartController < ApplicationController
   private
 
   def find_cart
-    Rails.logger.warn("Creating a new session cart") unless session[:cart]
-    @cart = session[:cart] ||= Cart.new
+    @cart = session[:cart]
+    if @cart
+      Rails.logger.info("Found session cart with '#{@cart.lines.inspect}'")
+    else
+      Rails.logger.warn("Creating a new session cart")
+      @cart = session[:cart] = Cart.new
+    end
   end
 
   def add_to_cart(model)
