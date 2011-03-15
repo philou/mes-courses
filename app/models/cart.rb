@@ -2,25 +2,24 @@
 
 
 # Session cart for a user
-class Cart
+class Cart < ActiveRecord::Base
 
-  def initialize
-    @items_to_lines = {}
-  end
+  has_many :lines,
+           :class_name => "CartLine",
+           :foreign_key => "cart_id",
+           :dependent => :destroy,
+           :autosave => true
 
   def empty?
-    return @items_to_lines.empty?
-  end
-
-  def lines
-    @items_to_lines.values
+    return lines.empty?
   end
 
   def add_item(item)
-    if !@items_to_lines.include?(item)
-      @items_to_lines[item] = CartLine.new(item)
-    else
-      @items_to_lines[item].increment_quantity
+    cart_line = lines.detect {|line| line.item == item }
+    if cart_line.nil?
+      lines.build(:quantity => 1, :item => item)
+   else
+      cart_line.increment_quantity
     end
   end
 
@@ -40,20 +39,10 @@ class Cart
 
   def forward_to(store, login, password)
     StoreAPI.with_login(store.url, login, password) do |store_api|
-      Rails.logger.warn("Forwarding an empty cart to '#{store.url}'") if empty?
-
       store_api.empty_the_cart
-      cart_value = store_api.value_of_the_cart
-      Rails.logger.error("Failed to initialize the cart on '#{store.url}'") unless cart_value == 0.0
 
       lines.each do |line|
         line.forward_to(store_api)
-
-        new_cart_value = store_api.value_of_the_cart
-        if 0.0 < line.price
-          Rails.logger.error("Failed to forward '#{line.name}' to the cart on '#{store.url}'") unless cart_value < new_cart_value
-        end
-        cart_value = new_cart_value
       end
 
       return store_api.logout_url

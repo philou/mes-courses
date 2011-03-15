@@ -7,10 +7,10 @@ require 'models/store_api_mock'
 describe Cart do
 
   before(:each) do
-    @bavette = stub(Item, :name => "Bavette", :price => 4.5)
+    @bavette = stub_model(Item, :name => "Bavette", :price => 4.5)
 
     @cart = Cart.new
-    @items = Array.new(5) {|i| stub(Item, :name => "item_#{i.to_s}", :price => 0.5 + i.to_f) }
+    @items = Array.new(5) {|i| stub_model(Item, :name => "item_#{i.to_s}", :price => 0.5 + i.to_f) }
   end
 
   it "should be empty when created" do
@@ -123,7 +123,7 @@ describe Cart do
 
   def cart_should_contain_all_items
     @items.each do |added_item|
-      cart_item = @cart.lines.find {|line| line.name == added_item.name}
+      cart_item = @cart.lines.detect {|line| line.item == added_item}
       cart_item.should_not be_nil
     end
   end

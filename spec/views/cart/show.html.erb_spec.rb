@@ -6,10 +6,10 @@ describe "cart/show.html.erb" do
   include ApplicationHelper
 
   before(:each) do
-    @tomates = stub(CartLine, :name => "Tomates", :price => 2.4, :quantity => 7)
-    @pdt = stub(CartLine, :name => "Pommes de terre", :price => 0.99, :quantity => 1)
+    @tomates = stub_model(CartLine, :name => "Tomates", :price => 2.4, :quantity => 7)
+    @pdt = stub_model(CartLine, :name => "Pommes de terre", :price => 0.99, :quantity => 1)
     @total_price = @tomates.price + @pdt.price
-    @cart = stub(Cart, :lines => [@tomates, @pdt], :total_price => @total_price)
+    @cart = stub_model(Cart, :lines => [@tomates, @pdt], :total_price => @total_price)
     assigns[:cart] = @cart
 
     @stores = [stub_model(Store, :url => "http://www.auchandirect.fr"),
@@ -46,8 +46,10 @@ describe "cart/show.html.erb" do
 
   it "displays a store forwarding forms" do
     @stores.each do |store|
-      response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.url}\"]/form",
-                                 :action => https_url_for(:controller => 'cart', :action => 'forward_to_store', :id => store.id))
+      response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.url}\"]/form" +
+                                 "[starts-with(@action, '#{https_url_for(:controller => 'cart', :action => 'forward_to_store')}')]" +
+                                 "[contains(@action, 'store_id=#{store.id}')]" +
+                                 "[contains(@action, 'cart_id=#{@cart.id}')]")
     end
   end
 

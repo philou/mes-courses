@@ -2,9 +2,11 @@
 
 
 # Controller for the shopping cart
+# it stores the cart in the db, and its id in the session, so that
+# the cart can be transferred from a domain to another
 class CartController < ApplicationController
 
-  before_filter :find_cart
+  before_filter :find_cart, :except => :forward_to_store
   before_filter :find_stores
 
   protect_from_forgery :except => :forward_to_store
@@ -27,9 +29,10 @@ class CartController < ApplicationController
 
   # Builds the session cart on an online store
   def forward_to_store
-    store = Store.find_by_id(params[:id])
+    cart = Cart.find_by_id(params[:cart_id].to_i)
+    store = Store.find_by_id(params[:store_id].to_i)
 
-    redirect_url = @cart.forward_to(store, params[:store][:login], params[:store][:password])
+    redirect_url = cart.forward_to(store, params[:store][:login], params[:store][:password])
 
     redirect_to redirect_url
   end
@@ -37,18 +40,18 @@ class CartController < ApplicationController
   private
 
   def find_cart
-    @cart = session[:cart]
-    if @cart
-      Rails.logger.info("Found session cart with '#{@cart.lines.inspect}'")
-    else
-      Rails.logger.warn("Creating a new session cart")
-      @cart = session[:cart] = Cart.new
+    cart_id = session[:cart_id]
+    @cart = Cart.find_by_id(cart_id) unless cart_id.nil?
+    if @cart.nil?
+      @cart = Cart.create
+      session[:cart_id] = @cart.id
     end
   end
 
   def add_to_cart(model)
     thing = model.find(params[:id])
     @cart.send("add_#{model.to_s.downcase}".intern, thing)
+    @cart.save!
   end
 
   def find_stores

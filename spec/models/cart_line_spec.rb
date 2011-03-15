@@ -6,8 +6,8 @@ require 'include_all_matcher'
 describe CartLine do
 
   before(:each) do
-    @item = stub(Item, :name => "Bavette", :price => 4.5)
-    @cart_line = CartLine.new(@item)
+    @item = stub_model(Item, :name => "Bavette", :price => 4.5)
+    @cart_line = CartLine.new(:quantity => 1, :item => @item)
   end
 
   context "when created" do

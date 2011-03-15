@@ -9,7 +9,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302054303) do
+ActiveRecord::Schema.define(:version => 20110312093108) do
+
+  create_table "cart_lines", :force => true do |t|
+    t.integer  "quantity",   :null => false
+    t.integer  "item_id",    :null => false
+    t.integer  "cart_id",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cart_lines", ["cart_id", "item_id"], :name => "cart_lines_cart_id_item_id_index", :unique => true
+  add_index "cart_lines", ["cart_id"], :name => "cart_lines_cart_id_index"
+
+  create_table "carts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "dishes", :force => true do |t|
     t.string   "name",       :null => false

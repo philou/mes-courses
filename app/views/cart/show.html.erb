@@ -19,7 +19,7 @@
 <% @stores.each do |store| %>
   <div class="section">
     <span class="section-title"><%= store.url %></span>
-      <% form_for :store, :url => https_url_for(:action => 'forward_to_store', :id => store.id), :html => {:class => "store-login"} do |form| %>
+      <% form_for :store, :url => https_url_for(:action => 'forward_to_store', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
       <span>Nom d'utilisateur:</span>
       <%= form.text_field "login", :size => 40 %> </input>
       <span>Mot de passe:</span>
