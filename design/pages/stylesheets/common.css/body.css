@@ -222,6 +222,7 @@ p.status {
 p.author {
     font-size: 1.2em;
     font-style: italic;
+    margin: 1em 0;
 }
 #comments {
     margin: 1em;
