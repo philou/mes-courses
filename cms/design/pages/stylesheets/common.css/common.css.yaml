@@ -1,7 +1,7 @@
 --- 
 class_name: ""
 slug: common.css
-updated_by_id: 
+updated_by_id: 1
 layout_name: CSS
 title: common.css
 virtual: false
@@ -10,6 +10,6 @@ breadcrumb: common.css
 enable_comments: false
 comments_count: 0
 description: ""
-published_at: 2011-02-03 00:00:00 Z
+published_at: 2011-02-26 12:46:55.888402 Z
 status_id: 100
 keywords: ""
