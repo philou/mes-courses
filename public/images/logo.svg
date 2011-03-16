@@ -537,8 +537,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.7084977"
-     inkscape:cx="407.08278"
-     inkscape:cy="502.84411"
+     inkscape:cx="288.5576"
+     inkscape:cy="574.32584"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -560,7 +560,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -679,7 +679,7 @@
        inkscape:export-xdpi="50.339165"
        inkscape:export-ydpi="50.339165" />
     <path
-       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 237.35775,371.51393 c -3.57922,-9.9423 -4.37461,-17.10075 0.39769,-15.50998 4.7723,1.59077 11.53306,14.3169 13.91921,23.46381"
        id="path3172"
        inkscape:connector-curvature="0"
@@ -699,7 +699,7 @@
          y="432.14291"
          id="tspan3178">es-courses.fr</tspan></text>
     <path
-       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 206.87345,388.47951 c 0,-15.90767 8.74922,-27.83842 12.32845,-26.64535 3.57922,1.19308 3.97691,25.05458 1.59076,36.18995"
        id="path3170"
        inkscape:connector-curvature="0"
