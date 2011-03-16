@@ -19,6 +19,12 @@ body {
 h1 {
     font-size: 3em;
 }
+h1 span.logo-as-m {
+    background: url("../images/logo-small.png") no-repeat scroll 0 20px transparent;
+    color: transparent;
+    padding: 25px;
+    margin-right: -0.25em;
+}
 h2 {
     color: #a0db54;
     font-size: 2em;
@@ -61,7 +67,7 @@ ul ul {
     background: transparent url(../images/grey-top-to-clear-bottom-10px.png) scroll top repeat-x;
 }
 #subtitle {
-    padding: 0 0 0 4em;
+    padding: 0 0 0 8em;
     font-style: italic;
 }
 #places {
