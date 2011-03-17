@@ -608,6 +608,15 @@
        inkscape:export-xdpi="50.339165"
        inkscape:export-ydpi="50.339165" />
     <path
+       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 237.35775,371.51393 c -3.57922,-9.9423 -4.37461,-17.10075 0.39769,-15.50998 4.7723,1.59077 11.53306,14.3169 13.91921,23.46381"
+       id="path3172"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csc"
+       inkscape:export-filename="/home/philou/Code/mes-courses.fr/cms/public/images/logo-small.png"
+       inkscape:export-xdpi="50.339165"
+       inkscape:export-ydpi="50.339165" />
+    <path
        style="fill:url(#linearGradient4002);fill-opacity:1;stroke:none"
        d="m 230.49195,385.26357 0.006,-19.70119 1.0658,1.27107 c 3.60565,4.30012 13.29566,10.67923 23.99799,15.47245 3.88644,1.74062 4.5812,2.09613 3.90402,2.09613 -0.60821,0 -6.67617,2.86839 -9.41502,4.45059 -6.95895,4.02007 -13.45561,9.21369 -18.13429,14.49702 l -1.43029,1.61513 0.006,-19.7012 z"
        id="path3994"
@@ -675,15 +684,6 @@
        id="path3072-7-1"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
-       inkscape:export-filename="/home/philou/Code/mes-courses.fr/cms/public/images/logo-small.png"
-       inkscape:export-xdpi="50.339165"
-       inkscape:export-ydpi="50.339165" />
-    <path
-       style="fill:none;stroke:#a0db54;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 237.35775,371.51393 c -3.57922,-9.9423 -4.37461,-17.10075 0.39769,-15.50998 4.7723,1.59077 11.53306,14.3169 13.91921,23.46381"
-       id="path3172"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csc"
        inkscape:export-filename="/home/philou/Code/mes-courses.fr/cms/public/images/logo-small.png"
        inkscape:export-xdpi="50.339165"
        inkscape:export-ydpi="50.339165" />
