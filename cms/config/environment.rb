@@ -94,8 +94,5 @@ Radiant::Initializer.run do |config|
       :domain         => ENV['SENDGRID_DOMAIN']
     }
 
-    # Auto approve comments
-    Radiant::Config['comments.auto_approve'] = true
-    Radiant::Config['comments.simple_spam_filter_required?'] = false
   end
 end
