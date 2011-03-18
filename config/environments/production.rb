@@ -23,8 +23,3 @@ config.action_controller.perform_caching             = true
 #   SiteController.cache_timeout = 12.hours
 # end
 
-# Use mollom against spam
-config.after_initialize do
-  Radiant::Config['comments.mollom_publickey'] = 'e03fa9b3589ec6f18040b90c50bcf1d8'
-  Radiant::Config['comments.mollom_privatekey'] = '451a5de0abc7414d8b81eec5915e7e8e'
-end
