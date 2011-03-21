@@ -11,7 +11,7 @@ to merge from master cms to cms_branch, git checkout cms_branch, git merge -s su
 (heroku maintenance:on --app mes-courses-cms)
 
 git checkout cms_branch
-#git pull cms master:cms_branch
+#git pull cms master:cms_branch # no need for this
 RAILS_ENV=production heroku db:pull --app mes-courses-cms
 RAILS_ENV=production rake db:to_fs
 git commit -m "..."
@@ -26,7 +26,7 @@ git checkout cms_branch
 git merge -s subtree cms_branch
 RAILS_ENV=production rake fs:to_db
 git commit -m "..."
-git push
+git push cms cms_branch:master
 RAILS_ENV=production heroku db:push --app mes-courses-cms
 
 (heroku maintenance:off --app mes-courses-cms)
