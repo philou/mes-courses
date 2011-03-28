@@ -1,0 +1,13 @@
+<!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
+
+<% @title = "Transfert du panier" %>
+
+<div class="section">
+  <span class="section-title">Résultat du transfert</span>
+  <% @report_messages.each do |message| %>
+    <p><%= message %></p>
+  <% end %>
+</div>
+
+<%= link_to 'Retour au panier', {:controller => 'cart'}%></td>
+<%= link_to "Payer sur '#{URI.parse(@store_url).host}'", @store_url %></td>

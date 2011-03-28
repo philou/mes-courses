@@ -18,9 +18,10 @@ end
 # TODO : setup a real StoreAPIFactory, with a full blown TestStoreAPI, this could
 #        clean the design and remove the stubs from cucumber
 Given /^the "([^"]*)" store with api"?$/ do |web_store|
-  @storeAPI = nil
+  @storeAPI = StoreAPIMock.new
   StoreAPI.stub!(:login) do |store_url, login, password|
-    @storeAPI = StoreAPIMock.new(store_url, login, password)
+    @storeAPI.login(store_url, login, password)
+    @storeAPI
   end
 
   @store = Store.find_or_create_by_url("http://"+web_store)
@@ -36,6 +37,11 @@ Given /^last store import was unexpectedly interrupted$/ do
   rescue RuntimeError
     # fake network error
   end
+end
+
+Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
+  item = Item.find_by_name(item_name)
+  @storeAPI.add_unavailable_item(item)
 end
 
 When /^items from the store are imported$/ do
@@ -66,7 +72,3 @@ Then  /^a non empty cart should be created in the store account of the user$/ do
   @storeAPI.log.should include(:set_item_quantity_in_cart)
 end
 
-Then  /^I should be redirected to the store website$/ do
-  response.should be_redirect
-  response.redirect_url.should =~ Regexp.new("^#{@store.url}.*$")
-end

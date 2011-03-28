@@ -8,12 +8,21 @@ class StoreAPIMock
 
   attr_reader :store_url, :login, :password, :log
 
-  def initialize(store_url, login, password)
+  def initialize
     @log = []
+    @store_url = ""
+    @login = ""
+    @password = ""
+    @cart_value = 0.0
+    @unavailable_items = {}
+  end
+
+  def login(store_url, login, password)
+    @log.push(:login)
     @store_url = store_url
     @login = login
     @password = password
-    @cart_value = 0.0;
+    @cart_value = 0.0
   end
 
   def logout
@@ -26,8 +35,10 @@ class StoreAPIMock
   end
 
   def set_item_quantity_in_cart(quantity, item)
-    @log.push(:set_item_quantity_in_cart)
-    @cart_value = @cart_value + quantity * item.price
+    if available?(item)
+      @log.push(:set_item_quantity_in_cart)
+      @cart_value = @cart_value + quantity * item.price
+    end
   end
 
   def logout_url
@@ -36,6 +47,13 @@ class StoreAPIMock
 
   def value_of_the_cart
     @cart_value
+  end
+
+  def add_unavailable_item(item)
+    @unavailable_items[item] = true
+  end
+  def available?(item)
+    !@unavailable_items[item]
   end
 end
 
@@ -47,5 +65,11 @@ class StoreAPI
   end
   def self.valid_password
     "valid-password"
+  end
+  def self.invalid_login
+    "in" + valid_login
+  end
+  def self.invalid_password
+    "in" + valid_password
   end
 end

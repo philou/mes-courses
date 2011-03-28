@@ -14,7 +14,8 @@ begin
   login_form = Mechanize::Form.new(login_page.search('#formIdentification').first, login_page.mech, login_page)
   login_form.Username = "philippe.bourgau@free.fr"
   login_form.Password = "NoahRules78"
-  login_form.submit()
+  res = login_form.submit()
+  puts res.inspect
 
   # 2° on vide le panier courant
   logged_page = agent.get("http://www.auchandirect.fr")
@@ -78,7 +79,7 @@ begin
              #             'IdProdUpd' => '59713',
              #             'ListeNom' => 'AuchanDirect_Panier_785619'},
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-  puts res
+  puts res.inspect
 
   # 4° récupérer le prix du panier
 

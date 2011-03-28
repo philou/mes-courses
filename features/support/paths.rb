@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 module NavigationHelpers
   # Maps a name to a path. Used by the
@@ -15,7 +15,7 @@ module NavigationHelpers
     when /the full item catalog page/
       '/item/'
     when /the cart page/
-      '/cart/'
+      '/cart'
     when /the full dish catalog page/
       '/dish/'
     when /the item categories page/

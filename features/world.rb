@@ -14,5 +14,10 @@ warn_if_offline
 
 World(OfflineTestHelper)
 
-
-
+module LinkLocator
+  def find_link_href(text)
+    n = Nokogiri::HTML(response.body)
+    n.xpath("//a[contains(.,\"#{text}\")]").first['href']
+  end
+end
+World(LinkLocator)

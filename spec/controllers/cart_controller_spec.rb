@@ -92,9 +92,11 @@ describe CartController do
       forward_to_valid_store_account
     end
 
-    it "should redirect response to the store" do
+    it "should populate a forward report page" do
       forward_to_valid_store_account
-      response.should redirect_to(@logout_url)
+
+      controller.instance_variable_get(:@store_url).should == @logout_url
+      controller.instance_variable_get(:@report_messages).should_not be_empty
     end
 
     def forward_to_valid_store_account

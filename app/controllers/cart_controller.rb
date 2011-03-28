@@ -34,7 +34,8 @@ class CartController < ApplicationController
 
     redirect_url = cart.forward_to(store, params[:store][:login], params[:store][:password])
 
-    redirect_to redirect_url
+    @store_url = redirect_url
+    @report_messages = ["Votre panier a été transféré à 'www.dummy-store.fr' avec succès"]
   end
 
   private
