@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -25,6 +25,10 @@ describe Store do
     options = {:special => "sauce"}
     StoreScrapper.should_receive(:new).with(options).and_return(@scrapper)
     Store.new(@valid_attributes).import(options)
+  end
+
+  it "should use its url host as name" do
+    Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
   end
 
 end

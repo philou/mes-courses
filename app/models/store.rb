@@ -3,12 +3,18 @@
 require 'store_scrapper'
 require 'incremental_store'
 require 'visited_url'
+require 'uri'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
 
   validates_presence_of :url
   validates_uniqueness_of :url
+
+  # short name for the store
+  def name
+    URI.parse(url).host
+  end
 
   # Imports the items sold from the online store to our db
   # Options can be passed in, such as a custom :scrapping_strategy

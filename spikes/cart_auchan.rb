@@ -12,7 +12,7 @@ begin
 
   # 1° on se log
   login_form = Mechanize::Form.new(login_page.search('#formIdentification').first, login_page.mech, login_page)
-  login_form.Username = "philippe.bourgau@free.fr"
+  login_form.Username = "philippe.bourgau@free.fr_invalid"
   login_form.Password = "NoahRules78"
   res = login_form.submit()
   puts res.inspect
@@ -26,6 +26,7 @@ begin
 
   clientId = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
   panierId = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
+
 
   agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
              # INDISPENSABLES

@@ -32,10 +32,13 @@ class CartController < ApplicationController
     cart = Cart.find_by_id(params[:cart_id].to_i)
     store = Store.find_by_id(params[:store_id].to_i)
 
-    redirect_url = cart.forward_to(store, params[:store][:login], params[:store][:password])
-
-    @store_url = redirect_url
-    @report_messages = ["Votre panier a été transféré à 'www.dummy-store.fr' avec succès"]
+    begin
+      @store_url = cart.forward_to(store, params[:store][:login], params[:store][:password])
+      @report_messages = ["Votre panier a été transféré à '#{store.name}' avec succès"]
+    rescue InvalidStoreAccountException
+      flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{store.name}'. Vérifiez vos identifiant et mot de passe."
+      redirect_to :action => :show
+    end
   end
 
   private

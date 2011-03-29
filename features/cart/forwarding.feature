@@ -26,12 +26,12 @@ Feature: Cart Forwarding
     And   "Retour au panier" should link to the cart page
     And   "Payer sur 'www.dummy-store.fr'" should link to the "www.dummy-store.fr" website
 
-  # Scenario: Failure due to invalid login-password
-  #   Given the "www.dummy-store.fr" store with api
-  #   And   I am on the cart page
-  #   When  I forward the cart to the store account of an invalid user
-  #   Then  I should be on the cart page
-  #   And   I should see "Désolé, nous n'avons pas pu vous connecter à 'www.dummy-store.fr'. Vérifiez vos identifiant et mot de passe."
+  Scenario: Failure due to invalid login-password
+    Given the "www.dummy-store.fr" store with api
+    And   I am on the cart page
+    When  I forward the cart to the store account of an invalid user
+    Then  I should be on the cart page
+    And   I should see "Désolé, nous n'avons pas pu vous connecter à 'www.dummy-store.fr'. Vérifiez vos identifiant et mot de passe."
 
   # Scenario: A cart with unavailable items is forwarded to the store
   #   Given the "www.dummy-store.fr" store with api

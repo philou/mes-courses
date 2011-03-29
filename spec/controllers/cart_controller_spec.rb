@@ -99,8 +99,27 @@ describe CartController do
       controller.instance_variable_get(:@report_messages).should_not be_empty
     end
 
+    context "using an invalid store account" do
+
+      it "should redirect to cart" do
+        forward_to_invalid_store_account
+        response.should redirect_to(ActionController::Routing::Routes.generate(:controller => 'cart'))
+      end
+
+      it "should set a flash message" do
+        forward_to_invalid_store_account
+
+        flash[:notice].should_not be_blank
+      end
+    end
+
     def forward_to_valid_store_account
       post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreAPI.valid_login, :password => StoreAPI.valid_password}
+    end
+
+    def forward_to_invalid_store_account
+      @forward_cart.stub(:forward_to).and_raise(InvalidStoreAccountException)
+      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreAPI.invalid_login, :password => StoreAPI.invalid_password}
     end
 
   end

@@ -82,6 +82,8 @@ class StoreAPI
     login_form.submit()
 
     @client_id, @panier_id = extract_ids
+    raise InvalidStoreAccountException unless @client_id.to_i != 0
+
   end
 
   def extract_ids

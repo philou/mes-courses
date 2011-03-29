@@ -10,8 +10,12 @@
   <body id="store" >
     <%= render(:partial => "shared/html_body_header") %>
 
-    <% unless @title.nil? %>
+    <% if @title %>
       <h2><%= @title %></h2>
+    <% end %>
+
+    <% if flash[:notice] %>
+      <div class="notice" ><p><%= flash[:notice] %></p></div>
     <% end %>
 
     <%= yield :layout %>
