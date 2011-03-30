@@ -3,7 +3,7 @@
 def given_in_cart(quantity, item_name)
   # maybe would be better find out how not to use side effects of functions
   item = Item.find_by_name(item_name)
-  throw ArgumentError.new ("Item '#{item_name}' could not be found") unless item
+  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
 
   # this won't work if I have many items with the same item category
   quantity.times do

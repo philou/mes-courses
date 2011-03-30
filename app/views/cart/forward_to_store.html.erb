@@ -5,9 +5,11 @@
 <div class="section">
   <span class="section-title">Résultat du transfert</span>
   <p>Votre panier a été transféré à '<%= @store.name %>'</p>
-  <% @report_notices.each do |notice| %>
-    <p><%= notice %></p>
-  <% end %>
+  <div class="notice">
+    <% @report_notices.each do |notice| %>
+      <p><%= notice %></p>
+    <% end %>
+  </div>
 </div>
 
 <%= link_to 'Retour au panier', {:controller => 'cart'}%></td>

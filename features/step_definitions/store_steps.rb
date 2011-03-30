@@ -41,7 +41,7 @@ end
 
 Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
   item = Item.find_by_name(item_name)
-  throw ArgumentError.new ("Item '#{item_name}' could not be found") unless item
+  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
 
   @storeAPI.add_unavailable_item(item)
 end
