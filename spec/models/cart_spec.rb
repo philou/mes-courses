@@ -4,6 +4,20 @@ require 'spec_helper'
 require 'include_all_matcher'
 require 'models/store_api_mock'
 
+module Enumerable
+
+  def map_inject(initial)
+    memo = initial
+    result = []
+    each do |obj|
+      memo = yield memo, obj
+      result.push(memo)
+    end
+    result
+  end
+
+end
+
 describe Cart do
 
   before(:each) do
@@ -27,7 +41,8 @@ describe Cart do
  end
 
   it "should contain added items" do
-    @items.each {|item| @cart.add_item(item) }
+    fill_the_cart
+
     cart_should_contain_all_items
  end
 
@@ -88,10 +103,7 @@ describe Cart do
     end
 
     it "should forward its lines" do
-      @items.each do |item|
-        @cart.add_item(item)
-      end
-
+      fill_the_cart
       @cart.lines.each do |line|
         line.should_receive(:forward_to).with(@store_api)
       end
@@ -110,8 +122,38 @@ describe Cart do
       lambda { forward_to_store }.should raise_error(SocketError)
     end
 
-    it "should return the log out url of the store" do
-      forward_to_store.should == @store_api.logout_url
+    it "should return a map with the log out url of the store" do
+      forward_to_store[:store_url].should == @store_api.logout_url
+    end
+
+    it "should return a map with the items that could not be bought" do
+      forward_to_store[:missing_items].should_not be_nil
+    end
+
+    it "should not return any missing items if they are all paid for" do
+      fill_the_cart
+      @store_api.stub(:value_of_the_cart).and_return(*@items.map_inject(0.0) { |total, item| total + item.price})
+
+      forward_to_store[:missing_items].should be_empty
+
+    end
+
+    it "should not return all items as missing if nothing is paid for" do
+      fill_the_cart
+      @store_api.stub(:value_of_the_cart).and_return(0)
+
+      forward_to_store[:missing_items].should have(@items.size).items
+
+    end
+
+    it "should not return a missing item if it is not paid for" do
+      @haricots = stub_model(Item, :name => "Haricots", :price => 2)
+      @cart.add_item(@bavette)
+      @cart.add_item(@haricots)
+
+      @store_api.stub(:value_of_the_cart).and_return(2.0, 2.0)
+
+      forward_to_store[:missing_items].should have(1).item
     end
 
     def forward_to_store
@@ -125,6 +167,12 @@ describe Cart do
     @items.each do |added_item|
       cart_item = @cart.lines.detect {|line| line.item == added_item}
       cart_item.should_not be_nil
+    end
+  end
+
+  def fill_the_cart
+    @items.each do |item|
+      @cart.add_item(item)
     end
   end
 

@@ -4,10 +4,11 @@
 
 <div class="section">
   <span class="section-title">Résultat du transfert</span>
-  <% @report_messages.each do |message| %>
-    <p><%= message %></p>
+  <p>Votre panier a été transféré à '<%= @store.name %>'</p>
+  <% @report_notices.each do |notice| %>
+    <p><%= notice %></p>
   <% end %>
 </div>
 
 <%= link_to 'Retour au panier', {:controller => 'cart'}%></td>
-<%= link_to "Payer sur '#{URI.parse(@store_url).host}'", @store_url %></td>
+<%= link_to "Payer sur '#{@store.name}'", @store_logout_url %></td>

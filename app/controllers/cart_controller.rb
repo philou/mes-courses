@@ -30,13 +30,17 @@ class CartController < ApplicationController
   # Builds the session cart on an online store
   def forward_to_store
     cart = Cart.find_by_id(params[:cart_id].to_i)
-    store = Store.find_by_id(params[:store_id].to_i)
+    @store = Store.find_by_id(params[:store_id].to_i)
 
     begin
-      @store_url = cart.forward_to(store, params[:store][:login], params[:store][:password])
-      @report_messages = ["Votre panier a été transféré à '#{store.name}' avec succès"]
+      forward_results = cart.forward_to(@store, params[:store][:login], params[:store][:password])
+
+      @store_logout_url = forward_results[:store_url]
+      @report_notices = forward_results[:missing_items].map do |item|
+        "Nous n'avons pas pu ajouter '#{item.name}' à votre panier sur '#{@store.name}' parce que ça n'y sont plus disponibles"
+      end
     rescue InvalidStoreAccountException
-      flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{store.name}'. Vérifiez vos identifiant et mot de passe."
+      flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{@store.name}'. Vérifiez vos identifiant et mot de passe."
       redirect_to :action => :show
     end
   end

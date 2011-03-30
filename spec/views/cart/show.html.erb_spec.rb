@@ -12,8 +12,8 @@ describe "cart/show.html.erb" do
     @cart = stub_model(Cart, :lines => [@tomates, @pdt], :total_price => @total_price)
     assigns[:cart] = @cart
 
-    @stores = [stub_model(Store, :url => "http://www.auchandirect.fr"),
-               stub_model(Store, :url => "http://www.mon-marche.fr")]
+    @stores = [stub_model(Store, :url => "http://www.auchandirect.fr", :name => "www.auchandirect.fr"),
+               stub_model(Store, :url => "http://www.mon-marche.fr", :name => "www.mon-marche.fr")]
     assigns[:stores] = @stores
 
     render
@@ -46,7 +46,7 @@ describe "cart/show.html.erb" do
 
   it "displays a store forwarding forms" do
     @stores.each do |store|
-      response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.url}\"]/form" +
+      response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.name}\"]/form" +
                                  "[starts-with(@action, '#{https_url_for(:controller => 'cart', :action => 'forward_to_store')}')]" +
                                  "[contains(@action, 'store_id=#{store.id}')]" +
                                  "[contains(@action, 'cart_id=#{@cart.id}')]")

@@ -83,7 +83,7 @@ describe CartController do
     before(:each) do
       @logout_url = "#{@store.url}/deconnexion"
       @forward_cart = stub_model(Cart)
-      @forward_cart.stub(:forward_to).and_return(@logout_url)
+      @forward_cart.stub(:forward_to).and_return({ :store_url => @logout_url, :missing_items => []})
       Cart.should_receive(:find_by_id).with(@forward_cart.id).and_return(@forward_cart)
     end
 
@@ -95,8 +95,18 @@ describe CartController do
     it "should populate a forward report page" do
       forward_to_valid_store_account
 
-      controller.instance_variable_get(:@store_url).should == @logout_url
-      controller.instance_variable_get(:@report_messages).should_not be_empty
+      controller.instance_variable_get(:@store).should == @store
+      controller.instance_variable_get(:@store_logout_url).should == @logout_url
+      controller.instance_variable_get(:@report_notices).should_not be_nil
+    end
+
+    it "should fill report notices with missing items" do
+      @forward_cart.stub(:forward_to).and_return({ :store_url => @logout_url, :missing_items => [stub_model(Item, :name => "Langue de Boeuf")]})
+
+      forward_to_valid_store_account
+
+      missing_items = controller.instance_variable_get(:@report_notices)
+      missing_items.find_all{ |notice| notice =~ /Langue de Boeuf/ }.should have_at_least(1).item
     end
 
     context "using an invalid store account" do

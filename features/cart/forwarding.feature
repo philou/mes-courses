@@ -22,7 +22,7 @@ Feature: Cart Forwarding
     Given the "www.dummy-store.fr" store with api
     And   I am on the cart page
     When  I forward the cart to the store account of a valid user
-    Then  I should see "Votre panier a été transféré à 'www.dummy-store.fr' avec succès"
+    Then  I should see "Votre panier a été transféré à 'www.dummy-store.fr'"
     And   "Retour au panier" should link to the cart page
     And   "Payer sur 'www.dummy-store.fr'" should link to the "www.dummy-store.fr" website
 
@@ -33,12 +33,12 @@ Feature: Cart Forwarding
     Then  I should be on the cart page
     And   I should see "Désolé, nous n'avons pas pu vous connecter à 'www.dummy-store.fr'. Vérifiez vos identifiant et mot de passe."
 
-  # Scenario: A cart with unavailable items is forwarded to the store
-  #   Given the "www.dummy-store.fr" store with api
-  #   And   "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
-  #   And   There are "PdT Charlottes" in the cart
-  #   And   "PtT Charlottes" are unavailable in the store
-  #   And   I am on the cart page
-  #   When  I forward the cart to the store account of a valid user
-  #   Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.fr' parce qu'elle n'y sont plus disponibles"
+  Scenario: A cart with unavailable items is forwarded to the store
+    Given the "www.dummy-store.fr" store with api
+    And   "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
+    And   There are "PdT Charlottes" in the cart
+    And   "PdT Charlottes" are unavailable in the store
+    And   I am on the cart page
+    When  I forward the cart to the store account of a valid user
+    Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.fr' parce que ça n'y sont plus disponibles"
 
