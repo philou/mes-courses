@@ -87,73 +87,59 @@ describe Cart do
     before :each do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
-      @store_api = stub(StoreAPI).as_null_object
-      StoreAPI.stub(:login).and_return(@store_api)
-      @store_api.stub(:logout_url).and_return("http://www.a-store.com/logout")
+      @store_session = stub(StoreSession).as_null_object
+      StoreSession.stub(:login).and_return(@store_session)
+      @store_session.stub(:logout_url).and_return("http://www.a-store.com/logout")
+      class << @store_session
+        include WithLogoutMixin
+      end
     end
 
     it "should login to the store" do
-      StoreAPI.should_receive(:login).with(@store.url, StoreAPI.valid_login, StoreAPI.valid_password)
+      StoreSession.should_receive(:login).with(@store.url, StoreAPI.valid_login, StoreAPI.valid_password)
       forward_to_store
     end
 
     it "should empty the remote cart" do
-      @store_api.should_receive(:empty_the_cart)
+      @store_session.should_receive(:empty_the_cart)
       forward_to_store
     end
 
     it "should forward its lines" do
       fill_the_cart
       @cart.lines.each do |line|
-        line.should_receive(:forward_to).with(@store_api)
+        line.should_receive(:forward_to).with(@store_session)
       end
 
       forward_to_store
     end
 
     it "should eventually logout from the store" do
-      @store_api.should_receive(:logout)
+      @store_session.should_receive(:logout)
       forward_to_store
     end
 
     it "should logout from the store even if something went bad" do
-      @store_api.stub(:empty_the_cart).and_raise(SocketError.new("Connection lost"))
-      @store_api.should_receive(:logout)
+      @store_session.stub(:empty_the_cart).and_raise(SocketError.new("Connection lost"))
+      @store_session.should_receive(:logout)
       lambda { forward_to_store }.should raise_error(SocketError)
     end
 
     it "should return a map with the log out url of the store" do
-      forward_to_store[:store_url].should == @store_api.logout_url
+      forward_to_store[:store_url].should == @store_session.logout_url
     end
 
     it "should return a map with the items that could not be bought" do
       forward_to_store[:missing_items].should_not be_nil
     end
 
-    it "should not return any missing items if they are all paid for" do
+    it "should return as missing items for the lines that could not be forwarded" do
       fill_the_cart
-      @store_api.stub(:value_of_the_cart).and_return(*@items.map_inject(0.0) { |total, item| total + item.price})
 
-      forward_to_store[:missing_items].should be_empty
+      @cart.lines[2].stub(:forward_to).and_raise(UnavailableItemError)
+      @cart.lines[3].stub(:forward_to).and_raise(UnavailableItemError)
 
-    end
-
-    it "should not return all items as missing if nothing is paid for" do
-      fill_the_cart
-      @store_api.stub(:value_of_the_cart).and_return(0)
-
-      forward_to_store[:missing_items].should have(@items.size).items
-
-    end
-
-    it "should not return a missing item if it is not paid for" do
-      @haricots = stub_model(Item, :name => "Haricots", :price => 2)
-      @cart.add_item(@bavette)
-      @cart.add_item(@haricots)
-
-      @store_api.stub(:value_of_the_cart).and_return(2.0, 2.0)
-
-      forward_to_store[:missing_items].should have(1).item
+      forward_to_store[:missing_items].should have(2).items
     end
 
     def forward_to_store

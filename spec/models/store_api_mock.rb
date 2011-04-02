@@ -19,7 +19,7 @@ class StoreAPIMock
 
   def login(store_url, login, password)
     if login != StoreAPI.valid_login
-      raise InvalidStoreAccountException.new
+      raise InvalidStoreAccountError.new
     end
 
     @log.push(:login)

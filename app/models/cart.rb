@@ -1,5 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
+require 'models/unavailable_item_error'
 
 # Session cart for a user
 class Cart < ActiveRecord::Base
@@ -38,31 +39,20 @@ class Cart < ActiveRecord::Base
   end
 
   def forward_to(store, login, password)
-    StoreAPI.with_login(store.url, login, password) do |store_api|
-      store_api.empty_the_cart
-
-      # we could isolate the missing item detection in a store api wrapper
-      total = 0.0
+    store.with_session(login, password) do |session|
+      session.empty_the_cart
       missing_items = []
 
       lines.each do |line|
-        line.forward_to(store_api)
-
-        total = collect_missing_items(total, store_api.value_of_the_cart, line.item, missing_items)
+        begin
+          line.forward_to(session)
+        rescue UnavailableItemError
+          missing_items.push(line.item)
+        end
       end
 
-      return { :store_url => store_api.logout_url,
+      return { :store_url => session.logout_url,
                :missing_items => missing_items}
     end
   end
-
-private
-  def collect_missing_items(old_total, new_total, item, missing_items)
-    if new_total == old_total
-      missing_items.push(item)
-    end
-
-    new_total
-  end
-
 end

@@ -1,5 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
+require 'models/invalid_store_account_error'
 
 # Controller for the shopping cart
 # it stores the cart in the db, and its id in the session, so that
@@ -37,9 +38,9 @@ class CartController < ApplicationController
 
       @store_logout_url = forward_results[:store_url]
       @report_notices = forward_results[:missing_items].map do |item|
-        "Nous n'avons pas pu ajouter '#{item.name}' à votre panier sur '#{@store.name}' parce que ça n'y sont plus disponibles"
+        "Nous n'avons pas pu ajouter '#{item.name}' à votre panier sur '#{@store.name}' parce que cela n'y est plus disponible"
       end
-    rescue InvalidStoreAccountException
+    rescue InvalidStoreAccountError
       flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{@store.name}'. Vérifiez vos identifiant et mot de passe."
       redirect_to :action => :show
     end

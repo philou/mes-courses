@@ -16,6 +16,13 @@ class Store < ActiveRecord::Base
     URI.parse(url).host
   end
 
+  # Opens a remote cart session to the remote store
+  def with_session(login, password)
+    StoreSession.login(url, login, password).with_logout do |session|
+      return yield session
+    end
+  end
+
   # Imports the items sold from the online store to our db
   # Options can be passed in, such as a custom :scrapping_strategy
   def import(options={})

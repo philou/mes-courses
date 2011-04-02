@@ -128,7 +128,7 @@ describe CartController do
     end
 
     def forward_to_invalid_store_account
-      @forward_cart.stub(:forward_to).and_raise(InvalidStoreAccountException)
+      @forward_cart.stub(:forward_to).and_raise(InvalidStoreAccountError)
       post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreAPI.invalid_login, :password => StoreAPI.invalid_password}
     end
 

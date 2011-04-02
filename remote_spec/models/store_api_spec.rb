@@ -18,14 +18,14 @@ else
 
     it "should raise when login in with an invalid account" do
       lambda {
-        StoreAPI.login(StoreAPI::STORE_URL, "unknown-account", "wrong-password")
-      }.should raise_error(InvalidStoreAccountException)
+        AuchanDirectStoreAPI.new("unknown-account", "wrong-password")
+      }.should raise_error(InvalidStoreAccountError)
     end
 
     context "with a valid account" do
 
       before(:each) do
-        @api = StoreAPI.login(StoreAPI::STORE_URL, LOGIN, PASSWORD)
+        @api = AuchanDirectStoreAPI.new(LOGIN, PASSWORD)
       end
       after(:each) do
         @api.logout
@@ -58,12 +58,12 @@ else
       it "should synchronize different sessions with logout login" do
         @api.set_item_quantity_in_cart(1, sample_item)
 
-        StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api_2|
-          api_2.empty_the_cart
+        AuchanDirectStoreAPI.new(LOGIN, PASSWORD).with_logout do |api2|
+          api2.empty_the_cart
         end
 
         @api.logout
-        @api = StoreAPI.login(StoreAPI::STORE_URL, LOGIN, PASSWORD)
+        @api = AuchanDirectStoreAPI.new(LOGIN, PASSWORD)
 
         @api.value_of_the_cart.should == 0
       end
@@ -85,39 +85,11 @@ else
         end
       end
 
-      # before(:each) do
-      #   selenium_driver.start_new_browser_session
-      # end
-
-      # append_after(:each) do
-      #   selenium_driver.close_current_browser_session
-      # end
-
       after(:all) do
         stop_selenium_server
       end
 
       private
-
-      def make_sure_cart_is_empty
-        StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-          api.empty_the_cart
-        end
-      end
-
-      def set_item_quantity_in_cart(quantity, item)
-        StoreAPI.with_login(StoreAPI::STORE_URL, LOGIN, PASSWORD) do |api|
-          api.set_item_quantity_in_cart(quantity, item)
-          return api.logout_url
-        end
-      end
-
-      def make_sure_cart_is_not_empty
-        click_and_wait "link=Produits laitiers"
-        click_and_wait "link=Laits demi-écrémés"
-        store_page.click "//img[@alt='Ajouter au panier']"
-        current_cart_value.should_not == 0.0
-      end
 
       def extract_sample_item
         login_and do
@@ -128,16 +100,6 @@ else
           id = /\d+$/.match(store_page.location).to_s.to_i
           return Item.new(:name => 'Lait', :remote_id => id, :price => 5.89)
         end
-      end
-
-      def cart_value
-        login_and do
-          current_cart_value
-        end
-      end
-
-      def current_cart_value
-        store_page.get_text("panier_prix").delete('€').strip.to_f
       end
 
       def login_and
@@ -190,7 +152,7 @@ else
         :host => "localhost",
         :port => PORT,
         :browser => "*firefox",
-        :url => StoreAPI::STORE_URL,
+        :url => AuchanDirectStoreAPI.url,
         :timeout_in_second => 5
       end
 

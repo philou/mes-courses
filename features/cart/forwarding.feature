@@ -40,5 +40,5 @@ Feature: Cart Forwarding
     And   "PdT Charlottes" are unavailable in the store
     And   I am on the cart page
     When  I forward the cart to the store account of a valid user
-    Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.fr' parce que ça n'y sont plus disponibles"
+    Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.fr' parce que cela n'y est plus disponible"
 
