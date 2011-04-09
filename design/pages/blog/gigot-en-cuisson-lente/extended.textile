@@ -2,7 +2,7 @@ En cherchant sur le web, j'ai trouvé beaucoup de boutiques de matériels pour c
 
 En revanche, j'ai trouvé "cette recette":http://www.courbis.fr/Gigot-d-agneau-en-cuison-lente.html : dorer rapidement le gigot à la poele, puis 6h au four à 80°C. C'est tout !
 
-p(centered-image). !/images/articles/gigot.jpg(Le gigot après une heure de cuisson)!
+p(centered-image). !http://dl.dropbox.com/u/206938/mes-courses.fr/images/articles/gigot-en-cuisson-lente/gigot.jpg(Le gigot après une heure de cuisson)!
 
 Outre le fait que ce soit meilleur pour la santé et très facile à faire ... c'était tout simplement délicieux ! Nous l'avons mangé sans sauce, c'était inutile tellement la viande était tendre et juteuse.
 
