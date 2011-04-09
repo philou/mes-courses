@@ -39,8 +39,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :item_category
   map.resources :dish
-  map.resources :agenda
-  map.resources :preferences
 
   map.connect 'cart', :controller => 'cart', :action => 'show'
 

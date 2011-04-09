@@ -4,59 +4,6 @@
 
 <% @title = "Plats" %>
 
-<div class="section search">
-  <span class="section-title">Critères</span>
-  <form>
-    <p>
-      <span class="entry">
-        <span>Type de plat</span>
-        <select name="plate-type">
-          <option>entrée</option>
-          <option selected="selected">plat</option>
-          <option>dessert</option>
-        </select>
-      </span>
-      <span class="entry">
-        <span>Type de cuisine</span>
-        <select name="plate-style">
-          <option selected="selected">qu'importe</option>
-          <option>française</option>
-          <option>exotique</option>
-          <option>méditerannéenne</option>
-        </select>
-      </span>
-    </p>
-    <p>
-      <span class="entry">
-        <span>Temps de préparation</span>
-        <select name="preparation-time">
-          <option>&lt;5 minutes</option>
-          <option selected="selected">~ 10 minutes</option>
-          <option>&gt;20 minutes</option>
-        </select>
-      </span>
-      <span class="entry">
-        <span>Difficulté</span>
-        <select name="difficulty">
-          <option>*</option>
-          <option selected="selected">**</option>
-          <option>***</option>
-        </select>
-      </span>
-    </p>
-    <p>
-      <span class="entry"><span>Préparable à l'avance</span><input type="checkbox" name="advance"/></span>
-      <span class="entry"><span>Equilibré</span><input type="checkbox" name="healthy"/></span>
-      <span class="entry"><span>De saison</span><input type="checkbox" name="season"/></span>
-      <span class="entry"><span>Froid</span><input type="checkbox" name="cold"/></span>
-    </p>
-    <p><span class="entry">...</entry></p>
-    <p>
-      <input type="submit" value="Rechercher"></input>
-    </p>
-  </form>
-</div>
-
 <div class="section results">
   <span class="section-title">Suggestions</span>
   <table>
