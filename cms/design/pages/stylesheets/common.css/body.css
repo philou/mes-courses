@@ -205,14 +205,12 @@ p.status {
 }
 .blog-post p.centered-image {
     text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .blog-post img {
     border-style: none;
-}
-/* we don't want images to be too big in blog summary */
-#blog.summary .blog-post a img {
-    height: 10em;
 }
 
 .blog-post ul {

@@ -1,10 +1,10 @@
 En revanche, si je ne lui avais jamais laissé l'occasion d'expérimenter avec, il aurait, déjà à son âge, accumulé un retard en informatique. C'est pourquoi nous essayons de lui laisser régulièrement l'opportunité de toucher aux ordinateurs. On a remarqué qu'il adorait faire des dessins pour les imprimer (avec Paint par exemple).
 
-p(centered-image). "!/images/articles/paint.jpg(Un dessin d'enfant sur paint)!":/images/articles/paint-big.jpg
+p(centered-image). "!http://dl.dropbox.com/u/206938/mes-courses.fr/images/articles/initier-les-enfants-informatique/paint.jpg(Un dessin d'enfant sur paint)!":http://dl.dropbox.com/u/206938/mes-courses.fr/images/articles/initier-les-enfants-informatique/paint-big.jpg
 
 Pour que ce soit plus accessible pour lui, j'ai cherché si il existait un équivalent spécialement adapté aux enfants, et j'ai trouvé "TuxPaint":http://www.tuxpaint.org
 
-p(centered-image). "!/images/articles/tux-paint.jpg(Interface de TuxPaint)!":http://tuxpaint.org/screenshots/
+p(centered-image). "!http://dl.dropbox.com/u/206938/mes-courses.fr/images/articles/initier-les-enfants-informatique/tux-paint.jpg(Interface de TuxPaint)!":http://tuxpaint.org/screenshots/
 
 C'est comme Paint, mais avec des icônes plus grosses et plus parlantes pour des enfants. Il peut même sauvegarder et imprimer ses dessins. J'ai été réellement surpris par la vitesse avec laquelle il s'est débrouillé. Tout est pensé pour les enfants, même les quelques rares popup "Oui" ou "Non", sont affichées avec des couleurs et des icônes vertes et rouges très explicites qui permettent aux enfants de s'y retrouver.
 
