@@ -24,7 +24,7 @@ Feature: Cart Forwarding
     When  I forward the cart to the store account of a valid user
     Then  I should see "Votre panier a été transféré à 'www.dummy-store.fr'"
     And   "Retour au panier" should link to the cart page
-    And   "Payer sur 'www.dummy-store.fr'" should link to the "www.dummy-store.fr" website
+    And   I should see a button "Payer sur www.dummy-store.fr" to "http://www.dummy-store.fr/logout"
 
   Scenario: Failure due to invalid login-password
     Given the "www.dummy-store.fr" store with api

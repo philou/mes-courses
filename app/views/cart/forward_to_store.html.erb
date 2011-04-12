@@ -2,15 +2,18 @@
 
 <% @title = "Transfert du panier" %>
 
-<div class="section">
-  <span class="section-title">Résultat du transfert</span>
-  <p>Votre panier a été transféré à '<%= @store.name %>'</p>
+<p>Votre panier a été transféré à '<%= @store.name %>'</p>
+<% unless @report_notices.empty? %>
   <div class="notice">
-    <% @report_notices.each do |notice| %>
-      <p><%= notice %></p>
-    <% end %>
+       <% @report_notices.each do |notice| %>
+         <p><%= notice %></p>
+       <% end %>
   </div>
-</div>
+<% end %>
 
-<%= link_to 'Retour au panier', {:controller => 'cart'}%></td>
-<%= link_to "Payer sur '#{@store.name}'", @store_logout_url %></td>
+<form id="go-to-payment" action=<%= @store_logout_url %> >
+  <input type="submit" value="<%= "Payer sur #{@store.name}" %>" />
+</form>
+
+<!-- should be removed with navigation bar -->
+<p><%= link_to 'Retour au panier', {:controller => 'cart'}%></p>

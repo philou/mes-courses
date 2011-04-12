@@ -46,7 +46,7 @@ describe "cart/show.html.erb" do
 
   it "displays a store forwarding forms" do
     @stores.each do |store|
-      response.should have_xpath("//div[span[@class=\"section-title\"]=\"#{store.name}\"]/form" +
+      response.should have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
                                  "[starts-with(@action, '#{https_url_for(:controller => 'cart', :action => 'forward_to_store')}')]" +
                                  "[contains(@action, 'store_id=#{store.id}')]" +
                                  "[contains(@action, 'cart_id=#{@cart.id}')]")

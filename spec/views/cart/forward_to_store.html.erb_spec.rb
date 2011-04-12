@@ -15,7 +15,7 @@ describe "cart/forward_to_store.html.erb" do
     response.should have_selector("a", :href => default_path(:controller => 'cart'))
   end
   it "renders a link to the online store" do
-    response.should have_selector("a", :href => @store_logout_url)
+    response.should have_selector("form", :action => @store_logout_url)
   end
   it "renders forward report notices" do
     response.should have_selector("div", :class => "notice") do |div|

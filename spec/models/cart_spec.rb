@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 require 'include_all_matcher'
-require 'models/store_api_mock'
 
 module Enumerable
 

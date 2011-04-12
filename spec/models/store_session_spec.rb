@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe StoreSession do
 
-  # TODO: use the StoreAPIMock, and make it pass the store_api_spec and the few add ons
+  # TODO: use the DummyStoreAPI, and make it pass the store_api_spec and the few add ons
 
   before :each do
     @store_api = stub(StoreAPI).as_null_object

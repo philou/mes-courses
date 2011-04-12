@@ -1,10 +1,13 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
+require 'store_api'
 
 # Logger mock for StoreAPI.
-# TODO check for not-a-mock or RR RSpec plugins
-#      or make a generic class of this logger
-class StoreAPIMock
+class DummyStoreAPI < StoreAPI
+
+  def self.url
+    "http://www.dummy-store.com"
+  end
 
   attr_reader :store_url, :login, :password, :log
 

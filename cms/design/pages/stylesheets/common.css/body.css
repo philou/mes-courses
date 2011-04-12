@@ -273,41 +273,21 @@ div.section .section-title {
     padding: 0 0.5em;
     background: white;
 }
-
-/* Store dish search */
-.search form {
-    width: 80em;
-}
-.search span.entry {
-    padding: 0 10px;
-}
-.search input, .search select {
-    margin-left: 1em;
-}
-.navigation .previous {
-    float: left;
-}
-.navigation .next {
-     float: right;
-}
-.agenda td+td {
-    border-left: 1px dashed #993366;
+div.section p {
+    margin: 1em;
 }
 
-.tree span {
-    margin-left: 0.3em;
-    padding: 0.1em 0.3em;
-    position: relative;
-    top: -0.7em;
-    border-left: 1px solid;
-}
-.tree span.tree-spacer {
-    margin-right: 1em;
-}
-.tree span.tree-child {
-    border-bottom: 1px solid;
+/* Store error notices to users */
+div.notice {
+    border: 2px solid red;
+    padding: 1em;
+    margin: 2em 0;
+    background-color: #FFA0A0;
+    color: white;
+    font-weight: bold;
 }
 
-.tree a {
-    color: #993366;
+/* Forward report */
+#go-to-payment {
+    margin: 2em 0;
 }

@@ -11,8 +11,12 @@ class StoreAPI
   def self.login(store_url, login, password)
     if store_url == AuchanDirectStoreAPI.url
       AuchanDirectStoreAPI.new(login, password)
+    elsif store_url == DummyStoreAPI.url
+      result = DummyStoreAPI.new
+      result.login(store_url, login, password)
+      result
     else
-      raise ArgumentError "StoreAPI does not handle store at '#{store_url}'"
+      raise ArgumentError.new("StoreAPI does not handle store at '#{store_url}'")
     end
   end
 

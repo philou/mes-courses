@@ -1,7 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/store_api_mock'
 
 describe CartController do
 

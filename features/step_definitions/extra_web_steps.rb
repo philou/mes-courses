@@ -9,6 +9,6 @@ Then /^"([^\"]*)" should link to (.+ page)$/ do |link_text, page_name|
   find_link_href(link_text).should == path_to(page_name)
 end
 
-Then /^"([^\"]*)" should link to the "([^\"]*)" website$/ do |link_text, website_host|
-  URI.parse(find_link_href(link_text)).host.should == website_host
+Then /^I should see a button "([^\"]*)" to "([^\"]*)"$/ do |text, url|
+  response.should have_xpath("//form[@action='#{url}']/input[@type='submit'][@value='#{text}']")
 end

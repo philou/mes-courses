@@ -15,10 +15,9 @@ end
 
 # NOTE : I had to create another where the online url would not be overriden with
 #        a local file because rails does not handle redirection to file://... well
-# TODO : setup a real StoreAPIFactory, with a full blown TestStoreAPI, this could
-#        clean the design and remove the stubs from cucumber
+# TODO : try to get the DummyStoreAPI instance without using stubs
 Given /^the "([^"]*)" store with api"?$/ do |web_store|
-  @storeAPI = StoreAPIMock.new
+  @storeAPI = DummyStoreAPI.new
   StoreAPI.stub!(:login) do |store_url, login, password|
     @storeAPI.login(store_url, login, password)
     @storeAPI
