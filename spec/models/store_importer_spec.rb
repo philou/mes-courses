@@ -1,32 +1,32 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/store_scrapping_test_strategy'
+require 'models/store_importing_test_strategy'
 require 'mostly_matcher'
 require 'all_matcher'
 require 'have_unique_matcher'
 
-describe StoreScrapper do
+describe StoreImporter do
 
-  def initialize_scrapper(tweaks = {})
-    @strategy = StoreScrappingTestStrategy.new(tweaks)
-    @scrapper = StoreScrapper.new(:scrapping_strategy => @strategy)
+  def initialize_importer(tweaks = {})
+    @strategy = StoreImportingTestStrategy.new(tweaks)
+    @importer = StoreImporter.new(:importing_strategy => @strategy)
     @store = stub("Store").as_null_object
     @store.stub(:already_visited_url?).and_return(false)
   end
 
-  def scrap
-    @scrapper.import(AUCHAN_DIRECT_OFFLINE, @store)
+  def import
+    @importer.import(AUCHAN_DIRECT_OFFLINE, @store)
   end
 
   context "when starting from scratch" do
 
     # we are importing only once because it takes a lot of time. All the tests should be side effect free.
     before(:all) do
-      initialize_scrapper(:max_loop_nodes => 2)
+      initialize_importer(:max_loop_nodes => 2)
       record_calls(@store, :starting_import, :finishing_import, :register_item_category, :register_item, :register_visited_url)
 
-      scrap
+      import
     end
 
     def record_calls(stub_object, *selectors)
@@ -148,37 +148,37 @@ describe StoreScrapper do
 
   context "when starting after a previous one" do
 
-    # A fresh but tiny scrapping for each test
+    # A fresh but tiny importing for each test
     before(:each) do
-      initialize_scrapper(:max_loop_nodes => 1)
+      initialize_importer(:max_loop_nodes => 1)
     end
 
     it "should start a new import if the last one finished" do
       @store.should_receive(:last_import_finished?).and_return(true)
       @store.should_receive(:starting_import)
 
-      scrap
+      import
     end
 
     it "should not start a new import if the last one did not finish" do
       @store.should_receive(:last_import_finished?).and_return(false)
       @store.should_not_receive(:starting_import)
 
-      scrap
+      import
     end
 
     it "should not register item categories if urls were visited" do
       @store.should_receive(:already_visited_url?).with(instance_of(String)).and_return(true)
       @store.should_not_receive(:register_item_category)
 
-      scrap
+      import
     end
 
     it "should register items if urls were not visited" do
       @store.should_receive(:already_visited_url?).with(instance_of(String)).and_return(false)
       @store.should_receive(:register_item)
 
-      scrap
+      import
     end
 
   end
@@ -191,7 +191,7 @@ describe StoreScrapper do
     exception_should_climb_up_the_stack(SocketError)
   end
 
-  it "should continue on unscrappable store pages" do
+  it "should continue on unimportable store pages" do
     new_page = Mechanize::Page.method(:new)
     Mechanize::Page.stub!(:new).and_return do |*args|
       result = new_page.call(*args)
@@ -209,13 +209,13 @@ describe StoreScrapper do
   end
 
   def exception_should_climb_up_the_stack(exception_class)
-    initialize_scrapper(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
-    lambda { scrap }.should raise_error(exception_class)
+    initialize_importer(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
+    lambda { import }.should raise_error(exception_class)
   end
 
   def no_exception_should_climb_up_the_stack
-    initialize_scrapper(:max_loop_nodes => 1)
-    lambda { scrap }.should_not raise_error
+    initialize_importer(:max_loop_nodes => 1)
+    lambda { import }.should_not raise_error
   end
 
 end

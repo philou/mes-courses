@@ -8,22 +8,22 @@ describe Store do
   before(:each) do
     @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE }
 
-    @scrapper = mock(StoreScrapper).as_null_object
-    StoreScrapper.stub(:new).and_return(@scrapper)
+    @importer = mock(StoreImporter).as_null_object
+    StoreImporter.stub(:new).and_return(@importer)
   end
 
   it "should create a new instance given valid attributes" do
     Store.create!(@valid_attributes)
   end
 
-  it "should ask its scrapper to import" do
-    @scrapper.should_receive(:import).with(AUCHAN_DIRECT_OFFLINE, anything())
+  it "should ask its importer to import" do
+    @importer.should_receive(:import).with(AUCHAN_DIRECT_OFFLINE, anything())
     Store.new(@valid_attributes).import
   end
 
-  it "should forward import options to the scrapper" do
+  it "should forward import options to the importer" do
     options = {:special => "sauce"}
-    StoreScrapper.should_receive(:new).with(options).and_return(@scrapper)
+    StoreImporter.should_receive(:new).with(options).and_return(@importer)
     Store.new(@valid_attributes).import(options)
   end
 

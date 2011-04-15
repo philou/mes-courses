@@ -2,7 +2,7 @@
 
 require 'lib/attributes_comparison'
 
-# Objects deciding what to do with what the store scrapper found in
+# Objects deciding what to do with what the store importer found in
 # the online store's web page. They get hashes of parameters as input
 # and forward record instances to the store.
 class IncrementalStore
@@ -11,7 +11,7 @@ class IncrementalStore
     @store = store
   end
 
-  # Methods called by the scrapper to start and stop import
+  # Methods called by the importer to start and stop import
   def starting_import
     @store.mark_existing_items
   end
@@ -21,7 +21,7 @@ class IncrementalStore
     @store.delete_visited_urls
   end
 
-  # Methods called by the scrapper when he founds something
+  # Methods called by the importer when he founds something
   def register_item_category(params)
     register_item_class(ItemCategory, params)
   end
@@ -31,7 +31,7 @@ class IncrementalStore
     item
   end
 
-  # Methods called by the scrapper to notify that he visited an url
+  # Methods called by the importer to notify that he visited an url
   def last_import_finished?
     !@store.are_there_visited_urls?
   end

@@ -2,9 +2,6 @@
 
 require 'rubygems'
 require 'spec_helper'
-require "selenium/client"
-require "selenium/rspec/spec_helper"
-require "selenium/remote_control/remote_control"
 require "lib/offline_test_helper"
 
 include OfflineTestHelper
@@ -71,89 +68,27 @@ else
       LOGIN = "philippe.bourgau@free.fr"
       PASSWORD = "NoahRules78"
 
-      attr_reader :selenium_driver, :sample_item
-      alias :store_page :selenium_driver
+      attr_reader :sample_item
 
       before(:all) do
-        start_selenium_server
-        start_selenium_driver
-        selenium_driver.start_new_browser_session
-        begin
-          @sample_item = extract_sample_item
-        ensure
-          selenium_driver.close_current_browser_session
-        end
-      end
-
-      after(:all) do
-        stop_selenium_server
+        @sample_item = extract_sample_item
+        @sample_item.should_not be_nil
       end
 
       private
 
       def extract_sample_item
-        login_and do
-          click_and_wait "link=Produits laitiers"
-          click_and_wait "link=Laits demi-écrémés"
-          click_and_wait "//a[contains(@class,'lienArticle')]"
-
-          id = /\d+$/.match(store_page.location).to_s.to_i
-          return Item.new(:name => 'Lait', :remote_id => id, :price => 5.89)
+        StoreWalker.new(AuchanDirectStoreAPI.url).categories.each do |cat|
+          cat.categories.each do |subcat|
+            subcat.items.each do |item|
+              attributes = item.attributes
+              if attributes[:price] != 0.0
+                return Item.new(item.attributes)
+              end
+            end
+          end
         end
-      end
-
-      def login_and
-        login
-        begin
-          return yield
-
-        ensure
-          logout
-        end
-      end
-
-      def login
-        store_page.open "/frontoffice/"
-        store_page.type "Username", LOGIN
-        store_page.type "Password", PASSWORD
-        click_and_wait "accueilIdentifier"
-      end
-      def logout
-        click_and_wait "//img[@alt=\"Retour à l'accueil AuchanDirect\"]"
-        click_and_wait "link=cliquez ici"
-      end
-
-      def click_and_wait(selector)
-        store_page.click selector
-        store_page.wait_for_page_to_load "5000"
-      end
-
-      HOST = "0.0.0.0"
-      PORT = 4444
-
-      def start_selenium_server
-        @@remote_control = Selenium::RemoteControl::RemoteControl.new(HOST, PORT, :timeout => 60)
-        @@remote_control.jar_file = Dir["vendor/selenium-remote-control/selenium-server-*.jar"].first
-        @@remote_control.start :background => true
-        Rails.logger.info "Waiting for Remote Control to be up and running..."
-        TCPSocket.wait_for_service :host => HOST, :port => PORT
-        Rails.logger.info "Selenium Remote Control at #{HOST}:#{PORT} ready"
-      end
-
-      def stop_selenium_server
-        @@remote_control.stop
-        Rails.logger.info "Waiting for Remote Control to stop..."
-        TCPSocket.wait_for_service_termination :host => HOST, :port => PORT
-        Rails.logger.info "Stopped Selenium Remote Control running at #{HOST}:#{PORT}"
-      end
-
-      def start_selenium_driver
-        @selenium_driver = Selenium::Client::Driver.new \
-        :host => "localhost",
-        :port => PORT,
-        :browser => "*firefox",
-        :url => AuchanDirectStoreAPI.url,
-        :timeout_in_second => 5
+        return nil
       end
 
     end

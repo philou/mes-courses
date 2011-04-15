@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-require 'spec/models/store_scrapping_test_strategy'
+require 'spec/models/store_importing_test_strategy'
 require 'spec/mostly_matcher'
 require 'spec/all_matcher'
 require 'spec/have_non_nil_matcher'

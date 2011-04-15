@@ -7,12 +7,12 @@ def fixnum_max
   2**(0.size * 8 -2) -1
 end
 
-# Cusom testing strategy for store scrapping
-class StoreScrappingTestStrategy
+# Cusom testing strategy for store importing
+class StoreImportingTestStrategy
 
   # Default accepted options
   def self.default_params
-    { :max_loop_nodes => 3,                  # Max count of nodes that can be iterated when scrapping
+    { :max_loop_nodes => 3,                  # Max count of nodes that can be iterated when importing
       :price_increment => 0.0,               # Price increment to all found items
       :simulate_error_at_node => fixnum_max, # Simulate an error at the nth node
       :simulated_error => RuntimeError       # Type of the error to simulate
@@ -24,7 +24,7 @@ class StoreScrappingTestStrategy
   end
 
   def initialize(params = {})
-    StoreScrappingTestStrategy.default_params.merge(params).each do |name, value|
+    StoreImportingTestStrategy.default_params.merge(params).each do |name, value|
       self.send((name.to_s+"=").intern, value)
     end
     @node_index = 0

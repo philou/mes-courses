@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-require 'store_scrapper'
+require 'store_importer'
 require 'incremental_store'
 require 'visited_url'
 require 'uri'
@@ -24,10 +24,10 @@ class Store < ActiveRecord::Base
   end
 
   # Imports the items sold from the online store to our db
-  # Options can be passed in, such as a custom :scrapping_strategy
+  # Options can be passed in, such as a custom :importing_strategy
   def import(options={})
-    scrapper = StoreScrapper.new(options)
-    scrapper.import(url,IncrementalStore.new(self))
+    importer = StoreImporter.new(options)
+    importer.import(url,IncrementalStore.new(self))
   end
 
   # friend: IncrementalImporter

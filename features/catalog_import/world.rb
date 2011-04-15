@@ -1,8 +1,8 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Imports the store using the tweaks
 def import_with(store, tweaks)
-  store.import(:scrapping_strategy => StoreScrappingTestStrategy.new(tweaks))
+  store.import(:importing_strategy => StoreImportingTestStrategy.new(tweaks))
 end
 
 # Imports the store using tweaks, if the import was already done,
