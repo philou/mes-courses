@@ -4,7 +4,7 @@ Feature: Catalog import
   A webmaster
   Wants an automatic daily import report email
 
-  Scenario: Item statistics should be sent by email
+  Scenario: Sending item import statitics by email
     Given "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
     When stats are updated
     Then an email with subject containing "Import report" should be sent to "philippe.bourgau@free.fr"

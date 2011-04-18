@@ -1,3 +1,5 @@
+# Copyright (C) 2011 by Philippe Bourgau
+
 Given /^"([^"]*)" item category"?$/ do |name|
   ItemCategory.create!(:name => name)
 end
@@ -5,4 +7,9 @@ end
 Given /^"([^">]*) > ([^"]*)" item sub category$/ do |type, category|
   item_category = ItemCategory.find_or_create_by_name_and_parent_id(type, nil)
   ItemCategory.create!(:name => category, :parent => item_category)
+end
+
+When /^I search for "([^"]*)"?"$/ do |keywords|
+  fill_in("search[keywords]", :with => keywords)
+  click_button("Rechercher")
 end

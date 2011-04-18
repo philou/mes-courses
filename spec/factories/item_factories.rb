@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 Factory.sequence :item_name do |n|
   "Item-#{n}"
@@ -14,9 +14,8 @@ end
 
 # custom factory function with a named organization
 def categorized_item (category_name, sub_category_name, options = {})
-  category = Factory.create(:item_category, :name => category_name)
-
-  sub_category = Factory.create(:item_sub_category, :name => sub_category_name, :parent => category)
+  category = ItemCategory.find_or_create_by_name_and_parent_id(category_name)
+  sub_category = ItemCategory.find_or_create_by_name_and_parent_id(sub_category_name, category.id)
 
   Factory.create(:item, {:item_category => sub_category }.merge(options))
 end

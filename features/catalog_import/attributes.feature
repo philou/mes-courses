@@ -4,17 +4,17 @@ Feature: Catalog import attributes
   A webmaster
   Wants the import mechanism to import item details
 
-  Scenario: Items imported from a store should have a price
+  Scenario: Items are imported with a price
     Given the "www.auchandirect.fr" store
     When items from the store are imported
     Then all items should have a price
 
-  Scenario: Most items imported from a store should have an image
+  Scenario: Most items are imported with an image
     Given the "www.auchandirect.fr" store
     When items from the store are imported
     Then most items should have an image
 
-  Scenario: Most items imported from a store should have a summary
+  Scenario: Most items are imported with a summary
     Given the "www.auchandirect.fr" store
     When items from the store are imported
     Then most items should have a summary

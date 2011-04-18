@@ -5,12 +5,12 @@ Feature: Item browsing
   Wants to browse it and its details
 
   # REM if we create a custom display for individual items, this could be moved to organization
-  Scenario: Available items should be displayed in their item sub category
+  Scenario: Browsing items in their sub category page
     Given "Fruits & Légumes > Tomates > Tomates grappes" item
     When  I go to the "Tomates" item sub category page
     Then  I should see "Tomates grappes"
 
-  Scenario: Items should have a price, a summary and a photo
+  Scenario: Browsing price, summary and photos of items
     Given "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
     When   I go to the "Pommes de terre" item sub category page
     Then   I should see the "price" of "PdT Charlottes"

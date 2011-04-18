@@ -5,12 +5,12 @@ Feature: Catalog import
   Wants an automatic command to update the catalog from
    a remote online store
 
-  Scenario: Items sold on an online store should be available
+  Scenario: Importing items sold on an online store
     Given the "www.auchandirect.fr" online store
     When items from the store are imported
     Then there should be some items for sale
 
-  Scenario: Items sold on an offline store copy should be available
+  Scenario: Importing items sold on an offline store copy
     Given the "www.auchandirect.fr" store
     When items from the store are imported
     Then there should be some items for sale
