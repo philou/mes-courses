@@ -21,8 +21,8 @@ describe CartController do
     after(:each) do
       session[:cart_id].should == @cart.id
 
-      controller.instance_variable_get(:@cart).should be @cart
-      controller.instance_variable_get(:@stores).should be @stores
+      assigns[:cart].should be @cart
+      assigns[:stores].should be @stores
     end
 
     it "should show the session cart" do
@@ -94,9 +94,9 @@ describe CartController do
     it "should populate a forward report page" do
       forward_to_valid_store_account
 
-      controller.instance_variable_get(:@store).should == @store
-      controller.instance_variable_get(:@store_logout_url).should == @logout_url
-      controller.instance_variable_get(:@report_notices).should_not be_nil
+      assigns[:store].should == @store
+      assigns[:store_logout_url].should == @logout_url
+      assigns[:report_notices].should_not be_nil
     end
 
     it "should fill report notices with missing items" do
@@ -104,8 +104,7 @@ describe CartController do
 
       forward_to_valid_store_account
 
-      missing_items = controller.instance_variable_get(:@report_notices)
-      missing_items.find_all{ |notice| notice =~ /Langue de Boeuf/ }.should have_at_least(1).item
+      assigns[:report_notices].find_all{ |notice| notice =~ /Langue de Boeuf/ }.should have_at_least(1).item
     end
 
     context "using an invalid store account" do

@@ -1,8 +1,17 @@
+<!-- Copyright (C) 2011 by Philippe Bourgau -->
+
 <% @title = @item_category.name %>
 
+<div class="search-panel">
+  <form id="search" method="post" action="<%= any_item_category_path(@item_category) %>" >
+    <input name="search[keywords]" type="text" size=80 />
+    <input type="submit" value="Rechercher" />
+  </form>
+</div>
+
 <ul>
-  <% @item_category.children.each do |item_category| %>
-    <li><%= link_to item_category.name, item_category_path(item_category) %></li>
+  <% @item_category.children.each do |category| %>
+    <li><%= link_to category.name, item_category_path(category) %></li>
   <% end%>
 </ul>
 

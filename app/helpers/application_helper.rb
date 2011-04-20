@@ -19,4 +19,11 @@ module ApplicationHelper
   def heroku_app_name
     ENV['APP_NAME']
   end
+
+  # path for a category, defaults to the main browser for a nil or new category
+  def any_item_category_path(category = nil)
+    return "/item_category" if category.nil? || category.id.nil?
+
+    item_category_path(category)
+  end
 end

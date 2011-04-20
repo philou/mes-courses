@@ -1,9 +1,0 @@
-<!-- Copyright (C) 2010 by Philippe Bourgau -->
-
-<% @title = "Produits par familles" %>
-
-<ul>
-  <% @item_categories.each do |category| %>
-    <li><%= link_to category.name, item_category_path(category) %></li>
-  <% end%>
-</ul>
