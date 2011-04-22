@@ -30,9 +30,9 @@ Feature: Item search
     Then  I should see "Courgettes"
     And   I should not see "Courgettes farcies"
 
-  # Scenario: Searching for something that does not exist
-  #   Given "Boucherie > Boeuf > Bavette" item
-  #   And   I am on the item categories page
-  #   When  I search for "homard"
-  #   Then  I should see "Aucun produit n'a été trouvé"
+  Scenario: Searching for something that does not exist
+    Given "Boucherie > Boeuf > Bavette" item
+    And   I am on the item categories page
+    When  I search for "homard"
+    Then  I should see "0 ingrédient(s)"
 

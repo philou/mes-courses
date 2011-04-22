@@ -77,5 +77,12 @@ describe "/item_category/show.html.erb" do
         response.should have_selector("img", :src => item.image)
       end
     end
+
+    it "displays the number of items" do
+      render
+
+      response.should contain("#{@items.count} ingrédient(s)")
+    end
+
   end
 end

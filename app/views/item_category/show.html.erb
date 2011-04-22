@@ -2,28 +2,33 @@
 
 <% @title = @title %>
 
-<div class="search-panel">
+<div id="search-panel">
   <% form_tag @search_url, :method => :get, :id => "search" do %>
     <%= text_field_tag "search[keyword]", nil, :size => 60 %></input>
     <%= submit_tag "Rechercher" %></input>
   <% end %>
 </div>
 
-<ul>
-  <% @categories.each do |category| %>
-    <li><%= link_to category.name, item_category_path(category) %></li>
-  <% end%>
-</ul>
+<% unless @categories.empty? %>
+ <div id="categories-panel">
+    <% @categories.each do |category| %>
+      <p><%= link_to category.name, item_category_path(category) %></p>
+    <% end%>
+  </div>
+<% end %>
 
-<table>
-  <% @items.each do |item| %>
-    <tr>
-      <td><img src="<%= item.image %>" /></td>
-      <td><%=h item.name %></td>
-      <td><%= item.summary %></td>
-      <td><%= item.price.to_s %>€</td>
-      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item', :id => item.id }%></td>
-    </tr>
-  <% end%>
-</table>
+<div id="items-panel">
+  <p><%= @items.count %> ingrédient(s)</p>
 
+  <table>
+    <% @items.each do |item| %>
+      <tr>
+        <td><img src="<%= item.image %>" /></td>
+        <td><%=h item.name %></td>
+        <td><%= item.summary %></td>
+        <td><%= item.price.to_s %>€</td>
+        <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_item', :id => item.id }%></td>
+      </tr>
+    <% end%>
+  </table>
+</div>

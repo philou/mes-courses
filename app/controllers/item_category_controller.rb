@@ -4,6 +4,7 @@ class ItemCategoryController < ApplicationController
   include ApplicationHelper
 
   def index
+    # REFACTORING: create a root category, and simply redirect to show with this category ...
     @search_url = any_item_category_path
 
     if params.has_key?("search")

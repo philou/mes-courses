@@ -287,13 +287,18 @@ div.notice {
     font-weight: bold;
 }
 
-/* Forward report */
-#go-to-payment {
-    margin: 2em 0;
-}
-
 /* search panel */
 #search {
     width: 70em;
     margin: 2em auto;
 }
+#categories-panel + #items-panel {
+    margin-top: 2em;
+}
+
+
+/* Forward report */
+#go-to-payment {
+    margin: 2em 0;
+}
+
