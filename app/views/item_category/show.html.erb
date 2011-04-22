@@ -1,22 +1,22 @@
 <!-- Copyright (C) 2011 by Philippe Bourgau -->
 
-<% @title = @item_category.name %>
+<% @title = @title %>
 
 <div class="search-panel">
-  <form id="search" method="post" action="<%= any_item_category_path(@item_category) %>" >
-    <input name="search[keywords]" type="text" size="60" />
-    <input type="submit" value="Rechercher"/>
-  </form>
+  <% form_tag @search_url, :method => :get, :id => "search" do %>
+    <%= text_field_tag "search[keyword]", nil, :size => 60 %></input>
+    <%= submit_tag "Rechercher" %></input>
+  <% end %>
 </div>
 
 <ul>
-  <% @item_category.children.each do |category| %>
+  <% @categories.each do |category| %>
     <li><%= link_to category.name, item_category_path(category) %></li>
   <% end%>
 </ul>
 
 <table>
-  <% @item_category.items.each do |item| %>
+  <% @items.each do |item| %>
     <tr>
       <td><img src="<%= item.image %>" /></td>
       <td><%=h item.name %></td>

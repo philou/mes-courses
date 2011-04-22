@@ -8,7 +8,7 @@ class Item < ActiveRecord::Base
   validates_presence_of :name, :item_category, :price
   validates_uniqueness_of :name, :scope => "item_category_id"
 
-  def self.search_by_category_and_keyword(keyword, category = nil)
+  def self.search_by_keyword_and_category(keyword, category = nil)
     throw NotImplementedError.new("Item search not yet implemented") unless hierarchy_handles_item_search?(category)
 
     condition_sql = "(lower(name) like :keyword or lower(summary) like :keyword)"

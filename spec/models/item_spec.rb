@@ -64,7 +64,7 @@ describe Item do
         with(:all, where_conditions_containing("item_category_id = :category_id", :category_id => @legumes.id)).
         and_return(expected)
 
-      Item.search_by_category_and_keyword(keyword, @legumes).should == expected
+      Item.search_by_keyword_and_category(keyword, @legumes).should == expected
     end
 
     it "should search in sub categories when it has no parent" do
@@ -75,7 +75,7 @@ describe Item do
         with(:all, where_conditions_containing("item_category_id in (:category_ids)", :category_ids => [@legumes.id,@fruits.id])).
         and_return(expected)
 
-      Item.search_by_category_and_keyword(keyword, @marche).should == expected
+      Item.search_by_keyword_and_category(keyword, @marche).should == expected
     end
 
     it "should search all items if a nil category is specified" do
@@ -86,7 +86,7 @@ describe Item do
         with(:all, where_conditions).
         and_return(expected)
 
-      Item.search_by_category_and_keyword(keyword).should == expected
+      Item.search_by_keyword_and_category(keyword).should == expected
     end
 
     it "should search in both item names and summaries too" do
@@ -97,9 +97,9 @@ describe Item do
         exactly(3).times.
         and_return([@salade_cesar])
 
-      Item.search_by_category_and_keyword(keyword)
-      Item.search_by_category_and_keyword(keyword, @traiteur)
-      Item.search_by_category_and_keyword(keyword, @italien)
+      Item.search_by_keyword_and_category(keyword)
+      Item.search_by_keyword_and_category(keyword, @traiteur)
+      Item.search_by_keyword_and_category(keyword, @italien)
     end
   end
 end
