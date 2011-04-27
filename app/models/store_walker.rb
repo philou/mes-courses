@@ -90,6 +90,10 @@ class CategoryWalker
     @link = link
   end
 
+  def link_text
+    @link.text
+  end
+
   def attributes
     { :name => get_one(page, "#bandeau_label_recherche").content }
   end
@@ -111,6 +115,10 @@ class SubCategoryWalker
     @link = link
   end
 
+  def link_text
+    @link.text
+  end
+
   def attributes
     { :name => get_one(page, "#bandeau_label_recherche").content }
   end
@@ -130,6 +138,10 @@ class ItemWalker
 
   def initialize(link)
     @link = link
+  end
+
+  def link_text
+    @link.text
   end
 
   def attributes
