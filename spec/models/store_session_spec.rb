@@ -11,8 +11,8 @@ describe StoreSession do
     @store_api.stub(:value_of_the_cart).and_return(2.0)
     StoreAPI.stub(:login).and_return(@store_api)
     @login_args = "http://www.mega-store.fr", 'valid_login', 'valid_password'
-    @bavette = stub_model(Item, :name => "bavette", :price => 5.3)
-    @pdt = stub_model(Item, :name => "PdT", :price => 2.5)
+    @bavette = stub_model(Item, :name => "bavette", :price => 5.3, :remote_id => 12345)
+    @pdt = stub_model(Item, :name => "PdT", :price => 2.5, :remote_id => 67890)
   end
 
   it "should delegate login to StoreAPI" do
@@ -44,7 +44,9 @@ describe StoreSession do
     it "should delegate adding items to the cart to the store api" do
       @store_api.stub(:value_of_the_cart).and_return(0.0, 5.0)
 
-      ensure_delegates :set_item_quantity_in_cart, [1, @bavette]
+      @store_api.should_receive(:set_item_quantity_in_cart).once.with(1, @bavette.remote_id)
+
+      @store_session.set_item_quantity_in_cart(1, @bavette)
     end
 
     it "should not ask the value if it already knows it" do

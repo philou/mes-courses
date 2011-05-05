@@ -1,10 +1,14 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 Given /^"([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
   @item = categorized_item(category_name, sub_category_name, :name => item_name)
+  @item.remote_id = @item.id
+  @item.save!
 end
 Given /^"([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |category_name, sub_category_name, item_name, price|
   @item = categorized_item(category_name, sub_category_name, :name => item_name, :price => price.to_f)
+  @item.remote_id = @item.id
+  @item.save!
 end
 
 

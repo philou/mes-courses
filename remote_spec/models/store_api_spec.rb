@@ -78,25 +78,25 @@ else
       private
 
       def extract_sample_item
-        produits_laitiers = subcat(StoreWalker.new(AuchanDirectStoreAPI.url), "Produits laitiers")
+        produits_laitiers = milk_subcat(StoreWalker.new(AuchanDirectStoreAPI.url))
         produits_laitiers.should_not be_nil
 
-        laits = subcat(produits_laitiers, "Laits demi-écrémés")
+        laits = milk_subcat(produits_laitiers)
         laits.should_not be_nil
 
         laits.items.each do |item|
           attributes = item.attributes
           if attributes[:price] != 0.0
-            return Item.new(attributes)
+            return attributes[:remote_id]
           end
         end
 
         return nil
       end
 
-      def subcat(parent, link_text)
+      def milk_subcat(parent)
         parent.categories.each do |cat|
-          return cat if cat.link_text == link_text
+          return cat if cat.link_text.downcase.include?("lait")
         end
 
         return nil

@@ -36,7 +36,7 @@ class StoreSession
     return if (quantity == 0)
 
     old_cart_value = value_of_the_cart
-    @store_api.set_item_quantity_in_cart(quantity, item)
+    @store_api.set_item_quantity_in_cart(quantity, item.remote_id)
     new_cart_value = @store_api.value_of_the_cart
 
     raise UnavailableItemError.new("Item '#{item.name}' is not available") unless new_cart_value != old_cart_value

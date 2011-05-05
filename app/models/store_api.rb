@@ -42,6 +42,6 @@ class StoreAPI
   # def empty_the_cart
 
   # adds items to the cart of the current user
-  # def set_item_quantity_in_cart(quantity, item)
+  # def set_item_quantity_in_cart(quantity, item_remote_id)
 
 end

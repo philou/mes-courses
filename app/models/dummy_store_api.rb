@@ -41,10 +41,10 @@ class DummyStoreAPI < StoreAPI
     @cart_value = 0.0
   end
 
-  def set_item_quantity_in_cart(quantity, item)
-    if available?(item)
+  def set_item_quantity_in_cart(quantity, item_remote_id)
+    if available?(item_remote_id)
       @log.push(:set_item_quantity_in_cart)
-      @cart_value = @cart_value + quantity * item.price
+      @cart_value = @cart_value + quantity
     end
   end
 
@@ -56,11 +56,11 @@ class DummyStoreAPI < StoreAPI
     @cart_value
   end
 
-  def add_unavailable_item(item)
-    @unavailable_items[item] = true
+  def add_unavailable_item(item_remote_id)
+    @unavailable_items[item_remote_id] = true
   end
-  def available?(item)
-    !@unavailable_items[item]
+  def available?(item_remote_id)
+    !@unavailable_items[item_remote_id]
   end
 end
 

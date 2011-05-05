@@ -57,13 +57,13 @@ class AuchanDirectStoreAPI < StoreAPI
   end
 
   # adds items to the cart of the current user
-  def set_item_quantity_in_cart(quantity, item)
+  def set_item_quantity_in_cart(quantity, item_remote_id)
     @agent.post(url+"/frontoffice/index/ajax_liste",
                 { 'Action' => 'liste_ins', 'ClientId' => @client_id, 'ListeId' => @panier_id, 'ListeType' => 'P',
                   'Articles' => '[{"maxcde":10, "type":"p"'+
-                                 ',"id":' + item.remote_id.to_s +
+                                 ',"id":' + item_remote_id.to_s +
                                  ',"qte":' + quantity.to_s +
-                                 ',"prix_total":' + (quantity*item.price).to_s +
+                                 ',"prix_total" : 1.0' +
                                  '}]'},
                 {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
 
