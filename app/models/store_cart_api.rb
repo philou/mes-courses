@@ -1,22 +1,22 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 require 'mechanize'
-require 'auchan_direct_store_api'
+require 'auchan_direct_store_cart_api'
 
 # Objects providing an api like access to third party online stores
-class StoreAPI
+class StoreCartAPI
   include WithLogoutMixin
 
-  # Logs in the store account of a user and returns a StoreAPI instance
+  # Logs in the store account of a user and returns a StoreCartAPI instance
   def self.login(store_url, login, password)
-    if store_url == AuchanDirectStoreAPI.url
-      AuchanDirectStoreAPI.new(login, password)
-    elsif store_url == DummyStoreAPI.url
-      result = DummyStoreAPI.new
+    if store_url == AuchanDirectStoreCartAPI.url
+      AuchanDirectStoreCartAPI.new(login, password)
+    elsif store_url == DummyStoreCartAPI.url
+      result = DummyStoreCartAPI.new
       result.login(store_url, login, password)
       result
     else
-      raise ArgumentError.new("StoreAPI does not handle store at '#{store_url}'")
+      raise ArgumentError.new("StoreCartAPI does not handle store at '#{store_url}'")
     end
   end
 

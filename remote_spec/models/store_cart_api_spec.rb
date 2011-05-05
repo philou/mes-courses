@@ -7,22 +7,22 @@ require "lib/offline_test_helper"
 include OfflineTestHelper
 
 if offline?
-  puts yellow "WARNING: skipping StoreAPI remote spec because tests are running offline."
+  puts yellow "WARNING: skipping StoreCartAPI remote spec because tests are running offline."
 
 else
 
-  describe StoreAPI do
+  describe StoreCartAPI do
 
     it "should raise when login in with an invalid account" do
       lambda {
-        AuchanDirectStoreAPI.new("unknown-account", "wrong-password")
+        AuchanDirectStoreCartAPI.new("unknown-account", "wrong-password")
       }.should raise_error(InvalidStoreAccountError)
     end
 
     context "with a valid account" do
 
       before(:each) do
-        @api = AuchanDirectStoreAPI.new(LOGIN, PASSWORD)
+        @api = AuchanDirectStoreCartAPI.new(LOGIN, PASSWORD)
       end
       after(:each) do
         @api.logout
@@ -55,12 +55,12 @@ else
       it "should synchronize different sessions with logout login" do
         @api.set_item_quantity_in_cart(1, sample_item)
 
-        AuchanDirectStoreAPI.new(LOGIN, PASSWORD).with_logout do |api2|
+        AuchanDirectStoreCartAPI.new(LOGIN, PASSWORD).with_logout do |api2|
           api2.empty_the_cart
         end
 
         @api.logout
-        @api = AuchanDirectStoreAPI.new(LOGIN, PASSWORD)
+        @api = AuchanDirectStoreCartAPI.new(LOGIN, PASSWORD)
 
         @api.value_of_the_cart.should == 0
       end
@@ -78,7 +78,7 @@ else
       private
 
       def extract_sample_item
-        produits_laitiers = milk_subcat(StoreWalker.new(AuchanDirectStoreAPI.url))
+        produits_laitiers = milk_subcat(StoreWalker.new(AuchanDirectStoreCartAPI.url))
         produits_laitiers.should_not be_nil
 
         laits = milk_subcat(produits_laitiers)

@@ -87,7 +87,7 @@ describe CartController do
     end
 
     it "should forward the cart instance to the store" do
-      @forward_cart.should_receive(:forward_to).with(@store, StoreAPI.valid_login, StoreAPI.valid_password)
+      @forward_cart.should_receive(:forward_to).with(@store, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
       forward_to_valid_store_account
     end
 
@@ -122,12 +122,12 @@ describe CartController do
     end
 
     def forward_to_valid_store_account
-      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreAPI.valid_login, :password => StoreAPI.valid_password}
+      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.valid_login, :password => StoreCartAPI.valid_password}
     end
 
     def forward_to_invalid_store_account
       @forward_cart.stub(:forward_to).and_raise(InvalidStoreAccountError)
-      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreAPI.invalid_login, :password => StoreAPI.invalid_password}
+      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.invalid_login, :password => StoreCartAPI.invalid_password}
     end
 
   end

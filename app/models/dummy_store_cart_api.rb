@@ -1,9 +1,9 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
-require 'store_api'
+require 'store_cart_api'
 
-# Logger mock for StoreAPI.
-class DummyStoreAPI < StoreAPI
+# Logger mock for StoreCartAPI.
+class DummyStoreCartAPI < StoreCartAPI
 
   def self.url
     "http://www.dummy-store.com"
@@ -21,7 +21,7 @@ class DummyStoreAPI < StoreAPI
   end
 
   def login(store_url, login, password)
-    if login != StoreAPI.valid_login
+    if login != StoreCartAPI.valid_login
       raise InvalidStoreAccountError.new
     end
 
@@ -65,8 +65,8 @@ class DummyStoreAPI < StoreAPI
 end
 
 
-# Testing constants added to the StoreAPI class
-class StoreAPI
+# Testing constants added to the StoreCartAPI class
+class StoreCartAPI
   def self.valid_login
     "valid-login"
   end

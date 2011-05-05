@@ -86,8 +86,8 @@ describe Cart do
     before :each do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
-      @store_session = stub(StoreSession).as_null_object
-      StoreSession.stub(:login).and_return(@store_session)
+      @store_session = stub(StoreCartSession).as_null_object
+      StoreCartSession.stub(:login).and_return(@store_session)
       @store_session.stub(:logout_url).and_return("http://www.a-store.com/logout")
       class << @store_session
         include WithLogoutMixin
@@ -95,7 +95,7 @@ describe Cart do
     end
 
     it "should login to the store" do
-      StoreSession.should_receive(:login).with(@store.url, StoreAPI.valid_login, StoreAPI.valid_password)
+      StoreCartSession.should_receive(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
       forward_to_store
     end
 
@@ -142,7 +142,7 @@ describe Cart do
     end
 
     def forward_to_store
-      @cart.forward_to(@store, StoreAPI.valid_login, StoreAPI.valid_password)
+      @cart.forward_to(@store, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
     end
   end
 

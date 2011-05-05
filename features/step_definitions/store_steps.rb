@@ -15,10 +15,10 @@ end
 
 # NOTE : I had to create another where the online url would not be overriden with
 #        a local file because rails does not handle redirection to file://... well
-# TODO : try to get the DummyStoreAPI instance without using stubs
+# TODO : try to get the DummyStoreCartAPI instance without using stubs
 Given /^the "([^"]*)" store with api"?$/ do |web_store|
-  @storeAPI = DummyStoreAPI.new
-  StoreAPI.stub!(:login) do |store_url, login, password|
+  @storeAPI = DummyStoreCartAPI.new
+  StoreCartAPI.stub!(:login) do |store_url, login, password|
     @storeAPI.login(store_url, login, password)
     @storeAPI
   end

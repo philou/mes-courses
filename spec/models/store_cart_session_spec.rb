@@ -2,21 +2,21 @@
 
 require 'spec_helper'
 
-describe StoreSession do
+describe StoreCartSession do
 
-  # TODO: use the DummyStoreAPI, and make it pass the store_api_spec and the few add ons
+  # TODO: use the DummyStoreCartAPI, and make it pass the store_api_spec and the few add ons
 
   before :each do
-    @store_api = stub(StoreAPI).as_null_object
+    @store_api = stub(StoreCartAPI).as_null_object
     @store_api.stub(:value_of_the_cart).and_return(2.0)
-    StoreAPI.stub(:login).and_return(@store_api)
+    StoreCartAPI.stub(:login).and_return(@store_api)
     @login_args = "http://www.mega-store.fr", 'valid_login', 'valid_password'
     @bavette = stub_model(Item, :name => "bavette", :price => 5.3, :remote_id => 12345)
     @pdt = stub_model(Item, :name => "PdT", :price => 2.5, :remote_id => 67890)
   end
 
-  it "should delegate login to StoreAPI" do
-    StoreAPI.should_receive(:login).once.with(*@login_args)
+  it "should delegate login to StoreCartAPI" do
+    StoreCartAPI.should_receive(:login).once.with(*@login_args)
     login
   end
 
@@ -91,6 +91,6 @@ describe StoreSession do
   end
 
   def login
-    @store_session = StoreSession.login(*@login_args)
+    @store_session = StoreCartSession.login(*@login_args)
   end
 end

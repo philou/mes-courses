@@ -1,9 +1,9 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
-require 'store_api'
+require 'store_cart_api'
 
 # Store API for AuchanDirect store
-class AuchanDirectStoreAPI < StoreAPI
+class AuchanDirectStoreCartAPI < StoreCartAPI
 
   # main url of the store
   def self.url
@@ -13,7 +13,7 @@ class AuchanDirectStoreAPI < StoreAPI
   # Logins to auchan direct store
   def initialize(login, password)
     @agent = Mechanize.new
-    page = @agent.get(AuchanDirectStoreAPI.url)
+    page = @agent.get(AuchanDirectStoreCartAPI.url)
 
     login_form = Mechanize::Form.new(page.search('#formIdentification').first,
                                      page.mech,

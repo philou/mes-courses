@@ -18,7 +18,7 @@ class Store < ActiveRecord::Base
 
   # Opens a remote cart session to the remote store
   def with_session(login, password)
-    StoreSession.login(url, login, password).with_logout do |session|
+    StoreCartSession.login(url, login, password).with_logout do |session|
       return yield session
     end
   end

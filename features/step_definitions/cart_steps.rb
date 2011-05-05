@@ -21,14 +21,14 @@ Given /^There are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
 end
 
 When /^I forward the cart to the store account of a valid user$/ do
-  fill_in("store[login]", :with => StoreAPI.valid_login)
-  fill_in("store[password]", :with => StoreAPI.valid_password)
+  fill_in("store[login]", :with => StoreCartAPI.valid_login)
+  fill_in("store[password]", :with => StoreCartAPI.valid_password)
   click_button("Transférer le panier")
 end
 
 When /^I forward the cart to the store account of an invalid user$/ do
-  fill_in("store[login]", :with => StoreAPI.invalid_login)
-  fill_in("store[password]", :with => StoreAPI.invalid_password)
+  fill_in("store[login]", :with => StoreCartAPI.invalid_login)
+  fill_in("store[password]", :with => StoreCartAPI.invalid_password)
   click_button("Transférer le panier")
 end
 

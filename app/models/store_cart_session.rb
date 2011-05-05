@@ -1,12 +1,12 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 # A loged in session on the remote store. Manipulates the remote cart, and performs error checking.
-class StoreSession
+class StoreCartSession
   include WithLogoutMixin
 
-  # Logs in the store account of a user and returns a StoreAPI instance
+  # Logs in the store account of a user and returns a StoreCartAPI instance
   def self.login(store_url, login, password)
-    StoreSession.new(StoreAPI.login(store_url, login, password))
+    StoreCartSession.new(StoreCartAPI.login(store_url, login, password))
   end
 
   # logs out from the store
