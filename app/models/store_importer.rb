@@ -27,7 +27,7 @@ class StoreImporter
       log :info, "Resuming import from #{url}"
     end
 
-    walker = StoreWalker.new(url)
+    walker = StoreItemsAPI.new(url)
     unless_already_visited(walker) do
       dig(walker)
     end
@@ -88,7 +88,7 @@ class StoreImporter
       log :info, summary
       yield
 
-    rescue StoreWalkingError, ActiveRecord::RecordInvalid => e
+    rescue StoreItemsBrowsingError, ActiveRecord::RecordInvalid => e
       # this  should mean a page was not in a importable format
       log :warn, "Failed: \"#{summary}\" because "+ e
       # continue, this will eventually delete the faulty items

@@ -55,7 +55,7 @@ module Walker
   end
   def check_one(element_string, selector, elements)
     if elements.empty?()
-      raise StoreWalkingError.new("#{element_string} does not contain any elements like \"#{selector}\"")
+      raise StoreItemsBrowsingError.new("#{element_string} does not contain any elements like \"#{selector}\"")
     end
     elements.first
   end
@@ -63,7 +63,7 @@ end
 
 
 # Objects able to walk a store and discover available items
-class StoreWalker
+class StoreItemsAPI
   include Walker
 
   def initialize(url)

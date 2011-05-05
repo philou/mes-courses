@@ -78,7 +78,7 @@ else
       private
 
       def extract_sample_item
-        produits_laitiers = milk_subcat(StoreWalker.new(AuchanDirectStoreCartAPI.url))
+        produits_laitiers = milk_subcat(StoreItemsAPI.new(AuchanDirectStoreCartAPI.url))
         produits_laitiers.should_not be_nil
 
         laits = milk_subcat(produits_laitiers)
