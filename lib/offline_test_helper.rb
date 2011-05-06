@@ -6,14 +6,14 @@ require 'ping'
 
 module OfflineTestHelper
 
-  OFFLINE = !Ping.pingecho('google.com',1,80)
+  ONLINE = Ping.pingecho('google.com',10,80)
 
   # offline and onine predicates
   def offline?
-    OFFLINE
+    !online?
   end
   def online?
-    !offline?
+    ONLINE
   end
 
   # puts a colored warning if offline

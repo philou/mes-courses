@@ -27,7 +27,7 @@ class StoreImporter
       log :info, "Resuming import from #{url}"
     end
 
-    walker = StoreItemsAPI.new(url)
+    walker = StoreItemsAPI.browse(url)
     unless_already_visited(walker) do
       dig(walker)
     end

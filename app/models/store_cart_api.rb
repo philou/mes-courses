@@ -12,9 +12,7 @@ class StoreCartAPI
     if store_url == AuchanDirectStoreCartAPI.url
       AuchanDirectStoreCartAPI.new(login, password)
     elsif store_url == DummyStoreCartAPI.url
-      result = DummyStoreCartAPI.new
-      result.login(store_url, login, password)
-      result
+      DummyStoreCartAPI.new(login, password)
     else
       raise ArgumentError.new("StoreCartAPI does not handle store at '#{store_url}'")
     end

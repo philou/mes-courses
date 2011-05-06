@@ -11,11 +11,11 @@ class DummyStoreCartAPI < StoreCartAPI
 
   attr_reader :store_url, :login, :password, :log
 
-  def initialize
+  def initialize(login = "", password = "")
     @log = []
     @store_url = ""
-    @login = ""
-    @password = ""
+    @login = login
+    @password = password
     @cart_value = 0.0
     @unavailable_items = {}
   end
