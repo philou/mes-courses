@@ -8,7 +8,7 @@ class StoreItemsAPI
 
   def self.browse(store_url)
     if store_url == DummyStoreCartAPI.url
-      DummyStoreItemsAPI.new
+      DummyStoreItemsAPI.new(store_url)
     else
       AuchanDirectStoreItemsAPI.new(store_url)
     end

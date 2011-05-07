@@ -1,12 +1,14 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec/models/store_importing_test_strategy'
-require 'spec/mostly_matcher'
-require 'spec/all_matcher'
-require 'spec/have_non_nil_matcher'
+require 'spec/support/constants'
+require 'spec/support/mostly_matcher'
+require 'spec/support/all_matcher'
+require 'spec/support/have_non_nil_matcher'
 require 'spec/stubs/cucumber'
 require 'lib/deep_clone'
 require 'lib/offline_test_helper'
+
 
 include OfflineTestHelper
 warn_if_offline

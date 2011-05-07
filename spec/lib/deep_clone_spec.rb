@@ -1,7 +1,6 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
-require 'all_matcher'
 require 'lib/deep_clone'
 require 'app/models/item_category'
 

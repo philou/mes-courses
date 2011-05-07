@@ -22,7 +22,7 @@ shared_examples_for "Any StoreCartAPI" do
     context "with a valid account" do
 
       before(:each) do
-        @api = @store_cart_api.new(LOGIN, PASSWORD)
+        @api = @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password)
       end
       after(:each) do
         @api.logout
@@ -55,18 +55,15 @@ shared_examples_for "Any StoreCartAPI" do
       it "should synchronize different sessions with logout login" do
         @api.set_item_quantity_in_cart(1, sample_item)
 
-        @store_cart_api.new(LOGIN, PASSWORD).with_logout do |api2|
+        @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api2|
           api2.empty_the_cart
         end
 
         @api.logout
-        @api = @store_cart_api.new(LOGIN, PASSWORD)
+        @api = @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password)
 
         @api.value_of_the_cart.should == 0
       end
-
-      LOGIN = "philippe.bourgau@free.fr"
-      PASSWORD = "NoahRules78"
 
       attr_reader :sample_item, :store_cart_api
 

@@ -1,7 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
-require 'include_all_matcher'
 
 describe ImportReporter do
 

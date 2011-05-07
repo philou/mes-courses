@@ -8,20 +8,31 @@ class DummyStoreCartAPI < StoreCartAPI
   def self.url
     "http://www.dummy-store.com"
   end
+  def self.valid_login
+    "valid-login"
+  end
+  def self.valid_password
+    "valid-password"
+  end
 
-  attr_reader :store_url, :login, :password, :log
+  attr_reader :url, :login, :password, :log
 
-  def initialize(login = "", password = "")
+  def initialize(login = nil, password = nil)
     @log = []
-    @store_url = ""
-    @login = login
-    @password = password
-    @cart_value = 0.0
+    @url = ""
+    @login = ""
+    @password = ""
     @unavailable_items = {}
+    @content = {}
+
+    if !login.nil? || !password.nil?
+      login(DummyStoreCartAPI.url, login, password)
+    end
+
   end
 
   def login(store_url, login, password)
-    if login != StoreCartAPI.valid_login
+    if login != DummyStoreCartAPI.valid_login
       raise InvalidStoreAccountError.new
     end
 
@@ -29,7 +40,6 @@ class DummyStoreCartAPI < StoreCartAPI
     @store_url = store_url
     @login = login
     @password = password
-    @cart_value = 0.0
   end
 
   def logout
@@ -38,13 +48,14 @@ class DummyStoreCartAPI < StoreCartAPI
 
   def empty_the_cart
     @log.push(:empty_the_cart)
-    @cart_value = 0.0
+    @content = { }
   end
 
   def set_item_quantity_in_cart(quantity, item_remote_id)
     if available?(item_remote_id)
       @log.push(:set_item_quantity_in_cart)
-      @cart_value = @cart_value + quantity
+      # everything is at 1€ in this store (I would have needed the price as argument otherwise)
+      @content[item_remote_id] = quantity
     end
   end
 
@@ -53,7 +64,7 @@ class DummyStoreCartAPI < StoreCartAPI
   end
 
   def value_of_the_cart
-    @cart_value
+    @content.values.inject(0.0) {|x,y| x+y}
   end
 
   def add_unavailable_item(item_remote_id)
@@ -64,19 +75,3 @@ class DummyStoreCartAPI < StoreCartAPI
   end
 end
 
-
-# Testing constants added to the StoreCartAPI class
-class StoreCartAPI
-  def self.valid_login
-    "valid-login"
-  end
-  def self.valid_password
-    "valid-password"
-  end
-  def self.invalid_login
-    "in" + valid_login
-  end
-  def self.invalid_password
-    "in" + valid_password
-  end
-end

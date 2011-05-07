@@ -2,9 +2,6 @@
 
 require 'spec_helper'
 require 'models/store_importing_test_strategy'
-require 'mostly_matcher'
-require 'all_matcher'
-require 'have_unique_matcher'
 
 describe StoreImporter do
 
