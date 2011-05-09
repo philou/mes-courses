@@ -1,0 +1,14 @@
+TODO
+
+- [DONE] use dish page as main page
+  - send a redirection
+  - remove the welcome/index view
+- add a shortcut bar, with dish, items, and cart
+  - merge the live site into dev
+  - split body head snippet in two
+  - merge back to the live site
+  - publish the live site
+  - 
+- add an "navigation bar" with the path to the current page (ex: légumes > tomates > tomates cerises)
+- stay on the same page when something is added to the cart
+
