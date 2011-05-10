@@ -1,7 +1,7 @@
 #!/bin/sh
 
 git checkout cms_branch &&
-git merge -s subtree cms_branch &&
+git merge -s subtree master &&
 RAILS_ENV=production rake fs:to_db &&
 git add . &&
 git commit -m "Push local changes to cms db (Bloging)" &&
