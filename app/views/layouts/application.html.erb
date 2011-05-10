@@ -7,7 +7,7 @@
     <%= render(:partial => "shared/html_head_content") %>
   </head>
 
-  <body id="store" >
+  <body id="<%= @body_id %>">
     <%= render(:partial => "shared/html_body_header") %>
 
     <% if @title %>

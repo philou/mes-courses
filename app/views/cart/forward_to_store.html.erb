@@ -1,6 +1,9 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
-<% @title = "Transfert du panier" %>
+<%
+@body_id = 'cart'
+@title = "Transfert du panier"
+%>
 
 <p>Votre panier a été transféré à '<%= @store.name %>'</p>
 <% unless @report_notices.empty? %>

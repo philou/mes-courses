@@ -79,7 +79,7 @@ ul ul {
     font-size: 1.4em;
     color: #FFFFFF;
 }
-#presentation #place-presentation, #blog #place-blog {
+#presentation #place-presentation, #blog #place-blog, #dish #place-dish, #items #place-items, #cart #place-cart {
     font-weight: bold;
 }
 #places a {

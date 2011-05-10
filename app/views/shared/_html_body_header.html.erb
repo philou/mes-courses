@@ -1,1 +1,11 @@
-../../../cms/design/snippets/html-body-header.html
+<%= render(:partial => "shared/html_body_header_1") %>
+        <a href="http://www.mes-courses.fr/" id="place-presentation">A propos</a>
+        <span class="separator"> | </span>
+        <a href="http://www.mes-courses.fr/blog" id="place-blog">Blog</a>
+        <span class="separator"> | </span>
+        <%= link_to 'Recettes', {:controller => 'dish'}, :id => 'place-dish' %>
+        <span class="separator"> | </span>
+        <%= link_to 'Ingrédients', {:controller => 'item_category'}, :id => 'place-items' %>
+        <span class="separator"> | </span>
+        <%= link_to 'Panier', {:controller => 'cart'}, :id => 'place-cart' %>
+<%= render(:partial => "shared/html_body_header_2") %>
