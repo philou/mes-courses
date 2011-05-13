@@ -1,10 +1,5 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
-<%
-@body_id = 'cart'
-@title = "Panier"
-%>
-
 <div class="section">
   <span class="section-title">Produits</span>
   <table>
@@ -24,13 +19,13 @@
 <% @stores.each do |store| %>
   <div class="section">
     <span class="section-title">Passer cette commande sur <%= store.name %></span>
-      <p> Entrez vos identifiant et mot de passe <%= store.name %></p>
-      <% form_for :store, :url => https_url_for(:action => 'forward_to_store', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
-        <span>Identifiant:</span>
-        <%= form.text_field "login", :size => 40 %> </input>
-        <span>Mot de passe:</span>
-        <%= form.password_field "password", :size => 20 %> </input>
-        <%= submit_tag "Transférer le panier" %> </input>
+    <p> Entrez vos identifiant et mot de passe <%= store.name %></p>
+    <% form_for :store, :url => https_url_for(:action => 'forward_to_store', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
+      <span>Identifiant:</span>
+      <%= form.text_field "login", :size => 40 %> </input>
+      <span>Mot de passe:</span>
+      <%= form.password_field "password", :size => 20 %> </input>
+      <%= submit_tag "Transférer le panier" %> </input>
     <% end %>
   </div>
 <% end %>

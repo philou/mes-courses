@@ -4,7 +4,6 @@ Feature: Item browsing
   A customer
   Wants to browse it and its details
 
-  # REM if we create a custom display for individual items, this could be moved to organization
   Scenario: Browsing items in their sub category page
     Given "Fruits & Légumes > Tomates > Tomates grappes" item
     When  I go to the "Tomates" item sub category page

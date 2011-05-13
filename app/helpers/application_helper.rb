@@ -21,9 +21,14 @@ module ApplicationHelper
   end
 
   # path for a category, defaults to the main browser for a nil or new category
-  def any_item_category_path(category = nil)
-    return "/item_category" if category.nil? || category.id.nil?
+  def any_item_category_path(*args)
+    root_category_path = "/item_category"
 
-    item_category_path(category)
+    return root_category_path if args.empty?
+
+    category = args[0]
+    return root_category_path if category.nil? || category.id.nil?
+
+    item_category_path(*args)
   end
 end

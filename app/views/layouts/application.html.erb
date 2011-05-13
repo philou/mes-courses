@@ -10,9 +10,16 @@
   <body id="<%= @body_id %>">
     <%= render(:partial => "shared/html_body_header") %>
 
-    <% if @title %>
-      <h2><%= @title %></h2>
-    <% end %>
+    <div id="path-bar">
+      <% @path_bar.each do |path_element| %>
+        <% if !path_element.instance_of? Array %>
+          <a><%= path_element %></a>
+        <% else %>
+          <%= link_to *path_element %>
+        <% end %>
+        <span>&gt;</span>
+      <% end %>
+    </div>
 
     <% if flash[:notice] %>
       <div class="notice" ><p><%= flash[:notice] %></p></div>

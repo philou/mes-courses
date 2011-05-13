@@ -25,8 +25,10 @@ describe CartController do
       assigns[:stores].should be @stores
     end
 
-    it "should show the session cart" do
+    it "should assign the @path_bar to display" do
       get :show
+
+      assigns[:path_bar].should == [PathBar.element_for_current_resource("Panier")]
     end
 
     # maybe I could use a shared_example, but I am not sure it would be better
@@ -84,6 +86,13 @@ describe CartController do
       @forward_cart = stub_model(Cart)
       @forward_cart.stub(:forward_to).and_return({ :store_url => @logout_url, :missing_items => []})
       Cart.should_receive(:find_by_id).with(@forward_cart.id).and_return(@forward_cart)
+    end
+
+    it "should assign a @path_bar with two items" do
+      forward_to_valid_store_account
+
+      assigns[:path_bar].should == [PathBar.element("Panier", :controller => 'cart'),
+                                    PathBar.element_with_no_link("Transfert")]
     end
 
     it "should forward the cart instance to the store" do

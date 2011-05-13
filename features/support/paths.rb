@@ -7,19 +7,21 @@ module NavigationHelpers
   #
   # step definition in web_steps.rb
   #
-  def path_to(page_name)
+  def path_to(page_name, response = nil)
     case page_name
 
+    when /the current page/
+      "#{response.env['PATH_INFO']}?#{response.env['QUERY_STRING']}"
     when /the home\s?page/
       '/'
     when /the full item catalog page/
-      '/item/'
+      '/item'
     when /the cart page/
       '/cart'
     when /the full dish catalog page/
-      '/dish/'
+      '/dish'
     when /the item categories page/
-      '/item_category/'
+      '/item_category'
     when /the "([^"]*)" item category page/
       item_category_path(ItemCategory.find_by_name_and_parent_id($1, nil))
     when /the "([^"]*)" item sub category page/

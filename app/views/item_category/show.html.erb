@@ -1,9 +1,5 @@
 <!-- Copyright (C) 2011 by Philippe Bourgau -->
 
-<%
-@body_id = 'items'
-%>
-
 <div id="search-panel">
   <% form_tag @search_url, :method => :get, :id => "search" do %>
     <%= text_field_tag "search[keyword]", nil, :size => 60 %></input>

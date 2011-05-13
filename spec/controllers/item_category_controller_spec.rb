@@ -22,10 +22,10 @@ describe ItemCategoryController do
       response.should render_template("show")
     end
 
-    it "should assign a global title" do
+    it "should assign a global path_bar" do
       get_index
 
-      assigns[:title].should == "Ingrédients"
+      assigns[:path_bar].should == [PathBar.element("Ingrédients", :controller => 'item_category')]
     end
 
     it "should assign the root categories" do
@@ -57,10 +57,11 @@ describe ItemCategoryController do
         get 'index', :search => { :keyword => @keyword }
       end
 
-      it "should assign a title matching the search" do
+      it "should assign a path_bar matching the search" do
         get_index_search
 
-        assigns[:title].should == "Résultats de la recherche pour \"#{@keyword}\""
+        assigns[:path_bar].should == [PathBar.element("Ingrédients", :controller => 'item_category'),
+                                      PathBar.element_with_no_link(@keyword)]
       end
 
       it "should assign the global item search url" do
@@ -91,21 +92,45 @@ describe ItemCategoryController do
 
   describe "GET 'show'" do
     before :each do
-      @item_category = stub_model(ItemCategory, :id => 123)
+      @item_category = stub_model(ItemCategory, :id => 123, :name => "Légumes")
       ItemCategory.stub(:find_by_id).and_return(@item_category)
+    end
+
+    def get_show
       get 'show', :id => @item_category.id
     end
 
     it "should be successful" do
+      get_show
+
       response.should be_success
       response.should render_template("show")
     end
 
     it "should assign item_category attributes" do
-      assigns[:title].should == @item_category.name
+      get_show
+
       assigns[:search_url].should == item_category_path(@item_category)
       assigns[:categories].should == @item_category.children
       assigns[:items].should == @item_category.items
+    end
+
+    it "should assign a path bar with root category" do
+      get_show
+
+      assigns[:path_bar].should == [PathBar.element("Ingrédients", :controller => 'item_category'),
+                                    PathBar.element(@item_category.name, item_category_path(@item_category))]
+    end
+
+    it "should assign a full path bar with all parents" do
+      parent_category = stub_model(ItemCategory, :id => 456, :name => "Marché")
+      @item_category.parent = parent_category
+
+      get_show
+
+      assigns[:path_bar].should == [PathBar.element("Ingrédients", :controller => 'item_category'),
+                                    PathBar.element(parent_category.name, item_category_path(parent_category)),
+                                    PathBar.element(@item_category.name, item_category_path(@item_category))]
     end
 
     describe "searching" do
@@ -120,10 +145,12 @@ describe ItemCategoryController do
         get 'show', :id => @item_category.id, :search => { :keyword => @keyword }
       end
 
-      it "should assign a title matching the search" do
+      it "should assign a path_bar matching the search" do
         get_show_search
 
-        assigns[:title].should == "Résultats de la recherche pour \"#{@keyword}\" dans \"#{@item_category.name}\""
+        assigns[:path_bar].should == [PathBar.element("Ingrédients", :controller => 'item_category'),
+                                      PathBar.element(@item_category.name, item_category_path(@item_category)),
+                                      PathBar.element_with_no_link(@keyword)]
       end
 
       it "should assign the global item search url" do

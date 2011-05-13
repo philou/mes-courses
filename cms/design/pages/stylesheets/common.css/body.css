@@ -185,7 +185,7 @@ p.status {
 .blog-post {
     margin-bottom: 2.4em;
 }
- .blog-post h2 {
+.blog-post h2 {
     border-bottom: 1px solid;
     margin-bottom: 1em;
 }
@@ -256,10 +256,10 @@ table img {
 /* Store general */
 div.section {
     border: 1px solid #a0db54;
-    margin: 2px;
     padding: 1em;
+    margin: 2px;
 }
-div.section+div.section {
+div.section + div.section {
     margin-top: 20px;
 }
 div.section > * {
@@ -275,6 +275,14 @@ div.section .section-title {
 }
 div.section p {
     margin: 1em;
+}
+
+/* Store path bar */
+#path-bar {
+    margin-bottom: 20px;
+}
+#path-bar * {
+    font-size: 1.4em;
 }
 
 /* Store error notices to users */
