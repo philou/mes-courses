@@ -82,9 +82,7 @@ class AuchanDirectStoreCartAPI < StoreCartAPI
   def get_embedded_js
     page = @agent.get(url)
     scripts = page.search('script')
-
-    script = scripts.find {|script| !script.inner_text.empty? }
-    return script.inner_text
+    return scripts.map {|script| script.inner_text }.join
   end
 
 

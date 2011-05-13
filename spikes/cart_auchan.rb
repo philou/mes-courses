@@ -5,24 +5,24 @@ require 'mechanize'
 
 attempt = 1
 
-begin
+#begin
 
   agent = Mechanize.new
-  login_page = agent.get("http://www.auchandirect.fr")
+  login_page = agent.get("http://www.auchandirect.fr/frontoffice")
 
   # 1° on se log
   login_form = Mechanize::Form.new(login_page.search('#formIdentification').first, login_page.mech, login_page)
   login_form.Username = "philippe.bourgau@free.fr_invalid"
   login_form.Password = "NoahRules78"
   res = login_form.submit()
-  puts res.inspect
 
   # 2° on vide le panier courant
-  logged_page = agent.get("http://www.auchandirect.fr")
+  logged_page = agent.get("http://www.auchandirect.fr/frontoffice")
   scripts = logged_page.search('script')
 
-  script = scripts.find {|script| !script.inner_text.empty? }
-  js = script.inner_text
+  js = scripts.map {|script| script.inner_text }.join
+
+puts js
 
   clientId = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
   panierId = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
@@ -80,11 +80,10 @@ begin
              #             'IdProdUpd' => '59713',
              #             'ListeNom' => 'AuchanDirect_Panier_785619'},
              {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-  puts res.inspect
 
   # 4° récupérer le prix du panier
 
-  logged_page = agent.get("http://www.auchandirect.fr")
+  logged_page = agent.get("http://www.auchandirect.fr/frontoffice")
   scripts = logged_page.search('script')
 
   script = scripts.find {|script| !script.inner_text.empty? }
@@ -101,15 +100,16 @@ begin
 
 
   # 5° on se délog
-  main_page = agent.get("http://www.auchandirect.fr")
+  main_page = agent.get("http://www.auchandirect.fr/frontoffice")
   main_page.link_with(:text => "cliquez ici").click
 
   puts "Attempt ##{attempt} succeeded"
 
-rescue Exception => e
-  puts "Attempt  ##{attempt} failed because #{e}, retrying."
-  attempt += 1
-  retry
-end
+# rescue Exception => e
+#   puts "Attempt  ##{attempt} failed because #{e}, retrying."
+#   attempt += 1
+
+#   retry unless 5 < attempt
+# end
 
 
