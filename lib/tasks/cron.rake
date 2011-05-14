@@ -6,6 +6,11 @@ task :cron => :environment do
     at_exit do
       Rails.logger.info "Exited, last exception was #{$!.inspect}"
     end
-    Rake::Task["stores:import"].invoke
+
+    cron_tasks = ENV['CRON_TASKS'] || ""
+    cron_tasks.split(';').each do |task|
+      Rake::Task[task].invoke
+    end
+
   end
 end
