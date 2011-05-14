@@ -55,7 +55,7 @@ class StoreImporter
       params[:item_category] = item_category
       params = strategy.enrich_item(params)
 
-      log :info, "Found item #{params.inspect}"
+      log :debug, "Found item #{params.inspect}"
       store.register_item(params)
     end
   end
@@ -74,7 +74,7 @@ class StoreImporter
 
   def unless_already_visited(walker)
     if store.already_visited_url?(walker.uri.to_s)
-      log :info, "Skipping #{walker.uri}"
+      log :debug, "Skipping #{walker.uri}"
     else
       with_rescue "Following link #{walker.uri}" do
         yield
@@ -85,7 +85,7 @@ class StoreImporter
 
   def with_rescue(summary)
     begin
-      log :info, summary
+      log :debug, summary
       yield
 
     rescue StoreItemsBrowsingError, ActiveRecord::RecordInvalid => e
@@ -99,9 +99,6 @@ class StoreImporter
   end
 
   def log(level, message)
-    if (Rails.logger.respond_to?(:mongoize) && (Rails.logger.level < Logger::SYMBOL_2_LEVEL[level]))
-      Rails.logger.send(Logger::LEVEL_2_SYMBOL[Rails.logger.level], message)
-    end
     Rails.logger.send(level, message)
   end
 

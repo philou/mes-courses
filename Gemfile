@@ -3,7 +3,6 @@ source :gemcutter
 gem "rails", "2.3.8"
 gem "mechanize", "1.0.0"
 gem "nokogiri", "1.4.4"
-gem "central_logger", "0.2.0"
 
 gem "activerecord-nulldb-adapter", "0.2.0", :group => :test
 

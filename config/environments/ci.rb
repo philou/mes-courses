@@ -2,7 +2,6 @@
 
 # Configuration for continuous integration, mostly like production, but
 #  - with rspec and cucumber
-#  - without mongo logger, NOTE: cc.rb overrides the logger
 
 # Settings specified here will take precedence over those in config/environment.rb
 
@@ -17,9 +16,6 @@ config.action_view.cache_template_loading            = true
 
 # See everything in the log (default is :info)
 # config.log_level = :debug
-
-# Use a different logger for distributed setups
-# CentralLogger::Initializer.initialize_deprecated_logger(config)
 
 # Use a different cache store in production
 # config.cache_store = :mem_cache_store

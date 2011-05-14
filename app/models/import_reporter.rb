@@ -6,18 +6,16 @@ class ImportReporter < ActionMailer::Base
   # Updates statistics and reports by mail and log
   def self.update_stats_and_report
     body = ""
-    subject = subject do
+    subject = generate_subject_and do
       body = update_stats_and_generate_content
     end
-
-    Rails.logger.info subject+"\n"+body
 
     deliver_import_report(subject, body)
   end
 
   private
 
-  def self.subject
+  def self.generate_subject_and
     previous_date = ModelStat.maximum(:updated_at)
     yield
     update_date = ModelStat.maximum(:updated_at)
