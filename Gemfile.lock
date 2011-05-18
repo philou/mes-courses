@@ -49,6 +49,9 @@ GEM
       rack (>= 1.0.0)
       rspec (>= 1.3.0)
     sqlite3-ruby (1.3.2)
+    super_exception_notifier (3.0.13)
+      actionmailer
+      rake
     term-ansicolor (1.0.5)
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
@@ -71,4 +74,5 @@ DEPENDENCIES
   rspec (= 1.3.0)
   rspec-rails (= 1.3.2)
   sqlite3-ruby
+  super_exception_notifier (= 3.0.13)
   webrat (= 0.7.1)

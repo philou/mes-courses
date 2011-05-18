@@ -2,6 +2,9 @@
 
 # Object responsible for building and mailing an import report
 class ImportReporter < ActionMailer::Base
+  class << self
+    include HerokuHelper
+  end
 
   # Updates statistics and reports by mail and log
   def self.update_stats_and_report
@@ -20,9 +23,6 @@ class ImportReporter < ActionMailer::Base
     yield
     update_date = ModelStat.maximum(:updated_at)
     "Import report for app '#{app_name}' between #{previous_date} and #{update_date}"
-  end
-  def self.app_name
-    ENV['APP_NAME'] || 'unknown'
   end
 
   def self.update_stats_and_generate_content

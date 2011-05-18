@@ -8,3 +8,9 @@ task :ci do
   ENV['RAILS_ENV'] = RAILS_ENV = 'ci'
   sh "bundle install"
 end
+
+desc "Tasks that launches the remote specs and emails a result"
+task :watchdog => :remote_spec do
+  WatchdogNotifier.deliver_success_email
+end
+

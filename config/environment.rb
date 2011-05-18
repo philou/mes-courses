@@ -8,7 +8,12 @@ RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+require 'exception_notification'
+require 'lib/heroku_helper'
+
 Rails::Initializer.run do |config|
+  include HerokuHelper
+
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
@@ -44,4 +49,33 @@ Rails::Initializer.run do |config|
   # By default, don't send emails
   config.action_mailer.delivery_method = :test
 
+  ExceptionNotification::Notifier.configure_exception_notifier do |config|
+    # If left empty web hooks will not be engaged
+    # config[:web_hooks] = []
+
+    config[:app_name]                 = ENV['APP_NAME']
+    config[:sender_address]           = "philippe.bourgau@mes-courses.fr"
+    config[:exception_recipients]     = ["philippe.bourgau@mes-courses.fr"]
+
+    # Customize the subject line
+    # config[:subject_prepend] = "[#{(defined?(Rails) ? Rails.env : RAILS_ENV).capitalize} ERROR] "
+    # config[:subject_append] = nil
+    # Include which sections of the exception email?
+    # config[:sections] = %w(request session environment backtrace)
+    # Only use this gem to render, never email
+    # defaults to false - meaning by default it sends email. Setting true will cause it to only render the error pages, and NOT email.
+    # config[:skip_local_notification] = true
+    # Example:
+    # config[:view_path] = 'app/views/error'
+    # config[:view_path] = nil
+    # Error Notification will be sent if the HTTP response code for the error matches one of the following error codes
+    config[:notify_error_codes] = %W( 405 500 503 )
+    # Error Notification will be sent if the error class matches one of the following error error classes
+    # config[:notify_error_classes] = %W( )
+    # What should we do for errors not listed?
+    config[:notify_other_errors] = true
+    # config[:template_root] = "#{File.dirname(__FILE__)}/../views"
+    # If you set this SEN will attempt to use git blame to discover the person who made the last change to the problem code
+    # config[:git_repo_path]            = nil # ssh://git@blah.example.com/repo/webapp.git
+   end
 end
