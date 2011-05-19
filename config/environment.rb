@@ -46,14 +46,29 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  # By default, don't send emails
-  config.action_mailer.delivery_method = :test
+  # Send emails from heroku
+  if !on_heroku?
+    config.action_mailer.delivery_method = :test
+
+  else
+    config.action_mailer.delivery_method = :smtp
+    ActionMailer::Base.smtp_settings = {
+      :address        => 'smtp.sendgrid.net',
+      :port           => '25',
+      :authentication => :plain,
+      :user_name      => ENV['SENDGRID_USERNAME'],
+      :password       => ENV['SENDGRID_PASSWORD'],
+      :domain         => ENV['SENDGRID_DOMAIN']}
+  end
+
+  # Disable delivery errors, bad email addresses will be ignored
+  # config.action_mailer.raise_delivery_errors = false
 
   ExceptionNotification::Notifier.configure_exception_notifier do |config|
     # If left empty web hooks will not be engaged
     # config[:web_hooks] = []
 
-    config[:app_name]                 = ENV['APP_NAME']
+    config[:app_name]                 = app_name
     config[:sender_address]           = "philippe.bourgau@mes-courses.fr"
     config[:exception_recipients]     = ["philippe.bourgau@mes-courses.fr"]
 

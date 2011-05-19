@@ -7,7 +7,7 @@ class WatchdogNotifier < ActionMailer::Base
   # mailer template function
   def success_email
     @subject = "[#{app_name} WATCHDOG SUCCESS]"
-    @body["content"] = "All the tests OK."
+    @body["content"] = "All tests OK."
     @recipients = 'philippe.bourgau@mes-courses.fr'
     @from = 'watchdog@mes-courses.fr'
     @sent_on = Time.now
