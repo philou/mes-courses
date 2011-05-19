@@ -11,6 +11,7 @@ end
 
 desc "Tasks that launches the remote specs and emails a result"
 task :watchdog => :remote_spec do
+  raise RuntimeError.new("Watchdog made to fail !")
   WatchdogNotifier.deliver_success_email
 end
 
