@@ -65,32 +65,10 @@ Rails::Initializer.run do |config|
   # config.action_mailer.raise_delivery_errors = false
 
   ExceptionNotification::Notifier.configure_exception_notifier do |config|
-    # If left empty web hooks will not be engaged
-    # config[:web_hooks] = []
-
     config[:app_name]                 = app_name
-    config[:sender_address]           = "philippe.bourgau@mes-courses.fr"
+    config[:sender_address]           = "watchdog@mes-courses.fr"
     config[:exception_recipients]     = ["philippe.bourgau@mes-courses.fr"]
-
-    # Customize the subject line
-    # config[:subject_prepend] = "[#{(defined?(Rails) ? Rails.env : RAILS_ENV).capitalize} ERROR] "
-    # config[:subject_append] = nil
-    # Include which sections of the exception email?
-    # config[:sections] = %w(request session environment backtrace)
-    # Only use this gem to render, never email
-    # defaults to false - meaning by default it sends email. Setting true will cause it to only render the error pages, and NOT email.
-    # config[:skip_local_notification] = true
-    # Example:
-    # config[:view_path] = 'app/views/error'
-    # config[:view_path] = nil
-    # Error Notification will be sent if the HTTP response code for the error matches one of the following error codes
-    config[:notify_error_codes] = %W( 405 500 503 )
-    # Error Notification will be sent if the error class matches one of the following error error classes
-    # config[:notify_error_classes] = %W( )
-    # What should we do for errors not listed?
-    config[:notify_other_errors] = true
-    # config[:template_root] = "#{File.dirname(__FILE__)}/../views"
-    # If you set this SEN will attempt to use git blame to discover the person who made the last change to the problem code
-    # config[:git_repo_path]            = nil # ssh://git@blah.example.com/repo/webapp.git
+    config[:subject_prepend]          = "[#{app_name} #{RAILS_ENV.capitalize} ERROR] "
+    config[:skip_local_notification]  = false
    end
 end

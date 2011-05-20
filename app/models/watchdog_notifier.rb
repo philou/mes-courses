@@ -6,8 +6,8 @@ class WatchdogNotifier < ActionMailer::Base
 
   # mailer template function
   def success_email
-    @subject = "[#{app_name} WATCHDOG SUCCESS]"
-    @body["content"] = "All tests OK."
+    @subject = "[#{app_name} #{RAILS_ENV.capitalize} SUCCESS] Remote specs are ok"
+    @body["content"] = "All specs OK."
     @recipients = 'philippe.bourgau@mes-courses.fr'
     @from = 'watchdog@mes-courses.fr'
     @sent_on = Time.now

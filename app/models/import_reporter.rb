@@ -22,7 +22,7 @@ class ImportReporter < ActionMailer::Base
     previous_date = ModelStat.maximum(:updated_at)
     yield
     update_date = ModelStat.maximum(:updated_at)
-    "Import report for app '#{app_name}' between #{previous_date} and #{update_date}"
+    "[#{app_name} #{RAILS_ENV.capitalize} REPORT] Import between #{previous_date} and #{update_date}"
   end
 
   def self.update_stats_and_generate_content
@@ -50,8 +50,8 @@ class ImportReporter < ActionMailer::Base
   def import_report(subject, content)
     @subject = subject
     @body["content"] = content
-    @recipients = 'philippe.bourgau@free.fr'
-    @from = ''
+    @recipients = 'philippe.bourgau@mes-courses.fr'
+    @from = 'watchdog@mes-courses.fr'
     @sent_on = Time.now
     @headers = {}
   end
