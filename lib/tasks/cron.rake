@@ -8,9 +8,6 @@ cron_task = NotifiedTask.new :cron => :environment do
   cron_tasks.split(';').each do |task|
     Rake::Task[task].invoke
   end
-
-  raise RuntimeError.new("Watchdog made to fail !")
-
 end
 
 # Monkey patching NotifiedTask to have a logger
