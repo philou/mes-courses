@@ -39,7 +39,7 @@ describe ImportReporter do
     ImportReporter.update_stats_and_report
 
     @emails.should have(1).entry
-    @emails[0].to.should == ["philippe.bourgau@free.fr"]
+    @emails[0].to.should_not be_empty
   end
 
   context "generated report" do
@@ -51,7 +51,9 @@ describe ImportReporter do
     end
 
     it "subjet should be descriptive" do
-      @subject.should == "Import report for app '#{ENV['APP_NAME']}' between #{PREVIOUS_DATE} and #{UPDATE_DATE}"
+      @subject.should include(ENV['APP_NAME'])
+      @subject.should include(PREVIOUS_DATE.to_s)
+      @subject.should include(UPDATE_DATE.to_s)
     end
 
     it "should contain stats for models" do
