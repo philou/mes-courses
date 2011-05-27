@@ -10,7 +10,7 @@ class ImportReporter < ActionMailer::Base
   def self.update_stats_and_report
     body = ""
     subject = generate_subject_and do
-      body = update_stats_and_generate_content
+      body = update_stats_and_generate_content.inspect
     end
 
     deliver_import_report(subject, body)
@@ -43,7 +43,7 @@ class ImportReporter < ActionMailer::Base
       ModelStat.create_or_update_by_name!(name, :count => stat['updated count'])
     end
 
-    stats.inspect
+    stats
   end
 
   # mailer template function
