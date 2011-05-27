@@ -10,6 +10,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'exception_notification'
 require 'lib/heroku_helper'
+require File.join(File.dirname(__FILE__), 'email_constants')
 
 Rails::Initializer.run do |config|
   include HerokuHelper
@@ -66,8 +67,8 @@ Rails::Initializer.run do |config|
 
   ExceptionNotification::Notifier.configure_exception_notifier do |config|
     config[:app_name]                 = app_name
-    config[:sender_address]           = "watchdog@mes-courses.fr"
-    config[:exception_recipients]     = ["philippe.bourgau@mes-courses.fr"]
+    config[:sender_address]           = EmailConstants.sender
+    config[:exception_recipients]     = EmailConstants.recipients
     config[:subject_prepend]          = "[#{app_name} #{RAILS_ENV.capitalize} ERROR] "
     config[:skip_local_notification]  = false
    end

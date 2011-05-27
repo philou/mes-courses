@@ -50,8 +50,8 @@ class ImportReporter < ActionMailer::Base
   def import_report(subject, content)
     @subject = subject
     @body["content"] = content
-    @recipients = 'philippe.bourgau@mes-courses.fr'
-    @from = 'watchdog@mes-courses.fr'
+    @recipients = EmailConstants.recipients
+    @from = EmailConstants.sender
     @sent_on = Time.now
     @headers = {}
   end
