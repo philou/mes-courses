@@ -1,28 +1,48 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
+require 'action_view/helpers/number_helper'
+
 # Object responsible for building and mailing an import report
 class ImportReporter < ActionMailer::Base
   class << self
     include HerokuHelper
+    include ActionView::Helpers::NumberHelper
   end
 
   # Updates statistics and reports by mail and log
   def self.update_stats_and_report
-    body = ""
-    subject = generate_subject_and do
-      body = update_stats_and_generate_content.inspect
-    end
+    body = update_stats_and_generate_content
+    subject = generate_subject(body)
 
-    deliver_import_report(subject, body)
+    deliver_import_report(subject, body.inspect)
   end
 
   private
 
-  def self.generate_subject_and
-    previous_date = ModelStat.maximum(:updated_at)
-    yield
-    update_date = ModelStat.maximum(:updated_at)
-    "[#{app_name} #{RAILS_ENV.capitalize} REPORT] Import between #{previous_date} and #{update_date}"
+  def self.generate_subject(body)
+    "[#{app_name}] Import "+
+      if body["Item"]["previous count"] == 0
+        "OK first time +#{body["Item"]["updated count"]} items"
+      else
+        delta = body["Item"]["delta"]
+        "#{result(delta)} #{percent_delta(delta)}"
+      end
+  end
+
+  def self.result(delta)
+    if (delta -1).abs < 0.05
+      "OK"
+    else
+      "WARNING"
+    end
+  end
+
+  def self.percent_delta(delta)
+    result = number_to_percentage(100 * (delta - 1), :precision => 2)
+    if 1 <= delta
+      result = '+' + result
+    end
+    result
   end
 
   def self.update_stats_and_generate_content
@@ -36,7 +56,10 @@ class ImportReporter < ActionMailer::Base
     end
 
     stats.each do |_name, stat|
-      stat['delta'] = stat['updated count'].to_f / stat['previous count'].to_f
+      previous_count = stat['previous count']
+      if (previous_count != 0)
+        stat['delta'] = stat['updated count'].to_f / previous_count.to_f
+      end
     end
 
     stats.each do |name, stat|

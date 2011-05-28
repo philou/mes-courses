@@ -69,7 +69,7 @@ Rails::Initializer.run do |config|
     config[:app_name]                 = app_name
     config[:sender_address]           = EmailConstants.sender
     config[:exception_recipients]     = EmailConstants.recipients
-    config[:subject_prepend]          = "[#{app_name} #{RAILS_ENV.capitalize} ERROR] "
+    config[:subject_prepend]          = "[#{app_name}] ERROR "
     config[:skip_local_notification]  = false
    end
 end

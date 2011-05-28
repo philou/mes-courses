@@ -6,7 +6,7 @@ class WatchdogNotifier < ActionMailer::Base
 
   # mailer template function
   def success_email
-    @subject = "[#{app_name} #{RAILS_ENV.capitalize} SUCCESS] Remote specs are ok"
+    @subject = "[#{app_name}] Watchdog OK"
     @body["content"] = "All specs OK."
     @recipients = EmailConstants.recipients
     @from = EmailConstants.sender
