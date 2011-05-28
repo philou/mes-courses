@@ -1,8 +1,11 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 namespace :stores do
+
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
-  task :import => [:environment, :update_stats] do
+  task :import => :environment do
+    ModelStat::update!
+
     begin
       stores = stores_to_import()
       Rails.logger.info "Importing #{stores.length.to_s} stores"
@@ -15,11 +18,8 @@ namespace :stores do
       Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
       raise
     end
-  end
 
-  desc "Updates and reports import models (item and categories) statistics."
-  task :update_stats => :environment do
-    ImportReporter.update_stats_and_report
+    ImportReporter.deliver_delta
   end
 
   private

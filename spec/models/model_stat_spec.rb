@@ -4,27 +4,41 @@ require 'spec_helper'
 
 describe ModelStat do
 
-  context "create_or_update_by_name!" do
+  before(:each) do
+    @stats = { ModelStat::ROOT_CATEGORY => {:old_count => 1, :count => 2, :delta => 2.0},
+               ModelStat::CATEGORY => {:old_count => 4, :count => 8, :delta => 2.0},
+               ModelStat::ITEM => {:old_count => 20, :count => 27, :delta => 1.35}}
 
-    MODEL_NAME = "A model name"
+    Item.stub(:count).        and_return(@stats[ModelStat::ITEM][:count])
+    ItemCategory.stub(:count).and_return(@stats[ModelStat::ROOT_CATEGORY][:count],
+                                         @stats[ModelStat::CATEGORY][:count])
+  end
 
-    before(:each) do
-      ModelStat.stub(:find_or_initialize_by_name).and_return(ModelStat.new(:name => MODEL_NAME))
+  it "should save item stats when updating" do
+    ModelStat::ALL.each do |name|
+      stat = ModelStat.new(:name => name)
+      ModelStat.should_receive(:find_or_initialize_by_name).with(name).and_return(stat)
+      stat.should_receive(:update_attributes!).with(:count => @stats[name][:count])
     end
 
-    it "should search an existing record before creating a new one" do
-      ModelStat.should_receive(:find_or_initialize_by_name).with(MODEL_NAME)
-      ModelStat.create_or_update_by_name!(MODEL_NAME, :count => 0)
-    end
+    ModelStat.update!
+  end
 
-    it "should return a saved record" do
-      stat = ModelStat.create_or_update_by_name!(MODEL_NAME, :count => 0)
-      stat.should_not be_new_record
+  it "should generate the expected delta" do
+    old_stats = @stats.map do |model, stat|
+      ModelStat.new(:name => model, :count => stat[:old_count])
     end
+    ModelStat.stub(:find).and_return(old_stats)
 
-    it "should return an updated record" do
-      stat = ModelStat.create_or_update_by_name!(MODEL_NAME, :count => 5)
-      stat.count.should == 5
+    ModelStat.generate_delta.should == @stats
+  end
+
+  it "should generate delta without previous stats should have old_count == 0" do
+    ModelStat.stub(:find).and_return([])
+
+    ModelStat.generate_delta.each do |name, stats|
+      stats[:old_count].should == 0
     end
   end
+
 end
