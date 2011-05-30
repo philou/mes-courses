@@ -68,7 +68,7 @@ class Store < ActiveRecord::Base
 
   def execute_delete(statement)
     result = result_size connection.execute(statement)
-    logger.info "Delete statement '#{statement}' removed #{result} rows"
+    logger.debug "Delete statement '#{statement}' removed #{result} rows"
     result
   end
   def result_size(sql_result)
