@@ -8,5 +8,5 @@ Feature: Dish buying
     Given "Pates au Saumon" is a known dish
     And   I am on the full dish catalog page
     When  I follow "Ajouter au panier"
-    Then  There should be "Pates" in my cart
-    And   There should be "Saumon" in my cart
+    Then  there should be "Pates" in my cart
+    And   there should be "Saumon" in my cart

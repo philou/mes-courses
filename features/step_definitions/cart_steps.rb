@@ -12,11 +12,11 @@ def given_in_cart(quantity, item_name)
   end
 end
 
-Given /^There (are|is) "([^"]*)" in the cart"?$/ do |_, item_name|
+Given /^there (are|is) "([^"]*)" in the cart"?$/ do |_, item_name|
   given_in_cart(1, item_name)
 end
 
-Given /^There are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
+Given /^there are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
   given_in_cart(quantity.to_i, item_name)
 end
 
@@ -32,7 +32,7 @@ When /^I forward the cart to the store account of an invalid user$/ do
   click_button("Transférer le panier")
 end
 
-Then /^There should be "([^"]*)" in my cart"?$/ do |item_name|
+Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
   visit path_to("the cart page")
   response.should contain(item_name)
 end

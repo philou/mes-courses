@@ -7,5 +7,5 @@ Feature: Catalog import organization
 
   Scenario: Items import organizes the items by category
     Given the "www.auchandirect.fr" store
-    When items from the store are imported
-    Then all items should be organized by type and subtype
+    When  items from the store are imported
+    Then  all items should be organized by type and subtype

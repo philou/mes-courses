@@ -1,8 +1,8 @@
 Feature: Cart Forwarding
 
-  In order to be delivered my items
+  In order to be delivered his items
   A customer
-  Wants the cart to detail quantities and prices
+  Wants to forward his cart to a real store
 
   Scenario: An empty cart is forwarded to the store
     Given the "www.dummy-store.fr" store with api
@@ -12,8 +12,8 @@ Feature: Cart Forwarding
 
   Scenario: A real cart is forwarded to the store
     Given the "www.dummy-store.fr" store with api
-    And   "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
-    And   There are "PdT Charlottes" in the cart
+    And   there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
+    And   there are "PdT Charlottes" in the cart
     And   I am on the cart page
     When  I forward the cart to the store account of a valid user
     Then  a non empty cart should be created in the store account of the user
@@ -35,8 +35,8 @@ Feature: Cart Forwarding
 
   Scenario: A cart with unavailable items is forwarded to the store
     Given the "www.dummy-store.fr" store with api
-    And   "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
-    And   There are "PdT Charlottes" in the cart
+    And   there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
+    And   there are "PdT Charlottes" in the cart
     And   "PdT Charlottes" are unavailable in the store
     And   I am on the cart page
     When  I forward the cart to the store account of a valid user

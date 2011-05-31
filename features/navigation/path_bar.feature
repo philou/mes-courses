@@ -24,14 +24,14 @@ Feature: Path bar
     Then The path bar should contain a link "Ingrédients" to the item categories page
 
   Scenario: Path bar in child item categories
-    Given "Produits laitiers > Fromages" item sub category
+    Given there is a "Produits laitiers > Fromages" item sub category
     When  I go to the "Fromages" item sub category page
     Then  The path bar should contain a link "Ingrédients" to the item categories page
     And   The path bar should contain a link "Produits laitiers" to the "Produits laitiers" item category page
     And   The path bar should contain a link "Fromages" to the "Fromages" item sub category page
 
   Scenario: Path bar in item searches
-    Given "Produits laitiers" item category
+    Given there is a "Produits laitiers" item category
     And   I am on the "Produits laitiers" item category page
     When  I search for "Camembert"
     Then  The path bar should contain a link "Ingrédients" to the item categories page
