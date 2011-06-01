@@ -4,4 +4,9 @@
 @path_bar = []
 %>
 
-Nouvelle recette
+<% form_for :dish, :url => { :action => :create }, :html => { :id => 'dish' } do |form| %>
+
+  <%= form.text_field :name, :size => 30 %>
+  <%= submit_tag "Créer" %>
+
+<% end %>

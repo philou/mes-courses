@@ -20,6 +20,8 @@ module NavigationHelpers
       '/cart'
     when /the full dish catalog page/
       '/dish'
+    when /the dish creation page/
+      '/dish/new'
     when /the item categories page/
       '/item_category'
     when /the "([^"]*)" item category page/

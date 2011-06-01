@@ -7,13 +7,13 @@ Feature: Dish creation
   Scenario: Creating a new dish
     Given I am on the full dish catalog page
     When  I follow "Ajouter une recette"
-    Then  I should see "Nouvelle recette"
+    Then  the "name" field of the "dish" should be "Nouvelle recette"
 
-  # Scenario: Saving a new dish
-  #   Given I on the dish creation page
-  #   When  I set the dish name to "Salade de tomates"
-  #   And   I go to the full dish catalog page
-  #   Then  I should see "Salade de tomates"
+  Scenario: Saving a new dish
+    Given I am on the dish creation page
+    When  I set the dish name to "Salade de tomates"
+    And   I go to the full dish catalog page
+    Then  I should see "Salade de tomates"
 
   # Scenario: Browsing items for a dish
   #   Given I am creating the dish "Lasagnes"

@@ -11,6 +11,10 @@
       <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish', :id => dish.id }%></td>
     </tr>
   <% end%>
+  <tr>
+    <td>
+      <%= link_to 'Ajouter une recette', :action => 'new' %>
+    </td>
+  </tr>
 </table>
 
-<p><%= link_to 'Ajouter une recette', :action => 'new' %></p>

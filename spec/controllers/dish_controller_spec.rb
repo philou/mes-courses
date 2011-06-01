@@ -23,11 +23,45 @@ describe DishController do
 
   end
 
-  it "should render 'new'" do
-    get 'new'
+  describe 'GET new' do
+    it "should render 'new'" do
+      get 'new'
 
-    response.should be_success
-    response.should render_template('new')
+      response.should be_success
+      response.should render_template('new')
+    end
+
+    it "should assign a new dish" do
+      get 'new'
+
+      assigns[:dish].should be_instance_of(Dish)
+      assigns[:dish].id.should be_nil
+    end
+
+    it "should use a nice default name for the dish" do
+      get 'new'
+
+      assigns[:dish].name.should == "Nouvelle recette"
+    end
+  end
+
+  describe 'POST create' do
+    before :each do
+      Dish.stub!(:create!).and_return(nil)
+    end
+
+    it "should save the posted data as a new dish" do
+      attributes = { "name" => "Salade grecque" }
+      Dish.should_receive(:create!).with(attributes)
+
+      post 'create', :dish => attributes
+    end
+
+    it "should redirect the main dish catalog" do
+      post 'create'
+
+      response.should redirect_to(:controller => 'dish', :action => 'index')
+    end
   end
 
 end

@@ -8,6 +8,16 @@ class DishController < ApplicationController
     @dishes = Dish.find(:all)
   end
 
+  def new
+    @dish = Dish.new(:name => "Nouvelle recette")
+  end
+
+  def create
+    Dish.create!(params[:dish])
+
+    redirect_to :action => :index
+  end
+
   private
 
   def assign_html_body_id

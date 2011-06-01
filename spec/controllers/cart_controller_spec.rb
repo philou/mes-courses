@@ -66,7 +66,7 @@ describe CartController do
         it "should redirect to products" do
           post_a_stub(action, model)
 
-          response.should redirect_to(ActionController::Routing::Routes.generate(:controller => redirection_controller))
+          response.should redirect_to(:controller => redirection_controller)
         end
       end
     end
@@ -120,7 +120,7 @@ describe CartController do
 
       it "should redirect to cart" do
         forward_to_invalid_store_account
-        response.should redirect_to(ActionController::Routing::Routes.generate(:controller => 'cart'))
+        response.should redirect_to(:controller => 'cart')
       end
 
       it "should set a flash message" do
