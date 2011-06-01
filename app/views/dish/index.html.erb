@@ -4,17 +4,13 @@
 @path_bar = [PathBar.element_for_current_resource('Recettes')]
 %>
 
-<div class="section results">
-  <span class="section-title">Suggestions</span>
-  <table>
-    <% @dishes.each do |dish| %>
-      <tr>
-        <td><%=h dish.name %></td>
-        <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish', :id => dish.id }%></td>
-      </tr>
-    <% end%>
+<table>
+  <% @dishes.each do |dish| %>
+    <tr>
+      <td><%=h dish.name %></td>
+      <td class="buy-button"><%= link_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish', :id => dish.id }%></td>
+    </tr>
+  <% end%>
+</table>
 
-    <%= link_to 'Ajouter une recette', :action => 'new' %>
-  </table>
-
-</div>
+<p><%= link_to 'Ajouter une recette', :action => 'new' %></p>

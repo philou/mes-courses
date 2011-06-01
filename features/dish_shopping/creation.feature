@@ -10,7 +10,7 @@ Feature: Dish creation
     Then  I should see "Nouvelle recette"
 
   # Scenario: Saving a new dish
-  #   Given I am creating a new dish
+  #   Given I on the dish creation page
   #   When  I set the dish name to "Salade de tomates"
   #   And   I go to the full dish catalog page
   #   Then  I should see "Salade de tomates"
