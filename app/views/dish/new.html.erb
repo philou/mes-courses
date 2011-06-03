@@ -1,9 +1,5 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
-<%
-@path_bar = []
-%>
-
 <% form_for :dish, :url => { :action => :create }, :html => { :id => 'dish' } do |form| %>
 
   <%= form.text_field :name, :size => 30 %>

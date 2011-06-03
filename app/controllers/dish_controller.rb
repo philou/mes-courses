@@ -2,6 +2,7 @@
 
 class DishController < ApplicationController
 
+  before_filter :assign_root_path_bar
   before_filter :assign_html_body_id
 
   def index
@@ -9,19 +10,32 @@ class DishController < ApplicationController
   end
 
   def new
+    @path_bar.push(PathBar.element_for_current_resource("Nouvelle recette"))
+
     @dish = Dish.new(:name => "Nouvelle recette")
   end
 
   def create
-    Dish.create!(params[:dish])
 
-    redirect_to :action => :index
+    dish = Dish.create!(params[:dish])
+
+    redirect_to :action => :show, :id => dish
+  end
+
+  def show
+    @dish = Dish.find_by_id(params[:id])
+
+    @path_bar.push(PathBar.element_for_current_resource(@dish.name))
   end
 
   private
 
   def assign_html_body_id
     @body_id = 'dish'
+  end
+
+  def assign_root_path_bar
+    @path_bar = [PathBar.element('Recettes', :action => 'index')]
   end
 
 end

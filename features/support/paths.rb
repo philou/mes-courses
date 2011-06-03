@@ -14,14 +14,14 @@ module NavigationHelpers
       "#{response.env['PATH_INFO']}?#{response.env['QUERY_STRING']}"
     when /the home\s?page/
       '/'
-    when /the full item catalog page/
-      '/item'
     when /the cart page/
       '/cart'
     when /the full dish catalog page/
       '/dish'
     when /the dish creation page/
       '/dish/new'
+    when /the "([^"]*)" dish page/
+      dish_path(Dish.find_by_name($1))
     when /the item categories page/
       '/item_category'
     when /the "([^"]*)" item category page/

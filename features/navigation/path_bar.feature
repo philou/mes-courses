@@ -8,6 +8,17 @@ Feature: Path bar
     When I go to the full dish catalog page
     Then The path bar should contain a link "Recettes" to the full dish catalog page
 
+  Scenario: Path bar for new dishes
+    When I go to the dish creation page
+    Then The path bar should contain a link "Recettes" to the full dish catalog page
+    And  The path bar should contain a link "Nouvelle recette" to the dish creation page
+
+  Scenario: Path bar for existing dishes
+    Given there is a dish "Lasagnes"
+    When  I go to the "Lasagnes" dish page
+    Then  The path bar should contain a link "Recettes" to the full dish catalog page
+    And   The path bar should contain a link "Lasagnes" to the "Lasagnes" dish page
+
   Scenario: Path bar in cart
     When I go to the cart page
     Then The path bar should contain a link "Panier" to the cart page
