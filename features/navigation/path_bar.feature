@@ -19,6 +19,17 @@ Feature: Path bar
     Then  The path bar should contain a link "Recettes" to the full dish catalog page
     And   The path bar should contain a link "Lasagnes" to the "Lasagnes" dish page
 
+  Scenario: Path bar when adding items to a dish
+    Given there is a dish "Cake aux olives"
+    And   there is a "Marché" item category
+    When  I go to the "Cake aux olives" dish "Marché" item category page
+    Then  The path bar should contain a link "Recettes" to the full dish catalog page
+    And   The path bar should contain a link "Cake aux olives" to the "Cake aux olives" dish page
+    And   The path bar should contain a link "Ingrédients" to the "Cake aux olives" dish item categories page
+    And   The path bar should contain a link "Marché" to the "Cake aux olives" dish "Marché" item category page
+
+
+
   Scenario: Path bar in cart
     When I go to the cart page
     Then The path bar should contain a link "Panier" to the cart page
@@ -29,6 +40,8 @@ Feature: Path bar
     When  I forward the cart to the store account of a valid user
     Then  The path bar should contain a link "Panier" to the cart page
     And   The path bar should contain "Transfert"
+
+
 
   Scenario: Path bar in root item category
     When I go to the item categories page

@@ -1,3 +1,20 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
+<div id="items-panel">
+  <p><%= @dish.items.count %> ingrédient(s)</p>
 
+  <table>
+    <% @dish.items.each do |item| %>
+      <tr>
+        <td><img src="<%= item.image %>" /></td>
+        <td><%=h item.name %></td>
+        <td><%= item.summary %></td>
+      </tr>
+    <% end%>
+    <tr>
+      <td>
+        <%= link_to 'Ajouter un ingrédient', dish_item_category_index_path(@dish) %>
+      </td>
+    </tr>
+  </table>
+</div>

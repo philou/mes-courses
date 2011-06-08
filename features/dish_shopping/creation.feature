@@ -21,21 +21,20 @@ Feature: Dish creation
     And   I go to the full dish catalog page
     Then  I should see "Salade niçoise"
 
-  # Scenario: Browsing items for a dish
-  #   Given there is a "Marché" item category
-  #   And   there is a "Boucherie" item category
-  #   And   there is a dish "Lasagnes"
-  #   And   I am on the "Lasagnes" dish page
-  #   When  I follow "Ajouter un ingrédient"
-  #   Then  I should see a link "Marché"
-  #   And   I should see a link "Boucherie"
+  Scenario: Browsing items for a dish
+    Given there is a "Marché" item category
+    And   there is a "Boucherie" item category
+    And   there is a dish "Lasagnes"
+    And   I am on the "Lasagnes" dish page
+    When  I follow "Ajouter un ingrédient"
+    Then  I should see "Marché"
+    And   I should see "Boucherie"
 
-  # Scenario: Adding an item to a dish
-  #   Given there is a "Poissonerie > Poissons de mer > Colin" item
-  #   And   I am creating the dish "Poissons panés"
-  #   And   I am adding a new item to the dish
-  #   When  I follow "Poissons de mer"
-  #   And   I follow "Ajouter à la recette"
-  #   Then  I should be on the "Poissons panés" dish page
-  #   And   I should see "Colin"
+  Scenario: Adding an item to a dish
+    Given there is a "Poissonerie > Poissons de mer > Colin" item
+    And   there is a dish "Poissons panés"
+    And   I am on the "Poissons panés" dish "Poissons de mer" item category page
+    When  I press "Ajouter à la recette"
+    Then  I should be on the "Poissons panés" dish page
+    And   I should see "Colin"
 

@@ -16,7 +16,6 @@ class DishController < ApplicationController
   end
 
   def create
-
     dish = Dish.create!(params[:dish])
 
     redirect_to :action => :show, :id => dish

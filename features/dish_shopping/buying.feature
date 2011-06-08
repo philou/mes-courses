@@ -7,6 +7,6 @@ Feature: Dish buying
   Scenario: Adding a dish to the cart
     Given "Pates au Saumon" is a known dish
     And   I am on the full dish catalog page
-    When  I follow "Ajouter au panier"
+    When  I press "Ajouter au panier"
     Then  there should be "Pates" in my cart
     And   there should be "Saumon" in my cart

@@ -245,7 +245,7 @@ tr+tr {
     border-top: 1px dashed #993366;
 }
 
-td.buy-button {
+td.buy-button * {
     text-align: right;
 }
 

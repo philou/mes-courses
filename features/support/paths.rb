@@ -22,8 +22,12 @@ module NavigationHelpers
       '/dish/new'
     when /the "([^"]*)" dish page/
       dish_path(Dish.find_by_name($1))
+    when /the "([^"]*)" dish item categories page/
+      dish_item_category_index_path(Dish.find_by_name($1))
+    when /the "([^"]*)" dish "([^"]*)" item category page/
+      dish_item_category_path(Dish.find_by_name($1), ItemCategory.find_by_name($2))
     when /the item categories page/
-      '/item_category'
+      item_category_index_path
     when /the "([^"]*)" item category page/
       item_category_path(ItemCategory.find_by_name_and_parent_id($1, nil))
     when /the "([^"]*)" item sub category page/

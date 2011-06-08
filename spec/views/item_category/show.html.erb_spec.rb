@@ -6,6 +6,10 @@ describe "/item_category/show.html.erb" do
   include ApplicationHelper
 
   before(:each) do
+    assigns[:show_sub_category_url_options] = @show_sub_category_url_options = {:controller => 'sub_item_controller', :action => 'display'}
+    assigns[:add_item_label] = @add_item_label = "Acheter"
+    assigns[:add_item_url_options] = @add_item_url_options = {:controller => 'panier', :action => 'acheter'}
+    assigns[:add_item_html_options] = @add_item_html_options = {:method => :post}
     assigns[:categories] = @categories = ["Produits laitiers", "Fruits & Légumes"].map {|name| stub_model(ItemCategory, :name => name) }
     assigns[:search_url] = @search_url = "/item_category/search_it"
     assigns[:title] = "Tous les produits"
@@ -17,7 +21,7 @@ describe "/item_category/show.html.erb" do
 
     response.should have_xpath('//form[@id="search"]//input[@name="search[keyword]"][@type="text"]')
     response.should have_xpath('//form[@id="search"]//input[@type="submit"]')
-    response.should have_xpath('//form[@id="search"][@method="get"][@action="'+@search_url+'"]')
+    response.should have_xpath("//form[@id='search'][@method='get'][@action='#{@search_url}']")
   end
 
   describe "a category with children" do
@@ -34,7 +38,7 @@ describe "/item_category/show.html.erb" do
       render
 
       @categories.each do |category|
-        response.should have_selector("a", :href => item_category_path(category))
+        response.should have_selector("a", :href => url_for(@show_sub_category_url_options.merge(:id => category.id)))
       end
     end
 
@@ -60,13 +64,11 @@ describe "/item_category/show.html.erb" do
       end
     end
 
-    it "displays a link to add each of its items to the cart" do
+    it "displays a button to buy each item" do
       render
 
       @items.each do |item|
-        response.should have_selector("a", :href => default_path(:controller => 'cart',
-                                                                 :action => 'add_item',
-                                                                 :id => item.id))
+        response.should have_xpath("//form[@method='#{@add_item_html_options[:method]}'][@action='#{url_for(@add_item_url_options.merge(:id => item.id))}']/div/input[@type='submit'][@value='#{@add_item_label}']")
       end
     end
 
