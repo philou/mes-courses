@@ -21,6 +21,14 @@ describe "/dish/index.html.erb" do
     end
   end
 
+  it "should display a link to the details of each dish" do
+    render
+
+    @dishes.each do |dish|
+      response.should have_selector("a", :href => dish_path(dish))
+    end
+  end
+
   it "should display a link to add a new dish" do
     render
     response.should have_selector("a", :href => new_dish_path)

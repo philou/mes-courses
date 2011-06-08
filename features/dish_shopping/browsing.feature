@@ -8,3 +8,9 @@ Feature: Dish browsing
     Given "Steak au poivre" is a known dish
     When  I go to the full dish catalog page
     Then  I should see "Steak au poivre"
+
+  Scenario: Getting details about a dish
+    Given there is a dish "Cabillaud roti"
+    And   I am on the full dish catalog page
+    When  I follow "Cabillaud roti"
+    Then  I should be on the "Cabillaud roti" dish page
