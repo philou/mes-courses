@@ -31,12 +31,6 @@ shared_examples_for "Any controller listing all item categories" do
     assigns[:items].should == []
   end
 
-  it "should assign the global item search url" do
-    get 'index', @params
-
-    assigns[:search_url].should == any_item_category_path
-  end
-
 end
 
 describe ItemCategoryController do
@@ -58,6 +52,12 @@ describe ItemCategoryController do
     end
 
     it_should_behave_like "Any controller listing all item categories"
+
+    it "should assign the global item search url" do
+      get 'index', @params
+
+      assigns[:search_url].should == item_category_index_path
+    end
 
     it "should assign a global path_bar" do
       get 'index', @params
@@ -92,6 +92,12 @@ describe ItemCategoryController do
       end
 
       it_should_behave_like "Any controller listing all item categories"
+
+      it "should assign the global item search url with the dish" do
+        get 'index', @params
+
+        assigns[:search_url].should == dish_item_category_index_path(@dish)
+      end
 
       it "should assign a path bar with the dishes as root" do
         get 'index', @params
@@ -182,10 +188,15 @@ describe ItemCategoryController do
       response.should render_template("show")
     end
 
-    it "should assign item_category attributes" do
+    it "should assign a search url from the current category" do
       get_show
 
       assigns[:search_url].should == item_category_path(@item_category)
+    end
+
+    it "should assign item_category attributes" do
+      get_show
+
       assigns[:categories].should == @item_category.children
       assigns[:items].should == @item_category.items
     end
@@ -230,6 +241,21 @@ describe ItemCategoryController do
       get_show
 
       it_should_have_assigned_show_sub_category_link_params
+    end
+
+    describe "with dish id" do
+      before :each do
+        @dish = stub_model(Dish, :name => "Hamburger maison")
+        Dish.stub!(:find_by_id).and_return(@dish)
+
+        @params = {:dish_id => @dish.id}
+      end
+
+      it "should assign a search url from the current category" do
+        get_show :dish_id => @dish.id
+
+        assigns[:search_url].should == dish_item_category_path(@dish, @item_category)
+      end
     end
 
     describe "searching" do

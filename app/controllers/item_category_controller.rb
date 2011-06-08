@@ -11,7 +11,7 @@ class ItemCategoryController < ApplicationController
   def index
     # REFACTORING: create a root category, and simply redirect to show with this category ...
     # test nested module independently
-    @search_url = any_item_category_path
+    @search_url = nested_item_categories_path
 
     if params.has_key?("search")
       keyword = params["search"]["keyword"]
@@ -31,7 +31,7 @@ class ItemCategoryController < ApplicationController
 
   def show
     item_category = ItemCategory.find_by_id(params[:id])
-    @search_url = any_item_category_path(item_category)
+    @search_url = nested_item_category_path(item_category)
 
     if (params.has_key?("search"))
       keyword = params["search"]["keyword"]
