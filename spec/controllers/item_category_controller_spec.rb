@@ -1,84 +1,105 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 require 'spec_helper'
-
-shared_examples_for "Any controller listing all item categories" do
-  include ApplicationHelper
-
-  before :each do
-    @item_categories = ["Marché","Poissonerie","Boucherie"].map do |name|
-      stub_model(ItemCategory, :name => name)
-    end
-    ItemCategory.stub(:find).and_return(@item_categories)
-  end
-
-  it "should render 'show'" do
-    get 'index', @params
-
-    response.should be_success
-    response.should render_template("show")
-  end
-
-  it "should assign the root categories" do
-    get 'index', @params
-
-    assigns[:categories].should == @item_categories
-  end
-
-  it "should assign an empty array of items" do
-    get 'index', @params
-
-    assigns[:items].should == []
-  end
-
-end
+require 'lib/array_extras'
 
 describe ItemCategoryController do
   include ApplicationHelper
 
+  before :each do
+    @nesting = ItemCategoryControllerStandaloneNesting.new
+    ItemCategoryControllerStandaloneNesting.stub(:new).and_return(@nesting)
+  end
+
   def it_should_have_assigned_add_to_cart_attributes
-    assigns[:add_item_label].should == "Ajouter au panier"
-    assigns[:add_item_url_options].should == { :controller => 'cart', :action => 'add_item'}
-    assigns[:add_item_html_options].should == { :method => :get }
+    assigns[:add_item_label].should == @nesting.add_item_label
+    assigns[:add_item_url_options].should == @nesting.add_item_url_options
+    assigns[:add_item_html_options].should == @nesting.add_item_html_options
   end
   def it_should_have_assigned_show_sub_category_link_params
-    assigns[:show_sub_category_url_options].should == {:controller => 'item_category', :action => 'show'}
+    assigns[:show_sub_category_url_options].should == @nesting.show_sub_category_url_options
   end
 
   describe "GET 'index'" do
 
     before :each do
-      @params = {}
+      @item_categories = ["Marché","Poissonerie","Boucherie"].map do |name|
+        stub_model(ItemCategory, :name => name)
+      end
+      ItemCategory.stub(:find).and_return(@item_categories)
+
+      @nesting = ItemCategoryControllerStandaloneNesting.new
+      ItemCategoryControllerStandaloneNesting.stub(:new).and_return(@nesting)
     end
 
-    it_should_behave_like "Any controller listing all item categories"
+    it "should render 'show'" do
+      get 'index'
 
-    it "should assign the global item search url" do
-      get 'index', @params
-
-      assigns[:search_url].should == item_category_index_path
+      response.should be_success
+      response.should render_template("show")
     end
 
-    it "should assign a global path_bar" do
-      get 'index', @params
+    it "should assign the root categories" do
+      get 'index'
 
-      assigns[:path_bar].should == [PathBar.element("Ingrédients", item_category_index_path)]
+      assigns[:categories].should == @item_categories
     end
 
-    it "should assign 'items' to html body id" do
-      get 'index', @params
+    it "should assign an empty array of items" do
+      get 'index'
 
-      assigns[:body_id].should == 'items'
+      assigns[:items].should == []
+    end
+
+    it "should use a standalone nesting" do
+      ItemCategoryControllerStandaloneNesting.should_receive(:new)
+
+      get 'index'
+    end
+
+    it "should assign the item search url of its nesting" do
+      @nesting.stub(:item_category_index_path).and_return("all_categories_start_here")
+
+      get 'index'
+
+      assigns[:search_url].should == @nesting.item_category_index_path
+    end
+
+    it "should assign a path_bar starting with the path bar of its nesting" do
+      @nesting.stub(:root_path_bar).and_return([:nesting_path_bar_item_1, :nesting_path_bar_item_2])
+      get 'index'
+
+      assigns[:path_bar].should be_starting_with(@nesting.root_path_bar)
+    end
+    it "should assign a path_bar ending with a link to all ingredients" do
+      get 'index'
+
+      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path)])
+    end
+
+    it "should assign the html body id of its nesting" do
+      body_id = "the_body_inside_me"
+      @nesting.stub(:html_body_id).and_return(body_id)
+
+      get 'index'
+
+      assigns[:body_id].should == body_id
     end
 
     it "should assign an add item to cart link attributes" do
-      get 'index', @params
+      @nesting.stub(:add_item_label).and_return("Ajouter cela ici !")
+      @nesting.stub(:add_item_url_options).and_return({ :option => "trés trés importante" })
+      @nesting.stub(:add_item_html_options).and_return({ :le_html => "c'est trés important" })
+
+      get 'index'
 
       it_should_have_assigned_add_to_cart_attributes
     end
 
     it "should assign show sub category link params" do
-      get 'index', @params
+      @nesting.stub(:show_sub_category_url_options).and_return({ :url => "http://quelque.part.com"})
+
+      get 'index'
 
       it_should_have_assigned_show_sub_category_link_params
     end
@@ -87,44 +108,14 @@ describe ItemCategoryController do
       before :each do
         @dish = stub_model(Dish, :name => "Hamburger maison")
         Dish.stub!(:find_by_id).and_return(@dish)
-
-        @params = {:dish_id => @dish.id}
       end
 
-      it_should_behave_like "Any controller listing all item categories"
+      it "should use a dish nesting and instead of a standalone nesting" do
+        nesting = ItemCategoryControllerDishNesting.new(@dish.id.to_s)
+        ItemCategoryControllerDishNesting.should_receive(:new).with(@dish.id.to_s).and_return(nesting)
+        ItemCategoryControllerStandaloneNesting.should_not_receive(:new)
 
-      it "should assign the global item search url with the dish" do
-        get 'index', @params
-
-        assigns[:search_url].should == dish_item_category_index_path(@dish)
-      end
-
-      it "should assign a path bar with the dishes as root" do
-        get 'index', @params
-
-        assigns[:path_bar].should == [PathBar.element("Recettes", dish_index_path),
-                                      PathBar.element(@dish.name, dish_path(@dish)),
-                                      PathBar.element("Ingrédients", dish_item_category_index_path(@dish))]
-      end
-
-      it "should assign 'items' to html body id" do
-        get 'index', @params
-
-        assigns[:body_id].should == 'dish'
-      end
-
-      it "should assign an add item to dish link attributes" do
-        get 'index', @params
-
-        assigns[:add_item_label].should == "Ajouter à la recette"
-        assigns[:add_item_url_options].should == { :controller => 'items', :action => 'create', :dish_id => @dish.id.to_s}
-        assigns[:add_item_html_options].should == { :method => :post }
-      end
-
-      it "should assign show sub category link params with a dish id" do
-        get 'index', @params
-
-        assigns[:show_sub_category_url_options].should == {:controller => 'item_category', :action => 'show', :dish_id => @dish.id.to_s}
+        get 'index', :dish_id => @dish.id
       end
     end
 
@@ -142,14 +133,8 @@ describe ItemCategoryController do
       it "should assign a path_bar matching the search" do
         get_index_search
 
-        assigns[:path_bar].should == [PathBar.element("Ingrédients", item_category_index_path),
-                                      PathBar.element_with_no_link(@keyword)]
-      end
-
-      it "should assign the global item search url" do
-        get_index_search
-
-        assigns[:search_url].should == any_item_category_path
+        assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+                                                  PathBar.element_with_no_link(@keyword)])
       end
 
       it "should assign no categories" do
@@ -188,10 +173,12 @@ describe ItemCategoryController do
       response.should render_template("show")
     end
 
-    it "should assign a search url from the current category" do
+    it "should assign a search url given by its nesting for the current category" do
+      @nesting.stub(:item_category_path).and_return("/item_category/id=special")
+
       get_show
 
-      assigns[:search_url].should == item_category_path(@item_category)
+      assigns[:search_url].should == @nesting.item_category_path
     end
 
     it "should assign item_category attributes" do
@@ -201,11 +188,19 @@ describe ItemCategoryController do
       assigns[:items].should == @item_category.items
     end
 
+    it "should assign a path bar starting with its nesting root path bar" do
+      @nesting.stub(:root_path_bar).and_return([:path_bar_1, :path_bar_2])
+
+      get_show
+
+      assigns[:path_bar].should be_starting_with(@nesting.root_path_bar)
+    end
+
     it "should assign a path bar with root category" do
       get_show
 
-      assigns[:path_bar].should == [PathBar.element("Ingrédients", item_category_index_path),
-                                    PathBar.element(@item_category.name, item_category_path(@item_category))]
+      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+                                                PathBar.element(@item_category.name, item_category_path(@item_category))])
     end
 
     it "should assign a full path bar with all parents" do
@@ -214,22 +209,11 @@ describe ItemCategoryController do
 
       get_show
 
-      assigns[:path_bar].should == [PathBar.element("Ingrédients", item_category_index_path),
-                                    PathBar.element(parent_category.name, item_category_path(parent_category)),
-                                    PathBar.element(@item_category.name, item_category_path(@item_category))]
+      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+                                                PathBar.element(parent_category.name, item_category_path(parent_category)),
+                                                PathBar.element(@item_category.name, item_category_path(@item_category))])
     end
 
-    it "should assign a path bar with nesting dish" do
-      dish = stub_model(Dish, :name => "Soupe à l'oignon")
-      Dish.stub(:find_by_id).and_return(dish)
-
-      get_show(:dish_id => dish.id)
-
-      assigns[:path_bar].should == [PathBar.element("Recettes", dish_index_path),
-                                    PathBar.element(dish.name, dish_path(dish)),
-                                    PathBar.element("Ingrédients", dish_item_category_index_path(dish)),
-                                    PathBar.element(@item_category.name, dish_item_category_path(dish,@item_category))]
-    end
 
     it "should assign an add item to cart link attributes" do
       get_show
@@ -247,14 +231,14 @@ describe ItemCategoryController do
       before :each do
         @dish = stub_model(Dish, :name => "Hamburger maison")
         Dish.stub!(:find_by_id).and_return(@dish)
-
-        @params = {:dish_id => @dish.id}
       end
 
-      it "should assign a search url from the current category" do
-        get_show :dish_id => @dish.id
+      it "should use a dish nesting and instead of a standalone nesting" do
+        nesting = ItemCategoryControllerDishNesting.new(@dish.id.to_s)
+        ItemCategoryControllerDishNesting.should_receive(:new).with(@dish.id.to_s).and_return(nesting)
+        ItemCategoryControllerStandaloneNesting.should_not_receive(:new)
 
-        assigns[:search_url].should == dish_item_category_path(@dish, @item_category)
+        get_show :dish_id => @dish.id
       end
     end
 
@@ -273,15 +257,9 @@ describe ItemCategoryController do
       it "should assign a path_bar matching the search" do
         get_show_search
 
-        assigns[:path_bar].should == [PathBar.element("Ingrédients", item_category_index_path),
-                                      PathBar.element(@item_category.name, item_category_path(@item_category)),
-                                      PathBar.element_with_no_link(@keyword)]
-      end
-
-      it "should assign the global item search url" do
-        get_show_search
-
-        assigns[:search_url].should == any_item_category_path(@item_category)
+        assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+                                                  PathBar.element(@item_category.name, item_category_path(@item_category)),
+                                                  PathBar.element_with_no_link(@keyword)])
       end
 
       it "should assign no categories" do
