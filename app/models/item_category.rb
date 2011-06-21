@@ -7,4 +7,15 @@ class ItemCategory < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => "parent_id"
+
+  ROOT_NAME = "<INTERNAL ROOT>"
+
+  def self.root
+    find_by_name(ROOT_NAME)
+  end
+
+  def root?
+    name == ROOT_NAME
+  end
+
 end

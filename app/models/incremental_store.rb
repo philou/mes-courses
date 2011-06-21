@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'lib/attributes_comparison'
 
@@ -23,6 +23,9 @@ class IncrementalStore
 
   # Methods called by the importer when he founds something
   def register_item_category(params)
+    if params[:parent].nil?
+      params = params.merge(:parent => ItemCategory.root)
+    end
     register_item_class(ItemCategory, params)
   end
   def register_item(params)

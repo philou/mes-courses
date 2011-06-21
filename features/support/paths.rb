@@ -29,7 +29,7 @@ module NavigationHelpers
     when /the item categories page/
       item_category_index_path
     when /the "([^"]*)" item category page/
-      item_category_path(ItemCategory.find_by_name_and_parent_id($1, nil))
+      item_category_path(ItemCategory.find_by_name_and_parent_id($1, ItemCategory.root.id))
     when /the "([^"]*)" item sub category page/
       item_category_path(ItemCategory.find_by_name($1))
     when /the "([^"]*)" item page/

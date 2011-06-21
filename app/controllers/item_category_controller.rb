@@ -4,31 +4,16 @@ class ItemCategoryController < ApplicationController
   include ApplicationHelper
 
   before_filter :assign_nesting
-  before_filter :assign_html_body_id
-  before_filter :assign_show_sub_category_url_options
-  before_filter :assign_add_item_attributes
 
   def index
-    # REFACTORING: create a root category, and simply redirect to show with this category ...
-    @search_url = @nesting.item_category_index_path
-
-    if params.has_key?("search")
-      keyword = params["search"]["keyword"]
-
-      @path_bar = search_path_bar(keyword)
-      @categories = []
-      @items = Item.search_by_keyword_and_category(keyword)
-
-    else
-      @path_bar = path_bar
-      @categories = ItemCategory.find(:all, :conditions => {:parent_id => nil})
-      @items = []
-    end
-
-    render :action => :show
+    redirect_to @nesting.item_category_path(ItemCategory.root)
   end
 
   def show
+    assign_html_body_id
+    assign_show_sub_category_url_options
+    assign_add_item_attributes
+
     item_category = ItemCategory.find_by_id(params[:id])
     @search_url = @nesting.item_category_path(item_category)
 
@@ -76,7 +61,7 @@ class ItemCategoryController < ApplicationController
   end
 
   def collect_path_bar(item_category, result)
-    if item_category.nil?
+    if item_category.nil? || item_category.root?
       result.push PathBar.element("Ingrédients", @nesting.item_category_index_path)
     else
       collect_path_bar(item_category.parent, result)

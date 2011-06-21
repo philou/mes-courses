@@ -27,7 +27,7 @@ Given /^the "([^"]*)" store with api"?$/ do |web_store|
 end
 
 Given /^items from the store were already imported$/ do
-  lazy_import_with(@store, @tweaks)
+  import_with(@store, @tweaks)
 end
 
 Given /^last store import was unexpectedly interrupted$/ do

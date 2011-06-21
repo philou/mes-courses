@@ -2,6 +2,14 @@
 
 namespace :stores do
 
+  task :create_auchan_direct => :environment do
+    Store.find_or_create_by_url(AuchanDirectStoreCartAPI.url)
+  end
+
+  task :create_dummy_store => :environment do
+    Store.find_or_create_by_url(DummyStoreCartAPI.url)
+  end
+
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
   task :import => :environment do
     ModelStat::update!

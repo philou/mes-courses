@@ -3,7 +3,7 @@
 <table>
   <% @dishes.each do |dish| %>
     <tr>
-      <td><%= link_to dish.name, dish_path(dish) %></td>
+      <td><%= link_to h(dish.name), dish_path(dish) %></td>
     <td class="buy-button"><%= button_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish', :id => dish.id } %></td>
     </tr>
   <% end%>

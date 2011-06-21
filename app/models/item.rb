@@ -8,13 +8,13 @@ class Item < ActiveRecord::Base
   validates_presence_of :name, :item_category, :price
   validates_uniqueness_of :name, :scope => "item_category_id"
 
-  def self.search_by_keyword_and_category(keyword, category = nil)
+  def self.search_by_keyword_and_category(keyword, category)
     throw NotImplementedError.new("Item search not yet implemented") unless hierarchy_handles_item_search?(category)
 
     condition_sql = "(lower(name) like :keyword or lower(summary) like :keyword)"
     condition_params = {:keyword => "%#{keyword.downcase}%"}
 
-    if category
+    if !category.root?
       if category.children.empty?
         condition_sql = condition_sql + " and item_category_id = :category_id"
         condition_params = condition_params.merge(:category_id => category.id)
@@ -30,7 +30,7 @@ class Item < ActiveRecord::Base
   private
   # At the moment, only 2 level category hierarchies can be searched through. Here we detect a hierarchy of 3 or more.
   def self.hierarchy_handles_item_search?(category)
-    category.nil? || category.children.empty? || category.parent.nil?
+    category.root? || category.children.empty? || category.parent.root?
   end
 
 end

@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -9,6 +9,8 @@ describe IncrementalStore do
     @store.stub(:known).and_return(nil)
     @store.stub(:delete_empty_item_categories).and_return(0)
     @i_store = IncrementalStore.new(@store)
+
+    ItemCategory.stub(:root).and_return(ItemCategory.new(:name => ItemCategory::ROOT_NAME))
   end
 
   context "when starting import" do
@@ -44,7 +46,19 @@ describe IncrementalStore do
   end
 
   it "should register found item categories to its store" do
-    should_register_in_store(:register_item_category, {}, ItemCategory)
+    parent_category = stub_model(ItemCategory, :name => "A big category")
+    should_register_in_store(:register_item_category, {:parent => parent_category}, ItemCategory)
+  end
+  it "should register item categories with no parent to its store under the root category" do
+    argument = {:parent => nil}
+    new_record = ItemCategory.new
+
+    ItemCategory.should_receive(:new).with(argument.merge(:parent => ItemCategory.root)).and_return(new_record)
+    @store.should_receive(:register!).with(new_record)
+
+    result = @i_store.register_item_category(argument)
+
+    result.should be(new_record)
   end
   it "should register found items to its store" do
     should_register_in_store(:register_item, {}, Item)
@@ -125,26 +139,32 @@ describe IncrementalStore do
   end
 
   it "should not register known item categories" do
-    should_not_register_known_item_class(:register_item_category, ItemCategory, "Boeuf")
+    name = "Boeuf"
+    attributes = {:name => name}
+    known_item_category = ItemCategory.new(attributes)
+    @store.stub(:known).with(ItemCategory, name).and_return(known_item_category)
+    known_item_category.stub(:equal_to_attributes?).and_return(true)
+
+    @store.should_not_receive(:register!)
+
+    @i_store.register_item_category(attributes)
   end
 
   private
   def should_register_in_store(message, argument, recordType)
-    @store.should_receive(:register!).with(instance_of(recordType))
+    new_record = recordType.new
+
+    recordType.should_receive(:new).with(argument).and_return(new_record)
+    @store.should_receive(:register!).with(new_record)
+
     result = @i_store.send(message, argument)
-    result.should be_an(recordType)
+
+    result.should be(new_record)
   end
 
   def should_tell_the_store_that_item_is_not_sold_out(item_hash)
     @store.should_receive(:mark_not_sold_out).with(instance_of(Item))
     @i_store.register_item(item_hash)
-  end
-
-  def should_not_register_known_item_class(selector, model, name)
-    attributes = {:name => name}
-    @store.should_receive(:known).with(model, name).and_return(model.new(attributes))
-    @store.should_not_receive(:register!)
-    @i_store.send(selector, attributes)
   end
 
 end

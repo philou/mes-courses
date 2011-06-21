@@ -10,7 +10,7 @@
 <% unless @categories.empty? %>
  <div id="categories-panel">
     <% @categories.each do |category| %>
-      <p><%= link_to category.name, @show_sub_category_url_options.merge(:id => category.id) %></p>
+      <p><%= link_to h(category.name), @show_sub_category_url_options.merge(:id => category.id) %></p>
     <% end%>
   </div>
 <% end %>
@@ -23,9 +23,9 @@
       <tr>
         <td><img src="<%= item.image %>" /></td>
         <td><%=h item.name %></td>
-        <td><%= item.summary %></td>
+        <td><%=h item.summary %></td>
         <td><%= item.price.to_s %>€</td>
-        <td class="buy-button"><%= button_to @add_item_label, @add_item_url_options.merge(:id => item.id), @add_item_html_options %></td>
+        <td class="buy-button"><%= button_to h(@add_item_label), @add_item_url_options.merge(:id => item.id), @add_item_html_options %></td>
       </tr>
     <% end%>
   </table>

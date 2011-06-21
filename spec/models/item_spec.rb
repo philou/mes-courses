@@ -47,6 +47,7 @@ describe Item do
       @fruits = ItemCategory.new(:name => "Fruits", :id => 22, :items => [@cerises, @abricots])
 
       @marche = ItemCategory.new(:name => "Marché", :id => 33, :children => [@legumes, @fruits])
+      @marche.children.each { |child| child.parent = @marche}
 
       @tomates_confites = Item.new(:name => "Tomates confites")
       @salade_cesar = Item.new(:name => "Salade césar", :summary => "Salade préparée, antipastis et poulet pané")
@@ -54,6 +55,10 @@ describe Item do
       @italien = ItemCategory.new(:name => "Italien", :id => 44, :items => [@tomates_confites, @salade_cesar])
 
       @traiteur = ItemCategory.new(:name => "Traiteur", :id => 55, :children => [@italien])
+      @traiteur.children.each { |child| child.parent = @traiteur}
+
+      @root_item_category = ItemCategory.new(:name => ItemCategory::ROOT_NAME, :id => 66, :children => [@marche, @traiteur])
+      @root_item_category.children.each { |child| child.parent = @root_item_category}
     end
 
     it "should directly search items when it has no children" do
@@ -78,7 +83,7 @@ describe Item do
       Item.search_by_keyword_and_category(keyword, @marche).should == expected
     end
 
-    it "should search all items if a nil category is specified" do
+    it "should search all items when root category is specified" do
       keyword = "tomates"
       expected = [@tomates, @tomates_cerises, @tomates_confites]
 
@@ -86,7 +91,7 @@ describe Item do
         with(:all, where_conditions).
         and_return(expected)
 
-      Item.search_by_keyword_and_category(keyword).should == expected
+      Item.search_by_keyword_and_category(keyword, @root_item_category).should == expected
     end
 
     it "should search in both item names and summaries too" do
@@ -97,7 +102,7 @@ describe Item do
         exactly(3).times.
         and_return([@salade_cesar])
 
-      Item.search_by_keyword_and_category(keyword)
+      Item.search_by_keyword_and_category(keyword, @root_item_category)
       Item.search_by_keyword_and_category(keyword, @traiteur)
       Item.search_by_keyword_and_category(keyword, @italien)
     end

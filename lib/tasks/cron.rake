@@ -2,7 +2,7 @@
 
 require "exception_notification/notified_task"
 
-desc "Performs nightly tasks, at the moment, importing items from stores"
+desc "Performs tasks, specified in the CRON_TASKS environment variable as a ; separated list"
 cron_task = NotifiedTask.new :cron => :environment do
 
   tasks = ENV['CRON_TASKS'] || ""

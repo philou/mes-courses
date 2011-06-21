@@ -14,7 +14,7 @@ end
 
 # custom factory function with a named organization
 def categorized_item (category_name, sub_category_name, options = {})
-  category = ItemCategory.find_or_create_by_name_and_parent_id(category_name)
+  category = ItemCategory.find_or_create_by_name_and_parent_id(category_name, ItemCategory.root.id)
   sub_category = ItemCategory.find_or_create_by_name_and_parent_id(sub_category_name, category.id)
 
   Factory.create(:item, {:item_category => sub_category }.merge(options))

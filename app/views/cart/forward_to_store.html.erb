@@ -1,16 +1,16 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
-<p>Votre panier a été transféré à '<%= @store.name %>'</p>
+<p>Votre panier a été transféré à '<%=h @store.name %>'</p>
 <% unless @report_notices.empty? %>
   <div class="notice">
        <% @report_notices.each do |notice| %>
-         <p><%= notice %></p>
+         <p><%=h notice %></p>
        <% end %>
   </div>
 <% end %>
 
 <form id="go-to-payment" action=<%= @store_logout_url %> >
-  <input type="submit" value="<%= "Payer sur #{@store.name}" %>" />
+  <input type="submit" value="<%=h "Payer sur #{@store.name}" %>" />
 </form>
 
 <!-- should be removed with navigation bar -->

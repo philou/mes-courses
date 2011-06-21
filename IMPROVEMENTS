@@ -6,18 +6,26 @@ Put everything in the repo	thirdparties source code, dev tools, follow up, marke
 Make a restful ressource of CartLines
 deduce body_id from path_bar
 Rename ressource controllers to plural
-Split import tests in remote_spec for the items_api, and spec for the import
-Switch to synchronous continuous integration.	Have a rake task that does it all and a local ci env
+Split import tests in remote_spec for the items_api, and spec for the import, make import feature more deterministic and user centered (verification through gui and names)
+  - Fork store_api remote_specs (with statistics as before), use offline files when offline?
+  - use mock store_api when testing the import
+  - use mock store_api when running import features
+  - move testing strategry into the mock store_api
+  - bonus : run features with autospec !
+Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
 Write a script to setup dev env
 Have a ci env on heroku	RACK_ENV=test
 Use postgre as dev db
 Insert spec logs in watchdog emails
 Use special auchandirect.fr account while testing
 Create an import record type
-Add _index to the end of the name of db indexes
+Append "_index" to the end of the name of db indexes, remove duplicate "altered_" indexes
 migrer à rails 3
 Use tags to segregate remote specs and features
 Check RR mocks or Not a mock frameworks, or make a generic call logger mock
 Create a root category to simplify item_category_controller
 I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 upgrade radiant, use comment extensions gem
+Review stubs usages : use factories everywhere to initialize stubs and models, use real models were possible (problems with id initialization, verify 2 way association api)
+Reduce accessibility in models
+use button_to to transfert cart to auchan (instead of hand written form)
