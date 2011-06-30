@@ -76,7 +76,7 @@ shared_examples_for "Any StoreCartAPI" do
 
       laits.items.each do |item|
         attributes = item.attributes
-        if attributes[:price] != 0.0
+        if attributes[:price] != 0.0 && /Lait entier/ =~ attributes[:summary]
           return attributes[:remote_id]
         end
       end

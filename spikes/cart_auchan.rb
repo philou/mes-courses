@@ -22,8 +22,6 @@ attempt = 1
 
   js = scripts.map {|script| script.inner_text }.join
 
-puts js
-
   clientId = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
   panierId = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
 

@@ -51,10 +51,10 @@ end
 
 class DummyItemWalker
   def link_text
-    "Lait demi-écrémé"
+    "Lait entier"
   end
   def attributes
-    {:name => "Lait demi-écrémé", :summary => "super bon", :price => 0.67, :remote_id => 12345}
+    {:name => "Lait enier", :summary => "Lait entier", :price => 0.67, :remote_id => 12345}
   end
   def categories
     []
