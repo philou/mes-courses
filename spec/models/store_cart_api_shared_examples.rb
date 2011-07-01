@@ -1,8 +1,6 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
-require 'rubygems'
 require 'spec_helper'
-require 'lib/offline_test_helper'
 
 shared_examples_for "Any StoreCartAPI" do
 

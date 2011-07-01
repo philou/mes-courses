@@ -5,10 +5,12 @@ require 'spec_helper'
 describe StoreImporter do
 
   before :each do
+    @importer = StoreImporter.new()
+  end
+
+  before :each do
     @store_api = stub(AuchanDirectStoreItemsAPI).as_null_object
     AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
-
-    @importer = StoreImporter.new()
 
     @store = stub("Store").as_null_object
     @store.stub(:already_visited_url?).and_return(false)

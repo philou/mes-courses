@@ -2,12 +2,7 @@
 
 require 'spec_helper'
 
-describe AuchanDirectStoreItemsAPI do
-
-  # we are using a single instance because it takes a lot of time. All the tests should be side effect free.
-  before :all do
-    @store = AuchanDirectStoreItemsAPI.new(AUCHAN_DIRECT_OFFLINE)
-  end
+shared_examples_for "Any StoreItemsAPI" do
 
   before :all do
     @range = 0..1

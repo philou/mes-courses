@@ -3,11 +3,12 @@
 require 'rubygems'
 require 'spec_helper'
 require 'models/store_cart_api_shared_examples'
+require 'lib/offline_test_helper'
 
 include OfflineTestHelper
 
 if offline?
-  puts yellow "WARNING: skipping StoreCartAPI remote spec because tests are running offline."
+  puts yellow "WARNING: skipping AuchanDirectStoreCartAPI remote spec because tests are running offline."
 
 else
 
