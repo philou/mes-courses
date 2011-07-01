@@ -48,6 +48,7 @@ GEM
     rspec-rails (1.3.2)
       rack (>= 1.0.0)
       rspec (>= 1.3.0)
+    rspec-spies (1.2.9)
     sqlite3-ruby (1.3.2)
     super_exception_notifier (3.0.13)
       actionmailer
@@ -73,6 +74,7 @@ DEPENDENCIES
   rails (= 2.3.8)
   rspec (= 1.3.0)
   rspec-rails (= 1.3.2)
+  rspec-spies (= 1.2.9)
   sqlite3-ruby
   super_exception_notifier (= 3.0.13)
   webrat (= 0.7.1)

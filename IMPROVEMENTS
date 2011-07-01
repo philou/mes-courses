@@ -22,7 +22,8 @@ Create an import record type
 Append "_index" to the end of the name of db indexes, remove duplicate "altered_" indexes
 migrer à rails 3
 Use tags to segregate remote specs and features
-Check RR mocks or Not a mock frameworks, or make a generic call logger mock
+Use rspec-spies where easier
+Once on rspec 2.x, try to use rspec-spies like should have_receive(:xxx).just_before(:yyy), try to add it
 Create a root category to simplify item_category_controller
 I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 upgrade radiant, use comment extensions gem

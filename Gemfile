@@ -14,6 +14,7 @@ gem "webrat", "0.7.1", :groups => [:cucumber, :ci]
 gem "sqlite3-ruby", :require => "sqlite3", :groups => [:test, :cucumber, :ci]
 gem "rspec", "1.3.0", :groups => [:test, :cucumber, :ci]
 gem "rspec-rails", "1.3.2", :groups => [:test, :cucumber, :ci]
+gem "rspec-spies", "1.2.9", :groups => [:test, :cucumber, :ci]
 gem "factory_girl", "1.2.4", :groups => [:test, :cucumber, :ci]
 gem "ZenTest", "4.4.2", :groups => [:test, :cucumber, :ci]
 

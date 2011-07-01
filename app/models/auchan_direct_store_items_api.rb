@@ -20,7 +20,7 @@ module Walker
     page.uri
   end
   def attributes
-    {}
+    @attributes ||= scrap_attributes
   end
   def categories
     []
@@ -59,6 +59,12 @@ module Walker
     end
     elements.first
   end
+
+  protected
+  def scrap_attributes
+    {}
+  end
+
 end
 
 
@@ -94,15 +100,14 @@ class AuchanDirectCategoryWalker
     @link.text
   end
 
-  def attributes
-    { :name => get_one(page, "#bandeau_label_recherche").content }
-  end
-
   def categories
     links_with(page, '#blocCentral > div a').map { |link| AuchanDirectSubCategoryWalker.new(link) }
   end
 
-  private
+  protected
+  def scrap_attributes
+    { :name => get_one(page, "#bandeau_label_recherche").content }
+  end
   def page
     @page ||= @link.click
   end
@@ -119,15 +124,14 @@ class AuchanDirectSubCategoryWalker
     @link.text
   end
 
-  def attributes
-    { :name => get_one(page, "#bandeau_label_recherche").content }
-  end
-
   def items
     links_with(page, '#blocs_articles a.lienArticle').map { |link| AuchanDirectItemWalker.new(link) }
   end
 
-  private
+  protected
+  def scrap_attributes
+    { :name => get_one(page, "#bandeau_label_recherche").content }
+  end
   def page
     @page ||= @link.click
   end
@@ -144,7 +148,8 @@ class AuchanDirectItemWalker
     @link.text
   end
 
-  def attributes
+  protected
+  def scrap_attributes
     product_type = get_one(page, '.typeProduit')
     product_infos = get_one(page, '#infosProduit')
 
@@ -159,7 +164,6 @@ class AuchanDirectItemWalker
     }
   end
 
-  private
   def page
     @page ||= @link.click
   end

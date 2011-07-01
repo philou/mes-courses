@@ -1,218 +1,266 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/store_importing_test_strategy'
 
 describe StoreImporter do
 
-  def initialize_importer(tweaks = {})
-    @strategy = StoreImportingTestStrategy.new(tweaks)
-    @importer = StoreImporter.new(:importing_strategy => @strategy)
+  before :each do
+    @store_api = stub(AuchanDirectStoreItemsAPI).as_null_object
+    AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
+
+    @importer = StoreImporter.new()
+
     @store = stub("Store").as_null_object
     @store.stub(:already_visited_url?).and_return(false)
   end
 
   def import
-    @importer.import(AUCHAN_DIRECT_OFFLINE, @store)
+    @importer.import("http://a.store.com", @store)
+  end
+
+  def unique_walker_uri
+    @@uri_counter ||= 0
+    URI.parse("http://www.dummystore.com/article/#{@@uri_counter += 1}")
+  end
+  def walker_stub(method_stubs = {})
+    stub("StoreItemWalker", method_stubs.merge(:uri => unique_walker_uri)).as_null_object
+  end
+  def walker_stubs(attributes_array)
+    attributes_array.map { |attributes| walker_stub(:attributes => attributes) }
+  end
+
+  def given_a_store_with_root_categories
+    categories = walker_stubs([{:name => "category1"}, {:name => "category2"}])
+    @store_api.stub(:categories).and_return(categories)
+    categories
+  end
+
+  def given_a_store_with_sub_categories
+    sub_categories = walker_stubs([{:name => "sub_category1"}, {:name => "sub_category2"}])
+    root_category_attributes = { :name => "Root category" }
+    root_category_walker = walker_stub(:attributes => root_category_attributes,
+                                       :categories => sub_categories)
+    @store_api.stub(:categories).and_return([root_category_walker])
+
+    [sub_categories, root_category_attributes]
+  end
+
+  def given_a_store_with_items(items_attributes = [{ :name => "Item1", :price => 3.1}, { :name => "Item2", :price => 34.5}])
+    items = walker_stubs(items_attributes)
+    sub_category_attributes = {:name => "sub_category"}
+    root_category_attributes = { :name => "Root category" }
+    root_category_walker = walker_stub(:attributes => root_category_attributes,
+                                       :categories => [walker_stub(:attributes => sub_category_attributes,
+                                                                   :items => items)])
+    @store_api.stub(:categories).and_return([root_category_walker])
+
+    [items, sub_category_attributes, root_category_attributes]
+  end
+
+  def given_a_store_with_one_item
+    items, sub_category_attributes, root_category_attributes = given_a_store_with_items([{ :name => "Item1", :price => 2.5}])
+    items[0]
   end
 
   context "when starting from scratch" do
 
-    # we are importing only once because it takes a lot of time. All the tests should be side effect free.
-    before(:all) do
-      initialize_importer(:max_loop_nodes => 2)
+    before :each do
       record_calls(@store, :starting_import, :finishing_import, :register_item_category, :register_item, :register_visited_url)
-
-      import
     end
 
     def record_calls(stub_object, *selectors)
       @recorded_calls = []
       selectors.each do |selector|
-        record_calls_to(stub_object, selector)
+        stub_object.stub(selector) do |*args|
+          @recorded_calls.push(selector)
+          result(args)
+        end
       end
     end
-    def record_calls_to(stub_object, selector)
-      collector = []
-      self.instance_variable_set("@#{selector.to_s.pluralize}".intern, collector)
-
-      # warning because start_import and stop_import does not have any arguments ...
-      stub_object.stub(selector) do |*args|
-        recorded_args = arguments(args)
-
-        @recorded_calls.push({:selector => selector, :arguments => recorded_args})
-        collector.push(recorded_args)
-        recorded_args
-      end
-    end
-    def arguments(args)
+    def result(args)
       if (args.count == 1)
         args.first
       else
         args
       end
     end
-    def calls_with_selector(selector)
-      @recorded_calls.find_all do |call|
-        call[:selector] == selector
-      end
-    end
-
-    def first_index_where(array)
-      array.each_with_index do |item, i|
-        if yield item
-          return i
-        end
-      end
-      return -1
-    end
 
     it "should call start_import before registering items" do
-      @recorded_calls.first[:selector].should == :starting_import
-      calls_with_selector(:starting_import).should have(1).entry
-    end
-    it "should call stop_import before registering items" do
-      @recorded_calls.last[:selector].should == :finishing_import
-      calls_with_selector(:finishing_import).should have(1).entry
+      given_a_store_with_items
+
+      @store.should_receive(:starting_import).once
+
+      import
+
+      @recorded_calls.first.should == :starting_import
     end
 
-    it "should create many items" do
-      @register_items.should have_at_least(3).records
+    it "should call stop_import after registering items" do
+      given_a_store_with_items
+
+      @store.should_receive(:finishing_import).once
+
+      import
+
+      @recorded_calls.last.should == :finishing_import
     end
 
-    it "should create item categories" do
-      @register_item_categories.should_not be_empty
-    end
+    it "should register item categories for root categories" do
+      categories = given_a_store_with_root_categories
 
-    it "should create different items categories" do
-      @register_item_categories.should mostly have_unique(:name)
-    end
-
-    it "should organize items with a category hierarchy" do
-      @register_items.each do |item|
-        item[:item_category].should_not be_nil
-        item[:item_category][:parent].should_not be_nil
+      categories.each do |category|
+        @store.should_receive(:register_item_category).with(category.attributes.merge(:parent => nil))
       end
+
+      import
     end
 
-    it "should create valid items params" do
-      lambda do
-        @register_items.each do |item|
-          params = item.clone
-          params.delete(:item_category)
-          Item.new(params)
-        end
-      end.should_not raise_error
+    it "should register item sub categories" do
+      sub_categories, root_category_attributes = given_a_store_with_sub_categories
+
+      sub_categories.each do |sub_category|
+        @store.should_receive(:register_item_category).with(sub_category.attributes.merge(:parent => root_category_attributes.merge(:parent => nil)))
+      end
+
+      import
     end
 
-    it "should create different items" do
-      @register_items.should mostly have_unique(:name)
+    it "should register items" do
+      items, sub_category_attributes, root_category_attributes = given_a_store_with_items
+
+      items.each do |item|
+        @store.should_receive(:register_item).with(item.attributes.merge(:item_category => sub_category_attributes.merge(:parent => root_category_attributes.merge(:parent => nil))))
+      end
+
+      import
     end
 
-    it "should create full named items" do
-      @register_items.find_all {|item| 20 <= item[:name].length }.should_not be_empty
+    it "should register a visited url for every category" do
+      root_categories = given_a_store_with_root_categories
+
+      it_should_register_visited_urls_for(root_categories)
     end
 
-    it "should create items with a price" do
-      @register_items.should all have_key(:price)
+    it "should register a visited url for every sub category" do
+      sub_categories, root_category_attributes = given_a_store_with_sub_categories
+
+      it_should_register_visited_urls_for(sub_categories)
     end
 
-    it "should create most items with an image" do
-      @register_items.should mostly have_key(:image)
+    it "should register a visited url for every item" do
+      items, sub_category_attributes, root_category_attributes = given_a_store_with_items
+
+      it_should_register_visited_urls_for(items)
     end
 
-    it "should create most items with a summary" do
-      @register_items.should mostly have_key(:summary)
+    def it_should_register_visited_urls_for(walkers)
+      walkers.each do |walker|
+        @store.should_receive(:register_visited_url).with(walker.uri.to_s)
+      end
+
+      import
     end
 
-    it "should create items with a remote id" do
-      @register_items.should all have_key(:remote_id)
-    end
-
-    it "should register a visited url for every registered thing" do
-      @register_visited_urls.count.should == (@register_item_categories.count + @register_items.count + 1)
-      # +1 for the whole site ... if this breaks too often, use an inequality
-    end
-    it "should register visited urls as instances of uri" do
-      @register_visited_urls.should all be_instance_of(String)
-    end
     it "should register visited url AFTER the item was registered" do
-      item_save_call = first_index_where(@recorded_calls) { |item| item[:selector] == :register_item }
-      # If this breaks too often, search the next item save, and verify there is a register_url between them
-      @recorded_calls[item_save_call+1][:selector].should == :register_visited_url
+      item = given_a_store_with_one_item
+
+      @store.mock(:register_visited_url) do |uri|
+        @store.should have_received(:register_item).with(item.attributes)
+      end
+
+      import
     end
+
   end
 
   context "when starting after a previous one" do
 
-    # A fresh but tiny importing for each test
-    before(:each) do
-      initialize_importer(:max_loop_nodes => 1)
+    before :each do
+      @item, sub_cat_attr, root_cat_attr = given_a_store_with_one_item
+
+      import
     end
 
     it "should start a new import if the last one finished" do
-      @store.should_receive(:last_import_finished?).and_return(true)
+      @store.stub(:last_import_finished?).and_return(true)
       @store.should_receive(:starting_import)
 
       import
     end
 
     it "should not start a new import if the last one did not finish" do
-      @store.should_receive(:last_import_finished?).and_return(false)
+      @store.stub(:last_import_finished?).and_return(false)
       @store.should_not_receive(:starting_import)
 
       import
     end
 
+    it "should ask if urls were already visited with string uris" do
+      @store.should_receive(:already_visited_url?).with(instance_of(String)).exactly(3).times.and_return(false)
+
+      import
+    end
+
     it "should not register item categories if urls were visited" do
-      @store.should_receive(:already_visited_url?).with(instance_of(String)).and_return(true)
+      @store.stub(:already_visited_url?).and_return(true)
+
       @store.should_not_receive(:register_item_category)
+      @store.should_not_receive(:register_item)
 
       import
     end
 
-    it "should register items if urls were not visited" do
-      @store.should_receive(:already_visited_url?).with(instance_of(String)).and_return(false)
-      @store.should_receive(:register_item)
+    it "should not register items if urls were visited" do
+      @store.stub(:already_visited_url?).with(@item.uri.to_s).and_return(true)
+
+      @store.should_receive(:register_item_category).twice
+      @store.should_not_receive(:register_item)
 
       import
     end
 
   end
 
-  it "should let interrupts and other fatal exception climb up the stack" do
-    exception_should_climb_up_the_stack(Interrupt)
-  end
+  context "when handling errors" do
 
-  it "should let standard errors climb up the stack" do
-    exception_should_climb_up_the_stack(SocketError)
-  end
-
-  it "should continue on unimportable store pages" do
-    new_page = Mechanize::Page.method(:new)
-    Mechanize::Page.stub!(:new).and_return do |*args|
-      result = new_page.call(*args)
-      result.stub!(:search).and_return([])
-      result
+    before :each do
+      @item, sub_cat_attrs, root_cat_attrs = given_a_store_with_one_item
     end
 
-    no_exception_should_climb_up_the_stack
+    it "should let interrupts and other fatal exception climb up the stack" do
+      exception_should_climb_up_the_stack(Interrupt)
+    end
+
+    it "should let standard errors climb up the stack" do
+      exception_should_climb_up_the_stack(SocketError)
+    end
+
+    it "should continue on unimportable store pages" do
+      new_page = Mechanize::Page.method(:new)
+      Mechanize::Page.stub!(:new).and_return do |*args|
+        result = new_page.call(*args)
+        result.stub!(:search).and_return([])
+        result
+      end
+
+      no_exception_should_climb_up_the_stack
+    end
+
+    it "should continue on badly formed store items" do
+      @store.stub!(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
+
+      no_exception_should_climb_up_the_stack
+    end
+
+    def exception_should_climb_up_the_stack(exception_class)
+      @item.stub(:attributes).and_raise(exception_class.new("Test mock simulated error."))
+
+      lambda { import }.should raise_error(exception_class)
+    end
+
+    def no_exception_should_climb_up_the_stack
+      lambda { import }.should_not raise_error
+    end
+
   end
-
-  it "should continue on badly formed store items" do
-    @store.stub!(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
-
-    no_exception_should_climb_up_the_stack
-  end
-
-  def exception_should_climb_up_the_stack(exception_class)
-    initialize_importer(:max_loop_nodes => 1, :simulate_error_at_node => 0, :simulated_error => exception_class)
-    lambda { import }.should raise_error(exception_class)
-  end
-
-  def no_exception_should_climb_up_the_stack
-    initialize_importer(:max_loop_nodes => 1)
-    lambda { import }.should_not raise_error
-  end
-
 end
