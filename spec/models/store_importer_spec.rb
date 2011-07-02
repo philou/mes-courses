@@ -16,7 +16,7 @@ describe StoreImporter do
   end
 
   def given_a_store_with(root_categories)
-    @store_api = DummyStoreItemsAPI.new_store(root_categories)
+    @store_api = DummyStoreItemsAPI.new_custom_store(root_categories)
     AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
 
     @root_categories = @store_api.categories

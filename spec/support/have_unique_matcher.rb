@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -15,22 +15,38 @@ class HaveUnique
     @collection = collection
     @index = Hash.new(0)
     collection.each do |item|
-      @index[item[@key]] += 1
+      @index[value(item)] += 1
     end
     self
   end
 
   def matches?(actual)
     @actual = actual
-    @index[actual[@key]] == 1
+    @index[value(actual)] == 1
   end
 
   def failure_message_for_should
-    "expected #{actual}[#{@key}] (=#{actual[key]}) to be unique in #{@collection}"
+    "expected #{value_expression(actual)} (=#{value(actual)}) to be unique in #{@collection}"
   end
 
   def description
-    "expected an hash with a unique #{key} in #{@collection}"
+    "expected an hash or object with a unique #{key} in #{@collection}"
+  end
+
+  private
+  def value(actual)
+    if actual.instance_of?(Hash)
+      actual[@key]
+    else
+      actual.send(@key)
+    end
+  end
+  def value_expression(actual)
+    if actual.instance_of?(Hash)
+      "#{actual}[#{@key}]"
+    else
+      "#{actual}.#{@key}"
+    end
   end
 end
 

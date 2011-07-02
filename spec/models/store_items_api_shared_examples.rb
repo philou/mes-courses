@@ -56,10 +56,6 @@ shared_examples_for "Any StoreItemsAPI" do
     end.should_not raise_error
   end
 
-  it "should have full named items" do
-    sample_items_attributes.find_all {|item| 20 <= item[:name].length }.should_not be_empty
-  end
-
   it "should have items with a price" do
     sample_items_attributes.should all have_key(:price)
   end
@@ -72,8 +68,12 @@ shared_examples_for "Any StoreItemsAPI" do
     sample_items_attributes.should mostly have_key(:summary)
   end
 
-  it "should have items with a remote id" do
-    sample_items_attributes.should all have_key(:remote_id)
+  it "should have items with unique remote id" do
+    sample_items_attributes.should all have_unique(:remote_id)
+  end
+
+  it "should have items with unique uris" do
+    sample_items.should all have_unique(:uri)
   end
 
 end
