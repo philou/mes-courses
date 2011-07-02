@@ -1,66 +1,45 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 class DummyStoreItemsAPI
+  def initialize(attributes)
+    values = { :items => [], :categories => [], :uri => DummyStoreItemsAPI.unique_uri }.merge(attributes)
 
-  def initialize(uri)
-    @uri = uri
+    @uri = values[:uri]
+    @attributes = values.reject{ |k,v| [:items, :uri, :categories].include?(k) }
+    @items = DummyStoreItemsAPI.news(values[:items])
+    @categories = DummyStoreItemsAPI.news(values[:categories])
   end
 
-  attr_reader :uri
+  def self.new_store(root_categories)
+    new(:categories => root_categories)
+  end
 
-  def attributes
-    {}
+  def self.new_milk_store(uri)
+    new(:uri => URI.parse(uri),
+        :categories => [{ :name => "Produits laitiers",
+                          :categories => [{ :name => "Lait",
+                                            :items => [{ :name => "Lait enier",
+                                                         :summary => "Lait entier",
+                                                         :price => 0.67,
+                                                         :remote_id => 12345 }]}]}])
   end
-  def categories
-    [DummyCategoryWalker.new]
-  end
-  def items
-    []
-  end
-end
 
-class DummyCategoryWalker
+  attr_reader :uri, :attributes, :items, :categories
+
   def link_text
-    "Produits laitiers"
+    attributes[:name]
   end
-  def attributes
-    {}
-  end
-  def categories
-    [DummySubCategoryWalker.new]
-  end
-  def items
-    []
-  end
-end
 
-class DummySubCategoryWalker
-  def link_text
-    "Laits"
-  end
-  def attributes
-    {}
-  end
-  def categories
-    []
-  end
-  def items
-    [DummyItemWalker.new]
-  end
-end
+  private
 
-class DummyItemWalker
-  def link_text
-    "Lait entier"
+  def self.unique_uri
+    @uri_counter ||= 0
+    URI.parse("http://www.dummystore.com/article/#{@uri_counter += 1}")
   end
-  def attributes
-    {:name => "Lait enier", :summary => "Lait entier", :price => 0.67, :remote_id => 12345}
+
+  def self.news(attributes_array)
+    attributes_array.map { |attributes| new(attributes) }
   end
-  def categories
-    []
-  end
-  def items
-    []
-  end
+
 end
 

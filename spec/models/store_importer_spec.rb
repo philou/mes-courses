@@ -6,11 +6,6 @@ describe StoreImporter do
 
   before :each do
     @importer = StoreImporter.new()
-  end
-
-  before :each do
-    @store_api = stub(AuchanDirectStoreItemsAPI).as_null_object
-    AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
 
     @store = stub("Store").as_null_object
     @store.stub(:already_visited_url?).and_return(false)
@@ -20,48 +15,44 @@ describe StoreImporter do
     @importer.import("http://a.store.com", @store)
   end
 
-  def unique_walker_uri
-    @@uri_counter ||= 0
-    URI.parse("http://www.dummystore.com/article/#{@@uri_counter += 1}")
-  end
-  def walker_stub(method_stubs = {})
-    stub("StoreItemWalker", method_stubs.merge(:uri => unique_walker_uri)).as_null_object
-  end
-  def walker_stubs(attributes_array)
-    attributes_array.map { |attributes| walker_stub(:attributes => attributes) }
+  def given_a_store_with(root_categories)
+    @store_api = DummyStoreItemsAPI.new_store(root_categories)
+    AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
+
+    @root_categories = @store_api.categories
+    unless @root_categories.empty?
+      @root_category = @root_categories.first
+      @sub_categories = @root_category.categories
+
+      unless @sub_categories.empty?
+        @sub_category = @sub_categories.first
+        @items = @sub_category.items
+
+        unless @items.empty?
+          @item = @items.first
+        end
+      end
+    end
   end
 
   def given_a_store_with_root_categories
-    categories = walker_stubs([{:name => "category1"}, {:name => "category2"}])
-    @store_api.stub(:categories).and_return(categories)
-    categories
+    given_a_store_with [{:name => "category1"}, {:name => "category2"}]
   end
 
   def given_a_store_with_sub_categories
-    sub_categories = walker_stubs([{:name => "sub_category1"}, {:name => "sub_category2"}])
-    root_category_attributes = { :name => "Root category" }
-    root_category_walker = walker_stub(:attributes => root_category_attributes,
-                                       :categories => sub_categories)
-    @store_api.stub(:categories).and_return([root_category_walker])
-
-    [sub_categories, root_category_attributes]
+    given_a_store_with [{ :name => "Root category",
+                          :categories => [{:name => "sub_category1"},
+                                          {:name => "sub_category2"}]}]
   end
 
   def given_a_store_with_items(items_attributes = [{ :name => "Item1", :price => 3.1}, { :name => "Item2", :price => 34.5}])
-    items = walker_stubs(items_attributes)
-    sub_category_attributes = {:name => "sub_category"}
-    root_category_attributes = { :name => "Root category" }
-    root_category_walker = walker_stub(:attributes => root_category_attributes,
-                                       :categories => [walker_stub(:attributes => sub_category_attributes,
-                                                                   :items => items)])
-    @store_api.stub(:categories).and_return([root_category_walker])
-
-    [items, sub_category_attributes, root_category_attributes]
+    given_a_store_with [{ :name => "Root category",
+                          :categories => [{ :name => "sub_category",
+                                            :items => items_attributes}]}]
   end
 
   def given_a_store_with_one_item
-    items, sub_category_attributes, root_category_attributes = given_a_store_with_items([{ :name => "Item1", :price => 2.5}])
-    items[0]
+    given_a_store_with_items([{ :name => "Item1", :price => 2.5}])
   end
 
   context "when starting from scratch" do
@@ -108,9 +99,9 @@ describe StoreImporter do
     end
 
     it "should register item categories for root categories" do
-      categories = given_a_store_with_root_categories
+      given_a_store_with_root_categories
 
-      categories.each do |category|
+      @root_categories.each do |category|
         @store.should_receive(:register_item_category).with(category.attributes.merge(:parent => nil))
       end
 
@@ -118,41 +109,41 @@ describe StoreImporter do
     end
 
     it "should register item sub categories" do
-      sub_categories, root_category_attributes = given_a_store_with_sub_categories
+      given_a_store_with_sub_categories
 
-      sub_categories.each do |sub_category|
-        @store.should_receive(:register_item_category).with(sub_category.attributes.merge(:parent => root_category_attributes.merge(:parent => nil)))
+      @sub_categories.each do |sub_category|
+        @store.should_receive(:register_item_category).with(sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil)))
       end
 
       import
     end
 
     it "should register items" do
-      items, sub_category_attributes, root_category_attributes = given_a_store_with_items
+      given_a_store_with_items
 
-      items.each do |item|
-        @store.should_receive(:register_item).with(item.attributes.merge(:item_category => sub_category_attributes.merge(:parent => root_category_attributes.merge(:parent => nil))))
+      @items.each do |item|
+        @store.should_receive(:register_item).with(item.attributes.merge(:item_category => @sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil))))
       end
 
       import
     end
 
     it "should register a visited url for every category" do
-      root_categories = given_a_store_with_root_categories
+      given_a_store_with_root_categories
 
-      it_should_register_visited_urls_for(root_categories)
+      it_should_register_visited_urls_for(@root_categories)
     end
 
     it "should register a visited url for every sub category" do
-      sub_categories, root_category_attributes = given_a_store_with_sub_categories
+      given_a_store_with_sub_categories
 
-      it_should_register_visited_urls_for(sub_categories)
+      it_should_register_visited_urls_for(@sub_categories)
     end
 
     it "should register a visited url for every item" do
-      items, sub_category_attributes, root_category_attributes = given_a_store_with_items
+      given_a_store_with_items
 
-      it_should_register_visited_urls_for(items)
+      it_should_register_visited_urls_for(@items)
     end
 
     def it_should_register_visited_urls_for(walkers)
@@ -164,10 +155,10 @@ describe StoreImporter do
     end
 
     it "should register visited url AFTER the item was registered" do
-      item = given_a_store_with_one_item
+      given_a_store_with_one_item
 
       @store.mock(:register_visited_url) do |uri|
-        @store.should have_received(:register_item).with(item.attributes)
+        @store.should have_received(:register_item).with(@item.attributes)
       end
 
       import
@@ -178,7 +169,7 @@ describe StoreImporter do
   context "when starting after a previous one" do
 
     before :each do
-      @item, sub_cat_attr, root_cat_attr = given_a_store_with_one_item
+      given_a_store_with_one_item
 
       import
     end
@@ -226,7 +217,7 @@ describe StoreImporter do
   context "when handling errors" do
 
     before :each do
-      @item, sub_cat_attrs, root_cat_attrs = given_a_store_with_one_item
+      given_a_store_with_one_item
     end
 
     it "should let interrupts and other fatal exception climb up the stack" do
