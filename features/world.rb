@@ -6,12 +6,6 @@ require 'spec/support/mostly_matcher'
 require 'spec/support/all_matcher'
 require 'spec/support/have_non_nil_matcher'
 require 'spec/stubs/cucumber'
-require 'lib/offline_test_helper'
-
-include OfflineTestHelper
-warn_if_offline
-
-World(OfflineTestHelper)
 
 module LinkLocator
   def find_link_href(text)

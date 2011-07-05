@@ -6,10 +6,7 @@ require 'lib/offline_test_helper'
 
 include OfflineTestHelper
 
-if offline?
-  puts yellow "WARNING: skipping AuchanDirectStoreItemsAPI remote spec because tests are running offline."
-
-else
+when_online "AuchanDirectStoreItemsAPI remote spec" do
 
   describe AuchanDirectStoreItemsAPI do
     before :all do @store = AuchanDirectStoreItemsAPI.new("http://www.auchandirect.fr") end

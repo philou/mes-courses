@@ -7,7 +7,7 @@ Feature: Robust catalog import
   Wants the import to resumed where it was stopped
 
   Scenario: Items are reimported after an interrupted import
-    Given the "www.auchandirect.fr" store
+    Given the "www.dummy-store.com" store
     And   last store import was unexpectedly interrupted
     When  modified items from the store are re-imported
     Then  new items should have been inserted

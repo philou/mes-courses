@@ -11,6 +11,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 require 'exception_notification'
 require 'lib/heroku_helper'
 require File.join(File.dirname(__FILE__), 'email_constants')
+require 'pp'
 
 Rails::Initializer.run do |config|
   include HerokuHelper

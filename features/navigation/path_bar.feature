@@ -50,7 +50,7 @@ Feature: Path bar
       """
 
   Scenario: Path bar when forwarding the cart
-    Given the "www.dummy-store.fr" store with api
+    Given the "www.dummy-store.fr" store
     And   I am on the cart page
     When  I forward the cart to the store account of a valid user
     Then  The path bar should be

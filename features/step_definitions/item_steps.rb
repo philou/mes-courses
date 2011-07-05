@@ -13,7 +13,7 @@ end
 
 
 Then /^there should be some items for sale$/ do
-  Item.should have_at_least(10).records
+  Item.should have_at_least(8).records
 end
 
 Then /^all items should be organized by type and subtype$/ do

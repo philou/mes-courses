@@ -30,8 +30,16 @@ end
 # Reimports a store, again, does not use lazy import,
 # records db metrics before reimporting
 def reimport(store, tweaks, extra_tweaks = {})
+
   [Item, ItemCategory].each do |record|
     record.collect_past_metrics
   end
+
+  [Item, ItemCategory].each do |record|
+    while record.past_metrics[:updated_at].sec == Time.now.sec
+      sleep(0.01)
+    end
+  end
+
   import_with(store, tweaks.merge(extra_tweaks))
 end

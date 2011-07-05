@@ -1,28 +1,14 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-Given /^the "([^"]*)" *(online)? store"?$/ do |web_store, online_store|
-  test_online_if_possible = !online_store.blank?
-
-  url = AUCHAN_DIRECT_OFFLINE
-  @tweaks = {}
-
-  if test_online_if_possible && online?
-    url = "http://"+web_store
-  end
-
-  @store = Store.find_or_create_by_url(url)
-end
-
-# NOTE : I had to create another where the online url would not be overriden with
-#        a local file because rails does not handle redirection to file://... well
 # TODO : try to get the DummyStoreCartAPI instance without using stubs
-Given /^the "([^"]*)" store with api"?$/ do |web_store|
+Given /^the "([^"]*)" store"?$/ do |web_store|
   @storeAPI = DummyStoreCartAPI.new
   StoreCartAPI.stub!(:login) do |store_url, login, password|
     @storeAPI.login(store_url, login, password)
     @storeAPI
   end
 
+  @tweaks = {}
   @store = Store.find_or_create_by_url("http://"+web_store)
 end
 
@@ -54,7 +40,7 @@ When /^items from the store are re-imported$/ do
 end
 
 When /^more items from the store are re-imported$/ do
-  reimport(@store, @tweaks, :max_loop_nodes => 4)
+  reimport(@store, @tweaks, :max_loop_nodes => 3)
 end
 
 When /^modified items from the store are re-imported$/ do
@@ -62,7 +48,7 @@ When /^modified items from the store are re-imported$/ do
 end
 
 When /^sold out items from the store are re-imported$/ do
-  reimport(@store, @tweaks, :max_loop_nodes => 2)
+  reimport(@store, @tweaks, :max_loop_nodes => 1)
 end
 
 Then /^an empty cart should be created in the store account of the user$/ do

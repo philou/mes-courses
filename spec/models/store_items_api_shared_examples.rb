@@ -1,6 +1,7 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'spec_helper'
+require 'pp'
 
 shared_examples_for "Any StoreItemsAPI" do
 
@@ -46,10 +47,20 @@ shared_examples_for "Any StoreItemsAPI" do
     sample_items_attributes.should mostly have_unique(:name)
   end
 
+  it "should have valid item category attributes" do
+    lambda do
+
+      (sample_categories + sample_sub_categories).each do |category|
+        ItemCategory.new(category.attributes)
+      end
+
+    end.should_not raise_error
+  end
+
   it "should have valid item attributes" do
     lambda do
 
-      sample_items do |item|
+      sample_items.each do |item|
         Item.new(item.attributes)
       end
 

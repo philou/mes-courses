@@ -12,7 +12,7 @@ class StoreImportingTestStrategy
 
   # Default accepted options
   def self.default_params
-    { :max_loop_nodes => 3,                  # Max count of nodes that can be iterated when importing
+    { :max_loop_nodes => 2,                  # Max count of nodes that can be iterated when importing
       :price_increment => 0.0,               # Price increment to all found items
       :simulate_error_at_node => fixnum_max, # Simulate an error at the nth node
       :simulated_error => RuntimeError       # Type of the error to simulate

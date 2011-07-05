@@ -7,10 +7,7 @@ require 'lib/offline_test_helper'
 
 include OfflineTestHelper
 
-if offline?
-  puts yellow "WARNING: skipping AuchanDirectStoreCartAPI remote spec because tests are running offline."
-
-else
+when_online("AuchanDirectStoreCartAPI remote spec") do
 
   class AuchanDirectStoreCartAPI
 

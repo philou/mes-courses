@@ -16,10 +16,12 @@ module OfflineTestHelper
     ONLINE
   end
 
-  # puts a colored warning if offline
-  def warn_if_offline
+  # puts a colored warning if offline, otherwise
+  def when_online(description)
     if offline?
-      puts yellow("WARNING: testing in offline mode")
+      puts yellow("WARNING: skipping #{description} because running offline")
+    else
+      yield
     end
   end
 
