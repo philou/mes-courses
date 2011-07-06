@@ -23,8 +23,8 @@ describe Store do
 
   it "should forward import options to the importer" do
     options = {:special => "sauce"}
-    StoreImporter.should_receive(:new).with(options).and_return(@importer)
-    Store.new(@valid_attributes).import(options)
+    StoreImporter.should_receive(:new).with().and_return(@importer)
+    Store.new(@valid_attributes).import
   end
 
   it "should use its url host as name" do

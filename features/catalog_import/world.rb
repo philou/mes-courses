@@ -1,10 +1,5 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-# Imports the store using the tweaks
-def import_with(store, tweaks)
-  store.import(:importing_strategy => StoreImportingTestStrategy.new(tweaks))
-end
-
 # Add the capability to retreive and store db metrics in an active record model
 class ActiveRecord::Base
   # Current db model metrics
@@ -27,9 +22,9 @@ class ActiveRecord::Base
   end
 end
 
-# Reimports a store, again, does not use lazy import,
+# Reimports a store, waits for the next second
 # records db metrics before reimporting
-def reimport(store, tweaks, extra_tweaks = {})
+def reimport(store)
 
   [Item, ItemCategory].each do |record|
     record.collect_past_metrics
@@ -41,5 +36,5 @@ def reimport(store, tweaks, extra_tweaks = {})
     end
   end
 
-  import_with(store, tweaks.merge(extra_tweaks))
+  store.import
 end

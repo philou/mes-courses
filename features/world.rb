@@ -1,6 +1,5 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-require 'spec/models/store_importing_test_strategy'
 require 'spec/support/constants'
 require 'spec/support/mostly_matcher'
 require 'spec/support/all_matcher'

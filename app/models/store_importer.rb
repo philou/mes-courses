@@ -1,21 +1,11 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 require 'rubygems'
-require 'store_importing_strategy'
 require 'lib/logging'
 
 # Objects able to dig into an online store and notify their "store" about
 # the items and item categories that they found for sale.
 class StoreImporter
-
-  # Options can be passed in, such as a custom :importing_strategy
-  def initialize(options = {})
-    if options.has_key?(:importing_strategy)
-      @strategy = options[:importing_strategy]
-    else
-      @strategy = StoreImportingStrategy.new
-    end
-  end
 
   # Imports the items sold from the online store to our db
   def import(url, store)
@@ -39,7 +29,7 @@ class StoreImporter
 
   private
 
-  attr_reader :store, :strategy
+  attr_reader :store
 
   def walk_category(walker, parent)
     unless_already_visited(walker) do
@@ -53,7 +43,6 @@ class StoreImporter
     unless_already_visited(walker) do
       params = walker.attributes
       params[:item_category] = item_category
-      params = strategy.enrich_item(params)
 
       log :debug, "Found item #{params.inspect}"
       store.register_item(params)
@@ -66,7 +55,7 @@ class StoreImporter
     follow(walker.categories, :walk_category, item_category)
   end
   def follow(walkers, message, parent = nil)
-    strategy.each_node(walkers) do |walker|
+    walkers.each do |walker|
       self.send(message, walker, parent)
     end
   end

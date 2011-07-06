@@ -24,9 +24,8 @@ class Store < ActiveRecord::Base
   end
 
   # Imports the items sold from the online store to our db
-  # Options can be passed in, such as a custom :importing_strategy
-  def import(options={})
-    importer = StoreImporter.new(options)
+  def import
+    importer = StoreImporter.new
     importer.import(url,IncrementalStore.new(self))
   end
 
