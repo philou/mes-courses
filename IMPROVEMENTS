@@ -6,12 +6,9 @@ Put everything in the repo	thirdparties source code, dev tools, follow up, marke
 Make a restful ressource of CartLines
 deduce body_id from path_bar
 Rename ressource controllers to plural
-Split import tests in remote_spec for the items_api, and spec for the import, make import feature more deterministic and user centered (verification through gui and names)
-  - Fork store_api remote_specs (with statistics as before), use offline files when offline?
-  - use mock store_api when testing the import
-  - use mock store_api when running import features
-  - move testing strategry into the mock store_api
-  - bonus : run features with autospec !
+Check import through web interface when testing with cucumber
+Improve the DummyStoreItemAPI to ease testing (add item, remove items ...)
+Use singleton behind DummyStoreItemAPI to ease testing
 Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
 Write a script to setup dev env
 Have a ci env on heroku	RACK_ENV=test

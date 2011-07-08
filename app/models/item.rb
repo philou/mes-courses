@@ -5,8 +5,8 @@ class Item < ActiveRecord::Base
   has_and_belongs_to_many :dishes
   belongs_to :item_category
 
-  validates_presence_of :name, :item_category, :price
-  validates_uniqueness_of :name, :scope => "item_category_id"
+  validates_presence_of :name, :item_category, :price, :remote_id
+  validates_uniqueness_of :remote_id
 
   def self.search_by_keyword_and_category(keyword, category)
     throw NotImplementedError.new("Item search not yet implemented") unless hierarchy_handles_item_search?(category)

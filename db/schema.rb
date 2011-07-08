@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110618052518) do
+ActiveRecord::Schema.define(:version => 20110707065146) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -33,8 +33,6 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.datetime "updated_at"
   end
 
-  add_index "dishes", ["name"], :name => "altered_dishes_name", :unique => true
-  add_index "dishes", ["name"], :name => "altered_dishes_name_index", :unique => true
   add_index "dishes", ["name"], :name => "dishes_name", :unique => true
 
   create_table "dishes_items", :id => false, :force => true do |t|
@@ -42,9 +40,7 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.integer "item_id", :null => false
   end
 
-  add_index "dishes_items", ["dish_id"], :name => "altered_dishes_items_dish_id"
   add_index "dishes_items", ["dish_id"], :name => "dishes_items_dish_id"
-  add_index "dishes_items", ["item_id"], :name => "altered_dishes_items_item_id"
   add_index "dishes_items", ["item_id"], :name => "dishes_items_item_id"
 
   create_table "item_categories", :force => true do |t|
@@ -54,7 +50,6 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.datetime "updated_at"
   end
 
-  add_index "item_categories", ["name", "parent_id"], :name => "altered_item_sub_types_name_item_type_id", :unique => true
   add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id", :unique => true
 
   create_table "items", :force => true do |t|
@@ -65,10 +60,10 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.decimal  "price",            :null => false
     t.string   "image"
     t.string   "summary"
-    t.integer  "remote_id"
+    t.integer  "remote_id",        :null => false
   end
 
-  add_index "items", ["name", "item_category_id"], :name => "altered_items_name_item_sub_type_id", :unique => true
+  add_index "items", ["remote_id"], :name => "items_remote_id_index", :unique => true
 
   create_table "model_stats", :force => true do |t|
     t.string   "name",       :null => false
@@ -85,8 +80,6 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.datetime "updated_at"
   end
 
-  add_index "stores", ["url"], :name => "altered_stores_url", :unique => true
-  add_index "stores", ["url"], :name => "altered_stores_url_index", :unique => true
   add_index "stores", ["url"], :name => "stores_url", :unique => true
 
   create_table "to_delete_items", :primary_key => "item_id", :force => true do |t|
@@ -96,7 +89,6 @@ ActiveRecord::Schema.define(:version => 20110618052518) do
     t.string "url", :null => false
   end
 
-  add_index "visited_urls", ["url"], :name => "altered_visited_urls_url", :unique => true
   add_index "visited_urls", ["url"], :name => "visited_urls_url", :unique => true
 
 end

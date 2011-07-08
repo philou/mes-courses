@@ -26,10 +26,12 @@ class IncrementalStore
     if params[:parent].nil?
       params = params.merge(:parent => ItemCategory.root)
     end
-    register_item_class(ItemCategory, params)
+    existing_item_category = @store.known_item_category(params[:name])
+    register_item_class(ItemCategory, existing_item_category, params)
   end
   def register_item(params)
-    item = register_item_class(Item, params)
+    existing_item = @store.known_item(params[:remote_id])
+    item = register_item_class(Item, existing_item, params)
     @store.mark_not_sold_out(item)
     item
   end
@@ -46,9 +48,7 @@ class IncrementalStore
   end
 
   private
-  def register_item_class(model, params)
-    record = @store.known(model, params[:name])
-
+  def register_item_class(model, record, params)
     if is_new?(record)
       record = model.new(params)
       @store.register!(record)

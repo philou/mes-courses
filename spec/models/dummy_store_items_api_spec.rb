@@ -5,7 +5,7 @@ require 'models/store_items_api_shared_examples'
 
 describe DummyStoreItemsAPI do
   before :each do
-    @store = DummyStoreItemsAPI.new_complete_store
+    @store = DummyStoreItemsAPI.new_default_store
   end
 
   it_should_behave_like "Any StoreItemsAPI"

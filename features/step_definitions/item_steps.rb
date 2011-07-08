@@ -16,6 +16,10 @@ Then /^there should be some items for sale$/ do
   Item.should have_at_least(8).records
 end
 
+Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name|
+  Item.count(:conditions => {:name => name}).should == count.to_i
+end
+
 Then /^all items should be organized by type and subtype$/ do
   Item.find(:all).each do |item|
     item.item_category.should_not be_nil

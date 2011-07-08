@@ -9,3 +9,9 @@ Feature: Catalog import
     Given the "www.dummy-store.com" store
     When  items from the store are imported
     Then  there should be some items for sale
+
+  Scenario: Importing items with the same name
+    Given the "www.dummy-store.com" store
+    And   there are 2 items with the name "Petits pois" in the store
+    When  items from the store are imported
+    Then  there should 2 items with name "Petits pois" for sale

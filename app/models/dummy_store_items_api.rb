@@ -5,82 +5,77 @@ class DummyStoreItemsAPI
     new(completed_config(:categories => root_categories))
   end
 
-  def self.new_complete_store(uri = DummyStoreCartAPI.url)
-    new(complete_store_config(uri))
+  def self.new_default_store(uri = DummyStoreCartAPI.url)
+    new(default_store_config(uri))
   end
 
-  def self.complete_store_config(uri = DummyStoreCartAPI.url)
-    completed_config(:uri => uri,
-                     :categories => [{ :name => "Produits frais",
-                                      :categories => [{ :name => "Légumes",
-                                                        :items => [{ :name => "Tomates", :summary => "Rondes", :price => 2.04 },
-                                                                   { :name => "Concombres", :summary => "Espagne", :price => 0.99 },
-                                                                   { :name => "Radis", :summary => "Botte de 30", :price => 1.99 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Fruits",
-                                                        :items => [{ :name => "Pommes", :summary => "Golden", :price => 1.99 },
-                                                                   { :name => "Bananes", :summary => "Martinique", :price => 2.3 },
-                                                                   { :name => "Poires", :summary => "Conference", :price => 3.9 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Poissons",
-                                                        :items => [{ :name => "Sardines", :summary => "Atlantique", :price => 2.4 },
-                                                                   { :name => "Filets de saumon", :summary => "400g", :price => 5.2 },
-                                                                   { :name => "Dos de cabillaud", :summary => "Atlantique x2", :price => 9.99 }
-                                                                  ]
-                                                      }
-                                                     ]
-                                    },
-                                    { :name => "Produits laitiers",
-                                      :categories => [{ :name => "Lait",
-                                                        :items => [{ :name => "Lait entier", :summary => "Lait entier", :price => 0.67 },
-                                                                   { :name => "Lait demi écrémé", :summary => "UHT", :price => 0.53 },
-                                                                   { :name => "Lait écrémé", :summary => "UHT", :price => 0.79 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Fromages",
-                                                        :items => [{ :name => "Camembert", :summary => "De Normandie", :price => 3.2 },
-                                                                   { :name => "Feta", :summary => "De Grèce", :price => 2.6 },
-                                                                   { :name => "Saveur du Maquis", :summary => "Fromage de brebis Corse", :price => 5.3 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Yaourts et desserts",
-                                                        :items => [{ :name => "Fromage blanc", :summary => "Bio", :price => 2.5 },
-                                                                   { :name => "Petit suisse", :summary => "x6", :price => 1.2 },
-                                                                   { :name => "Yaourt fruité", :summary => "x8", :price => 3.1 }
-                                                                  ]
-                                                      }
-                                                     ]
-                                    },
-                                    { :name => "Surgelés",
-                                      :categories => [{ :name => "Plats préparés",
-                                                        :items => [{ :name => "Pizzas royale", :summary => "Prête en 5 minutes", :price => 4.5 },
-                                                                   { :name => "Tomates farcies", :summary => "Viande francaise", :price => 3 },
-                                                                   { :name => "Coquilles St Jacques", :summary => "Préparation à la Bretonne", :price => 5.7 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Légumes",
-                                                        :items => [{ :name => "haricots verts", :summary => "extra fins", :price => 2.09 },
-                                                                   { :name => "carottes", :summary => "en rondelles", :price => 3.2 },
-                                                                   { :name => "Purée de pomme de terre", :summary => "1kg", :price => 1.9 }
-                                                                  ]
-                                                      },
-                                                      { :name => "Desserts",
-                                                        :items => [{ :name => "Glaces à la vanille", :summary => "en pot", :price => 1.5 },
-                                                                   { :name => "Esquimaux", :summary => "Vanille-chocolat", :price => 2.6 },
-                                                                   { :name => "Napolitain glacé", :summary => "Plat familliale pour 6 personnes", :price => 3.2 }
-                                                                  ]
-                                                      }
-                                                     ]
-                                    }
-                                   ]
-                    )
-  end
-  def self.completed_config(config)
-    config = { :uri => DummyStoreCartAPI.url }.merge(config)
-    remote_id = 0
-    completed_config_ex(config, config[:uri], false) { remote_id += 1 }
+  def self.default_store_config(uri = DummyStoreCartAPI.url)
+    completed_config( :uri => uri,
+                      :categories => [{ :name => "Produits frais",
+                                        :categories => [{ :name => "Légumes",
+                                                          :items => [{ :name => "Tomates", :summary => "Rondes", :price => 2.04 },
+                                                                     { :name => "Concombres", :summary => "Espagne", :price => 0.99 },
+                                                                     { :name => "Radis", :summary => "Botte de 30", :price => 1.99 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Fruits",
+                                                          :items => [{ :name => "Pommes", :summary => "Golden", :price => 1.99 },
+                                                                     { :name => "Bananes", :summary => "Martinique", :price => 2.3 },
+                                                                     { :name => "Poires", :summary => "Conference", :price => 3.9 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Poissons",
+                                                          :items => [{ :name => "Sardines", :summary => "Atlantique", :price => 2.4 },
+                                                                     { :name => "Filets de saumon", :summary => "400g", :price => 5.2 },
+                                                                     { :name => "Dos de cabillaud", :summary => "Atlantique x2", :price => 9.99 }
+                                                                    ]
+                                                        }
+                                                       ]
+                                      },
+                                      { :name => "Produits laitiers",
+                                        :categories => [{ :name => "Lait",
+                                                          :items => [{ :name => "Lait entier", :summary => "Lait entier", :price => 0.67 },
+                                                                     { :name => "Lait demi écrémé", :summary => "UHT", :price => 0.53 },
+                                                                     { :name => "Lait écrémé", :summary => "UHT", :price => 0.79 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Fromages",
+                                                          :items => [{ :name => "Camembert", :summary => "De Normandie", :price => 3.2 },
+                                                                     { :name => "Feta", :summary => "De Grèce", :price => 2.6 },
+                                                                     { :name => "Saveur du Maquis", :summary => "Fromage de brebis Corse", :price => 5.3 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Yaourts et desserts",
+                                                          :items => [{ :name => "Fromage blanc", :summary => "Bio", :price => 2.5 },
+                                                                     { :name => "Petit suisse", :summary => "x6", :price => 1.2 },
+                                                                     { :name => "Yaourt fruité", :summary => "x8", :price => 3.1 }
+                                                                    ]
+                                                        }
+                                                       ]
+                                      },
+                                      { :name => "Surgelés",
+                                        :categories => [{ :name => "Plats préparés",
+                                                          :items => [{ :name => "Pizzas royale", :summary => "Prête en 5 minutes", :price => 4.5 },
+                                                                     { :name => "Tomates farcies", :summary => "Viande francaise", :price => 3 },
+                                                                     { :name => "Coquilles St Jacques", :summary => "Préparation à la Bretonne", :price => 5.7 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Légumes",
+                                                          :items => [{ :name => "haricots verts", :summary => "extra fins", :price => 2.09 },
+                                                                     { :name => "carottes", :summary => "en rondelles", :price => 3.2 },
+                                                                     { :name => "Purée de pomme de terre", :summary => "1kg", :price => 1.9 }
+                                                                    ]
+                                                        },
+                                                        { :name => "Desserts",
+                                                          :items => [{ :name => "Glaces à la vanille", :summary => "en pot", :price => 1.5 },
+                                                                     { :name => "Esquimaux", :summary => "Vanille-chocolat", :price => 2.6 },
+                                                                     { :name => "Napolitain glacé", :summary => "Plat familliale pour 6 personnes", :price => 3.2 }
+                                                                    ]
+                                                        }
+                                                       ]
+                                      }
+                                     ]
+                      )
   end
 
   attr_reader :uri, :attributes, :items, :categories
@@ -110,6 +105,12 @@ class DummyStoreItemsAPI
     else
       config
     end
+  end
+
+  def self.completed_config(config)
+    config = { :uri => DummyStoreCartAPI.url }.merge(config)
+    remote_id = 0
+    completed_config_ex(config, config[:uri], false) { remote_id += 1 }
   end
   def self.completed_config_ex(config, base_uri, is_item, &new_remote_id)
     remote_id = new_remote_id.call

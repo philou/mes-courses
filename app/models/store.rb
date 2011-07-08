@@ -31,9 +31,11 @@ class Store < ActiveRecord::Base
 
   # friend: IncrementalImporter
 
-  # Known record, by type and name.
-  def known(model, name)
-    model.find_by_name(name)
+  def known_item_category(name)
+    ItemCategory.find_by_name(name)
+  end
+  def known_item(remote_id)
+    Item.find_by_remote_id(remote_id)
   end
   # Registers something to be saved in the store
   def register!(record)

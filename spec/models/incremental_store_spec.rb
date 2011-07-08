@@ -6,7 +6,8 @@ describe IncrementalStore do
 
   before(:each) do
     @store = mock_model(Store).as_null_object
-    @store.stub(:known).and_return(nil)
+    @store.stub(:known_item_category).and_return(nil)
+    @store.stub(:known_item).and_return(nil)
     @store.stub(:delete_empty_item_categories).and_return(0)
     @i_store = IncrementalStore.new(@store)
 
@@ -87,9 +88,9 @@ describe IncrementalStore do
 
   context "when importing known items" do
     before(:each) do
-      @attributes = {:name => "Truite", :price => 2.4}
+      @attributes = {:name => "Truite", :price => 2.4, :remote_id => 123}
       @known_item = Item.new(@attributes)
-      @store.stub(:known).with(Item,"Truite").and_return(@known_item)
+      @store.stub(:known_item).with(@attributes[:remote_id]).and_return(@known_item)
     end
 
     it "should check if the item has changed" do
@@ -142,7 +143,7 @@ describe IncrementalStore do
     name = "Boeuf"
     attributes = {:name => name}
     known_item_category = ItemCategory.new(attributes)
-    @store.stub(:known).with(ItemCategory, name).and_return(known_item_category)
+    @store.stub(:known_item_category).with(name).and_return(known_item_category)
     known_item_category.stub(:equal_to_attributes?).and_return(true)
 
     @store.should_not_receive(:register!)
