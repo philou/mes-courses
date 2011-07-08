@@ -12,6 +12,11 @@ namespace :stores do
 
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
   task :import => :environment do
+    if Time.now.wday != 0
+      Rails.logger.info "Skipping stores import because today is not sunday"
+      return
+    end
+
     ModelStat::update!
 
     begin
