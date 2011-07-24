@@ -44,6 +44,23 @@ describe IncrementalStore do
     it "should delete visited urls" do
       @store.should_receive(:delete_visited_urls)
     end
+
+    it "should send an email with broken dishes" do
+      dish_breaking_items = [Factory.create(:item), Factory.create(:item)]
+      dish_breaking_items.each do |item|
+        item.dishes = [Factory.create(:dish)]
+      end
+      items = dish_breaking_items + [Factory.create(:item)]
+      @store.stub(:find_sold_out_items).and_return(items)
+
+      BrokenDishesReporter.should_receive(:deliver_email).with(dish_breaking_items)
+    end
+
+    it "should not send an email if no dish are broken" do
+      @store.stub(:find_sold_out_items).and_return([Factory.create(:item)])
+
+      BrokenDishesReporter.should_not_receive(:deliver_email)
+    end
   end
 
   it "should register found item categories to its store" do

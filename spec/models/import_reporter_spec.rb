@@ -24,14 +24,14 @@ describe ImportReporter do
     @body = eval(@email.body)
   end
 
-  it "should send an email with the report" do
+  it "should send a non empty email" do
     send_report_email
 
     @emails.should have(1).entry
     @email.to.should_not be_empty
   end
 
-  it "subject should contain the count when launched for first time" do
+  it "should have a subject containing the count when launched for first time" do
     @stats.each { |model, stat| stat[:old_count] = 0 }
 
     send_report_email
@@ -39,21 +39,21 @@ describe ImportReporter do
     @subject.should include(@stats["Item"][:count].to_s)
   end
 
-  it "subjet should be descriptive" do
+  it "should have a descriptive subjet" do
     send_report_email
 
     @subject.should include(ENV['APP_NAME'])
     @subject.should include(@stats["Item"]['% delta'])
   end
 
-  it "subjet should contain \"WARNING\" for deltas greater than 5%" do
+  it "should have a subjet containing \"WARNING\" for deltas greater than 5%" do
     send_report_email
 
     @subject.should include("WARNING")
     @subject.should_not include("OK")
   end
 
-  it "subjet should contain \"OK\" for deltas smaller than 5%" do
+  it "should have a subject containing \"OK\" for deltas smaller than 5%" do
     @stats["Item"] = {:old_count => 100, :count => 99, :delta => 0.99, '% delta' => "-1.00%"}
 
     send_report_email

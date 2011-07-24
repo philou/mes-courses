@@ -16,6 +16,10 @@ class IncrementalStore
     @store.mark_existing_items
   end
   def finishing_import
+    items = @store.find_sold_out_items
+    dish_breaking_items = items.reject { |item| item.dishes.empty? }
+    BrokenDishesReporter.deliver_email dish_breaking_items unless dish_breaking_items.empty?
+
     @store.delete_sold_out_items
     delete_empty_item_categories
     @store.delete_visited_urls

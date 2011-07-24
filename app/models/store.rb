@@ -53,6 +53,10 @@ class Store < ActiveRecord::Base
     execute_delete("DELETE FROM to_delete_items where item_id = #{item.id}")
   end
 
+  def find_sold_out_items
+    Item.find(:all, :conditions => ["id IN (SELECT item_id FROM to_delete_items)"])
+  end
+
   # Delete all marked items
   def delete_sold_out_items
     result = execute_delete("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")

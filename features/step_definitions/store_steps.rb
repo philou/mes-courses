@@ -61,6 +61,17 @@ Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
   @cart_api.add_unavailable_item(item.remote_id)
 end
 
+def remove_item_from(category, item_name)
+  category[:items] = category[:items].reject{ |item| item[:attributes][:name] == item_name }
+  category[:categories].each do |sub_category|
+    remove_item_from(sub_category, item_name)
+  end
+end
+
+Given /^"([^"]*)" was removed from the store"?$/ do |item_name|
+  remove_item_from(@items_config, item_name)
+end
+
 When /^items from the store are imported$/ do
   @store.import
 end

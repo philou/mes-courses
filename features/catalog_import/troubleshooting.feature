@@ -7,4 +7,4 @@ Feature: Catalog import
   Scenario: Sending item import statistics by email
     Given there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
     When  stats are updated
-    Then  an email with subject containing "Import" should be sent to the maintainer
+    Then  an email ~"Import" should be sent to the maintainer

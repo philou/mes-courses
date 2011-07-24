@@ -1,0 +1,11 @@
+<% @items.each do |item| %>
+Removed item:
+
+  <%= item.attributes.to_yaml %>
+broken dishes:
+  <% item.dishes.each do |dish| %>
+  #<%= dish.id %># <%= dish.name %>
+  <% end %>
+======================================================================
+
+<% end %>
