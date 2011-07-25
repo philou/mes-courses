@@ -3,8 +3,7 @@
 require 'action_view/helpers/number_helper'
 
 # Object responsible for mailing an import report
-class ImportReporter < ActionMailer::Base
-  include HerokuHelper
+class ImportReporter < MonitoringMailer
   include ActionView::Helpers::NumberHelper
 
   # Reports delta from latest statistics by mail and log
@@ -13,7 +12,7 @@ class ImportReporter < ActionMailer::Base
   private
 
   def generate_subject(delta_stats)
-    "[#{app_name}] Import "+
+    "Import "+
       if delta_stats[ModelStat::ITEM][:old_count] == 0
         "OK first time +#{delta_stats[ModelStat::ITEM][:count]} items"
       else
@@ -43,12 +42,7 @@ class ImportReporter < ActionMailer::Base
     delta_stats = ModelStat.generate_delta
     subject = generate_subject(delta_stats)
 
-    @subject = subject
-    @body["content"] = delta_stats.inspect
-    @recipients = EmailConstants.recipients
-    @from = EmailConstants.sender
-    @sent_on = Time.now
-    @headers = {}
+    setup_mail(subject, :content => delta_stats.inspect)
   end
 
 end

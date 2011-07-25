@@ -1,43 +1,30 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 require 'spec_helper'
+require 'models/monitoring_mailer_shared_examples'
 
 describe BrokenDishesReporter do
+  it_should_behave_like "Any MonitoringMailer"
 
   before(:each) do
-    ENV['APP_NAME'] = "mes-courses-tests"
+    @mailer_class = BrokenDishesReporter
+    @mailer_template = :email
+    @mailer_default_parameters = [[]]
   end
 
-  def send_report_email(removed_items = [])
-    @emails = ActionMailer::Base.deliveries
-    @emails.clear()
+  it "should have a subject about broken dishes" do
+    send_monitoring_email
 
-    BrokenDishesReporter.deliver_email removed_items
-
-    @email = @emails.last
-  end
-
-  it "should send a non empty email" do
-    send_report_email
-
-    @emails.should have(1).entry
-    @email.to.should_not be_empty
-  end
-
-  it "should have a descriptive subjet" do
-    send_report_email
-
-    @email.subject.should include(ENV['APP_NAME'])
-    @email.subject.should include("broken dishes")
+    @subject.should include("broken dishes")
   end
 
   it "should contain the yaml of all removed items" do
     removed_items = [Factory.create(:item), Factory.create(:item)]
 
-    send_report_email removed_items
+    send_monitoring_email removed_items
 
     removed_items.each do |item|
-      @email.body.should include(item.attributes.to_yaml)
+      @body.should include(item.attributes.to_yaml)
     end
   end
 
@@ -45,10 +32,10 @@ describe BrokenDishesReporter do
     removed_item = Factory.create(:item)
     removed_item.dishes = [Factory.create(:dish), Factory.create(:dish)]
 
-    send_report_email [removed_item]
+    send_monitoring_email [removed_item]
 
     removed_item.dishes.each do |dish|
-      @email.body.should include("##{dish.id}# #{dish.name}")
+      @body.should include("##{dish.id}# #{dish.name}")
     end
   end
 

@@ -1,16 +1,9 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 # Objects responsible for building and sending watchdog notification emails
-class WatchdogNotifier < ActionMailer::Base
-  include HerokuHelper
+class WatchdogNotifier < MonitoringMailer
 
-  # mailer template function
   def success_email
-    @subject = "[#{app_name}] Watchdog OK"
-    @body["content"] = "All specs OK."
-    @recipients = EmailConstants.recipients
-    @from = EmailConstants.sender
-    @sent_on = Time.now
-    @headers = {}
+    setup_mail("Watchdog OK", "content" => "All specs OK.")
   end
 end

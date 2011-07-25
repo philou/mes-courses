@@ -1,15 +1,10 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
-class BrokenDishesReporter < ActionMailer::Base
-  include HerokuHelper
+# class responsible to alert of dishes broken by deleted items during import
+class BrokenDishesReporter < MonitoringMailer
 
   def email items
-    @subject = "[#{app_name}] There are broken dishes"
-    @body["items"] = items
-    @recipients = EmailConstants.recipients
-    @from = EmailConstants.sender
-    @sent_on = Time.now
-    @headers = {}
+    setup_mail("There are broken dishes", :items => items)
   end
 
 end
