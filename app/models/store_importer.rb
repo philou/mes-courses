@@ -8,16 +8,15 @@ require 'lib/logging'
 class StoreImporter
 
   # Imports the items sold from the online store to our db
-  def import(url, store)
+  def import(walker, store)
     @store = store
     if @store.last_import_finished?
-      log :info, "Starting new import from #{url}"
+      log :info, "Starting new import from #{walker.uri}"
       @store.starting_import
     else
-      log :info, "Resuming import from #{url}"
+      log :info, "Resuming import from #{walker.uri}"
     end
 
-    walker = StoreItemsAPI.browse(url)
     unless_already_visited(walker) do
       dig(walker)
     end

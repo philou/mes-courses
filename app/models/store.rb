@@ -26,7 +26,9 @@ class Store < ActiveRecord::Base
   # Imports the items sold from the online store to our db
   def import
     importer = StoreImporter.new
-    importer.import(url,IncrementalStore.new(self))
+    browser = StoreItemsAPI.browse(url)
+    incremental_store = IncrementalStore.new(self)
+    importer.import(browser, incremental_store)
   end
 
   # friend: IncrementalImporter

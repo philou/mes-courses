@@ -12,12 +12,11 @@ describe StoreImporter do
   end
 
   def import
-    @importer.import("http://a.store.com", @store)
+    @importer.import(@store_api, @store)
   end
 
   def given_a_store_with(root_categories)
     @store_api = DummyStoreItemsAPI.new_custom_store(root_categories)
-    AuchanDirectStoreItemsAPI.stub(:new).and_return(@store_api)
 
     @root_categories = @store_api.categories
     unless @root_categories.empty?

@@ -6,10 +6,10 @@ class DummyStoreItemsAPI
   end
 
   def self.new_default_store(uri = DummyStoreCartAPI.url)
-    new(default_store_config(uri))
+    new(full_config(uri))
   end
 
-  def self.default_store_config(uri = DummyStoreCartAPI.url)
+  def self.full_config(uri = DummyStoreCartAPI.url)
     completed_config( :uri => uri,
                       :categories => [{ :name => "Produits frais",
                                         :categories => [{ :name => "Légumes",
@@ -78,14 +78,21 @@ class DummyStoreItemsAPI
                       )
   end
 
+  def self.shrinked_config(width, config = DummyStoreItemsAPI.full_config)
+    clone_with(config, [:items, :categories]) { |items| items[0..(width-1)] }
+  end
+
+  def initialize(attributes)
+    @uri = attributes[:uri]
+    @attributes = attributes[:attributes]
+    @categories = DummyStoreItemsAPI.news(attributes[:categories])
+    @items = DummyStoreItemsAPI.news(attributes[:items])
+  end
+
   attr_reader :uri, :attributes, :items, :categories
 
   def link_text
     attributes[:name]
-  end
-
-  def self.shrinked_config(config, width)
-    clone_with(config, [:items, :categories]) { |items| items[0..(width-1)] }
   end
 
   private
@@ -130,13 +137,6 @@ class DummyStoreItemsAPI
       :categories => config[:categories].map { |category_config| completed_config_ex(category_config, base_uri, false, &new_remote_id) },
       :items => config[:items].map { |item_config| completed_config_ex(item_config, base_uri, true, &new_remote_id) }
     }
-  end
-
-  def initialize(attributes)
-    @uri = attributes[:uri]
-    @attributes = attributes[:attributes]
-    @categories = DummyStoreItemsAPI.news(attributes[:categories])
-    @items = DummyStoreItemsAPI.news(attributes[:items])
   end
 
   def self.news(attributes_array)

@@ -1,10 +1,24 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-# TODO : try to get the DummyStoreCartAPI instance without using stubs
+def configure_dummy_store(items_config)
+  # Using stubs with item api makes sure the static modifications are rolledback after each scenario
+  DummyStoreItemsAPI.stub(:new_default_store).and_return(DummyStoreItemsAPI.new(items_config))
+end
+
+def given_a_sample_item
+  DummyStoreItemsAPI.new_default_store.categories[1].categories[0].items[0]
+end
+
+def remove_item_from(category_config, item_name)
+  category_config[:items] = category_config[:items].reject{ |item| item[:attributes][:name] == item_name }
+  category_config[:categories].each do |sub_category_config|
+    remove_item_from(sub_category_config, item_name)
+  end
+end
+
 Given /^the "([^"]*)" store"?$/ do |web_store|
-  @default_items_config = DummyStoreItemsAPI.default_store_config
-  @items_config = DummyStoreItemsAPI.shrinked_config(@default_items_config, 2)
-  DummyStoreItemsAPI.stub(:default_store_config).and_return(@items_config)
+  @items_config = DummyStoreItemsAPI.shrinked_config(2)
+  configure_dummy_store(@items_config)
 
   @cart_api = DummyStoreCartAPI.new
   StoreCartAPI.stub!(:login) do |store_url, login, password|
@@ -15,18 +29,12 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
   @store = Store.find_or_create_by_url("http://"+web_store)
 end
 
-def stubed_item
-  items_api = DummyStoreItemsAPI.new_default_store
-  DummyStoreItemsAPI.stub(:new_default_store).and_return(items_api)
-  items_api.categories[1].categories[0].items[0]
-end
-
 Given /^items from the store were already imported$/ do
   @store.import
 end
 
 Given /^last store import was unexpectedly interrupted$/ do
-  item = stubed_item
+  item = given_a_sample_item
   item.stub(:attributes).and_raise(RuntimeError)
 
   begin
@@ -52,6 +60,7 @@ Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
                                                                    :price => 1.2,
                                                                    :remote_id => remote_id }})
   end
+  configure_dummy_store(@items_config)
 end
 
 Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
@@ -61,15 +70,9 @@ Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
   @cart_api.add_unavailable_item(item.remote_id)
 end
 
-def remove_item_from(category, item_name)
-  category[:items] = category[:items].reject{ |item| item[:attributes][:name] == item_name }
-  category[:categories].each do |sub_category|
-    remove_item_from(sub_category, item_name)
-  end
-end
-
 Given /^"([^"]*)" was removed from the store"?$/ do |item_name|
   remove_item_from(@items_config, item_name)
+  configure_dummy_store(@items_config)
 end
 
 When /^items from the store are imported$/ do
@@ -81,12 +84,12 @@ When /^items from the store are re-imported$/ do
 end
 
 When /^more items from the store are re-imported$/ do
-  DummyStoreItemsAPI.stub(:default_store_config).and_return(@default_items_config)
+  configure_dummy_store(DummyStoreItemsAPI.full_config)
   reimport(@store)
 end
 
 When /^modified items from the store are re-imported$/ do
-  item = stubed_item
+  item = given_a_sample_item
   attributes = item.attributes
   item.stub(:attributes).and_return(attributes.merge(:price => attributes[:price] + 1.1))
 
@@ -94,7 +97,7 @@ When /^modified items from the store are re-imported$/ do
 end
 
 When /^sold out items from the store are re-imported$/ do
-  DummyStoreItemsAPI.stub(:default_store_config).and_return(DummyStoreItemsAPI.shrinked_config(@default_items_config, 1))
+  configure_dummy_store(DummyStoreItemsAPI.shrinked_config(1))
   reimport(@store)
 end
 

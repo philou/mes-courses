@@ -17,14 +17,17 @@ describe Store do
   end
 
   it "should ask its importer to import" do
-    @importer.should_receive(:import).with(AUCHAN_DIRECT_OFFLINE, anything())
-    Store.new(@valid_attributes).import
-  end
+    store = Store.new(@valid_attributes)
 
-  it "should forward import options to the importer" do
-    options = {:special => "sauce"}
-    StoreImporter.should_receive(:new).with().and_return(@importer)
-    Store.new(@valid_attributes).import
+    browser = stub("Store Items API")
+    StoreItemsAPI.stub(:browse).and_return(browser)
+
+    incremental_store = stub("Incremental store")
+    IncrementalStore.stub(:new).with(store).and_return(incremental_store)
+
+    @importer.should_receive(:import).with(browser, incremental_store)
+
+    store.import
   end
 
   it "should use its url host as name" do
