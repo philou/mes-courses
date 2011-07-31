@@ -30,6 +30,12 @@ class CartController < ApplicationController
     redirect_to :controller => 'dish'
   end
 
+  # empties the current cart
+  def empty
+    @cart.empty
+    redirect_to :action => 'show'
+  end
+
   # Builds the session cart on an online store
   def forward_to_store
     cart = Cart.find_by_id(params[:cart_id].to_i)

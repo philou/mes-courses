@@ -2,20 +2,6 @@
 
 require 'spec_helper'
 
-module Enumerable
-
-  def map_inject(initial)
-    memo = initial
-    result = []
-    each do |obj|
-      memo = yield memo, obj
-      result.push(memo)
-    end
-    result
-  end
-
-end
-
 describe Cart do
 
   before(:each) do
@@ -61,6 +47,14 @@ describe Cart do
   it "should have a total price equal to the sum of the prices of all its items" do
     @items.each {|item| @cart.add_item(item) }
     @cart.total_price.should == 12.5
+  end
+
+  it "should remove all items when emptied" do
+    @cart.add_item(@bavette)
+
+    @cart.empty
+
+    @cart.should be_empty
   end
 
   context "when the same item was added twice" do

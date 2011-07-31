@@ -30,6 +30,10 @@ class Cart < ActiveRecord::Base
     end
   end
 
+  def empty
+    lines.clear
+  end
+
   def total_price
     result = 0
     lines.each do |line|

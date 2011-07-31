@@ -71,6 +71,18 @@ describe CartController do
       end
     end
 
+    it "should empty the session cart" do
+      @cart.should_receive(:empty)
+
+      post :empty
+    end
+
+    it "should redirect to show after the cart is emptied" do
+      post :empty
+
+      response.should redirect_to(:action => 'show')
+    end
+
     def post_a_stub(action, model)
       post_something(action, stub_model(model))
     end

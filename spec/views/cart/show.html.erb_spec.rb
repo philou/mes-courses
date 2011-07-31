@@ -43,6 +43,11 @@ describe "cart/show.html.erb" do
     response.should contain(@tomates.quantity.to_s)
   end
 
+  it "should have a button to empty the cart" do
+    response.should have_selector("form", :method => "post", :action => url_for(:controller => 'cart', :action => "empty")) do |form|
+      form.should have_selector("input", :type => "submit", :value => "Vider le panier")
+    end
+  end
 
   it "displays a store forwarding forms" do
     @stores.each do |store|
@@ -62,6 +67,7 @@ describe "cart/show.html.erb" do
   it "displays a forward button" do
     response.should have_xpath('//form[@class="store-login"]//input[@type="submit"]')
   end
+
 
 end
 
