@@ -9,9 +9,7 @@
   </div>
 <% end %>
 
-<form id="go-to-payment" action=<%= @store_logout_url %> >
-  <input type="submit" value="<%=h "Payer sur #{@store.name}" %>" />
-</form>
+<%= button_to h("Payer sur #{@store.name}"), @store_logout_url, :id => 'go-to-payment' %>
 
 <!-- should be removed with navigation bar -->
 <p><%= link_to 'Retour au panier', {:controller => 'cart'}%></p>

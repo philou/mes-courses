@@ -10,7 +10,7 @@ Then /^"([^\"]*)" should link to (.+ page)$/ do |link_text, page_name|
 end
 
 Then /^I should see a button "([^\"]*)" to "([^\"]*)"$/ do |text, url|
-  response.should have_xpath("//form[@action='#{url}']/input[@type='submit'][@value='#{text}']")
+  response.should have_xpath("//form[@action='#{url}']//input[@type='submit'][@value='#{text}']")
 end
 
 Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)"$/ do |field, form, value|
