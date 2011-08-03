@@ -54,7 +54,7 @@ module Walker
     check_one("In page \"#{page.uri}\", element \"#{element.path}\"", selector, element.css(selector))
   end
   def check_one(element_string, selector, elements)
-    if elements.empty?()
+    if elements.empty?
       raise StoreItemsBrowsingError.new("#{element_string} does not contain any elements like \"#{selector}\"")
     end
     elements.first
