@@ -6,73 +6,83 @@ describe CartController do
 
   before(:each) do
     @cart = stub_model(Cart)
+    @cart.stub(:save!)
+    @cart.stub(:add_dish)
     Cart.stub(:create).and_return(@cart)
 
     @store = stub_model(Store, :url => "http://www.mega-store.com")
     @stores = [@store]
     Store.stub(:find).and_return(@stores)
     Store.stub(:find_by_id).with(@store.id).and_return(@store)
-
-    @cart.stub(:save!)
   end
 
-  context "when using the session" do
+  context "session handling" do
 
-    after(:each) do
-      session[:cart_id].should == @cart.id
-
-      assigns[:cart].should be @cart
-      assigns[:stores].should be @stores
+    before :each do
+      Item.stub(:find).and_return(stub_model(Item))
+      Dish.stub(:find).and_return(stub_model(Dish))
     end
 
-    it "should assign the @path_bar to display" do
-      get :show
+    # for every action
+    [[:get, :show],
+     [:post, :empty],
+     [:post, :add_item],
+     [:post, :add_dish]].each do |method, action|
 
-      assigns[:path_bar].should == [PathBar.element_for_current_resource("Panier")]
-    end
+      context "when answering #{action}" do
 
-    # maybe I could use a shared_example, but I am not sure it would be better
-    { Item => {:redirect => 'item_category', :find_stub_args => {} },
-      Dish => {:redirect => 'dish', :find_stub_args => { :items => [] } } }.each do |model, options|
+        it "should create a new cart in session if no one exists" do
+          send(method, action)
 
-      redirection_controller = options[:redirect]
-      model_small = model.to_s.downcase
-      action = "add_#{model_small}".intern
-
-      context "when adding #{model_small} to cart" do
-
-        before(:each) do
-          model.stub!(:find).and_return(stub_model(model, options[:find_stub_args]))
-
-          @cart.should_receive(:save!)
+          session[:cart_id].should == @cart.id
         end
 
-        it "should delegate to the cart" do
-          thing = stub_model(model)
-          model.stub(:find).and_return(thing)
-          @cart.should_receive("add_#{model_small}".intern).with(thing)
-
-          post_something(action, thing)
-        end
-
-        it "should not create a new session when one already exists" do
+        it "should reuse existing cart from session if one exists" do
           session[:cart_id] = @cart.id
-          Cart.should_not_receive(:new)
-          Cart.should_receive(:find_by_id).and_return(@cart)
+          Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
 
-          post_a_stub(action, model)
+          Cart.should_not_receive(:create)
+
+          send(method, action)
         end
 
-        it "should redirect to products" do
-          post_a_stub(action, model)
-
-          response.should redirect_to(:controller => redirection_controller)
-        end
       end
+
     end
+
+  end
+
+
+  it "should assign a path_bar with show" do
+    get :show
+
+    assigns[:path_bar].should == [PathBar.element_for_current_resource("Panier")]
+  end
+
+  it "should assign a cart with show" do
+    get :show
+
+    assigns[:cart].should be @cart
+  end
+
+  it "should assign stores with show" do
+    get :show
+
+    assigns[:stores].should be @stores
+  end
+
+  # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...
+
+  context "when emptying the cart" do
 
     it "should empty the session cart" do
       @cart.should_receive(:empty)
+
+      post :empty
+    end
+
+    it "should save the modified cart" do
+      @cart.should_receive(:save!)
 
       post :empty
     end
@@ -82,12 +92,65 @@ describe CartController do
 
       response.should redirect_to(:action => 'show')
     end
+  end
 
-    def post_a_stub(action, model)
-      post_something(action, stub_model(model))
+  context "when adding item to cart" do
+
+    before(:each) do
+      @item = stub_model(Item)
+      Item.stub!(:find).and_return(@item)
     end
-    def post_something(action, item)
-      post( action, :id => item.id)
+
+    it "should delegate to the cart" do
+      @cart.should_receive(:add_item).with(@item)
+
+      post_add_item
+    end
+
+    it "should save the modified cart" do
+      @cart.should_receive(:save!)
+
+      post_add_item
+    end
+
+    it "should redirect to items" do
+      post_add_item
+
+      response.should redirect_to(:controller => 'item_category')
+    end
+
+    def post_add_item
+      post :add_item, :id => @item.id
+    end
+  end
+
+  context "when adding dish to cart" do
+
+    before(:each) do
+      @dish = stub_model(Dish)
+      Dish.stub!(:find).and_return(@dish)
+    end
+
+    it "should delegate to the cart" do
+      @cart.should_receive(:add_dish).with(@dish)
+
+      post_add_dish
+    end
+
+    it "should save the modified cart" do
+      @cart.should_receive(:save!)
+
+      post_add_dish
+    end
+
+    it "should redirect to products" do
+      post_add_dish
+
+      response.should redirect_to(:controller => 'dish')
+    end
+
+    def post_add_dish
+      post :add_dish, :id => @dish.id
     end
   end
 

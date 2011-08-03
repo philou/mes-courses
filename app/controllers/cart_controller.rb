@@ -33,6 +33,7 @@ class CartController < ApplicationController
   # empties the current cart
   def empty
     @cart.empty
+    @cart.save!
     redirect_to :action => 'show'
   end
 
