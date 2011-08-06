@@ -6,7 +6,7 @@ describe ApplicationHelper do
   include ApplicationHelper
 
   it "should create a default item category path for the nil category" do
-    root_category_path = url_for(:controller => "item_category")
+    root_category_path = url_for(:controller => "item_categories")
 
     any_item_category_path.should == root_category_path
     any_item_category_path(nil).should == root_category_path

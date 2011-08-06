@@ -3,23 +3,23 @@
 require 'spec_helper'
 require 'lib/array_extras'
 
-describe ItemCategoryController do
+describe ItemCategoriesController do
   include ApplicationHelper
 
   before :each do
     ItemCategory.stub(:root).and_return(stub_model(ItemCategory, :name => ItemCategory::ROOT_NAME, :items => []))
 
-    @nesting = ItemCategoryControllerStandaloneNesting.new
-    ItemCategoryControllerStandaloneNesting.stub(:new).and_return(@nesting)
+    @nesting = ItemCategoriesControllerStandaloneNesting.new
+    ItemCategoriesControllerStandaloneNesting.stub(:new).and_return(@nesting)
 
     @dish = stub_model(Dish, :name => "Hamburger maison")
     Dish.stub!(:find_by_id).and_return(@dish)
   end
 
   def expect_use_of_dish_nesting
-    nesting = ItemCategoryControllerDishNesting.new(@dish.id.to_s)
-    ItemCategoryControllerDishNesting.should_receive(:new).with(@dish.id.to_s).and_return(nesting)
-    ItemCategoryControllerStandaloneNesting.should_not_receive(:new)
+    nesting = ItemCategoriesControllerDishNesting.new(@dish.id.to_s)
+    ItemCategoriesControllerDishNesting.should_receive(:new).with(@dish.id.to_s).and_return(nesting)
+    ItemCategoriesControllerStandaloneNesting.should_not_receive(:new)
   end
 
   describe "GET 'index'" do
@@ -31,7 +31,7 @@ describe ItemCategoryController do
     end
 
     it "should use a standalone nesting" do
-      ItemCategoryControllerStandaloneNesting.should_receive(:new)
+      ItemCategoriesControllerStandaloneNesting.should_receive(:new)
 
       get 'index'
     end
@@ -70,7 +70,7 @@ describe ItemCategoryController do
     end
 
     it "should use a standalone nesting" do
-      ItemCategoryControllerStandaloneNesting.should_receive(:new)
+      ItemCategoriesControllerStandaloneNesting.should_receive(:new)
 
       get_show
     end
@@ -106,7 +106,7 @@ describe ItemCategoryController do
     it "should assign a path bar with current category" do
       get_show
 
-      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path),
                                                 PathBar.element(@item_category.name, item_category_path(@item_category))])
     end
 
@@ -116,7 +116,7 @@ describe ItemCategoryController do
 
       get_show
 
-      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path),
+      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path),
                                                 PathBar.element(parent_category.name, item_category_path(parent_category)),
                                                 PathBar.element(@item_category.name, item_category_path(@item_category))])
     end
@@ -157,7 +157,7 @@ describe ItemCategoryController do
 
         get 'show', :id => ItemCategory.root.id
 
-        assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_category_index_path)])
+        assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path)])
       end
 
     end
@@ -185,7 +185,7 @@ describe ItemCategoryController do
       it "should assign a path_bar containing the searched category" do
         get_show_search
 
-        assigns[:path_bar].should be_containing([PathBar.element("Ingrédients", item_category_index_path),
+        assigns[:path_bar].should be_containing([PathBar.element("Ingrédients", item_categories_path),
                                                  PathBar.element(@item_category.name, item_category_path(@item_category))])
       end
 

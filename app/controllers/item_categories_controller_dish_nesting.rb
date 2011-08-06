@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-class ItemCategoryControllerDishNesting
+class ItemCategoriesControllerDishNesting
   include ActionController::UrlWriter
 
   def initialize(dish_id)
@@ -16,8 +16,8 @@ class ItemCategoryControllerDishNesting
     [PathBar.element("Recettes", dishes_path), PathBar.element(dish.name, dish_path(dish))]
   end
 
-  def item_category_index_path
-    dish_item_category_index_path(@dish_id)
+  def item_categories_path
+    dish_item_categories_path(@dish_id)
   end
 
   def item_category_path(item_category)
@@ -35,6 +35,6 @@ class ItemCategoryControllerDishNesting
   end
 
   def show_sub_category_url_options
-    {:controller => 'item_category', :action => 'show', :dish_id => @dish_id}
+    {:controller => 'item_categories', :action => 'show', :dish_id => @dish_id}
   end
 end

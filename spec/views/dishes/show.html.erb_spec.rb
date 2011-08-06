@@ -24,7 +24,7 @@ describe "/dishes/show.html.erb" do
     render
 
     response.should contain("Ajouter un ingrédient")
-    response.should have_selector("a", :href => dish_item_category_index_path(@dish))
+    response.should have_selector("a", :href => dish_item_categories_path(@dish))
   end
 
 end

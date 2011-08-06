@@ -2,12 +2,12 @@
 
 require 'spec_helper'
 
-describe ItemCategoryControllerDishNesting do
-  controller_name :item_category
+describe ItemCategoriesControllerDishNesting do
+  controller_name :item_categories
 
   before :each do
     @dish = stub_model(Dish, :name => "Salade")
-    @nesting = ItemCategoryControllerDishNesting.new(@dish.id)
+    @nesting = ItemCategoriesControllerDishNesting.new(@dish.id)
     Dish.stub!(:find_by_id).with(@dish.id).and_return(@dish)
   end
 
@@ -16,7 +16,7 @@ describe ItemCategoryControllerDishNesting do
   end
 
   it "should use dish url for root url of item categories" do
-    @nesting.item_category_index_path.should == dish_item_category_index_path(@dish.id)
+    @nesting.item_categories_path.should == dish_item_categories_path(@dish.id)
   end
 
   it "should use dish urls for urls of item categories" do
@@ -29,6 +29,6 @@ describe ItemCategoryControllerDishNesting do
   end
 
   it "should use a dish url to link to sub item categories" do
-    @nesting.show_sub_category_url_options.should == {:controller => 'item_category', :action => 'show', :dish_id => @dish.id}
+    @nesting.show_sub_category_url_options.should == {:controller => 'item_categories', :action => 'show', :dish_id => @dish.id}
   end
 end

@@ -21,7 +21,7 @@ class CartController < ApplicationController
   # adds the item with params[:id] to the cart
   def create
     add_to_cart(Item)
-    redirect_to :controller => 'item_category'
+    redirect_to :controller => 'item_categories'
   end
 
   # adds the whole dish with params[:id] to the cart

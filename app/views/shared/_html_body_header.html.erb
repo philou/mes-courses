@@ -5,7 +5,7 @@
         <span class="separator"> | </span>
         <%= link_to 'Recettes', dishes_path, :id => 'place-dish' %>
         <span class="separator"> | </span>
-        <%= link_to 'Ingrédients', {:controller => 'item_category'}, :id => 'place-items' %>
+        <%= link_to 'Ingrédients', item_categories_path, :id => 'place-items' %>
         <span class="separator"> | </span>
         <%= link_to 'Panier', {:controller => 'cart'}, :id => 'place-cart' %>
 <%= render(:partial => "shared/html_body_header_2") %>

@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-class ItemCategoryController < ApplicationController
+class ItemCategoriesController < ApplicationController
   include ApplicationHelper
 
   before_filter :assign_nesting
@@ -62,7 +62,7 @@ class ItemCategoryController < ApplicationController
 
   def collect_path_bar(item_category, result)
     if item_category.nil? || item_category.root?
-      result.push PathBar.element("Ingrédients", @nesting.item_category_index_path)
+      result.push PathBar.element("Ingrédients", @nesting.item_categories_path)
     else
       collect_path_bar(item_category.parent, result)
       result.push PathBar.element(item_category.name, @nesting.item_category_path(item_category))
@@ -74,9 +74,9 @@ class ItemCategoryController < ApplicationController
   end
   def new_nesting
     if params[:dish_id].nil?
-      ItemCategoryControllerStandaloneNesting.new
+      ItemCategoriesControllerStandaloneNesting.new
     else
-      ItemCategoryControllerDishNesting.new(params[:dish_id])
+      ItemCategoriesControllerDishNesting.new(params[:dish_id])
     end
   end
 

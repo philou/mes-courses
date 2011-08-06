@@ -37,8 +37,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
-  map.resources :item_category
-  map.resources :dishes, :has_many => [:item_category, :items]
+  map.resources :item_categories
+  map.resources :dishes, :has_many => [:item_categories, :items]
 
   map.resources :cart
   map.destroy_all_cart '/cart', :controller => "cart",

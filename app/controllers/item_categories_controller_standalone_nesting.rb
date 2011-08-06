@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-class ItemCategoryControllerStandaloneNesting
+class ItemCategoriesControllerStandaloneNesting
   include ActionController::UrlWriter
 
   def html_body_id
@@ -11,7 +11,7 @@ class ItemCategoryControllerStandaloneNesting
     []
   end
 
-  public :item_category_index_path, :item_category_path
+  public :item_categories_path, :item_category_path
 
   def add_item_label
     "Ajouter au panier"
@@ -24,6 +24,6 @@ class ItemCategoryControllerStandaloneNesting
   end
 
   def show_sub_category_url_options
-    {:controller => 'item_category', :action => 'show'}
+    {:controller => 'item_categories', :action => 'show'}
   end
 end

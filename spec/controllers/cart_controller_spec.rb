@@ -116,7 +116,7 @@ describe CartController do
     it "should redirect to items" do
       post_add_item
 
-      response.should redirect_to(:controller => 'item_category')
+      response.should redirect_to(:controller => 'item_categories')
     end
 
     def post_add_item
