@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "/dish/index.html.erb" do
+describe "/dishes/index.html.erb" do
 
   before(:each) do
     @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }

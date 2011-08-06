@@ -2,6 +2,6 @@
 
 class WelcomeController < ApplicationController
   def index
-    redirect_to :controller => 'dish'
+    redirect_to :controller => 'dishes'
   end
 end

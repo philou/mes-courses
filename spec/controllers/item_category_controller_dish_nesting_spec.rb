@@ -12,7 +12,7 @@ describe ItemCategoryControllerDishNesting do
   end
 
   it "should create path bars starting from dishes" do
-    @nesting.root_path_bar.should == [PathBar.element("Recettes", dish_index_path), PathBar.element(@dish.name, dish_path(@dish))]
+    @nesting.root_path_bar.should == [PathBar.element("Recettes", dishes_path), PathBar.element(@dish.name, dish_path(@dish))]
   end
 
   it "should use dish url for root url of item categories" do

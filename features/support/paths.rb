@@ -17,9 +17,9 @@ module NavigationHelpers
     when /the cart page/
       '/cart'
     when /the full dish catalog page/
-      '/dish'
+      dishes_path
     when /the dish creation page/
-      '/dish/new'
+      new_dish_path
     when /the "([^"]*)" dish page/
       dish_path(Dish.find_by_name($1))
     when /the "([^"]*)" dish item categories page/

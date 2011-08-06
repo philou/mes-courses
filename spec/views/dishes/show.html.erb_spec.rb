@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "/dish/show.html.erb" do
+describe "/dishes/show.html.erb" do
 
   before :each do
     items = [Factory.create(:item), Factory.create(:item)]

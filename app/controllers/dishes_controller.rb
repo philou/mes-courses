@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-class DishController < ApplicationController
+class DishesController < ApplicationController
 
   before_filter :assign_root_path_bar
   before_filter :assign_html_body_id

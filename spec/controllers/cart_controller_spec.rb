@@ -146,7 +146,7 @@ describe CartController do
     it "should redirect to products" do
       post_add_dish
 
-      response.should redirect_to(:controller => 'dish')
+      response.should redirect_to(:controller => 'dishes')
     end
 
     def post_add_dish

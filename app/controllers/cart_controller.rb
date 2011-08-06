@@ -27,7 +27,7 @@ class CartController < ApplicationController
   # adds the whole dish with params[:id] to the cart
   def add_dish
     add_to_cart(Dish)
-    redirect_to :controller => 'dish'
+    redirect_to :controller => 'dishes'
   end
 
   # empties the current cart

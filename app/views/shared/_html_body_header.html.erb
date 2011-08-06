@@ -3,7 +3,7 @@
         <span class="separator"> | </span>
         <a href="http://www.mes-courses.fr/blog" id="place-blog">Blog</a>
         <span class="separator"> | </span>
-        <%= link_to 'Recettes', {:controller => 'dish'}, :id => 'place-dish' %>
+        <%= link_to 'Recettes', dishes_path, :id => 'place-dish' %>
         <span class="separator"> | </span>
         <%= link_to 'Ingrédients', {:controller => 'item_category'}, :id => 'place-items' %>
         <span class="separator"> | </span>

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DishController do
+describe DishesController do
 
   describe 'GET index' do
     before :each do
@@ -66,7 +66,7 @@ describe DishController do
     it "should redirect the main dish catalog" do
       post 'create'
 
-      response.should redirect_to(:controller => 'dish', :action => 'show', :id => @dish.id)
+      response.should redirect_to(:controller => 'dishes', :action => 'show', :id => @dish.id)
     end
   end
 

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "/dish/new.html.erb" do
+describe "/dishes/new.html.erb" do
 
   before :each do
     @dish = Dish.new(:name => "Nouvelle recette")
@@ -18,7 +18,7 @@ describe "/dish/new.html.erb" do
   it "should have a dish creation form" do
     render
 
-    response.should have_xpath('//form[@id="dish"][@method="post"][@action="'+url_for(:controller => 'dish', :action => 'create')+'"]')
+    response.should have_xpath('//form[@id="dish"][@method="post"][@action="'+url_for(:controller => 'dishes', :action => 'create')+'"]')
     response.should have_xpath('//form[@id="dish"]//input[@type="submit"]')
   end
 

@@ -13,7 +13,7 @@ class ItemCategoryControllerDishNesting
 
   def root_path_bar
     dish = Dish.find_by_id(@dish_id)
-    [PathBar.element("Recettes", dish_index_path), PathBar.element(dish.name, dish_path(dish))]
+    [PathBar.element("Recettes", dishes_path), PathBar.element(dish.name, dish_path(dish))]
   end
 
   def item_category_index_path
