@@ -17,10 +17,10 @@ class ItemCategoryControllerStandaloneNesting
     "Ajouter au panier"
   end
   def add_item_url_options
-    {:controller => 'cart', :action => 'add_item'}
+    {:controller => 'cart', :action => 'create'}
   end
   def add_item_html_options
-    {:method => :get}
+    {:method => :post}
   end
 
   def show_sub_category_url_options

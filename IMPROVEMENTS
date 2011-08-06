@@ -21,10 +21,4 @@ I had to hard code www.mes-courses.fr at various points in the cms (blog and a p
 upgrade radiant, use comment extensions gem
 Review stubs usages : use factories everywhere to initialize stubs and models, use real models were possible (problems with id initialization, verify 2 way association api)
 Reduce accessibility in models
-Make a restful ressource of cart controller
-- add a special route for add_dish
-- use standard resource routes for other actions
-- change the routes config to use a resource
-rename cart_controller to cart_lines_controller
-Rename ressource controllers to plural
-faire des 'Then' plus specifiques pour le contenu du panier
+[WIP] Rename ressource controllers to plural

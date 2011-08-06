@@ -52,7 +52,7 @@ describe DishController do
 
   describe 'POST create' do
     before :each do
-      @dish = Dish.new(:id => 1002)
+      @dish = stub_model(Dish)
       Dish.stub!(:create!).and_return(@dish)
     end
 
@@ -73,7 +73,7 @@ describe DishController do
   describe 'GET show' do
 
     before :each do
-      @dish = Dish.new(:name => "Salade de tomates", :id => 1234)
+      @dish = stub_model(Dish, :name => "Salade de tomates")
       Dish.stub(:find_by_id).and_return(@dish)
 
       get 'show', :id => @dish.id

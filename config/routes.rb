@@ -40,11 +40,20 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :item_category
   map.resources :dish, :has_many => [:item_category, :items]
 
-  map.connect 'cart', :controller => 'cart', :action => 'show'
+  map.resources :cart
+  map.destroy_all_cart '/cart', :controller => "cart",
+                                :action => "destroy_all",
+                                :conditions => { :method => :delete }
+  map.add_dish_to_cart '/cart/add_dish/:id', :controller => "cart",
+                                             :action => "add_dish",
+                                             :conditions => { :method => :post }
+  map.forward_cart_to_store '/cart/forward_to_store', :controller => "cart",
+                                                      :action => "forward_to_store",
+                                                      :conditions => { :method => :post }
 
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
-  map.default ':controller/:action/:id'
-  map.default ':controller/:action/:id.:format'
+  #  map.default ':controller/:action/:id'
+  #  map.default ':controller/:action/:id.:format'
 
 end

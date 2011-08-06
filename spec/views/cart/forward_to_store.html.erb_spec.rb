@@ -12,7 +12,7 @@ describe "cart/forward_to_store.html.erb" do
   end
 
   it "renders a link to the cart view" do
-    response.should have_selector("a", :href => default_path(:controller => 'cart'))
+    response.should have_selector("a", :href => cart_index_path)
   end
   it "renders a link to the online store" do
     response.should have_selector("form", :action => @store_logout_url) do |form|

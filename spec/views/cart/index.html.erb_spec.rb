@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "cart/show.html.erb" do
+describe "cart/index.html.erb" do
   include ApplicationHelper
 
   before(:each) do
@@ -44,7 +44,8 @@ describe "cart/show.html.erb" do
   end
 
   it "should have a button to empty the cart" do
-    response.should have_selector("form", :method => "post", :action => url_for(:controller => 'cart', :action => "empty")) do |form|
+    response.should have_selector("form", :action => destroy_all_cart_path) do |form|
+      form.should have_selector("input", :type => "hidden", :name => "_method", :value => "delete")
       form.should have_selector("input", :type => "submit", :value => "Vider le panier")
     end
   end

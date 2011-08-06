@@ -24,9 +24,9 @@ describe CartController do
     end
 
     # for every action
-    [[:get, :show],
-     [:post, :empty],
-     [:post, :add_item],
+    [[:get, :index],
+     [:delete, :destroy_all],
+     [:post, :create],
      [:post, :add_dish]].each do |method, action|
 
       context "when answering #{action}" do
@@ -53,44 +53,44 @@ describe CartController do
   end
 
 
-  it "should assign a path_bar with show" do
-    get :show
+  it "should assign a path_bar with index" do
+    get :index
 
     assigns[:path_bar].should == [PathBar.element_for_current_resource("Panier")]
   end
 
-  it "should assign a cart with show" do
-    get :show
+  it "should assign a cart with index" do
+    get :index
 
     assigns[:cart].should be @cart
   end
 
-  it "should assign stores with show" do
-    get :show
+  it "should assign stores with index" do
+    get :index
 
     assigns[:stores].should be @stores
   end
 
   # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...
 
-  context "when emptying the cart" do
+  context "when destroying the cart" do
 
     it "should empty the session cart" do
       @cart.should_receive(:empty)
 
-      post :empty
+      delete :destroy_all
     end
 
     it "should save the modified cart" do
       @cart.should_receive(:save!)
 
-      post :empty
+      delete :destroy_all
     end
 
-    it "should redirect to show after the cart is emptied" do
-      post :empty
+    it "should redirect to show" do
+      delete :destroy_all
 
-      response.should redirect_to(:action => 'show')
+      response.should redirect_to(:action => 'index')
     end
   end
 
@@ -120,7 +120,7 @@ describe CartController do
     end
 
     def post_add_item
-      post :add_item, :id => @item.id
+      post :create, :id => @item.id
     end
   end
 

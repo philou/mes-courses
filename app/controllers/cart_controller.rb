@@ -14,12 +14,12 @@ class CartController < ApplicationController
   protect_from_forgery :except => :forward_to_store
 
   # Displays the full session's cart
-  def show
+  def index
     @path_bar = [PathBar.element_for_current_resource("Panier")]
   end
 
   # adds the item with params[:id] to the cart
-  def add_item
+  def create
     add_to_cart(Item)
     redirect_to :controller => 'item_category'
   end
@@ -31,10 +31,10 @@ class CartController < ApplicationController
   end
 
   # empties the current cart
-  def empty
+  def destroy_all
     @cart.empty
     @cart.save!
-    redirect_to :action => 'show'
+    redirect_to :action => :index
   end
 
   # Builds the session cart on an online store
@@ -53,7 +53,7 @@ class CartController < ApplicationController
       end
     rescue InvalidStoreAccountError
       flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{@store.name}'. Vérifiez vos identifiant et mot de passe."
-      redirect_to :action => :show
+      redirect_to :action => :index
     end
   end
 
