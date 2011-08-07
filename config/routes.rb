@@ -38,18 +38,13 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   map.resources :item_categories
+
   map.resources :dishes, :has_many => [:item_categories, :items]
 
-  map.resources :cart
-  map.destroy_all_cart '/cart', :controller => "cart",
-                                :action => "destroy_all",
-                                :conditions => { :method => :delete }
-  map.add_dish_to_cart '/cart/add_dish/:id', :controller => "cart",
-                                             :action => "add_dish",
-                                             :conditions => { :method => :post }
-  map.forward_cart_to_store '/cart/forward_to_store', :controller => "cart",
-                                                      :action => "forward_to_store",
-                                                      :conditions => { :method => :post }
+  map.resources :cart_lines
+  map.destroy_all_cart_lines '/cart_lines', :controller => "cart_lines", :action => "destroy_all", :conditions => { :method => :delete }
+  map.add_dish_to_cart_lines '/cart_lines/add_dish/:id', :controller => "cart_lines", :action => "add_dish", :conditions => { :method => :post }
+  map.forward_cart_lines_to_store '/cart_lines/forward_to_store', :controller => "cart_lines", :action => "forward_to_store", :conditions => { :method => :post }
 
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.

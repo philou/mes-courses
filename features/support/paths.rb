@@ -15,7 +15,7 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
     when /the cart page/
-      '/cart'
+      cart_lines_path
     when /the full dish catalog page/
       dishes_path
     when /the dish creation page/

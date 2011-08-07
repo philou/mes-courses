@@ -17,7 +17,7 @@ class ItemCategoriesControllerStandaloneNesting
     "Ajouter au panier"
   end
   def add_item_url_options
-    {:controller => 'cart', :action => 'create'}
+    {:controller => 'cart_lines', :action => 'create'}
   end
   def add_item_html_options
     {:method => :post}

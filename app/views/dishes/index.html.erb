@@ -4,7 +4,7 @@
   <% @dishes.each do |dish| %>
     <tr>
       <td><%= link_to h(dish.name), dish_path(dish) %></td>
-    <td class="buy-button"><%= button_to 'Ajouter au panier', {:controller => 'cart', :action => 'add_dish', :id => dish.id } %></td>
+    <td class="buy-button"><%= button_to 'Ajouter au panier', add_dish_to_cart_lines_path(dish) %></td>
     </tr>
   <% end%>
   <tr>

@@ -7,5 +7,5 @@
         <span class="separator"> | </span>
         <%= link_to 'Ingrédients', item_categories_path, :id => 'place-items' %>
         <span class="separator"> | </span>
-        <%= link_to 'Panier', {:controller => 'cart'}, :id => 'place-cart' %>
+        <%= link_to 'Panier', cart_lines_path, :id => 'place-cart' %>
 <%= render(:partial => "shared/html_body_header_2") %>

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe CartController do
+describe CartLinesController do
 
   before(:each) do
     @cart = stub_model(Cart)
@@ -166,7 +166,7 @@ describe CartController do
     it "should assign a @path_bar with two items" do
       forward_to_valid_store_account
 
-      assigns[:path_bar].should == [PathBar.element("Panier", :controller => 'cart'),
+      assigns[:path_bar].should == [PathBar.element("Panier", :controller => 'cart_lines'),
                                     PathBar.element_with_no_link("Transfert")]
     end
 
@@ -195,7 +195,7 @@ describe CartController do
 
       it "should redirect to cart" do
         forward_to_invalid_store_account
-        response.should redirect_to(:controller => 'cart')
+        response.should redirect_to(:controller => 'cart_lines')
       end
 
       it "should set a flash message" do

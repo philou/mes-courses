@@ -13,7 +13,7 @@ describe "layouts/application.html.erb" do
 
   it "should render the link in a @path_bar element" do
     text = "Promotions !"
-    controller = "cart"
+    controller = "cart_lines"
     assigns[:path_bar] = path_bar = [PathBar.element(text, :controller => controller)]
     render
     response.should have_xpath("//div[@id='path-bar']/a[@href='/#{controller}'][text()='#{text}']")

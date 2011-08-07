@@ -5,7 +5,7 @@ require 'models/invalid_store_account_error'
 # Controller for the shopping cart
 # it stores the cart in the db, and its id in the session, so that
 # the cart can be transferred from a domain to another
-class CartController < ApplicationController
+class CartLinesController < ApplicationController
 
   before_filter :assign_html_body_id
   before_filter :find_cart, :except => :forward_to_store
@@ -43,7 +43,7 @@ class CartController < ApplicationController
     @store = Store.find_by_id(params[:store_id].to_i)
 
     begin
-      @path_bar = [PathBar.element("Panier", :controller => 'cart'), PathBar.element_with_no_link("Transfert")]
+      @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
 
       forward_results = cart.forward_to(@store, params[:store][:login], params[:store][:password])
 

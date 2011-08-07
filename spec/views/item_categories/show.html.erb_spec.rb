@@ -8,7 +8,7 @@ describe "/item_categories/show.html.erb" do
   before(:each) do
     assigns[:show_sub_category_url_options] = @show_sub_category_url_options = {:controller => 'item_categories', :action => 'index'}
     assigns[:add_item_label] = @add_item_label = "Acheter"
-    assigns[:add_item_url_options] = @add_item_url_options = {:controller => 'cart', :action => 'create'}
+    assigns[:add_item_url_options] = @add_item_url_options = {:controller => 'cart_lines', :action => 'create'}
     assigns[:add_item_html_options] = @add_item_html_options = {:method => :post}
     assigns[:categories] = @categories = ["Produits laitiers", "Fruits & Légumes"].map {|name| stub_model(ItemCategory, :name => name) }
     assigns[:search_url] = @search_url = "/item_category/search_it"

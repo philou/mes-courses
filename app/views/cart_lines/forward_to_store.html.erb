@@ -12,4 +12,4 @@
 <%= button_to h("Payer sur #{@store.name}"), @store_logout_url, :id => 'go-to-payment' %>
 
 <!-- should be removed with navigation bar -->
-<p><%= link_to 'Retour au panier', {:controller => 'cart'}%></p>
+<p><%= link_to 'Retour au panier', {:controller => 'cart_lines'}%></p>

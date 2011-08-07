@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "cart/index.html.erb" do
+describe "cart_lines/index.html.erb" do
   include ApplicationHelper
 
   before(:each) do
@@ -44,7 +44,7 @@ describe "cart/index.html.erb" do
   end
 
   it "should have a button to empty the cart" do
-    response.should have_selector("form", :action => destroy_all_cart_path) do |form|
+    response.should have_selector("form", :action => destroy_all_cart_lines_path) do |form|
       form.should have_selector("input", :type => "hidden", :name => "_method", :value => "delete")
       form.should have_selector("input", :type => "submit", :value => "Vider le panier")
     end
@@ -53,7 +53,7 @@ describe "cart/index.html.erb" do
   it "displays a store forwarding forms" do
     @stores.each do |store|
       response.should have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
-                                 "[starts-with(@action, '#{https_url_for(:controller => 'cart', :action => 'forward_to_store')}')]" +
+                                 "[starts-with(@action, '#{https_url_for(:controller => 'cart_lines', :action => 'forward_to_store')}')]" +
                                  "[contains(@action, 'store_id=#{store.id}')]" +
                                  "[contains(@action, 'cart_id=#{@cart.id}')]")
     end
