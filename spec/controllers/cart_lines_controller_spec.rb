@@ -157,10 +157,25 @@ describe CartLinesController do
   context "forwarding to a store" do
 
     before(:each) do
+      @order = stub_model(Order)
+      Order.stub(:create!).and_return(@order)
+
       @logout_url = "#{@store.url}/deconnexion"
+      @missing_items_names = ""
       @forward_cart = stub_model(Cart)
-      @forward_cart.stub(:forward_to).and_return({ :store_url => @logout_url, :missing_items => []})
-      Cart.should_receive(:find_by_id).with(@forward_cart.id).and_return(@forward_cart)
+      @forward_cart.stub(:forward_to) do | session, order|
+        order.forwarded_cart_lines_count = @forward_cart.lines.size
+        order.missing_items_names = @missing_items_names
+        order.remote_store_order_url = @logout_url
+      end
+
+      Cart.stub(:find_by_id).with(@forward_cart.id).and_return(@forward_cart)
+
+      @store_session = stub(StoreCartSession).as_null_object
+      StoreCartSession.stub(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
+      class << @store_session
+        include WithLogoutMixin
+      end
     end
 
     it "should assign a @path_bar with two items" do
@@ -171,7 +186,24 @@ describe CartLinesController do
     end
 
     it "should forward the cart instance to the store" do
-      @forward_cart.should_receive(:forward_to).with(@store, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
+      @forward_cart.should_receive(:forward_to).with(@store_session, @order)
+      forward_to_valid_store_account
+    end
+
+    it "should create an order with cart and store" do
+      Order.should_receive(:create!).with({ :cart => @forward_cart, :store => @store })
+
+      forward_to_valid_store_account
+    end
+
+    it "should logout from the store even if something went bad" do
+      @forward_cart.stub(:forward_to).and_raise(SocketError.new("Connection lost"))
+      @store_session.should_receive(:logout)
+      lambda { forward_to_valid_store_account }.should raise_error(SocketError)
+    end
+
+    it "should eventually logout from the store" do
+      @store_session.should_receive(:logout)
       forward_to_valid_store_account
     end
 
@@ -184,11 +216,14 @@ describe CartLinesController do
     end
 
     it "should fill report notices with missing items" do
-      @forward_cart.stub(:forward_to).and_return({ :store_url => @logout_url, :missing_items => [stub_model(Item, :name => "Langue de Boeuf")]})
+      missing_items = ["Langue de Boeuf","nCervelle d'agneau"]
+      @missing_items_names = missing_items.join("\n")
 
       forward_to_valid_store_account
 
-      assigns[:report_notices].find_all{ |notice| notice =~ /Langue de Boeuf/ }.should have_at_least(1).item
+      missing_items.each do |item_name|
+        assigns[:report_notices].find_all{ |notice| notice.include?("'#{item_name}'") }.should have_at_least(1).item
+      end
     end
 
     context "using an invalid store account" do
@@ -210,7 +245,7 @@ describe CartLinesController do
     end
 
     def forward_to_invalid_store_account
-      @forward_cart.stub(:forward_to).and_raise(InvalidStoreAccountError)
+      StoreCartSession.stub(:login).and_raise(InvalidStoreAccountError)
       post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.invalid_login, :password => StoreCartAPI.invalid_password}
     end
 

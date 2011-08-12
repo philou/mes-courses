@@ -42,21 +42,20 @@ class Cart < ActiveRecord::Base
     result
   end
 
-  def forward_to(store, login, password)
-    store.with_session(login, password) do |session|
-      session.empty_the_cart
-      missing_items = []
+  def forward_to(session, order)
+    session.empty_the_cart
+    order.missing_items_names = ""
 
-      lines.each do |line|
-        begin
-          line.forward_to(session)
-        rescue UnavailableItemError
-          missing_items.push(line.item)
-        end
+    lines.each_with_index do |line, line_index|
+      begin
+        line.forward_to(session)
+      rescue UnavailableItemError
+        order.missing_items_names = order.missing_items_names + line.name + "\n"
       end
-
-      return { :store_url => session.logout_url,
-               :missing_items => missing_items}
+      order.forwarded_cart_lines_count = line_index + 1
+      order.save!
     end
+
+    order.remote_store_order_url = session.logout_url
   end
 end

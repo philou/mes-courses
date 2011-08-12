@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cart_id: 1
+  store_id: 1
+  missing_items_names: MyText
+  forwarded_cart_lines_count: 1
+
+two:
+  cart_id: 1
+  store_id: 1
+  missing_items_names: MyText
+  forwarded_cart_lines_count: 1

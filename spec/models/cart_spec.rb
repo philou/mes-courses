@@ -80,16 +80,9 @@ describe Cart do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
       @store_session = stub(StoreCartSession).as_null_object
-      StoreCartSession.stub(:login).and_return(@store_session)
       @store_session.stub(:logout_url).and_return("http://www.a-store.com/logout")
-      class << @store_session
-        include WithLogoutMixin
-      end
-    end
-
-    it "should login to the store" do
-      StoreCartSession.should_receive(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
-      forward_to_store
+      @order = Order.new
+      @order.stub!(:save!)
     end
 
     it "should empty the remote cart" do
@@ -106,36 +99,51 @@ describe Cart do
       forward_to_store
     end
 
-    it "should eventually logout from the store" do
-      @store_session.should_receive(:logout)
+    it "should store the logout url of the store in the order" do
+      forward_to_store
+
+      @order.remote_store_order_url.should == @store_session.logout_url
+    end
+
+    it "should set a blank missing items names in the order" do
+      forward_to_store
+
+      @order.missing_items_names.should_not be_nil
+    end
+
+    it "should store the missing items names in the order" do
+      fill_the_cart
+
+      missing_lines = @cart.lines[2..3]
+      missing_lines.each { |line| line.stub(:forward_to).and_raise(UnavailableItemError) }
+
+      forward_to_store
+
+      @order.missing_items_names.should == missing_lines.map { |line| line.name + "\n" } .join
+    end
+
+    it "should update the count of forwarded lines after each" do
+      fill_the_cart
+
+      @order.should_receive(:forwarded_cart_lines_count=).with(1).ordered
+      @order.should_receive(:forwarded_cart_lines_count=).with(2).ordered
+      @order.should_receive(:forwarded_cart_lines_count=).with(3).ordered
+      @order.should_receive(:forwarded_cart_lines_count=).with(4).ordered
+      @order.should_receive(:forwarded_cart_lines_count=).with(5).ordered
+
       forward_to_store
     end
 
-    it "should logout from the store even if something went bad" do
-      @store_session.stub(:empty_the_cart).and_raise(SocketError.new("Connection lost"))
-      @store_session.should_receive(:logout)
-      lambda { forward_to_store }.should raise_error(SocketError)
-    end
-
-    it "should return a map with the log out url of the store" do
-      forward_to_store[:store_url].should == @store_session.logout_url
-    end
-
-    it "should return a map with the items that could not be bought" do
-      forward_to_store[:missing_items].should_not be_nil
-    end
-
-    it "should return as missing items for the lines that could not be forwarded" do
+    it "should save the order after each cart line is forwarded" do
       fill_the_cart
 
-      @cart.lines[2].stub(:forward_to).and_raise(UnavailableItemError)
-      @cart.lines[3].stub(:forward_to).and_raise(UnavailableItemError)
+      @order.should_receive(:save!).exactly(@cart.lines.size).times
 
-      forward_to_store[:missing_items].should have(2).items
+      forward_to_store
     end
 
     def forward_to_store
-      @cart.forward_to(@store, StoreCartAPI.valid_login, StoreCartAPI.valid_password)
+      @cart.forward_to(@store_session, @order)
     end
   end
 
