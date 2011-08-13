@@ -44,15 +44,14 @@ class Cart < ActiveRecord::Base
 
   def forward_to(session, order)
     session.empty_the_cart
-    order.missing_items_names = ""
 
     lines.each_with_index do |line, line_index|
       begin
         line.forward_to(session)
       rescue UnavailableItemError
-        order.missing_items_names = order.missing_items_names + line.name + "\n"
+        order.add_missing_cart_line(line)
       end
-      order.forwarded_cart_lines_count = line_index + 1
+      order.notify_forwarded_cart_line
       order.save!
     end
 

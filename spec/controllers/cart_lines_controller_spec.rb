@@ -157,24 +157,17 @@ describe CartLinesController do
   context "forwarding to a store" do
 
     before(:each) do
-      @order = stub_model(Order)
-      Order.stub(:create!).and_return(@order)
-
       @logout_url = "#{@store.url}/deconnexion"
-      @missing_items_names = ""
+      @missing_items_notices = []
       @forward_cart = stub_model(Cart)
-      @forward_cart.stub(:forward_to) do | session, order|
-        order.forwarded_cart_lines_count = @forward_cart.lines.size
-        order.missing_items_names = @missing_items_names
-        order.remote_store_order_url = @logout_url
-      end
-
       Cart.stub(:find_by_id).with(@forward_cart.id).and_return(@forward_cart)
 
-      @store_session = stub(StoreCartSession).as_null_object
-      StoreCartSession.stub(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
-      class << @store_session
-        include WithLogoutMixin
+      @order = stub_model(Order)
+      Order.stub(:create!).and_return(@order)
+      @order.stub(:pass) do |login, password|
+        @order.forwarded_cart_lines_count = @forward_cart.lines.size
+        @order.stub(:warning_notices).and_return(@missing_items_notices)
+        @order.remote_store_order_url = @logout_url
       end
     end
 
@@ -185,25 +178,15 @@ describe CartLinesController do
                                     PathBar.element_with_no_link("Transfert")]
     end
 
-    it "should forward the cart instance to the store" do
-      @forward_cart.should_receive(:forward_to).with(@store_session, @order)
-      forward_to_valid_store_account
-    end
-
     it "should create an order with cart and store" do
       Order.should_receive(:create!).with({ :cart => @forward_cart, :store => @store })
 
       forward_to_valid_store_account
     end
 
-    it "should logout from the store even if something went bad" do
-      @forward_cart.stub(:forward_to).and_raise(SocketError.new("Connection lost"))
-      @store_session.should_receive(:logout)
-      lambda { forward_to_valid_store_account }.should raise_error(SocketError)
-    end
+    it "should pass the order" do
+      @order.should_receive(:pass).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password)
 
-    it "should eventually logout from the store" do
-      @store_session.should_receive(:logout)
       forward_to_valid_store_account
     end
 
@@ -211,42 +194,40 @@ describe CartLinesController do
       forward_to_valid_store_account
 
       assigns[:store].should == @store
-      assigns[:store_logout_url].should == @logout_url
-      assigns[:report_notices].should_not be_nil
+      assigns[:remote_store_order_url].should == @logout_url
+      assigns[:forward_notices].should_not be_nil
     end
 
-    it "should fill report notices with missing items" do
-      missing_items = ["Langue de Boeuf","nCervelle d'agneau"]
-      @missing_items_names = missing_items.join("\n")
+    it "should fill forward notices with missing items" do
+      @missing_items_notices = ["Langue de Boeuf","Cervelle d'agneau"]
 
       forward_to_valid_store_account
 
-      missing_items.each do |item_name|
-        assigns[:report_notices].find_all{ |notice| notice.include?("'#{item_name}'") }.should have_at_least(1).item
-      end
+      assigns[:forward_notices].should == @missing_items_notices
     end
 
     context "using an invalid store account" do
 
+      before :each do
+        @error_notice = "Login failed"
+        @order.stub(:pass) do |login, password|
+          @order.stub(:status).and_return(Order::FAILED)
+          @order.stub(:error_notice).and_return(@error_notice)
+        end
+        post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.invalid_login, :password => StoreCartAPI.invalid_password}
+      end
+
       it "should redirect to cart" do
-        forward_to_invalid_store_account
         response.should redirect_to(:controller => 'cart_lines')
       end
 
       it "should set a flash message" do
-        forward_to_invalid_store_account
-
         flash[:notice].should_not be_blank
       end
     end
 
     def forward_to_valid_store_account
       post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.valid_login, :password => StoreCartAPI.valid_password}
-    end
-
-    def forward_to_invalid_store_account
-      StoreCartSession.stub(:login).and_raise(InvalidStoreAccountError)
-      post 'forward_to_store', :store_id => @store.id, :cart_id => @forward_cart.id, :store => {:login => StoreCartAPI.invalid_login, :password => StoreCartAPI.invalid_password}
     end
 
   end

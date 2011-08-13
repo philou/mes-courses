@@ -105,10 +105,10 @@ describe Cart do
       @order.remote_store_order_url.should == @store_session.logout_url
     end
 
-    it "should set a blank missing items names in the order" do
-      forward_to_store
+    it "should not add missing cart lines" do
+      @order.should_not_receive(:add_missing_cart_lines)
 
-      @order.missing_items_names.should_not be_nil
+      forward_to_store
     end
 
     it "should store the missing items names in the order" do
@@ -116,20 +116,15 @@ describe Cart do
 
       missing_lines = @cart.lines[2..3]
       missing_lines.each { |line| line.stub(:forward_to).and_raise(UnavailableItemError) }
+      missing_lines.each { |line| @order.should_receive(:add_missing_cart_line).with(line)}
 
       forward_to_store
-
-      @order.missing_items_names.should == missing_lines.map { |line| line.name + "\n" } .join
     end
 
     it "should update the count of forwarded lines after each" do
       fill_the_cart
 
-      @order.should_receive(:forwarded_cart_lines_count=).with(1).ordered
-      @order.should_receive(:forwarded_cart_lines_count=).with(2).ordered
-      @order.should_receive(:forwarded_cart_lines_count=).with(3).ordered
-      @order.should_receive(:forwarded_cart_lines_count=).with(4).ordered
-      @order.should_receive(:forwarded_cart_lines_count=).with(5).ordered
+      @order.should_receive(:notify_forwarded_cart_line).exactly(@cart.lines.size).times
 
       forward_to_store
     end

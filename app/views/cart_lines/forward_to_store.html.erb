@@ -1,15 +1,15 @@
 <!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
 
 <p>Votre panier a été transféré à '<%=h @store.name %>'</p>
-<% unless @report_notices.empty? %>
+<% unless @forward_notices.empty? %>
   <div class="notice">
-       <% @report_notices.each do |notice| %>
+       <% @forward_notices.each do |notice| %>
          <p><%=h notice %></p>
        <% end %>
   </div>
 <% end %>
 
-<%= button_to h("Payer sur #{@store.name}"), @store_logout_url, :id => 'go-to-payment' %>
+<%= button_to h("Payer sur #{@store.name}"), @remote_store_order_url, :id => 'go-to-payment' %>
 
 <!-- should be removed with navigation bar -->
 <p><%= link_to 'Retour au panier', {:controller => 'cart_lines'}%></p>

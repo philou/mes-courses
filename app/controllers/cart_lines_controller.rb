@@ -42,22 +42,19 @@ class CartLinesController < ApplicationController
     cart = Cart.find_by_id(params[:cart_id].to_i)
     @store = Store.find_by_id(params[:store_id].to_i)
 
-    begin
-      @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
+    @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
 
-      order = Order.create!(:store => @store, :cart => cart)
+    order = Order.create!(:store => @store, :cart => cart)
+    order.pass(params[:store][:login], params[:store][:password])
 
-      @store.with_session(params[:store][:login], params[:store][:password]) do |session|
-        cart.forward_to(session, order)
-      end
-
-      @store_logout_url = order.remote_store_order_url
-      @report_notices = order.missing_items_names.lines.map do |item_name|
-        "Nous n'avons pas pu ajouter '#{item_name.strip}' à votre panier sur '#{@store.name}' parce que cela n'y est plus disponible"
-      end
-    rescue InvalidStoreAccountError
-      flash[:notice] = "Désolé, nous n'avons pas pu vous connecter à '#{@store.name}'. Vérifiez vos identifiant et mot de passe."
+    if order.status == Order::FAILED
+      flash[:notice] = order.error_notice
       redirect_to :action => :index
+
+    else
+      @remote_store_order_url = order.remote_store_order_url
+      @forward_notices = order.warning_notices
+
     end
   end
 
