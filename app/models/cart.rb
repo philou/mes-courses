@@ -54,7 +54,5 @@ class Cart < ActiveRecord::Base
       order.notify_forwarded_cart_line
       order.save!
     end
-
-    order.remote_store_order_url = session.logout_url
   end
 end

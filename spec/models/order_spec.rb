@@ -42,7 +42,8 @@ describe Order do
   context "when sending" do
 
     before :each do
-      @store_session = stub(StoreCartSession).as_null_object
+      @order.stub(:save!)
+      @store_session = stub(StoreCartSession, :logout_url => "http://www.store.com/logout").as_null_object
       StoreCartSession.stub(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
       class << @store_session
         include WithLogoutMixin
@@ -55,11 +56,8 @@ describe Order do
       pass_order
     end
 
-
-    it "should eventually logout from the store" do
-      @store_session.should_receive(:logout)
-
-      pass_order
+    it "should logout from the store" do
+      it_should_logout_from_the_store
     end
 
     it "should have the SENDING status when it is beeing passed" do
@@ -70,48 +68,63 @@ describe Order do
       pass_order
     end
 
+    it "should store the logout url of the store in the order" do
+      pass_order
+
+      @order.remote_store_order_url.should == @store_session.logout_url
+    end
+
     it "should have the SUCCEEDED status after it is passed" do
       pass_order
 
       @order.status.should == Order::SUCCEEDED
     end
 
-    context "when pass raises an unexpected exception" do
+    it "should eventually save the order" do
+      it_should_eventually_save_the_order
+    end
 
+    shared_examples_for "Any exception raised during pass" do
       before :each do
-        @cart.stub(:forward_to).and_raise(SocketError.new("Connection lost"))
+        @cart.stub(:forward_to).and_raise(exception)
       end
 
-      it "should logout from the store even if something went bad" do
-        @store_session.should_receive(:logout)
+      it "should logout from the store" do
+        it_should_logout_from_the_store
+      end
 
+      it "should have the FAILED status" do
         pass_order rescue nil
+
+        @order.status.should == Order::FAILED
+      end
+
+      it "should eventually save the order" do
+        it_should_eventually_save_the_order
+      end
+    end
+
+    context "when pass raises an unexpected exception" do
+      it_should_behave_like "Any exception raised during pass"
+
+      def exception
+        SocketError.new("Connection lost")
       end
 
       it "should let the exception climb up" do
         lambda { pass_order }.should raise_error(SocketError)
       end
-
-      it "should have the FAILED status" do
-        pass_order rescue nil
-
-        @order.status.should == Order::FAILED
-      end
     end
 
     context "when pass fails because of invalid store login and password" do
-      before :each do
-        @cart.stub(:forward_to).and_raise(InvalidStoreAccountError.new)
+      it_should_behave_like "Any exception raised during pass"
+
+      def exception
+        InvalidStoreAccountError.new
       end
 
       it "should not let any exception climb up" do
         lambda { pass_order }.should_not raise_error
-      end
-
-      it "should have the FAILED status" do
-        pass_order
-
-        @order.status.should == Order::FAILED
       end
 
       it "should have an error notice" do
@@ -119,9 +132,21 @@ describe Order do
 
         @order.error_notice.should == Order.invalid_store_login_notice(@store)
       end
-
     end
-    # test invalid account => FAILED status + error_notice
+
+    def it_should_logout_from_the_store
+      @cart.should_receive(:forward_to).ordered
+      @store_session.should_receive(:logout).ordered
+
+      pass_order rescue nil
+    end
+
+    def it_should_eventually_save_the_order
+      @order.should_receive(:status=).twice.ordered
+      @order.should_receive(:save!).ordered
+
+      pass_order rescue nil
+    end
 
     def pass_order
       @order.pass(StoreCartAPI.valid_login, StoreCartAPI.valid_password)

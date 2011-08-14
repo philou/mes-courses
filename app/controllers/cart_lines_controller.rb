@@ -8,10 +8,8 @@ require 'models/invalid_store_account_error'
 class CartLinesController < ApplicationController
 
   before_filter :assign_html_body_id
-  before_filter :find_cart, :except => :forward_to_store
+  before_filter :find_cart
   before_filter :find_stores
-
-  protect_from_forgery :except => :forward_to_store
 
   # Displays the full session's cart
   def index
@@ -35,27 +33,6 @@ class CartLinesController < ApplicationController
     @cart.empty
     @cart.save!
     redirect_to :action => :index
-  end
-
-  # Builds the session cart on an online store
-  def forward_to_store
-    cart = Cart.find_by_id(params[:cart_id].to_i)
-    @store = Store.find_by_id(params[:store_id].to_i)
-
-    @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
-
-    order = Order.create!(:store => @store, :cart => cart)
-    order.pass(params[:store][:login], params[:store][:password])
-
-    if order.status == Order::FAILED
-      flash[:notice] = order.error_notice
-      redirect_to :action => :index
-
-    else
-      @remote_store_order_url = order.remote_store_order_url
-      @forward_notices = order.warning_notices
-
-    end
   end
 
   private

@@ -99,12 +99,6 @@ describe Cart do
       forward_to_store
     end
 
-    it "should store the logout url of the store in the order" do
-      forward_to_store
-
-      @order.remote_store_order_url.should == @store_session.logout_url
-    end
-
     it "should not add missing cart lines" do
       @order.should_not_receive(:add_missing_cart_lines)
 

@@ -42,10 +42,10 @@ class Order < ActiveRecord::Base
 
   def pass(login, password)
     begin
-
       self.status = Order::PASSING
       @store.with_session(login, password) do |session|
         @cart.forward_to(session, self)
+        self.remote_store_order_url = session.logout_url
       end
       self.status = Order::SUCCEEDED
 
@@ -56,6 +56,9 @@ class Order < ActiveRecord::Base
     rescue
       self.status = Order::FAILED
       raise
+
+    ensure
+      self.save!
 
     end
   end
