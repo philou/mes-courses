@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
 
   before_filter :assign_html_body_id
 
-  protect_from_forgery :except => :forward_to_store
+  protect_from_forgery :except => :create
 
   def show
     @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
   end
 
   # Builds the session cart on an online store
-  def forward_to_store
+  def create
     cart = Cart.find_by_id(params[:cart_id].to_i)
     @store = Store.find_by_id(params[:store_id].to_i)
 

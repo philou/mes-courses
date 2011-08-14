@@ -89,7 +89,7 @@ describe OrdersController do
     end
 
     def forward_to_valid_store_account
-      post 'forward_to_store', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => StoreCartAPI.valid_login, :password => StoreCartAPI.valid_password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => StoreCartAPI.valid_login, :password => StoreCartAPI.valid_password}
     end
 
   end

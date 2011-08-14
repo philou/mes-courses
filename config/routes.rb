@@ -46,7 +46,6 @@ ActionController::Routing::Routes.draw do |map|
   map.add_dish_to_cart_lines '/cart_lines/add_dish/:id', :controller => "cart_lines", :action => "add_dish", :conditions => { :method => :post }
 
   map.resources :orders
-  map.forward_cart_lines_to_store '/orders/forward_to_store', :controller => "orders", :action => "forward_to_store", :conditions => { :method => :post }
 
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
