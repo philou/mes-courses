@@ -6,18 +6,23 @@ Things to do (at least partialy) at the first occasion when coding something arr
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
 
-Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
-Check import through web interface when testing with cucumber
-Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
-Write a script to setup dev env
-Have a ci env on heroku	RACK_ENV=test
 Use postgre as dev and test db (this should remove duplicate "altered_" indexes), write rake tasks to setup the env
 Append "_index" to the end of the name of db indexes
+Check import through web interface when testing with cucumber
+Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
+Have a ci env on heroku	RACK_ENV=test
+upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features
-Use rspec-spies where easier
-Once on rspec 2.x, try to use rspec-spies like should have_receive(:xxx).just_before(:yyy), try to add it
 I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 upgrade radiant, use comment extensions gem
-Review stubs usages : use factories everywhere to initialize stubs and models, use real models were possible (problems with id initialization, verify 2 way association api)
-Spike : How to control accessibility in models
+Write a script to setup dev env
+Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
+
+Spikes :
+2 way associations in active record
+How to control accessibility in models
+Rspec-spies + .ordered, try to add it (wait for rspec 2)
+
+Ongoing changes :
+Try to use more real objects and factories

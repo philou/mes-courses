@@ -4,6 +4,8 @@ gem "rails", "2.3.8"
 gem "mechanize", "1.0.0"
 gem "nokogiri", "1.4.4"
 gem "super_exception_notifier", "3.0.13"
+# gem "delayed_job", "2.0.5"
+# gem "hirefire", "0.1.4"
 
 gem "activerecord-nulldb-adapter", "0.2.0", :group => :test
 
