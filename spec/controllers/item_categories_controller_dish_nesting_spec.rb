@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 describe ItemCategoriesControllerDishNesting do
+  include PathBarHelper
   controller_name :item_categories
 
   before :each do
@@ -12,7 +13,7 @@ describe ItemCategoriesControllerDishNesting do
   end
 
   it "should create path bars starting from dishes" do
-    @nesting.root_path_bar.should == [PathBar.element("Recettes", dishes_path), PathBar.element(@dish.name, dish_path(@dish))]
+    @nesting.root_path_bar.should == [path_bar_element("Recettes", dishes_path), path_bar_element(@dish.name, dish_path(@dish))]
   end
 
   it "should use dish url for root url of item categories" do

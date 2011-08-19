@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe DishesController do
+  include PathBarHelper
 
   describe 'GET index' do
     before :each do
@@ -20,7 +21,7 @@ describe DishesController do
     end
 
     it "should assign a path bar with a link to the root dish page" do
-      assigns[:path_bar].should == [PathBar.element("Recettes", :action => 'index')]
+      assigns[:path_bar].should == [path_bar_dishes_root]
     end
 
   end
@@ -45,8 +46,8 @@ describe DishesController do
     end
 
     it "should assign a path bar with a link to the dish creation page" do
-      assigns[:path_bar].should == [PathBar.element("Recettes", :action => 'index'),
-                                    PathBar.element_for_current_resource("Nouvelle recette")]
+      assigns[:path_bar].should == [path_bar_dishes_root,
+                                    path_bar_element_for_current_resource("Nouvelle recette")]
     end
   end
 
@@ -89,8 +90,8 @@ describe DishesController do
     end
 
     it "should assign a path bar with a link to the curent dish page" do
-      assigns[:path_bar].should == [PathBar.element("Recettes", :action => 'index'),
-                                    PathBar.element_for_current_resource(@dish.name)]
+      assigns[:path_bar].should == [path_bar_dishes_root,
+                                    path_bar_element_for_current_resource(@dish.name)]
     end
 
   end

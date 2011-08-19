@@ -2,18 +2,15 @@
 
 class ItemCategoriesControllerDishNesting
   include ActionController::UrlWriter
+  include PathBarHelper
 
   def initialize(dish_id)
     @dish_id = dish_id
   end
 
-  def html_body_id
-    'dish'
-  end
-
   def root_path_bar
     dish = Dish.find_by_id(@dish_id)
-    [PathBar.element("Recettes", dishes_path), PathBar.element(dish.name, dish_path(dish))]
+    [path_bar_element("Recettes", dishes_path), path_bar_element(dish.name, dish_path(dish))]
   end
 
   def item_categories_path

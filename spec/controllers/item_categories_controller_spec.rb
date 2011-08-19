@@ -96,7 +96,7 @@ describe ItemCategoriesController do
     end
 
     it "should assign a path bar starting with its nesting root path bar" do
-      @nesting.stub(:root_path_bar).and_return([:path_bar_1, :path_bar_2])
+      @nesting.stub(:root_path_bar).and_return([path_bar_dishes_root, :path_bar_2])
 
       get_show
 
@@ -106,8 +106,8 @@ describe ItemCategoriesController do
     it "should assign a path bar with current category" do
       get_show
 
-      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path),
-                                                PathBar.element(@item_category.name, item_category_path(@item_category))])
+      assigns[:path_bar].should be_ending_with([path_bar_items_root,
+                                                path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
 
     it "should assign a full path bar with all parents" do
@@ -116,18 +116,9 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path),
-                                                PathBar.element(parent_category.name, item_category_path(parent_category)),
-                                                PathBar.element(@item_category.name, item_category_path(@item_category))])
-    end
-
-    it "should assign the html body id of its nesting" do
-      body_id = "the_body_inside_me"
-      @nesting.stub(:html_body_id).and_return(body_id)
-
-      get_show
-
-      assigns[:body_id].should == body_id
+      assigns[:path_bar].should be_ending_with([path_bar_items_root,
+                                                path_bar_element(parent_category.name, item_category_path(parent_category)),
+                                                path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
 
     it "should assign an add item to cart link attributes" do
@@ -157,7 +148,7 @@ describe ItemCategoriesController do
 
         get 'show', :id => ItemCategory.root.id
 
-        assigns[:path_bar].should be_ending_with([PathBar.element("Ingrédients", item_categories_path)])
+        assigns[:path_bar].should be_ending_with([path_bar_items_root])
       end
 
     end
@@ -185,14 +176,14 @@ describe ItemCategoriesController do
       it "should assign a path_bar containing the searched category" do
         get_show_search
 
-        assigns[:path_bar].should be_containing([PathBar.element("Ingrédients", item_categories_path),
-                                                 PathBar.element(@item_category.name, item_category_path(@item_category))])
+        assigns[:path_bar].should be_containing([path_bar_items_root,
+                                                 path_bar_element(@item_category.name, item_category_path(@item_category))])
       end
 
       it "should assign a path_bar ending with the search" do
         get_show_search
 
-        assigns[:path_bar].should be_ending_with([PathBar.element_with_no_link(@keyword)])
+        assigns[:path_bar].should be_ending_with([path_bar_element_with_no_link(@keyword)])
       end
 
       it "should assign no categories" do

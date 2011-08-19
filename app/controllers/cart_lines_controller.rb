@@ -6,14 +6,14 @@ require 'models/invalid_store_account_error'
 # it stores the cart in the db, and its id in the session, so that
 # the cart can be transferred from a domain to another
 class CartLinesController < ApplicationController
+  include PathBarHelper
 
-  before_filter :assign_html_body_id
   before_filter :find_cart
   before_filter :find_stores
 
   # Displays the full session's cart
   def index
-    @path_bar = [PathBar.element_for_current_resource("Panier")]
+    self.path_bar = [path_bar_cart_lines_root]
   end
 
   # adds the item with params[:id] to the cart
@@ -56,7 +56,4 @@ class CartLinesController < ApplicationController
     @stores = Store.find(:all)
   end
 
-  def assign_html_body_id
-    @body_id = 'cart'
-  end
 end

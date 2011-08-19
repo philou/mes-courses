@@ -1,16 +1,16 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 class DishesController < ApplicationController
+  include PathBarHelper
 
   before_filter :assign_root_path_bar
-  before_filter :assign_html_body_id
 
   def index
     @dishes = Dish.find(:all)
   end
 
   def new
-    @path_bar.push(PathBar.element_for_current_resource("Nouvelle recette"))
+    self.path_bar.push(path_bar_element_for_current_resource("Nouvelle recette"))
 
     @dish = Dish.new(:name => "Nouvelle recette")
   end
@@ -24,17 +24,13 @@ class DishesController < ApplicationController
   def show
     @dish = Dish.find_by_id(params[:id])
 
-    @path_bar.push(PathBar.element_for_current_resource(@dish.name))
+    self.path_bar.push(path_bar_element_for_current_resource(@dish.name))
   end
 
   private
 
-  def assign_html_body_id
-    @body_id = 'dish'
-  end
-
   def assign_root_path_bar
-    @path_bar = [PathBar.element('Recettes', :action => 'index')]
+    self.path_bar = [path_bar_dishes_root]
   end
 
 end

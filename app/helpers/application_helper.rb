@@ -3,6 +3,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   include HerokuHelper
+  include PathBarHelper
 
   # returns an https url (ignored localy, piggyback on heroku)
   def https_url_for(params = {})

@@ -3,10 +3,6 @@
 class ItemCategoriesControllerStandaloneNesting
   include ActionController::UrlWriter
 
-  def html_body_id
-    'items'
-  end
-
   def root_path_bar
     []
   end

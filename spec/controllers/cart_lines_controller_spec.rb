@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 describe CartLinesController do
+  include PathBarHelper
 
   before(:each) do
     @cart = stub_model(Cart)
@@ -56,7 +57,7 @@ describe CartLinesController do
   it "should assign a path_bar with index" do
     get :index
 
-    assigns[:path_bar].should == [PathBar.element_for_current_resource("Panier")]
+    assigns[:path_bar].should == [path_bar_cart_lines_root]
   end
 
   it "should assign a cart with index" do

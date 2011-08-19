@@ -47,6 +47,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :orders
 
+  if Rails.env == 'test'
+    map.test ':controller/:action/:id'
+    map.test ':controller/:action/:id.:format'
+  end
+
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
   #  map.default ':controller/:action/:id'

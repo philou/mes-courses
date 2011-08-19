@@ -2,7 +2,6 @@ IMPROVEMENTS
 ------------
 Things to do (at least partialy) at the first occasion when coding something arround the subject
 
-[WIP] deduce body_id from path_bar
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
 
@@ -26,3 +25,4 @@ Rspec-spies + .ordered, try to add it (wait for rspec 2)
 
 Ongoing changes :
 Try to use more real objects and factories
+Upgrade gems regularly

@@ -11,4 +11,27 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   filter_parameter_logging :password
 
+  attr_reader :path_bar, :body_id
+
+  def path_bar=(path_bar)
+    @path_bar = path_bar
+    @body_id = extract_body_id(path_bar)
+  end
+
+  private
+
+  def extract_body_id(path_bar)
+    path_bar_root = path_bar[0]
+    case path_bar_root
+    when path_bar_cart_lines_root
+      'cart'
+    when path_bar_dishes_root
+      'dish'
+    when path_bar_items_root
+      'items'
+    else
+      raise ArgumentError.new("Unhandled path bar root : #{path_bar_root.inspect}")
+    end
+  end
+
 end

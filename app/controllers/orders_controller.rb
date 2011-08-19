@@ -3,13 +3,12 @@
 require 'models/invalid_store_account_error'
 
 class OrdersController < ApplicationController
-
-  before_filter :assign_html_body_id
+  include PathBarHelper
 
   protect_from_forgery :except => :create
 
   def show
-    @path_bar = [PathBar.element("Panier", :controller => 'cart_lines'), PathBar.element_with_no_link("Transfert")]
+    self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
     @order = Order.find_by_id(params[:id].to_i)
 
     if @order.status == Order::FAILED
@@ -28,12 +27,5 @@ class OrdersController < ApplicationController
 
     redirect_to order_path(order)
   end
-
-  private
-
-  def assign_html_body_id
-    @body_id = 'cart'
-  end
-
 
 end
