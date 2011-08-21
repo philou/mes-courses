@@ -17,7 +17,7 @@ describe "/dishes/index.html.erb" do
   it "should display a link to add all the items of a dish to the cart" do
     render
     @dishes.each do |dish|
-      response.should have_xpath("//form[@action='#{add_dish_to_cart_lines_path(:id => dish.id)}']")
+      response.should have_button_to("Ajouter au panier", add_dish_to_cart_lines_path(:id => dish.id), 'post')
     end
   end
 

@@ -1,15 +1,18 @@
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-Given /^"([^ ]*) au ([^"]*)" is a known dish"?$/ do |item1, item2|
-  items = [item1,item2].map do |item|
-    Factory.create(:item, :name => item)
+Given /^there is a dish "([^"]*)""?$/ do |dish_name|
+  item_names = dish_name.split(/ aux? /)
+
+  if item_names.size == 1
+    Dish.create!(:name => dish_name)
+
+  else
+    items = item_names.map do |item_name|
+      Factory.create(:item, :name => item_name)
+    end
+
+    @known_dish = Dish.create!(:name => dish_name, :items => items)
   end
-
-  @known_dish = Dish.create!(:name => "#{item1} au #{item2}", :items => items)
-end
-
-Given /^there is a dish "([^"]*)""?$/ do |name|
-  Dish.create!(:name => name)
 end
 
 Given /^a dish "([^"]*)" with "([^"]*)"$/ do |name, item_name|

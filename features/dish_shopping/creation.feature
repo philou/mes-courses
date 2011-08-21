@@ -38,3 +38,10 @@ Feature: Dish creation
     Then  I should be on the "Poissons panés" dish page
     And   I should see "Colin"
 
+  Scenario: Removing an item from a dish
+    Given there is a dish "Agneau aux flageolets"
+    And   I am on the "Agneau aux flageolets" dish page
+    When  I press "Enlever de la recette"
+    Then  I am on the "Agneau aux flageolets" dish page
+    And   I should see "1 ingrédient"
+    And   I should not see an "Agneau" item

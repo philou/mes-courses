@@ -4,9 +4,11 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
+[WIP] Use postgre as dev and test db (this should remove duplicate "altered_" indexes), write rake tasks to setup the env
+[WIP] Append "_index" to the end of the name of db indexes
 
-Use postgre as dev and test db (this should remove duplicate "altered_" indexes), write rake tasks to setup the env
-Append "_index" to the end of the name of db indexes
+conjuger le XX ingrédient(s) dans les pages de ingrédients et des plats
+add foreign key constraints
 Check import through web interface when testing with cucumber
 Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
 Have a ci env on heroku	RACK_ENV=test
@@ -25,4 +27,5 @@ Rspec-spies + .ordered, try to add it (wait for rspec 2)
 
 Ongoing changes :
 Try to use more real objects and factories
-Upgrade gems regularly
+Upgrade gems before every feature
+Upgrade radiant gems & extensions before every blog post

@@ -44,10 +44,7 @@ describe "cart_lines/index.html.erb" do
   end
 
   it "should have a button to empty the cart" do
-    response.should have_selector("form", :action => destroy_all_cart_lines_path) do |form|
-      form.should have_selector("input", :type => "hidden", :name => "_method", :value => "delete")
-      form.should have_selector("input", :type => "submit", :value => "Vider le panier")
-    end
+    response.should have_button_to("Vider le panier", destroy_all_cart_lines_path, 'delete')
   end
 
   it "displays a store forwarding forms" do
@@ -68,7 +65,6 @@ describe "cart_lines/index.html.erb" do
   it "displays a forward button" do
     response.should have_xpath('//form[@class="store-login"]//input[@type="submit"]')
   end
-
 
 end
 

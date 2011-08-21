@@ -15,9 +15,7 @@ describe "orders/show.html.erb" do
     response.should have_selector("a", :href => cart_lines_path)
   end
   it "renders a link to the online store" do
-    response.should have_selector("form", :action => @order.remote_store_order_url) do |form|
-      form.should have_selector('input', :type => 'submit', :value => "Payer sur #{@order.store.name}")
-    end
+    response.should have_button_to("Payer sur #{@order.store.name}", @order.remote_store_order_url, 'post')
   end
   it "renders forward report notices" do
     response.should have_selector("div", :class => "notice") do |div|

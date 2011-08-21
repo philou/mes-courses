@@ -9,6 +9,7 @@
         <td><img src="<%= item.image %>" /></td>
         <td><%=h item.name %></td>
         <td><%=h item.summary %></td>
+        <td><%= button_to 'Enlever de la recette', dish_item_path(@dish, item), :method => 'delete', :confirm => "Cet ingrédient sera supprimé de la recette." %></td>
       </tr>
     <% end%>
     <tr>

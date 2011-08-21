@@ -68,7 +68,7 @@ describe "/item_categories/show.html.erb" do
       render
 
       @items.each do |item|
-        response.should have_xpath("//form[@method='#{@add_item_html_options[:method]}'][@action='#{url_for(@add_item_url_options.merge(:id => item.id))}']/div/input[@type='submit'][@value='#{@add_item_label}']")
+        response.should have_button_to(@add_item_label, url_for(@add_item_url_options.merge(:id => item.id)), @add_item_html_options[:method])
       end
     end
 

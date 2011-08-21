@@ -82,3 +82,9 @@ end
 Then /^item organization should have shrank$/ do
   ItemCategory.current_metrics[:count].should < ItemCategory.past_metrics[:count]
 end
+
+Then /^I should not see an "([^"]*)" item"?$/ do |item_name|
+  response.should have_selector("div", :id => "items-panel") do |div|
+    div.should_not contain(item_name)
+  end
+end

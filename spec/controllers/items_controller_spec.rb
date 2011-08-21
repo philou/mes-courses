@@ -2,38 +2,63 @@
 
 require 'spec_helper'
 
-
 describe ItemsController do
 
   before :each do
-    @dish = stub_model(Dish, :name => "Gateau au chocolat", :items => [])
+    @new_item = stub_model(Item, :name => "Chocolat noir à dessert")
+    Item.stub!(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)
+
+    @old_item = stub_model(Item, :name => "Oeufs frais")
+    Item.stub!(:find_by_id).with(@old_item.id.to_s).and_return(@old_item)
+
+    @dish = stub_model(Dish, :name => "Gateau au chocolat", :items => [@old_item])
     Dish.stub!(:find_by_id).with(@dish.id.to_s).and_return(@dish)
     @dish.stub!(:save!)
-
-    @item = stub_model(Item, :name => "Chocolat noir à dessert")
-    Item.stub!(:find_by_id).with(@item.id.to_s).and_return(@item)
   end
 
-  it "should redirect create to the specified dish page" do
-    put_create
+  [:put_create, :delete_destroy].each do |action|
+    describe action do
 
-    response.should redirect_to(dish_path(@dish.id))
+      it "should redirect to the specified dish page" do
+        self.send(action)
+
+        response.should redirect_to(dish_path(@dish.id))
+      end
+
+      it "should save the modified dish" do
+        @dish.should_receive(:save!)
+
+        self.send(action)
+      end
+    end
   end
 
-  it "should add an item to the dish" do
-    @dish.items.should_receive(:push).with(@item)
+  describe "put_create" do
 
-    put_create
+    it "should add an item to the dish" do
+      @dish.items.should_receive(:push).with(@new_item)
+
+      put_create
+    end
+
   end
 
-  it "should save the modified dish" do
-    @dish.should_receive(:save!)
+  describe "delete_destroy" do
 
-    put_create
+    it "should remove an item from the dish" do
+      @dish.items.should_receive(:delete).with(@old_item)
+
+      delete_destroy
+    end
+
   end
 
   def put_create
-    put 'create', :dish_id => @dish.id, :id => @item.id
+    put 'create', :dish_id => @dish.id, :id => @new_item.id
+  end
+
+  def delete_destroy
+    delete 'destroy', :dish_id => @dish.id, :id => @old_item.id
   end
 
 end

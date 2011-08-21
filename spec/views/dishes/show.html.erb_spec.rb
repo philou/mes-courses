@@ -27,4 +27,12 @@ describe "/dishes/show.html.erb" do
     response.should have_selector("a", :href => dish_item_categories_path(@dish))
   end
 
+  it "should display a remove button for every item of the dish" do
+    render
+
+    @dish.items.each do |item|
+      response.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
+    end
+  end
+
 end

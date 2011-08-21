@@ -5,7 +5,7 @@ Feature: Dish buying
   Wants to add all the ingredient of a dish to its caddy
 
   Scenario: Adding a dish to the cart
-    Given "Pates au Saumon" is a known dish
+    Given there is a dish "Pates au Saumon"
     And   I am on the full dish catalog page
     When  I press "Ajouter au panier"
     Then  there should be "Pates" in my cart
