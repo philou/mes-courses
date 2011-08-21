@@ -47,7 +47,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :orders
 
-  if Rails.env == 'test'
+  if ['test','cucumber','ci'].include?(Rails.env)
     map.test ':controller/:action/:id'
     map.test ':controller/:action/:id.:format'
   end
