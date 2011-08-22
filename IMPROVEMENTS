@@ -4,12 +4,11 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
-[WIP] Append "_index" to the end of the name of db indexes
 
 conjuger le XX ingrédient(s) dans les pages de ingrédients et des plats
 add foreign key constraints
-Check import through web interface when testing with cucumber
-Switch to synchronous continuous integration. Have a rake task that does it all and a local ci env
+Check import through web interface when testing with cucumber -> split this improvement in pieces
+Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
 Have a ci env on heroku	RACK_ENV=test
 upgrade gems
 migrer à rails 3

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110811044428) do
+ActiveRecord::Schema.define(:version => 20110822050844) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -33,15 +33,15 @@ ActiveRecord::Schema.define(:version => 20110811044428) do
     t.datetime "updated_at"
   end
 
-  add_index "dishes", ["name"], :name => "dishes_name", :unique => true
+  add_index "dishes", ["name"], :name => "dishes_name_index", :unique => true
 
   create_table "dishes_items", :id => false, :force => true do |t|
     t.integer "dish_id", :null => false
     t.integer "item_id", :null => false
   end
 
-  add_index "dishes_items", ["dish_id"], :name => "dishes_items_dish_id"
-  add_index "dishes_items", ["item_id"], :name => "dishes_items_item_id"
+  add_index "dishes_items", ["dish_id"], :name => "dishes_items_dish_id_index"
+  add_index "dishes_items", ["item_id"], :name => "dishes_items_item_id_index"
 
   create_table "item_categories", :force => true do |t|
     t.string   "name",       :null => false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(:version => 20110811044428) do
     t.datetime "updated_at"
   end
 
-  add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id", :unique => true
+  add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id_index", :unique => true
 
   create_table "items", :force => true do |t|
     t.string   "name",             :null => false
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(:version => 20110811044428) do
     t.datetime "updated_at"
   end
 
-  add_index "stores", ["url"], :name => "stores_url", :unique => true
+  add_index "stores", ["url"], :name => "stores_url_index", :unique => true
 
   create_table "to_delete_items", :primary_key => "item_id", :force => true do |t|
   end
@@ -101,6 +101,6 @@ ActiveRecord::Schema.define(:version => 20110811044428) do
     t.string "url", :null => false
   end
 
-  add_index "visited_urls", ["url"], :name => "visited_urls_url", :unique => true
+  add_index "visited_urls", ["url"], :name => "visited_urls_url_index", :unique => true
 
 end
