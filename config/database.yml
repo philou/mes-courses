@@ -1,6 +1,8 @@
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+  adapter: postgresql
+  database: mes_courses_development
+  username: philou
+  encoding: utf8
   pool: 5
   timeout: 5000
 
@@ -9,7 +11,21 @@ development:
 # Do not set this db to the same as development or production.
 test: &test
   adapter: sqlite3
-  database: db/test.sqlite3
+  database: "memory"
+
+cucumber:
+  adapter: postgresql
+  database: mes_courses_cucumber
+  username: philou
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+
+ci:
+  adapter: postgresql
+  database: mes_courses_ci
+  username: philou
+  encoding: utf8
   pool: 5
   timeout: 5000
 
@@ -21,13 +37,3 @@ production:
   pool: 5
   timeout: 5000
 
-cucumber:
-  <<: *test
-
-ci:
-  adapter: postgresql
-  database: mes_courses_ci
-  username: philou
-  encoding: utf8
-  pool: 5
-  timeout: 5000

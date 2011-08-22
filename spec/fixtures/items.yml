@@ -4,6 +4,7 @@ tomates:
    price: 2.5
    summary: Tomates rondes d\'Espagne
    image: /images/unknown-product.png
+   remote_id: 1
 
 boeuf_hache:
    name: Viande de boeuf hachée
@@ -11,6 +12,7 @@ boeuf_hache:
    price: 3.3
    summary: Boeuf origine France
    image: /images/unknown-product.png
+   remote_id: 2
 
 spaghettis:
    name: Spaghettis
@@ -18,6 +20,7 @@ spaghettis:
    price: 1.2
    summary: Spaghettis italiennnes Barrilla
    image: /images/unknown-product.png
+   remote_id: 3
 
 escalopes_de_poulet:
    name: Escalopes de poulet
@@ -25,6 +28,7 @@ escalopes_de_poulet:
    price: 4.5
    summary: Poulet fermier origine France
    image: /images/unknown-product.png
+   remote_id: 4
 
 riz:
    name: Riz
@@ -32,6 +36,7 @@ riz:
    price: 1
    summary: Riz basmati
    image: /images/unknown-product.png
+   remote_id: 5
 
 creme:
    name: Crème
@@ -39,6 +44,7 @@ creme:
    price: 0.6
    summary: Crème épaisse de Normandie
    image: /images/unknown-product.png
+   remote_id: 6
 
 echalottes:
    name: Echalottes
@@ -46,6 +52,7 @@ echalottes:
    price: 2
    summary: Botte d\échalottes de Bretagne
    image: /images/unknown-product.png
+   remote_id: 7
 
 haricots_verts:
    name: Haricots verts
@@ -53,6 +60,7 @@ haricots_verts:
    price: 1
    summary: Haricots verts extra fins congelés
    image: /images/unknown-product.png
+   remote_id: 8
 
 bavette:
    name: Bavette de boeuf
@@ -60,6 +68,7 @@ bavette:
    price: 5.5
    summary: Boeuf Charal origine france
    image: /images/unknown-product.png
+   remote_id: 9
 
 jambon:
    name: Jambon blanc
@@ -67,6 +76,7 @@ jambon:
    price: 2.9
    summary: Jambon blanc à la coupe origine France
    image: /images/unknown-product.png
+   remote_id: 10
 
 gnochis:
    name: Gnochis
@@ -74,6 +84,7 @@ gnochis:
    price: 2
    summary: Gnochis de pommes de terre
    image: /images/unknown-product.png
+   remote_id: 11
 
 champignons:
    name: Champignons de Paris
@@ -81,6 +92,7 @@ champignons:
    price: 1
    summary: Champignons frais - France
    image: /images/unknown-product.png
+   remote_id: 12
 
 poivron_vert:
    name: Poivron vert
@@ -88,6 +100,7 @@ poivron_vert:
    price: 3.2
    summary: Poivrons vert origine Espagne
    image: /images/unknown-product.png
+   remote_id: 13
 
 feta:
    name: Feta
@@ -95,6 +108,7 @@ feta:
    price: 2.5
    summary: Fromage de brebis Grec
    image: /images/unknown-product.png
+   remote_id: 14
 
 olives_noires:
    name: Olives noires
@@ -102,6 +116,7 @@ olives_noires:
    price: 1.2
    summary: Olives noires dénoyautés origine Italie
    image: /images/unknown-product.png
+   remote_id: 15
 
 concombre:
    name: Concombre
@@ -109,12 +124,5 @@ concombre:
    price: 1
    summary: Concombre frais origine France
    image: /images/unknown-product.png
-
-# il faudra quelque chose de spécial pour les assaisonnements
-#huile:
-#vinaigre:
-#sel:
-#poivre:
-#curry
-#origan:
+   remote_id: 16
 

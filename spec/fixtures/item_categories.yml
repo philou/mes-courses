@@ -1,14 +1,21 @@
+root:
+  name: <INTERNAL ROOT>
+
 fruit_legumes:
   name: Fruits & Légumes
+  parent: root
 
 viandes:
   name: Viandes
+  parent: root
 
 feculents:
   name: Féculents
+  parent: root
 
 produits_laitiers:
   name: Produits laitiers
+  parent: root
 
 
 tomates:

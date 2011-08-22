@@ -2,10 +2,12 @@
 
 namespace :stores do
 
+  desc "Inserts the www.auchandirect.fr store in the DB"
   task :create_auchan_direct => :environment do
     Store.find_or_create_by_url(AuchanDirectStoreCartAPI.url)
   end
 
+  desc "Inserts the www.dummy-store.com store in the DB"
   task :create_dummy_store => :environment do
     Store.find_or_create_by_url(DummyStoreCartAPI.url)
   end
