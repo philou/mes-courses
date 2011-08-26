@@ -10,25 +10,25 @@ Feature: Item search
     And   there is a "Produits congelés > Poisson > Coquilles St Jacques" item
     And   I am on the item categories page
     When  I search for "tomates"
-    Then  I should see "Tomates farcies"
-    And   I should see "Tomates grappes"
-    And   I should not see "Coquilles St Jacques"
+    Then  I should see a "Tomates farcies" item
+    And   I should see a "Tomates grappes" item
+    And   I should not see a "Coquilles St Jacques" item
 
   Scenario: Searching from an item sub category
     Given there is a "Marché > Légumes > Tomates cerises" item
     And   there is a "Marché > Fruits > Cerises" item
     And   I am on the "Fruits" item sub category page
     When  I search for "cerises"
-    Then  I should see "Cerises"
-    And   I should not see "Tomates cerises"
+    Then  I should see a "Cerises" item
+    And   I should not see a "Tomates cerises" item
 
   Scenario: Searching from an item category
     Given there is a "Marché > Légumes > Courgettes" item
     And   there is a "Viandes > Plats préparés > Courgettes farcies" item
     And   I am on the "Marché" item category page
     When  I search for "courgettes"
-    Then  I should see "Courgettes"
-    And   I should not see "Courgettes farcies"
+    Then  I should see a "Courgettes" item
+    And   I should not see a "Courgettes farcies" item
 
   Scenario: Searching for something that does not exist
     Given there is a "Boucherie > Boeuf > Bavette" item
@@ -36,3 +36,29 @@ Feature: Item search
     When  I search for "homard"
     Then  I should see "0 ingrédient(s)"
 
+  Scenario: Searching with a plural word
+    Given there is a "Marché > Fruits > Melon" item
+    And   I am on the item categories page
+    When  I search for "melons"
+    Then  I should see a "Melon" item
+
+  Scenario: Searching without accents
+    Given there is a "Marché > Légumes > Taboulé" item
+    And   I am on the item categories page
+    When  I search for "taboule"
+    Then  I should see a "Taboulé" item
+
+  Scenario: Searching with multiple keywords
+    Given there is a "Marché > Légumes > Petits pois" item
+    And   there is a "Marché > Légumes > Carottes" item
+    And   there is a "Surgelés > Légumes > Petits pois extra fins et carottes" item
+    And   I am on the item categories page
+    When  I search for "Petits pois carottes"
+    Then  I should see "1 ingrédient(s)"
+    And   I should see a "Petits pois extra fins et carottes" item
+
+  Scenario: Searching with different linking words
+    Given there is a "Surgelés > Légumes > Petits pois, carottes" item
+    And   I am on the item categories page
+    When  I search for "Petits pois et carottes"
+    Then  I should see a "Petits pois, carottes" item

@@ -2,9 +2,10 @@ tomates:
    name: Tomates
    item_category: tomates
    price: 2.5
-   summary: Tomates rondes d\'Espagne
+   summary: Tomates rondes d'Espagne
    image: /images/unknown-product.png
    remote_id: 1
+   tokens: tomate
 
 boeuf_hache:
    name: Viande de boeuf hachée
@@ -13,6 +14,7 @@ boeuf_hache:
    summary: Boeuf origine France
    image: /images/unknown-product.png
    remote_id: 2
+   tokens: viande boeuf hachee
 
 spaghettis:
    name: Spaghettis
@@ -21,6 +23,7 @@ spaghettis:
    summary: Spaghettis italiennnes Barrilla
    image: /images/unknown-product.png
    remote_id: 3
+   tokens: spaghetti
 
 escalopes_de_poulet:
    name: Escalopes de poulet
@@ -29,6 +32,7 @@ escalopes_de_poulet:
    summary: Poulet fermier origine France
    image: /images/unknown-product.png
    remote_id: 4
+   tokens: escalope poulet
 
 riz:
    name: Riz
@@ -37,6 +41,7 @@ riz:
    summary: Riz basmati
    image: /images/unknown-product.png
    remote_id: 5
+   tokens: riz
 
 creme:
    name: Crème
@@ -45,14 +50,16 @@ creme:
    summary: Crème épaisse de Normandie
    image: /images/unknown-product.png
    remote_id: 6
+   tokens: creme
 
 echalottes:
    name: Echalottes
    item_category: legumes_frais
    price: 2
-   summary: Botte d\échalottes de Bretagne
+   summary: Botte d'échalottes de Bretagne
    image: /images/unknown-product.png
    remote_id: 7
+   tokens: echalotte
 
 haricots_verts:
    name: Haricots verts
@@ -61,6 +68,7 @@ haricots_verts:
    summary: Haricots verts extra fins congelés
    image: /images/unknown-product.png
    remote_id: 8
+   tokens: haricot vert
 
 bavette:
    name: Bavette de boeuf
@@ -69,6 +77,7 @@ bavette:
    summary: Boeuf Charal origine france
    image: /images/unknown-product.png
    remote_id: 9
+   tokens: bavette boeuf
 
 jambon:
    name: Jambon blanc
@@ -77,6 +86,7 @@ jambon:
    summary: Jambon blanc à la coupe origine France
    image: /images/unknown-product.png
    remote_id: 10
+   tokens: jambon blanc
 
 gnochis:
    name: Gnochis
@@ -85,6 +95,7 @@ gnochis:
    summary: Gnochis de pommes de terre
    image: /images/unknown-product.png
    remote_id: 11
+   tokens: gnochi
 
 champignons:
    name: Champignons de Paris
@@ -93,6 +104,7 @@ champignons:
    summary: Champignons frais - France
    image: /images/unknown-product.png
    remote_id: 12
+   tokens: champignon pari
 
 poivron_vert:
    name: Poivron vert
@@ -101,6 +113,7 @@ poivron_vert:
    summary: Poivrons vert origine Espagne
    image: /images/unknown-product.png
    remote_id: 13
+   tokens: poivron vert
 
 feta:
    name: Feta
@@ -109,6 +122,7 @@ feta:
    summary: Fromage de brebis Grec
    image: /images/unknown-product.png
    remote_id: 14
+   tokens: fetum
 
 olives_noires:
    name: Olives noires
@@ -117,6 +131,7 @@ olives_noires:
    summary: Olives noires dénoyautés origine Italie
    image: /images/unknown-product.png
    remote_id: 15
+   tokens: olife noire
 
 concombre:
    name: Concombre
@@ -125,4 +140,4 @@ concombre:
    summary: Concombre frais origine France
    image: /images/unknown-product.png
    remote_id: 16
-
+   tokens: concombre

@@ -4,12 +4,22 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
+[WIP] conjuger le XX ingrédient(s) dans les pages de ingrédients et des plats
+[WIP] add foreign key constraints
 
-conjuger le XX ingrédient(s) dans les pages de ingrédients et des plats
-add foreign key constraints
-Check import through web interface when testing with cucumber -> split this improvement in pieces
+Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
 Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
-Have a ci env on heroku	RACK_ENV=test
+ - have another integration directory
+ - write an integrate script that :
+   - goes in this integration directory
+   - pulls master from dev repo
+   - launches rake ci, as is doing cc.net
+   - pushes to origin master if build succeeded
+   - pushes to heroku (dev and watchdog) if build succeeded ?
+   - always go back to origin directory
+   - stop cc.net
+Have a ci env on heroku	RACK_ENV=test (use watchodg?)
+   - run it during the integrate script ?
 upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features
@@ -19,6 +29,7 @@ Write a script to setup dev env
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
 
 Spikes :
+Should we use rake scripts instead of sh scripts ?
 2 way associations in active record
 How to control accessibility in models
 Rspec-spies + .ordered, try to add it (wait for rspec 2)

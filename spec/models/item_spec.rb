@@ -32,6 +32,42 @@ end
 
 describe Item do
 
+  context "indexing" do
+
+    before :each do
+      @item = Item.new(:name => "Petits pois", :summary => "extra fins, produits en france")
+    end
+
+    it "should run tokenizer when indexing" do
+      tokens = %w(token1 token2)
+      Tokenizer.should_receive(:run).with("#{@item.name} #{@item.summary}").and_return(tokens)
+
+      @item.index
+
+      @item.tokens.should == tokens.join(" ")
+    end
+
+    it "should index when the name is set" do
+      @item.name = "Haricots verts"
+
+      should_be_indexed(@item)
+    end
+
+    it "should index when the summary is set" do
+      @item.summary = "fins"
+
+      should_be_indexed(@item)
+    end
+
+    it "should index at creation" do
+      should_be_indexed(@item)
+    end
+
+    def should_be_indexed(item)
+      item.tokens.should == Tokenizer.run("#{item.name} #{item.summary}").join(" ")
+    end
+  end
+
   context "when searching items by keyword" do
 
     before :each do
@@ -69,7 +105,7 @@ describe Item do
         with(:all, where_conditions_containing("item_category_id = :category_id", :category_id => @legumes.id)).
         and_return(expected)
 
-      Item.search_by_keyword_and_category(keyword, @legumes).should == expected
+      Item.search_by_string_and_category(keyword, @legumes).should == expected
     end
 
     it "should search in sub categories when it has no parent" do
@@ -80,7 +116,7 @@ describe Item do
         with(:all, where_conditions_containing("item_category_id in (:category_ids)", :category_ids => [@legumes.id,@fruits.id])).
         and_return(expected)
 
-      Item.search_by_keyword_and_category(keyword, @marche).should == expected
+      Item.search_by_string_and_category(keyword, @marche).should == expected
     end
 
     it "should search all items when root category is specified" do
@@ -91,20 +127,35 @@ describe Item do
         with(:all, where_conditions).
         and_return(expected)
 
-      Item.search_by_keyword_and_category(keyword, @root_item_category).should == expected
+      Item.search_by_string_and_category(keyword, @root_item_category).should == expected
     end
 
-    it "should search in both item names and summaries too" do
-      keyword = "poulet"
+    it "should search in tokens column" do
+      search_string = "poulet"
 
       Item.should_receive(:find).
-        with(:all, where_conditions_containing("(lower(name) like :keyword or lower(summary) like :keyword)", :keyword => "%#{keyword.downcase}%")).
+        with(:all, where_conditions_containing("tokens like :token0", :token0 => "%#{search_string}%")).
         exactly(3).times.
         and_return([@salade_cesar])
 
-      Item.search_by_keyword_and_category(keyword, @root_item_category)
-      Item.search_by_keyword_and_category(keyword, @traiteur)
-      Item.search_by_keyword_and_category(keyword, @italien)
+      Item.search_by_string_and_category(search_string, @root_item_category)
+      Item.search_by_string_and_category(search_string, @traiteur)
+      Item.search_by_string_and_category(search_string, @italien)
+    end
+
+    it "should search every tokens in the search string" do
+      search_string = "any search string"
+      tokens = %w(poulet salade)
+      Tokenizer.stub(:run).and_return(tokens)
+
+      Item.should_receive(:find).
+        with(:all, where_conditions_containing("tokens like :token0 and tokens like :token1", :token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
+        exactly(3).times.
+        and_return([@salade_cesar])
+
+      Item.search_by_string_and_category(search_string, @root_item_category)
+      Item.search_by_string_and_category(search_string, @traiteur)
+      Item.search_by_string_and_category(search_string, @italien)
     end
   end
 end

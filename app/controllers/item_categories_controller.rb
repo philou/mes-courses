@@ -20,7 +20,7 @@ class ItemCategoriesController < ApplicationController
       keyword = params["search"]["keyword"]
       self.path_bar = search_path_bar(keyword, item_category)
       @categories = []
-      @items = Item.search_by_keyword_and_category(keyword, item_category)
+      @items = Item.search_by_string_and_category(keyword, item_category)
 
     else
       self.path_bar = path_bar(item_category)

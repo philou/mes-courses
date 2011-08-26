@@ -5,14 +5,40 @@ class Item < ActiveRecord::Base
   has_and_belongs_to_many :dishes
   belongs_to :item_category
 
-  validates_presence_of :name, :item_category, :price, :remote_id
+  validates_presence_of :name, :item_category, :price, :remote_id, :tokens
   validates_uniqueness_of :remote_id
 
-  def self.search_by_keyword_and_category(keyword, category)
+  attr_protected :tokens
+
+  def initialize(attributes = {})
+    super(attributes)
+    index
+  end
+
+  def name=(name)
+    write_attribute("name", name)
+    index
+  end
+  def summary=(summary)
+    write_attribute("summary", summary)
+    index
+  end
+
+  def index
+    self.tokens = Tokenizer.run("#{name} #{summary}").join(" ")
+  end
+
+  def self.search_by_string_and_category(search_string, category)
     throw NotImplementedError.new("Item search not yet implemented") unless hierarchy_handles_item_search?(category)
 
-    condition_sql = "(lower(name) like :keyword or lower(summary) like :keyword)"
-    condition_params = {:keyword => "%#{keyword.downcase}%"}
+    sql_clauses = []
+    condition_params = {}
+    Tokenizer.run(search_string).each_with_index do |token, i_token|
+      param = "token#{i_token}"
+      sql_clauses.push("tokens like :#{param}")
+      condition_params[param.intern] = "%#{token}%"
+    end
+    condition_sql = sql_clauses.join(" and ")
 
     if !category.root?
       if category.children.empty?

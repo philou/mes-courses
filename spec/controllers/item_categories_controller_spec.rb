@@ -166,7 +166,7 @@ describe ItemCategoriesController do
       before :each do
         @keyword = "poulet"
         @item_category.name = "Marché"
-        Item.stub(:search_by_keyword_and_category).and_return([])
+        Item.stub(:search_by_string_and_category).and_return([])
       end
 
       def get_show_search
@@ -196,7 +196,7 @@ describe ItemCategoriesController do
 
       it "should assign searched items" do
         searched_items = [Factory.create(:item)]
-        Item.should_receive(:search_by_keyword_and_category).with(@keyword, @item_category).and_return(searched_items)
+        Item.should_receive(:search_by_string_and_category).with(@keyword, @item_category).and_return(searched_items)
 
         get_show_search
 

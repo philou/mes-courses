@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110822050844) do
+ActiveRecord::Schema.define(:version => 20110824050600) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20110822050844) do
     t.string   "image"
     t.string   "summary"
     t.integer  "remote_id",        :null => false
+    t.string   "tokens",           :null => false
   end
 
   add_index "items", ["remote_id"], :name => "items_remote_id_index", :unique => true
