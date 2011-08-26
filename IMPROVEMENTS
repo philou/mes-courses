@@ -4,7 +4,6 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 [WIP] Use special auchandirect.fr account while testing
 [WIP] Insert spec logs in watchdog emails
-[WIP] conjuger le XX ingrédient(s) dans les pages de ingrédients et des plats
 [WIP] add foreign key constraints
 
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit

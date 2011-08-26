@@ -34,7 +34,7 @@ Feature: Item search
     Given there is a "Boucherie > Boeuf > Bavette" item
     And   I am on the item categories page
     When  I search for "homard"
-    Then  I should see "0 ingrédient(s)"
+    Then  I should see "0 ingrédients"
 
   Scenario: Searching with a plural word
     Given there is a "Marché > Fruits > Melon" item
@@ -54,7 +54,7 @@ Feature: Item search
     And   there is a "Surgelés > Légumes > Petits pois extra fins et carottes" item
     And   I am on the item categories page
     When  I search for "Petits pois carottes"
-    Then  I should see "1 ingrédient(s)"
+    Then  I should see "1 ingrédient"
     And   I should see a "Petits pois extra fins et carottes" item
 
   Scenario: Searching with different linking words

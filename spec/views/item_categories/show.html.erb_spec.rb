@@ -83,7 +83,7 @@ describe "/item_categories/show.html.erb" do
     it "displays the number of items" do
       render
 
-      response.should contain("#{@items.count} ingrédient(s)")
+      response.should contain("#{@items.count} ingrédients")
     end
 
   end
