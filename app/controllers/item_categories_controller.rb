@@ -17,10 +17,10 @@ class ItemCategoriesController < ApplicationController
     @search_url = @nesting.item_category_path(item_category)
 
     if (params.has_key?("search"))
-      keyword = params["search"]["keyword"]
-      self.path_bar = search_path_bar(keyword, item_category)
+      search_string = params["search"]["search_string"]
+      self.path_bar = search_path_bar(search_string, item_category)
       @categories = []
-      @items = Item.search_by_string_and_category(keyword, item_category)
+      @items = Item.search_by_string_and_category(search_string, item_category)
 
     else
       self.path_bar = path_bar(item_category)
@@ -41,9 +41,9 @@ class ItemCategoriesController < ApplicationController
     @show_sub_category_url_options = @nesting.show_sub_category_url_options
   end
 
-  def search_path_bar(keyword, item_category = nil)
+  def search_path_bar(search_string, item_category = nil)
     result = path_bar(item_category)
-    result.push(path_bar_element_with_no_link(keyword))
+    result.push(path_bar_element_with_no_link(search_string))
     result
   end
 

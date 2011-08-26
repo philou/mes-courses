@@ -164,13 +164,13 @@ describe ItemCategoriesController do
     describe "searching" do
 
       before :each do
-        @keyword = "poulet"
+        @search_string = "poulet"
         @item_category.name = "Marché"
         Item.stub(:search_by_string_and_category).and_return([])
       end
 
       def get_show_search
-        get 'show', :id => @item_category.id, :search => { :keyword => @keyword }
+        get 'show', :id => @item_category.id, :search => { :search_string => @search_string }
       end
 
       it "should assign a path_bar containing the searched category" do
@@ -183,7 +183,7 @@ describe ItemCategoriesController do
       it "should assign a path_bar ending with the search" do
         get_show_search
 
-        assigns[:path_bar].should be_ending_with([path_bar_element_with_no_link(@keyword)])
+        assigns[:path_bar].should be_ending_with([path_bar_element_with_no_link(@search_string)])
       end
 
       it "should assign no categories" do
@@ -196,7 +196,7 @@ describe ItemCategoriesController do
 
       it "should assign searched items" do
         searched_items = [Factory.create(:item)]
-        Item.should_receive(:search_by_string_and_category).with(@keyword, @item_category).and_return(searched_items)
+        Item.should_receive(:search_by_string_and_category).with(@search_string, @item_category).and_return(searched_items)
 
         get_show_search
 

@@ -19,7 +19,7 @@ describe "/item_categories/show.html.erb" do
   it "has a search form" do
     render
 
-    response.should have_xpath('//form[@id="search"]//input[@name="search[keyword]"][@type="text"]')
+    response.should have_xpath('//form[@id="search"]//input[@name="search[search_string]"][@type="text"]')
     response.should have_xpath('//form[@id="search"]//input[@type="submit"]')
     response.should have_xpath("//form[@id='search'][@method='get'][@action='#{@search_url}']")
   end

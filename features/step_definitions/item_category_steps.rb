@@ -9,7 +9,7 @@ Given /^there is an? "([^">]*) > ([^"]*)" item sub category$/ do |type, category
   ItemCategory.create!(:name => category, :parent => item_category)
 end
 
-When /^I search for "([^"]*)"?"$/ do |keyword|
-  fill_in("search[keyword]", :with => keyword)
+When /^I search for "([^"]*)"?"$/ do |search_string|
+  fill_in("search[search_string]", :with => search_string)
   click_button("Rechercher")
 end
