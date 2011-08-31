@@ -52,10 +52,10 @@ Feature: Cart Forwarding
     And   I wait for the transfer to end
     Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.fr' parce que cela n'y est plus disponible"
 
-  # Scenario: The customer sees a work in progress page during the cart transfer
-  #   Given the "www.dummy-store.fr" store
-  #   And   I am on the cart page
-  #   And   I entered valid store account identifiers
-  #   When  I press "Transférer le panier"
-  #   Then  I should see "Votre panier est en cours de transfert vers 'www.dummy-store.fr' : 0% effectués."
-  #   And   the page should auto refresh
+  Scenario: The customer sees a work in progress page during the cart transfer
+    Given the "www.dummy-store.fr" store
+    And   I am on the cart page
+    And   I entered valid store account identifiers
+    When  I press "Transférer le panier"
+    Then  I should see "Votre panier est en cours de transfert vers 'www.dummy-store.fr'"
+    And   the page should auto refresh

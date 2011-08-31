@@ -11,9 +11,18 @@ class OrdersController < ApplicationController
     self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
     @order = Order.find_by_id(params[:id].to_i)
 
-    if @order.status == Order::FAILED
+    case @order.status
+    when Order::FAILED
       flash[:notice] = @order.error_notice
       redirect_to :controller => 'cart_lines'
+
+    when Order::SUCCEEDED
+      render :template => 'orders/show_success'
+
+    else
+      @auto_refresh = true
+      @forward_completion_percents = forward_completion_percents
+      render :template => 'orders/show_passing'
     end
   end
 
@@ -23,9 +32,19 @@ class OrdersController < ApplicationController
     @store = Store.find_by_id(params[:store_id].to_i)
 
     order = Order.create!(:store => @store, :cart => cart)
-    order.pass(params[:store][:login], params[:store][:password])
+    order.delay.pass(params[:store][:login], params[:store][:password])
 
     redirect_to order_path(order)
+  end
+
+  private
+
+  def forward_completion_percents
+    if @order.cart.lines.empty?
+      100
+    else
+      100 * @order.forwarded_cart_lines_count / @order.cart.lines.count
+    end
   end
 
 end

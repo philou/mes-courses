@@ -31,6 +31,8 @@ Given /^I entered invalid store account identifiers$/ do
 end
 
 When /^I wait for the transfer to end$/ do
+  Delayed::Worker.new(:quiet => true).work_off(1)
+  reload
 end
 
 Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|

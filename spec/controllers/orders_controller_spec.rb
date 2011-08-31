@@ -19,6 +19,14 @@ describe OrdersController do
       Order.stub(:find_by_id).with(@order.id).and_return(@order)
     end
 
+    it "should render template show_success when the order is passed" do
+      @order.stub(:status).and_return(Order::SUCCEEDED)
+
+      get 'show', :id => @order.id
+
+      response.should render_template('orders/show_success')
+    end
+
     it "should assign a @path_bar with two items" do
       get 'show', :id => @order.id
 
@@ -52,6 +60,42 @@ describe OrdersController do
         flash[:notice].should == @error_notice
       end
     end
+
+    it "should render show_passing template when the order is not yet being passed" do
+      @order.stub(:status).and_return(Order::NOT_PASSED)
+
+      get 'show', :id => @order.id
+
+      response.should render_template('orders/show_passing')
+    end
+
+    context "when the order is being passed" do
+
+      before :each do
+        @order.stub(:status).and_return(Order::PASSING)
+      end
+
+      it "should render show_passing template" do
+        get 'show', :id => @order.id
+
+        response.should render_template('orders/show_passing')
+      end
+
+      it "should assign a forward_completion_ratio" do
+        @order.stub(:forwarded_cart_lines_count).and_return(4)
+        @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
+
+        get 'show', :id => @order.id
+
+        assigns[:forward_completion_percents].should == 100 * 4 / 7
+      end
+
+      it "should ask to page to auto refresh" do
+        get 'show', :id => @order.id
+
+        assigns[:auto_refresh].should be_true
+      end
+    end
   end
 
   context "forwarding to a store" do
@@ -77,8 +121,10 @@ describe OrdersController do
       forward_to_valid_store_account
     end
 
-    it "should pass the order" do
-      @order.should_receive(:pass).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password)
+    it "should asynchronously pass the order" do
+      delayed_job = stub("Delayed_job")
+      @order.should_receive(:delay).and_return(delayed_job)
+      delayed_job.should_receive(:pass).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password)
 
       forward_to_valid_store_account
     end

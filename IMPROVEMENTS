@@ -6,7 +6,11 @@ Things to do (at least partialy) at the first occasion when coding something arr
 [WIP] Insert spec logs in watchdog emails
 [WIP] add foreign key constraints
 
+Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
+add a foreign key from cart_lines -> items
+ - move items to a new category instead of deleting them
+ - fix global item search
 Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
  - have another integration directory
  - write an integrate script that :
@@ -23,7 +27,7 @@ upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features
 I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
-upgrade radiant, use comment extensions gem
+upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
 Write a script to setup dev env
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
 
@@ -32,6 +36,7 @@ Should we use rake scripts instead of sh scripts ?
 2 way associations in active record
 How to control accessibility in models
 Rspec-spies + .ordered, try to add it (wait for rspec 2)
+Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
 
 Ongoing changes :
 Try to use more real objects and factories

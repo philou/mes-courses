@@ -4,6 +4,9 @@
   <head>
     <title>www.mes-courses.fr/store - Boutique</title>
     <meta name="description" content="Boutique d'alimentation en ligne intelligente" />
+    <% if !!@auto_refresh %>
+      <meta http-equiv="refresh" content="3" />
+    <% end %>
     <%= render(:partial => "shared/html_head_content") %>
   </head>
 

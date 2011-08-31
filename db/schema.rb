@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110824050600) do
+ActiveRecord::Schema.define(:version => 20110829045226) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -23,6 +23,19 @@ ActiveRecord::Schema.define(:version => 20110824050600) do
   add_index "cart_lines", ["cart_id"], :name => "cart_lines_cart_id_index"
 
   create_table "carts", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.text     "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

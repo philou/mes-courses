@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "orders/show.html.erb" do
+describe "orders/show_success.html.erb" do
 
   before(:each) do
     assigns[:order] = @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr"),

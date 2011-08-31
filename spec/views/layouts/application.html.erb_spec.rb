@@ -5,8 +5,11 @@ require 'spec_helper'
 describe "layouts/application.html.erb" do
   include PathBarHelper
 
-  it "should render flash[:notice]" do
+  before :each do
     assigns[:path_bar] = []
+  end
+
+  it "should render flash[:notice]" do
     flash[:notice] = notice = "Something went bad ..."
     render
     response.should contain notice
@@ -38,6 +41,20 @@ describe "layouts/application.html.erb" do
                                      path_bar_element_with_no_link("Poisson")]
     render
     response.should contain "Ingrédients > Marché > Poisson"
+  end
+
+  it "should not auto refresh by default" do
+    render
+
+    response.should_not have_xpath("//meta[@http-equiv='refresh']")
+  end
+
+  it "should auto refresh if @auto_refresh is assigned" do
+    assigns[:auto_refresh] = true
+
+    render
+
+    response.should have_xpath("//meta[@http-equiv='refresh']")
   end
 
 end

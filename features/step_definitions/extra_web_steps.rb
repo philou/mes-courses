@@ -13,6 +13,10 @@ Then /^I should see a button "([^\"]*)" to "([^\"]*)"$/ do |text, url|
   response.should have_xpath("//form[@action='#{url}']//input[@type='submit'][@value='#{text}']")
 end
 
-Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)"$/ do |field, form, value|
+Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)""?$/ do |field, form, value|
   response.should have_xpath("//form[@id='#{form}']/input[@name='#{form}[#{field}]'][@value='#{value}']")
+end
+
+Then /^the page should auto refresh$/ do
+  response.should have_xpath("//meta[@http-equiv='refresh']")
 end
