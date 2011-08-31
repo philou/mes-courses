@@ -1,4 +1,6 @@
-class AddTokensToItem < ActiveRecord::Migration
+# Copyright (C) 2011 by Philippe Bourgau
+
+class AddTokensToItems < ActiveRecord::Migration
   def self.up
     add_column :items, :tokens, :string
 
