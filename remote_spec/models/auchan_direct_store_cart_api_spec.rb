@@ -12,10 +12,11 @@ when_online("AuchanDirectStoreCartAPI remote spec") do
   class AuchanDirectStoreCartAPI
 
     def self.valid_login
-      "philippe.bourgau@free.fr"
+      "mes.courses.fr.test@gmail.com"
     end
     def self.valid_password
-      "NoahRules78"
+      # gmail password : "mes*courses"
+      "mescourses"
     end
 
   end

@@ -13,7 +13,7 @@ attempt = 1
   # 1° on se log
   login_form = Mechanize::Form.new(login_page.search('#formIdentification').first, login_page.mech, login_page)
   login_form.Username = "philippe.bourgau@free.fr_invalid"
-  login_form.Password = "NoahRules78"
+  login_form.Password = "invalid"
   res = login_form.submit()
 
   # 2° on vide le panier courant
