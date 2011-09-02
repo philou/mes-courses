@@ -32,27 +32,20 @@ class << cron_task
     sub_cron_task || ""
   end
 
-  def exception_data
-    lambda do
-      { :log => safe_heroku_logs}
-    end
-  end
-  def safe_heroku_logs
-    begin
-      if on_heroku?
-        heroku_logs
-      else
-        "Not on heroku, no logs available."
-      end
-    rescue Exception => e
-      "Failed to collect logs : #{e}\n#{e.backtrace}"
-    end
+  def extra_exception_data
+    { :log => safe_heroku_logs}
   end
 
 end
 
+class NotifiedTask
+  def self.exception_data
+    :extra_exception_data
+  end
+end
+
 desc "Testing task that always fails"
 task :failing do
-  raise Exception.new("This task always fails")
+  raise StandardError.new("This task always fails")
 end
 

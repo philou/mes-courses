@@ -28,5 +28,15 @@ module HerokuHelper
     logs.join("\n")
   end
 
+  def safe_heroku_logs
+    if on_heroku?
+      heroku_logs
+    else
+      "Not on heroku, no logs available."
+    end
+  rescue => e
+    "Failed to collect logs : #{e}\n#{e.backtrace}"
+  end
+
 
 end
