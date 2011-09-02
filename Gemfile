@@ -6,6 +6,7 @@ gem "nokogiri", "1.4.4"
 gem "super_exception_notifier", "3.0.13"
 gem "delayed_job", "~> 2.0.4"
 gem "hirefire", "~> 0.1.4", :groups => [:development, :production]
+gem "heroku", "~> 2.5.2"
 
 gem "activerecord-nulldb-adapter", "0.2.0", :group => :test
 gem "sqlite3-ruby", :require => "sqlite3", :group => :test

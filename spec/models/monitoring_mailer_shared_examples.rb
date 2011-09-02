@@ -5,7 +5,7 @@ require 'spec_helper'
 shared_examples_for "Any MonitoringMailer" do
 
   before(:each) do
-    ENV['APP_NAME'] = "mes-courses-tests"
+    HerokuHelper.stub(:app_name).and_return("mes-courses-tests")
   end
 
   def send_monitoring_email(*parameters)
@@ -31,6 +31,6 @@ shared_examples_for "Any MonitoringMailer" do
   it "should have a subject including the app name" do
     send_monitoring_email
 
-    @subject.should include(ENV['APP_NAME'])
+    @subject.should include(HerokuHelper.app_name)
   end
 end
