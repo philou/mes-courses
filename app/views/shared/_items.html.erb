@@ -1,0 +1,8 @@
+<div id="items-panel">
+  <p><%= pluralize items.count, "ingrédient" %></p>
+
+  <table>
+    <%= render(:partial => "shared/item", :collection => items, :locals => { :extra_columns_proc => extra_columns_proc }) %>
+    <%= yield %>
+  </table>
+</div>

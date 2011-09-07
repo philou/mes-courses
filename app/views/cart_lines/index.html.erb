@@ -6,7 +6,9 @@
     <% @cart.lines.each do |line| %>
       <tr>
         <!-- use number_to_currency with valid settings to write the € string correctly -->
-        <td><%= line.quantity %> x </td><td><%=h line.name %></td><td><%= line.price %>€</td>
+        <td><%= line.quantity %> x </td>
+        <td><%=h line.name %></td>
+        <td><%= line.price %>€</td>
       </tr>
     <% end %>
     <tr>

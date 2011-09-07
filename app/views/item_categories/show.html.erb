@@ -15,18 +15,9 @@
   </div>
 <% end %>
 
-<div id="items-panel">
-  <p><%= pluralize @items.count, "ingrédient" %></p>
+<% extra_columns_proc = lambda do |item| %>
+  <td><%= item.price.to_s %>€</td>
+  <td class="buy-button"><%= button_to h(@add_item_label), @add_item_url_options.merge(:id => item.id), @add_item_html_options %></td>
+<% end %>
 
-  <table>
-    <% @items.each do |item| %>
-      <tr>
-        <td><img src="<%= item.image %>" /></td>
-        <td><%=h item.name %></td>
-        <td><%=h item.summary %></td>
-        <td><%= item.price.to_s %>€</td>
-        <td class="buy-button"><%= button_to h(@add_item_label), @add_item_url_options.merge(:id => item.id), @add_item_html_options %></td>
-      </tr>
-    <% end%>
-  </table>
-</div>
+<%= render(:partial => "shared/items", :object => @items, :locals => { :extra_columns_proc => extra_columns_proc }) %>

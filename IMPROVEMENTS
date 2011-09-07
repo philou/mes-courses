@@ -6,6 +6,7 @@ Things to do (at least partialy) at the first occasion when coding something arr
 [WIP] Insert spec logs in watchdog emails
 [WIP] add foreign key constraints
 
+Use strings to save order status in the db
 Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
 add a foreign key from cart_lines -> items
