@@ -8,8 +8,7 @@ class AddForeignKeyConstraints < ActiveRecord::Migration
                   [:item_categories, :parent_id, { :references => :item_categories, :keys => :id}],
                   [:items, :item_category_id],
                   [:orders, :cart_id],
-                  [:orders, :store_id],
-                  [:to_delete_items, :item_id]]
+                  [:orders, :store_id]]
 
   def self.up
     FOREIGN_KEYS.each do |fk_def|
@@ -18,6 +17,7 @@ class AddForeignKeyConstraints < ActiveRecord::Migration
   end
 
   def self.down
+    remove_foreign_key :to_delete_items, :item_id
     FOREIGN_KEYS.each do |fk_def|
       remove_foreign_key *fk_def
     end

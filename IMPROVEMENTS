@@ -29,7 +29,10 @@ migrer à rails 3
 Use tags to segregate remote specs and features
 I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
-Write a script to setup dev env
+Write scripts
+   - a sh script in the dropbox to install git, ruby, gems, bundler and rake
+   - a rake setup task in the project to install all dependencies with bundler and apt-get
+   - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
 
 Spikes :

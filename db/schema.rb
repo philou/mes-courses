@@ -124,5 +124,4 @@ ActiveRecord::Schema.define(:version => 20110907062721) do
  add_foreign_key "items", "item_category_id", :references => "item_categories", :keys => "id", :name => "items_item_category_id_fk"
  add_foreign_key "orders", "store_id", :references => "stores", :keys => "id", :name => "orders_store_id_fk"
  add_foreign_key "orders", "cart_id", :references => "carts", :keys => "id", :name => "orders_cart_id_fk"
- add_foreign_key "to_delete_items", "item_id", :references => "items", :keys => "id", :name => "to_delete_items_item_id_fk"
 end

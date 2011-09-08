@@ -45,22 +45,36 @@ describe IncrementalStore do
       @store.should_receive(:delete_visited_urls)
     end
 
-    it "should send an email with broken dishes" do
-      dish_breaking_items = [Factory.create(:item), Factory.create(:item)]
-      dish_breaking_items.each do |item|
-        item.dishes = [Factory.create(:dish)]
-      end
-      items = dish_breaking_items + [Factory.create(:item)]
-      @store.stub(:find_sold_out_items).and_return(items)
-
-      BrokenDishesReporter.should_receive(:deliver_email).with(dish_breaking_items)
-    end
-
     it "should not send an email if no dish are broken" do
       @store.stub(:find_sold_out_items).and_return([Factory.create(:item)])
 
       BrokenDishesReporter.should_not_receive(:deliver_email)
     end
+
+    context "when there are broken dishes" do
+      before :each do
+        @dish_breaking_items = [Factory.create(:item), Factory.create(:item)]
+        @dish_breaking_items.each do |item|
+          item.dishes = [Factory.create(:dish)]
+        end
+        items = @dish_breaking_items + [Factory.create(:item)]
+        @store.stub(:find_sold_out_items).and_return(items)
+      end
+
+      it "should send an email with broken dishes" do
+        BrokenDishesReporter.should_receive(:deliver_email).with(@dish_breaking_items)
+      end
+
+      it "should fix broken dishes" do
+        @dish_breaking_items.each do |item|
+          item.dishes.each do |dish|
+            dish.items.should_receive(:delete).with(item).ordered
+            dish.should_receive(:save!).ordered
+          end
+        end
+      end
+    end
+
   end
 
   it "should register found item categories to its store" do

@@ -16,9 +16,7 @@ class IncrementalStore
     @store.mark_existing_items
   end
   def finishing_import
-    items = @store.find_sold_out_items
-    dish_breaking_items = items.reject { |item| item.dishes.empty? }
-    BrokenDishesReporter.deliver_email dish_breaking_items unless dish_breaking_items.empty?
+    handle_broken_dishes()
 
     @store.delete_sold_out_items
     delete_empty_item_categories
@@ -75,6 +73,19 @@ class IncrementalStore
     items_to_delete = 1
     while 0 < items_to_delete
       items_to_delete = @store.delete_empty_item_categories
+    end
+  end
+
+  def handle_broken_dishes()
+    sold_out_items = @store.find_sold_out_items
+    dish_breaking_items = sold_out_items.reject { |item| item.dishes.empty? }
+    BrokenDishesReporter.deliver_email dish_breaking_items unless dish_breaking_items.empty?
+
+    dish_breaking_items.each do |item|
+      item.dishes.each do |dish|
+        dish.items.delete(item)
+        dish.save!
+      end
     end
   end
 end
