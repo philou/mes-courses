@@ -62,8 +62,8 @@ Spec::Rake::SpecTask.new(:spec => spec_prereq) do |t|
   t.spec_files = FileList['spec/**/*_spec.rb']
 end
 
-desc "Run all specs in all *spec directories (excluding plugin specs)"
-Spec::Rake::SpecTask.new(:remote_spec => spec_prereq) do |t|
+desc "Run all specs in the remote_spec directory (excluding plugin specs)"
+Spec::Rake::SpecTask.new(:remote_spec) do |t|
   t.spec_opts = ['--options', "\"#{RAILS_ROOT}/spec/spec.opts\""]
   t.spec_files = FileList['remote_spec/**/*_spec.rb']
 end
