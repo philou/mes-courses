@@ -117,11 +117,16 @@ ActiveRecord::Schema.define(:version => 20110907062721) do
 
   add_index "visited_urls", ["url"], :name => "visited_urls_url_index", :unique => true
 
- add_foreign_key "cart_lines", "cart_id", :references => "carts", :keys => "id", :name => "cart_lines_cart_id_fk"
- add_foreign_key "dishes_items", "item_id", :references => "items", :keys => "id", :name => "dishes_items_item_id_fk"
- add_foreign_key "dishes_items", "dish_id", :references => "dishes", :keys => "id", :name => "dishes_items_dish_id_fk"
- add_foreign_key "item_categories", "parent_id", :references => "item_categories", :keys => "id", :name => "item_categories_parent_id_fk"
- add_foreign_key "items", "item_category_id", :references => "item_categories", :keys => "id", :name => "items_item_category_id_fk"
- add_foreign_key "orders", "store_id", :references => "stores", :keys => "id", :name => "orders_store_id_fk"
- add_foreign_key "orders", "cart_id", :references => "carts", :keys => "id", :name => "orders_cart_id_fk"
+  add_foreign_key "cart_lines", "carts", :name => "cart_lines_cart_id_fk"
+
+  add_foreign_key "dishes_items", "dishes", :name => "dishes_items_dish_id_fk"
+  add_foreign_key "dishes_items", "items", :name => "dishes_items_item_id_fk"
+
+  add_foreign_key "item_categories", "item_categories", :name => "item_categories_parent_id_fk", :column => "parent_id"
+
+  add_foreign_key "items", "item_categories", :name => "items_item_category_id_fk"
+
+  add_foreign_key "orders", "carts", :name => "orders_cart_id_fk"
+  add_foreign_key "orders", "stores", :name => "orders_store_id_fk"
+
 end
