@@ -184,6 +184,7 @@ p.status {
 
 .blog-post {
     margin-bottom: 2.4em;
+    overflow: hidden;
 }
  .blog-post h2 {
     border-bottom: 1px solid;
@@ -213,9 +214,10 @@ p.status {
     border-style: none;
 }
 
-.blog-post ul {
+.blog-post ul, .blog-post ol {
     margin-left: 3em;
     padding-top: 0.5em;
+    padding-bottom: 0.5em;
     list-style-position: outside;
 }
 .blog-post table {
@@ -228,8 +230,17 @@ p.author {
     font-style: italic;
     margin: 1em 0;
 }
+div.avatar {
+    float: left;
+    padding: 1px;
+    border: solid 1px;
+    margin-right: 1em;
+}
 #comments {
     margin: 1em;
+}
+.comment {
+  overflow: hidden;
 }
 
 /* Store tables */
