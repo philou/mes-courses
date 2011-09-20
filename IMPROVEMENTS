@@ -5,6 +5,7 @@ Things to do (at least partialy) at the first occasion when coding something arr
 [WIP] upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
 [WIP] I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 
+Have an automatic heroku billing daily report
 Use strings to save order status in the db
 Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
@@ -28,10 +29,12 @@ upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features
 Write scripts
+   - see radiant:upgrade task to see how they managed an update or even git ops through rake
    - a sh script in the dropbox to install git, ruby, gems, bundler and rake
    - a rake setup task in the project to install all dependencies with bundler and apt-get
    - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
+use RSS and feedburner to send newsletter
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?

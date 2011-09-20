@@ -158,7 +158,7 @@ p.status {
     font-weight: bold;
 }
 
-#subscription {
+div.sidebar-section {
     padding: 5em 0 0 0;
 }
 #subscription * {
@@ -178,10 +178,15 @@ p.status {
     border-right: 1px solid #a0db54;
 }
 #blog-sidebar {
-    width: 30em;
+    width: 36em;
     float: right;
 }
-
+li.nested-1 {
+    margin-left: 1em;
+}
+li.nested-2 {
+    margin-left: 2em;
+}
 .blog-post {
     margin-bottom: 2.4em;
     overflow: hidden;
