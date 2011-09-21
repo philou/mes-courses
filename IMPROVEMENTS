@@ -5,7 +5,6 @@ Things to do (at least partialy) at the first occasion when coding something arr
 [WIP] upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
 [WIP] I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 
-Have an automatic heroku billing daily report
 Use strings to save order status in the db
 Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
