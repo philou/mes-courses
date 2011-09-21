@@ -158,7 +158,7 @@ p.status {
     font-weight: bold;
 }
 
-#subscription {
+div.sidebar-section {
     padding: 5em 0 0 0;
 }
 #subscription * {
@@ -178,15 +178,20 @@ p.status {
     border-right: 1px solid #a0db54;
 }
 #blog-sidebar {
-    width: 30em;
+    width: 36em;
     float: right;
 }
-
+li.nested-1 {
+    margin-left: 1em;
+}
+li.nested-2 {
+    margin-left: 2em;
+}
 .blog-post {
     margin-bottom: 2.4em;
     overflow: hidden;
 }
- .blog-post h2 {
+.blog-post h2 {
     border-bottom: 1px solid;
     margin-bottom: 1em;
 }
@@ -256,7 +261,7 @@ tr+tr {
     border-top: 1px dashed #993366;
 }
 
-td.buy-button {
+td.buy-button * {
     text-align: right;
 }
 
@@ -267,10 +272,10 @@ table img {
 /* Store general */
 div.section {
     border: 1px solid #a0db54;
-    margin: 2px;
     padding: 1em;
+    margin: 2px;
 }
-div.section+div.section {
+div.section + div.section {
     margin-top: 20px;
 }
 div.section > * {
@@ -286,6 +291,14 @@ div.section .section-title {
 }
 div.section p {
     margin: 1em;
+}
+
+/* Store path bar */
+#path-bar {
+    margin-bottom: 20px;
+}
+#path-bar * {
+    font-size: 1.4em;
 }
 
 /* Store error notices to users */

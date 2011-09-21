@@ -1,7 +1,7 @@
 --- 
 class_name: ArchivePage
 slug: blog
-updated_by_id: 
+updated_by_id: 1
 layout_name: blog
 title: Blog
 virtual: false

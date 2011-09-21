@@ -1,0 +1,45 @@
+<div id="archives" class="sidebar-section">
+  <script type="text/javascript">
+  //<![CDATA[
+  function toggleDisplay(className, boundClassNames) {
+    var elements = document.getElementsByClassName(className);
+    if (elements[0] === 0)
+      return;
+  
+    var newDisplay;
+    var hidding;
+    if (elements[0].style.display === 'none') {
+      hidding = false;
+      newDisplay = function(element) { element.removeAttribute('style'); };
+    } else {
+      hidding = true;
+      newDisplay = function(element) { element.style.display = 'none'; };
+    }
+  
+    for(var i = 0; i < elements.length; i++) {
+      newDisplay(elements[i]);
+    }
+  
+    if (hidding) {
+      for(var j = 0; j < boundClassNames.length; j++) {
+        var elements = document.getElementsByClassName(boundClassNames[j]);
+        for(var i = 0; i < elements.length; i++) {
+          newDisplay(elements[i]);
+        }
+      }
+    }
+  }
+  //]]>
+  </script>
+  
+  <h2>Anciens articles</h2>
+  <ul>
+  <r:find url="/blog/">
+  <r:children:each order="desc">
+  <r:header name="year"><li><a onclick="toggleDisplay('<r:date format="month-of-%Y" />',['<r:date format="article-of-%Y" />'])"><r:date format="%Y" /></a></li></r:header>
+    <r:header name="month"><li class="nested-1 <r:date format="month-of-%Y" />" style="display: none;" ><a onclick="toggleDisplay('<r:date format="article-of-%Y-%m" />',[])"><r:date format="%B" /></a></li></r:header>
+        <li class="nested-2 <r:date format="article-of-%Y article-of-%Y-%m" />" style="display: none;" ><r:link /></li>
+  </r:children:each>
+  </r:find>
+  </ul>
+</div>
