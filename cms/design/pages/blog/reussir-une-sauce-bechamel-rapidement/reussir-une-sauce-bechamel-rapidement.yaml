@@ -1,14 +1,14 @@
 --- 
 class_name: ""
 slug: reussir-une-sauce-bechamel-rapidement
-updated_by_id: 1
+updated_by_id: 
 layout_name: blog-post
 title: "R\xC3\xA9ussir une sauce b\xC3\xA9chamel rapidement"
 virtual: false
 created_by_id: 1
 breadcrumb: "R\xC3\xA9ussir une sauce b\xC3\xA9chamel rapidement"
 enable_comments: true
-comments_count: 1
+comments_count: 0
 description: ""
 published_at: 2011-09-06 00:00:00 Z
 status_id: 100
