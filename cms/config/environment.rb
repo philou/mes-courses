@@ -82,6 +82,8 @@ Radiant::Initializer.run do |config|
   config.gem 'radiant-tags-extension', :version => '~> 1.6.3'
   config.gem 'radiant-comments-extension', :version => '~> 0.0.8'
   config.gem 'radiant-mailer-extension', :version => '~> 1.0.3'
+  config.gem 'radiant-settings-extension', :version => '~> 1.1.1', :lib => false
+  config.gem 'radiant-page_preview-extension', :version => '~> 0.1.1', :lib => false
 
   config.after_initialize do
     # Add new inflection rules using the following format:

@@ -8,3 +8,5 @@ sanitize --version 1.2.1
 radiant-tags-extension --version '~> 1.6.3'
 radiant-comments-extension --version '~> 0.0.8'
 radiant-mailer-extension --version '~> 1.0.3'
+radiant-settings-extension --version '~> 1.1.1'
+radiant-page_preview-extension --version '~> 0.1.1'
