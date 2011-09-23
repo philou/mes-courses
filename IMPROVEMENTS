@@ -3,8 +3,8 @@ IMPROVEMENTS
 Things to do (at least partialy) at the first occasion when coding something arround the subject
 
 [WIP] upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
-[WIP] I had to hard code www.mes-courses.fr at various points in the cms (blog and a propos links, links inside a blog post (for mail subscription)
 
+Website:
 Use strings to save order status in the db
 Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
 Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
@@ -34,6 +34,10 @@ Write scripts
    - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
 use RSS and feedburner to send newsletter
+
+CMS:
+upgrade gems
+extract cms.css and app.css from common.css
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?

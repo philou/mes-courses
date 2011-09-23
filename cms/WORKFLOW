@@ -1,15 +1,23 @@
-I want to be able to merge user and design modifications
-  - use file system extension
-  - work localy in a dev_branch
-  - pull and get from heroku with a heroku or release_branch
-  - pull db
-  - modify the design
-  - users addes posts and comments
-  - merge time ???
-    - turn maintenance mode on
-    - pull db
-    - dump to file
-    - merge dev_branch
-    - commit
-    - push the db
-    - turn maintenance mode off
+# starting to work & preparing the dev db, don't work on production db, or we'll end up with failing binary merges
+cd mes-courses.fr
+./pull-cms.sh
+
+# updating dev env from live db
+cd mes-courses.fr
+./pull-cms.sh
+
+# working, many times
+cd cms
+# change the dev db
+rake db:to_fs
+cd mes-courses.fr
+git add .
+git commit -m ...
+
+# deploying
+cd mes-courses.fr
+heroku maintenance:on --app mes-courses-cms
+./pull-cms.sh
+# run the app and test
+./push-cms.sh
+heroku maintenance:off --app mes-courses-cms
