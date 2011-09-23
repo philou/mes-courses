@@ -1,7 +1,7 @@
 --- 
 class_name: ""
 slug: gateau-au-chocolat-de-nancy-flash-mc-queen
-updated_by_id: 
+updated_by_id: 1
 layout_name: blog-post
 title: "G\xC3\xA2teau au chocolat de Nancy Flash Mc Queen"
 virtual: false
@@ -10,6 +10,6 @@ breadcrumb: "G\xC3\xA2teau au chocolat de Nancy Flash Mc Queen"
 enable_comments: true
 comments_count: 1
 description: ""
-published_at: 2011-04-14 19:15:13 Z
+published_at: 2011-04-14 00:00:00 Z
 status_id: 100
 keywords: ""

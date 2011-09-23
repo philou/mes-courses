@@ -1,7 +1,7 @@
 --- 
 class_name: ""
 slug: poisson-a-basse-temperature
-updated_by_id: 
+updated_by_id: 1
 layout_name: blog-post
 title: "Poisson \xC3\xA0 basse temp\xC3\xA9rature (sans mat\xC3\xA9riel exhorbitant)"
 virtual: false
@@ -10,6 +10,6 @@ breadcrumb: "Poisson \xC3\xA0 basse temp\xC3\xA9rature (sans mat\xC3\xA9riel exh
 enable_comments: true
 comments_count: 1
 description: ""
-published_at: 2011-06-11 07:59:25 Z
+published_at: 2011-06-11 00:00:00 Z
 status_id: 100
 keywords: ""
