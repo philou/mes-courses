@@ -80,6 +80,8 @@ Radiant::Initializer.run do |config|
   config.gem 'mollom', :version => '~> 0.2.3'
   config.gem 'sanitize', :version => '~> 1.2.1'
   config.gem 'radiant-tags-extension', :version => '~> 1.6.3'
+  config.gem 'radiant-comments-extension', :version => '~> 0.0.8'
+  config.gem 'radiant-mailer-extension', :version => '~> 1.0.3'
 
   config.after_initialize do
     # Add new inflection rules using the following format:
