@@ -6,5 +6,5 @@ fastercsv --version 1.5.3
 mollom --version 0.2.3
 sanitize --version 1.2.1
 radiant-tags-extension --version '~> 1.6.3'
-radiant-comments-extesion --version '~> 0.0.8'
+radiant-comments-extension --version '~> 0.0.8'
 radiant-mailer-extension --version '~> 1.0.3'
