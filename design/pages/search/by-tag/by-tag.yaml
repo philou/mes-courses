@@ -1,0 +1,15 @@
+--- 
+class_name: TagSearchPage
+slug: by-tag
+updated_by_id: 1
+layout_name: blog
+title: By tag
+virtual: false
+created_by_id: 1
+breadcrumb: By tag
+enable_comments: false
+comments_count: 0
+description: ""
+published_at: 2011-09-22 00:00:00 Z
+status_id: 100
+keywords: ""
