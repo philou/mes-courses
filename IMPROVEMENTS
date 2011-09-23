@@ -36,8 +36,8 @@ Put everything in the repo : thirdparties source code, dev tools, follow up, mar
 use RSS and feedburner to send newsletter
 
 CMS:
-upgrade gems
 extract cms.css and app.css from common.css
+simplify the workflow, avoid overriding dbs ... only snippets and layouts should be transfered
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?
