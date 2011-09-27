@@ -1,10 +1,10 @@
-rails --version 2.3.8
-RedCloth
-will_paginate --version '~> 2.3.11'
+rails --version '~> 2.3.14'
+RedCloth --version '~> 4.2.8'
+will_paginate --version '~> 2.3.16'
 radiant --version 0.9.1
-fastercsv --version 1.5.3
-mollom --version 0.2.3
-sanitize --version 1.2.1
+fastercsv --version '~> 1.5.4'
+mollom --version '~> 0.2.3'
+sanitize --version '~> 2.0.3'
 radiant-tags-extension --version '~> 1.6.3'
 radiant-comments-extension --version '~> 0.0.8'
 radiant-mailer-extension --version '~> 1.0.3'

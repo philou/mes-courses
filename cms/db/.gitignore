@@ -1,2 +1,3 @@
 *.sqlite3
 development.cms.sqlite3.db
+test.cms.sqlite3.db

@@ -39,6 +39,8 @@ CMS:
 extract cms.css and app.css from common.css
 simplify the workflow, avoid overriding dbs ... only snippets and layouts should be transfered
 fix push-cms.sh from failing when there is nothing to commit on cms_branch before push
+fork radiant file_system, page_preview and settings extensions gems, add a .gemspec to avoid extension, have gem rake tasks, ease the upgrade, submit patches
+make sure specs and cucumber tests pass
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?
