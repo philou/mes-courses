@@ -2,7 +2,7 @@
 
 echo "Pulling live db to cms_branch" &&
 git checkout cms_branch &&
-RAILS_ENV=production heroku db:pull --app mes-courses-cms --confirm &&
+RAILS_ENV=production heroku db:pull --app mes-courses-cms &&
 RAILS_ENV=production rake db:to_fs &&
 git add . &&
 git commit -m "Merge live cms db (Bloging)" &&
