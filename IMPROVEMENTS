@@ -2,8 +2,6 @@ IMPROVEMENTS
 ------------
 Things to do (at least partialy) at the first occasion when coding something arround the subject
 
-[WIP] upgrade radiant, use comment extensions gem, see how bundler helps to auto expand submodules
-
 Website:
 Use strings to save order status in the db
 Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
@@ -38,7 +36,6 @@ use RSS and feedburner to send newsletter
 CMS:
 extract cms.css and app.css from common.css
 simplify the workflow, avoid overriding dbs ... only snippets and layouts should be transfered
-fix push-cms.sh from failing when there is nothing to commit on cms_branch before push
 fork radiant file_system, page_preview and settings extensions gems, add a .gemspec to avoid extension, have gem rake tasks, ease the upgrade, submit patches
 make sure specs and cucumber tests pass
 
