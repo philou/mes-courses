@@ -79,7 +79,8 @@ Radiant::Initializer.run do |config|
   config.gem 'fastercsv', :version => '~> 1.5.3'
   config.gem 'mollom', :version => '~> 0.2.3'
   config.gem 'sanitize', :version => '~> 1.2.1'
-  config.gem 'radiant-tags-extension', :version => '~> 1.6.3'
+  # later versions are not compatible with radiant 0.9.1, only with edge radiant
+  config.gem 'radiant-tags-extension', :version => '1.6.1'
   config.gem 'radiant-comments-extension', :version => '~> 0.0.8'
   config.gem 'radiant-mailer-extension', :version => '~> 1.0.3'
   config.gem 'radiant-settings-extension', :version => '~> 1.1.1', :lib => false
