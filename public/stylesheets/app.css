@@ -1,0 +1,66 @@
+/* Store tables */
+td.buy-button * {
+    text-align: right;
+}
+
+table img {
+    height: 50px;
+}
+
+/* Store general */
+div.section {
+    border: 1px solid #a0db54;
+    padding: 1em;
+    margin: 2px;
+}
+div.section + div.section {
+    margin-top: 20px;
+}
+div.section > * {
+    position: relative;
+    top: -1.4em;
+}
+div.section .section-title {
+    color: #a0db54;
+    font-size: 1.8em;
+    left: 10px;
+    padding: 0 0.5em;
+    background: white;
+}
+div.section p {
+    margin: 1em;
+}
+
+/* Store path bar */
+#path-bar {
+    margin-bottom: 20px;
+}
+#path-bar * {
+    font-size: 1.4em;
+}
+
+/* Store error notices to users */
+div.notice {
+    border: 2px solid red;
+    padding: 1em;
+    margin: 2em 0;
+    background-color: #FFA0A0;
+    color: white;
+    font-weight: bold;
+}
+
+/* search panel */
+#search {
+    width: 70em;
+    margin: 2em auto;
+}
+#categories-panel + #items-panel {
+    margin-top: 2em;
+}
+
+
+/* Forward report */
+#go-to-payment {
+    margin: 2em 0;
+}
+
