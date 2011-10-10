@@ -1,2 +1,0 @@
-saveover=new
-fullscreen=yes

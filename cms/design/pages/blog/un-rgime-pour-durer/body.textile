@@ -1,3 +1,0 @@
-"(link-with-image)!http://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Gazpacho_ingredients.jpg/300px-Gazpacho_ingredients.jpg(Aliments crétois, source Wikipedia)!":http://fr.wikipedia.org/wiki/Fichier:Gazpacho_ingredients.jpg
-
-Quand il s'agit de notre famille, on voudrait tous adopter une alimentation de qualité. Pour soi même, on voudrait se faire plaisir sans prendre de poids et sans que ça nous prenne trop de temps ...
