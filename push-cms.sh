@@ -1,12 +1,12 @@
 #!/bin/sh
 
+echo "Pushing code to heroku" &&
 git checkout cms_branch &&
 git merge -s subtree master &&
-RAILS_ENV=production rake fs:to_db &&
-git add . &&
-git commit -m "Push local changes to cms db (Bloging)" --allow-empty &&
 git push cms cms_branch:master &&
-RAILS_ENV=production heroku db:push --app mes-courses-cms &&
+echo "Looading snippets and layouts in heroku db" &&
+heroku rake file_system:to_db:layouts_and_snippets --app mes-courses-cms &&
 git checkout master &&
 
 echo "Master pushed to CMS"
+
