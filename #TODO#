@@ -1,0 +1,69 @@
+TODO
+
+==========================================================================
+Daily DB backups
+ - brancher un cable plutôt que le wifi
+ - il y aura un auto backup daily sur heroku
+
+==========================================================================
+Facebook et Twitter
+
+- [DONE] en bas de ma page, ajouter deux liens vers les compte facebook et twitter
+- [DONE] Ajouter un bouton facebook "J'aime" sur mes pages
+- [DONE] Ajouter un bouton twitter
+- [DONE] Ajouter un bouton email "forward" sur mes pages
+
+Improvements
+- simplify the workflow, avoid overriding dbs ... only snippets and layouts should be transfered
+  - [DONE] extract cms.css and app.css from common.css
+  - [DONE] move blog.css and common.css to snippets
+  - merge the blog in git
+  - rebind the symbolic link to common.css
+  - copy app.css
+  - remove app.css from cms
+  - commit
+  - create fs:layouts_and_snippets:to_db and db:layouts_and_snippets:to_fs rake tasks
+  - update pull and push cms scripts
+  - gitignore production.cms.sqlite3.db
+
+  - pull :
+
+#!/bin/sh
+
+echo "Pulling live db to cms_branch" &&
+git checkout cms_branch &&
+heroku db:pull --confirm mes-courses-cms --app mes-courses-cms &&
+rake db:layouts_and_snippets:to_fs &&
+git add . &&
+git commit -m "Merge live cms db (Bloging)" &&
+echo "Merging to master branch" &&
+git checkout master &&
+git merge -s subtree cms_branch &&
+echo "Preparing dev env"
+cd cms &&
+heroku db:pull --confirm mes-courses-cms --app mes-courses-cms &&
+rake fs:layouts_and_snippets:to_db &&
+cd .. &&
+echo "Finished"
+
+  - push
+
+#!/bin/sh
+
+git checkout cms_branch &&
+git merge -s subtree master &&
+git push cms cms_branch:master &&
+heroku rake fs:layouts_and_snippets:to_db --app mes-courses-cms &&
+git checkout master &&
+
+echo "Master pushed to CMS"
+
+  - commit cms
+
+#!/bin/sh
+
+cd cms &&
+rake db:layouts_and_snippets:to_fs &&
+cd .. &&
+git add . &&
+git commit -m ...

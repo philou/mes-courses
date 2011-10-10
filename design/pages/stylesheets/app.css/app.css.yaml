@@ -1,15 +1,15 @@
 --- 
 class_name: ""
-slug: common.css
+slug: app.css
 updated_by_id: 1
 layout_name: CSS
-title: common.css
+title: app.css
 virtual: false
-created_by_id: 
-breadcrumb: common.css
+created_by_id: 1
+breadcrumb: app.css
 enable_comments: false
 comments_count: 0
 description: ""
-published_at: 2011-09-20 00:00:00 Z
+published_at: 2011-10-07 00:00:00 Z
 status_id: 100
 keywords: ""

@@ -1,7 +1,7 @@
 --- 
 class_name: TagSearchPage
 slug: by-tag
-updated_by_id: 1
+updated_by_id: 
 layout_name: blog
 title: By tag
 virtual: false

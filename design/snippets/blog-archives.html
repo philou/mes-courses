@@ -1,26 +1,10 @@
 <div id="archives" class="sidebar-section">
+  <script languate="JavaScript" src="/scripts/getelementsbyclassname.js">
+  </script>
   <script type="text/javascript">
   //<![CDATA[
-  if (!document.getElementsByClassName) {
-    document.getElementsByClassName = function(className, parentElement) {
-      if (Prototype.BrowserFeatures.XPath) {
-        var q = ".//*[contains(concat(' ', @class, ' '), ' " + className + " ')]";
-        return document._getElementsByXPath(q, parentElement);
-      } else {
-        var children = ($(parentElement) || document.body).getElementsByTagName('*');
-        var elements = [], child;
-        for (var i = 0, length = children.length; i < length; i++) {
-          child = children[i];
-          if (Element.hasClassName(child, className))
-          elements.push(Element.extend(child));
-        }
-        return elements;
-      }
-    };
-  }
-
   function toggleDisplay(className, boundClassNames) {
-    var elements = document.getElementsByClassName(className);
+    var elements = getElementsByClassName(className);
     if (elements[0] === 0) {
       return;
     }
@@ -40,7 +24,7 @@
   
     if (hidding) {
       for(var j = 0; j < boundClassNames.length; j++) {
-        var elements = document.getElementsByClassName(boundClassNames[j]);
+        var elements = getElementsByClassName(boundClassNames[j]);
         for(var i = 0; i < elements.length; i++) {
           newDisplay(elements[i]);
         }
