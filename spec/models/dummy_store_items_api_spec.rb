@@ -10,4 +10,8 @@ describe DummyStoreItemsAPI do
 
   it_should_behave_like "Any StoreItemsAPI"
 
+  it "should have the total item count" do
+    @store.total_items_count.should == 3*3*3
+  end
+
 end

@@ -17,6 +17,9 @@ def remove_item_from(category_config, item_name)
 end
 
 Given /^the "([^"]*)" store"?$/ do |web_store|
+  new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
+  Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
+
   @items_config = DummyStoreItemsAPI.shrinked_config(2)
   configure_dummy_store(@items_config)
 
@@ -45,6 +48,14 @@ Given /^last store import was unexpectedly interrupted$/ do
     # fake network error
   ensure
     item.unstub(:attributes)
+  end
+end
+
+Given /^the network connection is unstable$/ do
+  item = given_a_sample_item
+  item.stub(:attributes) do
+    item.unstub(:attributes)
+    raise RuntimeError.new("network down")
   end
 end
 
@@ -107,5 +118,9 @@ end
 
 Then  /^a non empty cart should be created in the store account of the user$/ do
   @cart_api.log.should include(:set_item_quantity_in_cart)
+end
+
+Then /^all items from the store should have been imported$/ do
+  Item.should have(DummyStoreItemsAPI.new_default_store.total_items_count).records
 end
 

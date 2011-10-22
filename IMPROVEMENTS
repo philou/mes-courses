@@ -2,11 +2,6 @@ IMPROVEMENTS
 ------------
 Things to do (at least partialy) at the first occasion when coding something arround the subject
 
-WIP
----
-extract cms.css and app.css from common.css
-simplify the workflow, avoid overriding dbs ... only snippets and layouts should be transfered
-
 TODO
 ----
 
@@ -42,9 +37,12 @@ Put everything in the repo : thirdparties source code, dev tools, follow up, mar
 Install windows and all browsers in a VirtuaBox
 
 CMS:
+use RSS and feedburner to send newsletter
+add radiant-settings-extension to gems.rake next time I upgrade it
+add radiant-page-settings-extension to gems.rake next time I upgrade it (if it has a .gemspec)
+add a .gemspec to radiant-file-system-extension (means forking, transforming from extension to gem ...)
 fork radiant file_system, page_preview and settings extensions gems, add a .gemspec to avoid extension, have gem rake tasks, ease the upgrade, submit patches
 make sure specs and cucumber tests pass
-use RSS and feedburner to send newsletter
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?

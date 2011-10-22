@@ -11,6 +11,10 @@ class Store < ActiveRecord::Base
   validates_presence_of :url
   validates_uniqueness_of :url
 
+  def self.import_retrier_options
+    { :max_retries => 5, :ignored_exceptions => [StoreItemsBrowsingError], :sleep_delay => 3 }
+  end
+
   # short name for the store
   def name
     URI.parse(url).host
@@ -26,7 +30,7 @@ class Store < ActiveRecord::Base
   # Imports the items sold from the online store to our db
   def import
     importer = StoreImporter.new
-    browser = StoreItemsAPI.browse(url)
+    browser = Retrier.new(StoreItemsAPI.browse(url), Store.import_retrier_options)
     incremental_store = IncrementalStore.new(self)
     importer.import(browser, incremental_store)
   end

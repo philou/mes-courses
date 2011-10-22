@@ -95,6 +95,10 @@ class DummyStoreItemsAPI
     attributes[:name]
   end
 
+  def total_items_count
+    categories.inject(0) { |sum, cat| sum + cat.total_items_count } + items.count
+  end
+
   private
 
   def self.clone_with(config, keys, &transform)

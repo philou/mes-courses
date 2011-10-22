@@ -1,3 +1,5 @@
+# Copyright (C) 2011 by Philippe Bourgau
+
 require 'spec_helper'
 
 describe Order do
