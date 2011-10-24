@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110907062721) do
+ActiveRecord::Schema.define(:version => 20111022051851) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -91,13 +91,13 @@ ActiveRecord::Schema.define(:version => 20110907062721) do
   create_table "orders", :force => true do |t|
     t.integer  "cart_id",                    :null => false
     t.integer  "store_id",                   :null => false
-    t.integer  "status",                     :null => false
     t.text     "warning_notices_text",       :null => false
     t.string   "error_notice",               :null => false
     t.integer  "forwarded_cart_lines_count", :null => false
     t.string   "remote_store_order_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",                     :null => false
   end
 
   create_table "stores", :force => true do |t|

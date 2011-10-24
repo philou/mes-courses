@@ -2,10 +2,10 @@
 
 class Order < ActiveRecord::Base
 
-  NOT_PASSED = 0
-  PASSING = 1
-  SUCCEEDED = 2
-  FAILED = 3
+  NOT_PASSED = "not_passed"
+  PASSING = "passing"
+  SUCCEEDED = "succeeded"
+  FAILED = "failed"
 
   def self.missing_cart_line_notice(cart_line, store)
     "Nous n'avons pas pu ajouter '#{cart_line.name}' à votre panier sur '#{store.name}' parce que cela n'y est plus disponible"
