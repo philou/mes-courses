@@ -1,1 +1,0 @@
-https://github.com/amerine/acts_as_tree.git
