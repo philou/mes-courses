@@ -12,17 +12,17 @@ namespace :stores do
     Store.find_or_create_by_url(DummyStoreCartAPI.url)
   end
 
-  desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
+  desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only. Define STORES_IMPORT_DAY to run a specified day of the week."
   task :import => :environment do
-    if Time.now.wday != 0
-      Rails.logger.info "Skipping stores import because today is not sunday"
+    if Time.now.wday != import_day
+      Rails.logger.info "Skipping stores import this day of the week"
       return
     end
 
     ModelStat::update!
 
     begin
-      stores = stores_to_import()
+      stores = stores_to_import
       Rails.logger.info "Importing #{stores.length.to_s} stores"
       stores.each do |store|
         Rails.logger.info "Importing items from #{store.url}"
@@ -45,6 +45,10 @@ namespace :stores do
     else
       [Store.find_or_create_by_url(ENV['url'])]
     end
+  end
+
+  def import_day
+    ENV['STORES_IMPORT_DAY'].to_i || 0
   end
 
 end

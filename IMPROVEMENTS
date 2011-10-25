@@ -4,29 +4,16 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-Use a gem instead of an extension to enable act_as_tree, remove selenium remote control from the repo
+use RSS and feedburner to send newsletter
+Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
 
 TODO
 ----
 
 Website:
-Check import through web interface when testing with cucumber -> split this improvement in pieces, change one scenario per commit
 add a foreign key from cart_lines -> items
  - move items to a new category instead of deleting them
  - fix global item search
-Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
- - have another integration directory
- - write an integrate script that :
-   - goes in this integration directory
-   - pulls master from dev repo
-   - launches rake ci, as is doing cc.net
-   - pushes to origin master if build succeeded
-   - pushes to heroku (dev and watchdog) if build succeeded ?
-   - always go back to origin directory
-   - stop cc.net
-Have a ci env on heroku	RACK_ENV=test (use watchodg?)
-   - run it during the integrate script ?
-   - not sure it is possible : spec tries to drop the db, and it is prohibited on heroku ...
 upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features
@@ -39,12 +26,6 @@ Put everything in the repo : thirdparties source code, dev tools, follow up, mar
 Install windows and all browsers in a VirtuaBox
 
 CMS:
-use RSS and feedburner to send newsletter
-add radiant-settings-extension to gems.rake next time I upgrade it
-add radiant-page-settings-extension to gems.rake next time I upgrade it (if it has a .gemspec)
-add a .gemspec to radiant-file-system-extension (means forking, transforming from extension to gem ...)
-fork radiant file_system, page_preview and settings extensions gems, add a .gemspec to avoid extension, have gem rake tasks, ease the upgrade, submit patches
-make sure specs and cucumber tests pass
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?
@@ -52,8 +33,9 @@ Should we use rake scripts instead of sh scripts ?
 How to control accessibility in models
 Rspec-spies + .ordered, try to add it (wait for rspec 2)
 Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
+Evaluer les tests avec moins de mock
+try to launch ci on heroku (might be a problem with db drop ...)
 
 Ongoing changes :
-Try to use more real objects and factories
 Upgrade gems before every feature
 Upgrade radiant gems & extensions before every blog post
