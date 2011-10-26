@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Integrating latest developments (Press return to continue)" &&
-read &&
+read something &&
 
 echo "Pulling latest developments" &&
 git pull dev master &&
