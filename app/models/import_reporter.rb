@@ -12,29 +12,33 @@ class ImportReporter < MonitoringMailer
   private
 
   def generate_subject(delta_stats)
-    "Import "+
-      if delta_stats[ModelStat::ITEM][:old_count] == 0
-        "OK first time +#{delta_stats[ModelStat::ITEM][:count]} items"
-      else
-        delta = delta_stats[ModelStat::ITEM][:delta]
-        "#{result(delta)} #{percent_delta(delta)}"
-      end
+    item_stats = delta_stats[ModelStat::ITEM]
+    "Import #{result(item_stats)} #{pretty_delta(item_stats)}"
   end
 
-  def result(delta)
-    if (delta -1).abs < 0.05
+  def result(record_stats)
+    delta = record_stats[:delta]
+
+    if delta.nil?
+      "OK first time"
+    elsif (delta-1).abs < 0.05
       "OK"
     else
       "WARNING"
     end
   end
 
-  def percent_delta(delta)
-    result = number_to_percentage(100 * (delta - 1), :precision => 2)
-    if 1 <= delta
-      result = '+' + result
+  def pretty_delta(item_stats)
+    delta = item_stats[:delta]
+    if delta.nil?
+      "+#{item_stats[:count]} records"
+    else
+      result = number_to_percentage(100 * (delta - 1), :precision => 2)
+      if 1 <= delta
+        result = '+' + result
+      end
+      result
     end
-    result
   end
 
   # mailer template function
@@ -42,7 +46,16 @@ class ImportReporter < MonitoringMailer
     delta_stats = ModelStat.generate_delta
     subject = generate_subject(delta_stats)
 
-    setup_mail(subject, :content => delta_stats.inspect)
+    setup_mail(subject, :content => generate_body(delta_stats))
+  end
+
+  def generate_body(delta_stats)
+    lines = ModelStat::ALL.map do |record_type|
+      record_stats = delta_stats[record_type]
+      "#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{pretty_delta(record_stats)}"
+    end
+
+    lines.join("\n")
   end
 
 end

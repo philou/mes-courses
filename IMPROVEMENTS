@@ -5,15 +5,14 @@ Things to do (at least partialy) at the first occasion when coding something arr
 WIP
 ---
 use RSS and feedburner to send newsletter
-Switch to synchronous continuous integration. Have a local ci env, and a rake task that checks everything and commits at the end
 
 TODO
 ----
-
 Website:
+Rewrite all deployment scripts with rake (push, push to testers, integrate ...)
 add a foreign key from cart_lines -> items
- - move items to a new category instead of deleting them
- - fix global item search
+ - move items to a new category instead of deleting them, fix global item search
+ - or version the items : check that it will not be too big
 upgrade gems
 migrer à rails 3
 Use tags to segregate remote specs and features

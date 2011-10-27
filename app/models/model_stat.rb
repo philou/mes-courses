@@ -10,7 +10,7 @@ class ModelStat < ActiveRecord::Base
   ROOT_CATEGORY = "Root item category"
   CATEGORY = "Item category"
 
-  ALL = [ITEM, ROOT_CATEGORY, CATEGORY]
+  ALL = [ROOT_CATEGORY, CATEGORY, ITEM]
 
 
   def self.update!
