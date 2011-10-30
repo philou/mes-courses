@@ -36,5 +36,5 @@ def reimport(store)
     end
   end
 
-  store.import
+  Store.import
 end

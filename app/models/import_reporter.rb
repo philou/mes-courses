@@ -42,18 +42,20 @@ class ImportReporter < MonitoringMailer
   end
 
   # mailer template function
-  def delta
+  def delta(import_duration_seconds)
     delta_stats = ModelStat.generate_delta
     subject = generate_subject(delta_stats)
 
-    setup_mail(subject, :content => generate_body(delta_stats))
+    setup_mail(subject, :content => generate_body(delta_stats, import_duration_seconds))
   end
 
-  def generate_body(delta_stats)
+  def generate_body(delta_stats, import_duration_seconds)
     lines = ModelStat::ALL.map do |record_type|
       record_stats = delta_stats[record_type]
       "#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{pretty_delta(record_stats)}"
     end
+
+    lines.push(Time.at(import_duration_seconds).strftime("Import took : %H:%M:%S"))
 
     lines.join("\n")
   end

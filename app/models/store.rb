@@ -15,6 +15,27 @@ class Store < ActiveRecord::Base
     { :max_retries => 5, :ignored_exceptions => [StoreItemsBrowsingError], :sleep_delay => 3 }
   end
 
+  # import all stores, or the one specified with url
+  def self.import(url = nil)
+    ModelStat::update!
+    start_time = now
+
+    begin
+      stores = stores_to_import(url)
+      Rails.logger.info "Importing #{stores.length.to_s} stores"
+      stores.each do |store|
+        Rails.logger.info "Importing items from #{store.url}"
+        store.import
+        Rails.logger.info "Done"
+      end
+    rescue Exception => e
+      Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
+      raise
+    end
+
+    ImportReporter.deliver_delta(now - start_time)
+  end
+
   # short name for the store
   def name
     URI.parse(url).host
@@ -110,6 +131,20 @@ class Store < ActiveRecord::Base
   end
 
   private
+  # Time.now synonym, used for mocking
+  def self.now
+    Time.now
+  end
+
+  # array of stores to import, according to the 'url' environment variable
+  def self.stores_to_import(url = nil)
+    if url.nil?
+      Store.find(:all)
+    else
+      [Store.find_or_create_by_url(url)]
+    end
+  end
+
   def remove_all_marks
     execute_delete("DELETE FROM to_delete_items")
   end

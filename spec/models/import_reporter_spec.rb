@@ -8,7 +8,8 @@ shared_examples_for "Any ImportReporter" do
   before :each do
     @mailer_class = ImportReporter
     @mailer_template = :delta
-    @mailer_default_parameters = []
+    @total_duration = 7341
+    @mailer_default_parameters = [@total_duration]
     ModelStat.stub(:generate_delta).and_return(@stats)
   end
 
@@ -33,6 +34,12 @@ shared_examples_for "Any ImportReporter" do
     ModelStat::ALL.each do |record_type|
       body_should_contain_a_line_describing_delta_of(record_type)
     end
+  end
+
+  it "should contain a line with the total import duration" do
+    send_monitoring_email
+
+    @body.should include(Time.at(@total_duration).strftime("Import took : %H:%M:%S"))
   end
 
   private

@@ -19,33 +19,10 @@ namespace :stores do
       return
     end
 
-    ModelStat::update!
-
-    begin
-      stores = stores_to_import
-      Rails.logger.info "Importing #{stores.length.to_s} stores"
-      stores.each do |store|
-        Rails.logger.info "Importing items from #{store.url}"
-        store.import
-        Rails.logger.info "Done"
-      end
-    rescue Exception => e
-      Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
-      raise
-    end
-
-    ImportReporter.deliver_delta
+    Store.import(ENV['url'])
   end
 
   private
-  # array of stores to import, according to the 'url' environment variable
-  def stores_to_import
-    if ENV['url'].nil?
-      Store.find(:all)
-    else
-      [Store.find_or_create_by_url(ENV['url'])]
-    end
-  end
 
   def import_day
     ENV['STORES_IMPORT_DAY'].to_i || 0

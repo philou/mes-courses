@@ -1,7 +1,7 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 When /^stats are updated$/ do
-  ImportReporter.deliver_delta
+  ImportReporter.deliver_delta(0)
 end
 
 def find_email(subject)

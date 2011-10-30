@@ -37,4 +37,48 @@ describe Store do
     Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
   end
 
+  context "importing all stores" do
+
+    before :each do
+      @stores = Array.new(2) { stub_model(Store) }
+      @stores.each { |store| store.stub(:import) }
+      Store.stub(:find).with(:all).and_return(@stores)
+    end
+
+    it "should import all stores" do
+      @stores.each { |store| store.should_receive(:import) }
+
+      Store.import
+    end
+
+    it "update the stats first" do
+      ModelStat.should_receive(:update!).ordered
+      @stores.each { |store| store.should_receive(:import).ordered }
+
+      Store.import
+    end
+
+    it "should deliver an import report email" do
+      start_time = Time.local(2011, 10, 29, 16, 30, 24)
+      end_time = Time.local(2011, 10, 29, 17, 48, 12)
+      Store.stub(:now).and_return(start_time, end_time)
+
+      ImportReporter.should_receive(:deliver_delta).with(end_time - start_time)
+
+      Store.import
+    end
+
+  end
+
+  it "global import with an url should only import the specified store" do
+    url = "http://www.discountagogo.com"
+
+    store = stub_model(Store)
+    Store.stub(:find_or_create_by_url).with(url).and_return(store)
+
+    store.should_receive(:import)
+
+    Store.import(url)
+  end
+
 end

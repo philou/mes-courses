@@ -2,9 +2,9 @@ Feature: Catalog import
 
   In order to control that everything runs fine
   A webmaster
-  Wants an automatic daily import report email
+  Wants an automatic import report email
 
-  Scenario: Sending item import statistics by email
-    Given there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
-    When  stats are updated
+  Scenario: An import report email is sent after the import
+    Given the "www.dummy-store.com" store
+    When  items from the store are imported
     Then  an email ~"Import" should be sent to the maintainer

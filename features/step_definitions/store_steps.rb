@@ -33,7 +33,7 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
 end
 
 Given /^items from the store were already imported$/ do
-  @store.import
+  Store.import
 end
 
 Given /^last store import was unexpectedly interrupted$/ do
@@ -41,9 +41,7 @@ Given /^last store import was unexpectedly interrupted$/ do
   item.stub(:attributes).and_raise(RuntimeError)
 
   begin
-    @store.import
-
-    true.should == false
+    Store.import
   rescue RuntimeError
     # fake network error
   ensure
@@ -87,7 +85,7 @@ Given /^"([^"]*)" was removed from the store"?$/ do |item_name|
 end
 
 When /^items from the store are imported$/ do
-  @store.import
+  Store.import
 end
 
 When /^items from the store are re-imported$/ do
