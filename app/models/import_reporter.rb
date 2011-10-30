@@ -5,6 +5,7 @@ require 'action_view/helpers/number_helper'
 # Object responsible for mailing an import report
 class ImportReporter < MonitoringMailer
   include ActionView::Helpers::NumberHelper
+  include HerokuHelper
 
   # Reports delta from latest statistics by mail and log
   # def self.deliver_delta
@@ -56,6 +57,7 @@ class ImportReporter < MonitoringMailer
     end
 
     lines.push(Time.at(import_duration_seconds).strftime("Import took : %H:%M:%S"))
+    lines.push("Logs : #{safe_heroku_logs}}")
 
     lines.join("\n")
   end

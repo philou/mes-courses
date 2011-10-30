@@ -31,8 +31,11 @@ shared_examples_for "Any ImportReporter" do
   end
 
   it "should contain a line describing the delta of each record type" do
+    send_monitoring_email
+
     ModelStat::ALL.each do |record_type|
-      body_should_contain_a_line_describing_delta_of(record_type)
+      record_stats = @stats[record_type]
+      @body.should include("#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{record_stats['% delta']}")
     end
   end
 
@@ -42,14 +45,7 @@ shared_examples_for "Any ImportReporter" do
     @body.should include(Time.at(@total_duration).strftime("Import took : %H:%M:%S"))
   end
 
-  private
-
-  def body_should_contain_a_line_describing_delta_of(record_type)
-    send_monitoring_email
-
-    record_stats = @stats[record_type]
-    @body.should include("#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{record_stats['% delta']}")
-  end
+  should_contain_the_logs
 
 end
 

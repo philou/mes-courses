@@ -3,6 +3,7 @@
 require 'spec_helper'
 
 shared_examples_for "Any MonitoringMailer" do
+  extend MonitoringMailerMacros
 
   before(:each) do
     HerokuHelper.stub(:app_name).and_return("mes-courses-tests")
@@ -33,4 +34,19 @@ shared_examples_for "Any MonitoringMailer" do
 
     @subject.should include(HerokuHelper.app_name)
   end
+end
+
+module MonitoringMailerMacros
+
+  def should_contain_the_logs
+    it "should contain the logs" do
+      log_text = "all the long logs"
+      HerokuHelper.stub(:safe_heroku_logs).and_return(log_text)
+
+      send_monitoring_email
+
+      @body.should include(log_text)
+    end
+  end
+
 end
