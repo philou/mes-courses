@@ -9,6 +9,7 @@ class StoreImporter
 
   # Imports the items sold from the online store to our db
   def import(walker, store)
+    @walker_stack = []
     @store = store
     if @store.last_import_finished?
       log :info, "Starting new import from #{walker.uri}"
@@ -23,7 +24,6 @@ class StoreImporter
 
     @store.finishing_import
     log :info, "Finished import"
-    @store = nil
   end
 
   private
@@ -59,7 +59,6 @@ class StoreImporter
     end
   end
 
-
   def unless_already_visited(walker)
     if store.already_visited_url?(walker.uri.to_s)
       log :debug, "Skipping #{walker.uri}"
@@ -74,15 +73,18 @@ class StoreImporter
   def with_rescue(summary)
     begin
       log :debug, summary
+      @walker_stack.push(summary)
       yield
 
     rescue StoreItemsBrowsingError, ActiveRecord::RecordInvalid => e
-      # this  should mean a page was not in a importable format
-      log :warn, "Failed: \"#{summary}\" because "+ e
+      # this should mean a page was not in an importable format
       # continue, this will eventually delete the faulty items
+      log :warn, format_exception_message(summary, e)
     rescue Exception => e
-      log :error, "Failed: \"#{summary}\" because "+ e
+      log :error, runtime_exception_message(summary, e)
       raise
+    ensure
+      @walker_stack.pop
     end
   end
 
@@ -90,5 +92,15 @@ class StoreImporter
     Rails.logger.send(level, message)
   end
 
+  def format_exception_message(summary, exception)
+    (["Failed: \"#{summary}\""] + walker_stack + ["because #{exception}"]).join("\n\t")
+  end
+  def runtime_exception_message(summary, exception)
+    (["Failed: \"#{summary}\"", "because #{exception}"]).join("\n\t")
+  end
+
+  def walker_stack
+    @walker_stack.reverse.map { |task| "while \"#{task}\"" }
+  end
 
 end
