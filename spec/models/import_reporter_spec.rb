@@ -9,7 +9,7 @@ shared_examples_for "Any ImportReporter" do
     @mailer_class = ImportReporter
     @mailer_template = :delta
     @total_duration = 7341
-    @mailer_default_parameters = [@total_duration]
+    @mailer_default_parameters = [@total_duration, 0]
     ModelStat.stub(:generate_delta).and_return(@stats)
   end
 
@@ -22,12 +22,17 @@ shared_examples_for "Any ImportReporter" do
   end
 
   it "should have a subject containing \"OK\" for deltas smaller than 5%" do
-    @stats["Item"] = {:old_count => 100, :count => 99, :delta => 0.99, '% delta' => "-1.00%"}
-
     send_monitoring_email
 
     @subject.should include("OK")
     @subject.should_not include("WARNING")
+  end
+
+  it "should have a subjet containing \"WARNING\" when there are less items than expected" do
+    send_monitoring_email(@total_duration, @stats[ModelStat::ITEM][:count] + 1)
+
+    @subject.should include("WARNING")
+    @subject.should_not include("OK")
   end
 
   it "should contain a line describing the delta of each record type" do
@@ -55,12 +60,14 @@ describe ImportReporter do
     before :each do
       @stats = { ModelStat::ROOT_CATEGORY => {:old_count => 1, :count => 2, :delta => 2.0, '% delta' => "+100.00%"},
                  ModelStat::CATEGORY => {:old_count => 4, :count => 8, :delta => 2.0, '% delta' => "+100.00%"},
-                 ModelStat::ITEM => {:old_count => 20, :count => 27, :delta => 1.35, '% delta' => "+35.00%"}}
+                 ModelStat::ITEM => {:old_count => 100, :count => 99, :delta => 0.99, '% delta' => "-1.00%"}}
     end
 
     it_should_behave_like "Any ImportReporter"
 
     it "should have a subjet containing \"WARNING\" for deltas greater than 5%" do
+      @stats["Item"] = {:old_count => 20, :count => 27, :delta => 1.35, '% delta' => "+35.00%"}
+
       send_monitoring_email
 
       @subject.should include("WARNING")

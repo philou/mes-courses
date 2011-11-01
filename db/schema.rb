@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111022051851) do
+ActiveRecord::Schema.define(:version => 20111101054734) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -101,9 +101,10 @@ ActiveRecord::Schema.define(:version => 20111022051851) do
   end
 
   create_table "stores", :force => true do |t|
-    t.string   "url",        :null => false
+    t.string   "url",                           :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "expected_items", :default => 0, :null => false
   end
 
   add_index "stores", ["url"], :name => "stores_url_index", :unique => true

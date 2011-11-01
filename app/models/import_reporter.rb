@@ -12,15 +12,17 @@ class ImportReporter < MonitoringMailer
 
   private
 
-  def generate_subject(delta_stats)
+  def generate_subject(delta_stats, expected_items)
     item_stats = delta_stats[ModelStat::ITEM]
-    "Import #{result(item_stats)} #{pretty_delta(item_stats)}"
+    "Import #{result(item_stats, expected_items)} #{pretty_delta(item_stats)}"
   end
 
-  def result(record_stats)
+  def result(record_stats, expected_items)
     delta = record_stats[:delta]
 
-    if delta.nil?
+    if record_stats[:count] < expected_items
+      "WARNING expected #{expected_items} items"
+    elsif delta.nil?
       "OK first time"
     elsif (delta-1).abs < 0.05
       "OK"
@@ -43,9 +45,9 @@ class ImportReporter < MonitoringMailer
   end
 
   # mailer template function
-  def delta(import_duration_seconds)
+  def delta(import_duration_seconds, expected_items)
     delta_stats = ModelStat.generate_delta
-    subject = generate_subject(delta_stats)
+    subject = generate_subject(delta_stats, expected_items)
 
     setup_mail(subject, :content => generate_body(delta_stats, import_duration_seconds))
   end

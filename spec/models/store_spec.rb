@@ -10,6 +10,8 @@ describe Store do
 
     @importer = mock(StoreImporter).as_null_object
     StoreImporter.stub(:new).and_return(@importer)
+
+    Store.stub(:maximum).with(:expected_items).and_return(0)
   end
 
   it "should create a new instance given valid attributes" do
@@ -58,12 +60,21 @@ describe Store do
       Store.import
     end
 
-    it "should deliver an import report email" do
+    it "should deliver an import report email with time spent" do
       start_time = Time.local(2011, 10, 29, 16, 30, 24)
       end_time = Time.local(2011, 10, 29, 17, 48, 12)
       Store.stub(:now).and_return(start_time, end_time)
 
-      ImportReporter.should_receive(:deliver_delta).with(end_time - start_time)
+      ImportReporter.should_receive(:deliver_delta).with(end_time - start_time, anything)
+
+      Store.import
+    end
+
+    it "should deliver an import report email" do
+      expected_items = 3000
+      Store.stub(:maximum).with(:expected_items).and_return(expected_items)
+
+      ImportReporter.should_receive(:deliver_delta).with(anything, expected_items)
 
       Store.import
     end

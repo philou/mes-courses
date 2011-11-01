@@ -33,7 +33,7 @@ class Store < ActiveRecord::Base
       raise
     end
 
-    ImportReporter.deliver_delta(now - start_time)
+    ImportReporter.deliver_delta(now - start_time, Store.maximum(:expected_items))
   end
 
   # short name for the store
