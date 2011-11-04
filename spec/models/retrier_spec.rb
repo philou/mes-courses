@@ -11,7 +11,7 @@ describe Retrier do
     @max_retries = 3
     @ignored_exception = IOError
     @sleep_delay = 10
-    @options = { :max_retries => @max_retries, :ignored_exceptions => [@ignored_exception], :sleep_delay => @sleep_delay }
+    @options = { :max_retries => @max_retries, :ignored_exceptions => [@ignored_exception], :sleep_delay => @sleep_delay, :wrap_result => [:property, :properties] }
     @retrier = Retrier.new(@wrapped, @options)
     @retrier.stub(:sleep)
   end
@@ -29,34 +29,36 @@ describe Retrier do
     @retrier.complex_op(*args)
   end
 
-  it "should wrap the results in a new retrier" do
-    @wrapped.stub(:property).and_return(:result)
-    Retrier.stub(:new).with(:result, @options).and_return(:wrapped_result)
+  it "should return the result of the call to the wrapped object" do
+    @wrapped.stub(:attribute).and_return(:raw_result)
 
-    @retrier.property.should == :wrapped_result
+    @retrier.attribute.should == :raw_result
   end
 
-  it "should not wrap nil result" do
-    @wrapped.stub(:property).and_return(nil)
+  context "when message is to be wrapped" do
 
-    @retrier.property.should be_nil
-  end
+    it "should wrap the results of in a new retrier" do
+      @wrapped.stub(:property).and_return(:result)
+      Retrier.stub(:new).with(:result, @options).and_return(:wrapped_result)
 
-  it "should wrap array results in a new array of retriers" do
-    properties = [:a, :b, :c]
-    @wrapped.stub(:properties).and_return(properties)
-    Retrier.stub(:new).with(:a, @options).and_return(:wrapped_a)
-    Retrier.stub(:new).with(:b, @options).and_return(:wrapped_b)
-    Retrier.stub(:new).with(:c, @options).and_return(:wrapped_c)
+      @retrier.property.should == :wrapped_result
+    end
 
-    @retrier.properties.should == [:wrapped_a, :wrapped_b, :wrapped_c]
-  end
+    it "should not wrap nil result" do
+      @wrapped.stub(:property).and_return(nil)
 
-  it "should not wrap hash results" do
-    attributes = { :a => "aaa"}
-    @wrapped.stub(:attributes).and_return(attributes)
+      @retrier.property.should be_nil
+    end
 
-    @retrier.attributes.should be attributes
+    it "should wrap array results in a new array of retriers" do
+      properties = [:a, :b, :c]
+      @wrapped.stub(:properties).and_return(properties)
+      Retrier.stub(:new).with(:a, @options).and_return(:wrapped_a)
+      Retrier.stub(:new).with(:b, @options).and_return(:wrapped_b)
+      Retrier.stub(:new).with(:c, @options).and_return(:wrapped_c)
+
+      @retrier.properties.should == [:wrapped_a, :wrapped_b, :wrapped_c]
+    end
   end
 
   it "should retry the specified times in case of exception" do

@@ -12,7 +12,7 @@ class Store < ActiveRecord::Base
   validates_uniqueness_of :url
 
   def self.import_retrier_options
-    { :max_retries => 5, :ignored_exceptions => [StoreItemsBrowsingError], :sleep_delay => 3 }
+    { :max_retries => 5, :ignored_exceptions => [StoreItemsBrowsingError], :sleep_delay => 3, :wrap_result => [:categories, :items] }
   end
 
   # import all stores, or the one specified with url

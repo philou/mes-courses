@@ -4,17 +4,17 @@ class Retrier
 
   def initialize(wrapped, options = {} )
     @wrapped = wrapped
-    @options = { :max_retries => 1, :ignored_exceptions => [], :sleep_delay => 0}.merge(options)
+    @options = { :max_retries => 1, :ignored_exceptions => [], :sleep_delay => 0, :wrap_result => [] }.merge(options)
   end
 
   def method_missing(method_sym, *args)
-    wrap_result(send_to_wrapped(method_sym, args))
+    wrap_result(method_sym, send_to_wrapped(method_sym, args))
   end
 
   private
 
-  def wrap_result(result)
-    if result.nil? || result.instance_of?(Hash)
+  def wrap_result(method_sym, result)
+    if !@options[:wrap_result].include?(method_sym) || result.nil?
       return result
 
     elsif result.instance_of?(Array)
