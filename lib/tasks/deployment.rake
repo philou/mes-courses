@@ -39,16 +39,20 @@ module DeploymentHelpers
 
   def DeploymentHelpers.with_confirmation(task_summary)
     puts "Are you sure you want to #{task_summary} ? (y/n)"
-    if y_or_n(gets)
+    answer = STDIN.readline
+    if y_or_n?(answer)
       yield
     end
   end
 
   def DeploymentHelpers.with_timing
     start_time = Time.now
-    yield
-    duration = Time.at(Time.now - start_time)
-    puts duration.strftime("\nTook %H:%M:%S")
+    begin
+      yield
+    ensure
+      duration = Time.at(Time.now - start_time)
+      puts duration.strftime("\nTook %H:%M:%S")
+    end
   end
 
   def DeploymentHelpers.import_tester_apps
@@ -57,6 +61,7 @@ module DeploymentHelpers
   def DeploymentHelpers.test_and_integration_apps
     import_tester_apps + ["mes-courses-cart-tester", "mes-courses-integ"]
   end
+
 end
 
 namespace :mes_courses do
@@ -79,7 +84,7 @@ namespace :mes_courses do
         DeploymentHelpers::pull "dev"
 
         puts "\nRunning integration script"
-        Rake::Task['behaviours']
+        Rake::Task['behaviours'].invoke
 
         puts "\nPushing to main source repository"
         DeploymentHelpers::push "main"
