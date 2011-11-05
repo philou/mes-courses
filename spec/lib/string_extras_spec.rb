@@ -12,3 +12,7 @@ describe "String extras" do
   end
 
 end
+
+
+describe MissingClass do
+end
