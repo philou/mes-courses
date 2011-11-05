@@ -8,12 +8,14 @@ use RSS and feedburner to send newsletter
 
 TODO
 ----
+Speed up deployment when integrating : in parallel, or asynchronously on another server
 Website:
-Rewrite all deployment scripts with rake (push, push to testers, integrate ...)
 add a foreign key from cart_lines -> items
  - move items to a new category instead of deleting them, fix global item search
  - or version the items : check that it will not be too big
-upgrade gems
+upgrade gems 'bundle update' before starting any dev !
+ - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
+ - add a rake task to upgrate + test
 migrer à rails 3
 Use tags to segregate remote specs and features
 Write scripts
@@ -22,9 +24,10 @@ Write scripts
    - a rake setup task in the project to install all dependencies with bundler and apt-get
    - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
-Install windows and all browsers in a VirtuaBox
+Install windows and all browsers with VirtuaBox
 
 CMS:
+factorize pull-cms and push-cms scripts in deployment.rake
 
 Spikes :
 Should we use rake scripts instead of sh scripts ?
