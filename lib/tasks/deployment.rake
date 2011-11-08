@@ -106,4 +106,11 @@ namespace :mes_courses do
     end
   end
 
+  desc "prints the names of all test and integration apps (launch with rake -s to get rid of the 'in directory' announcement)"
+  task :test_and_integration_apps do
+    DeploymentHelpers::test_and_integration_apps.each do |app|
+      puts app
+    end
+  end
+
 end

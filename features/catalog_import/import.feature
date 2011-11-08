@@ -8,7 +8,7 @@ Feature: Catalog import
   Scenario: Importing items sold on a store
     Given the "www.dummy-store.com" store
     When  items from the store are imported
-    Then  there should be some items for sale
+    Then  all items from the store should have been imported
 
   Scenario: Importing items with the same name
     Given the "www.dummy-store.com" store
