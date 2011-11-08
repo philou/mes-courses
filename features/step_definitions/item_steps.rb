@@ -11,11 +11,6 @@ Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ 
   @item.save!
 end
 
-
-Then /^there should be some items for sale$/ do
-  Item.should have_at_least(8).records
-end
-
 Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name|
   Item.count(:conditions => {:name => name}).should == count.to_i
 end
