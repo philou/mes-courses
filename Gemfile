@@ -4,8 +4,6 @@ gem "rails", "2.3.8"
 gem "mechanize", "1.0.0"
 gem "nokogiri", "1.4.4"
 gem "super_exception_notifier", "3.0.13"
-# explicit version needed for heroku
-gem "daemons", "~> 1.1.0"
 gem "delayed_job"
 gem "hirefire", "~> 0.1.4", :groups => [:development, :production]
 gem "heroku", "~> 2.5.2"

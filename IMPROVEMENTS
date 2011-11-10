@@ -11,6 +11,7 @@ TODO
 Website:
 Speed up deployment when integrating : in parallel, or asynchronously on another server
 Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
+if integrating versions change (ex of cucumber) it can fail and has to be launched again -> Maybe I should use a ruby script instead of a rake task ... ?
 add a foreign key from cart_lines -> items
  - move items to a new category instead of deleting them, fix global item search
  - or version the items : check that it will not be too big
@@ -24,6 +25,7 @@ Write scripts
    - a sh script in the dropbox to install git, ruby, gems, bundler and rake
    - a rake setup task in the project to install all dependencies with bundler and apt-get
    - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
+migrer vers ruby 1.9
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
 Install windows and all browsers with VirtuaBox
 
