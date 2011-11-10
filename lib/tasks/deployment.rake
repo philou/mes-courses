@@ -8,6 +8,14 @@ module DeploymentHelpers
     end
   end
 
+  def DeploymentHelpers.bundle(subcommand)
+    shell "bundle #{subcommand}"
+  end
+
+  def DeploymentHelpers.bundled_rake(task)
+    bundle "exec rake #{task}"
+  end
+
   def DeploymentHelpers.pull(repo)
     shell "git pull #{repo} master"
   end
@@ -83,8 +91,11 @@ namespace :mes_courses do
         puts "\nPulling latest developments"
         DeploymentHelpers::pull "dev"
 
+        puts "\nInstalling dependencies"
+        DeploymentHelpers::bundle "install"
+
         puts "\nRunning integration script"
-        Rake::Task['behaviours'].invoke
+        DeploymentHelpers::bundled_rake "behaviours"
 
         puts "\nPushing to main source repository"
         DeploymentHelpers::push "main"

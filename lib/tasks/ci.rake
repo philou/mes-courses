@@ -6,7 +6,6 @@ task :behaviours => [:ci, 'db:drop', 'db:create', 'db:migrate', :spec, :cucumber
 desc "Sets rails in ci mode"
 task :ci do
   ENV['RAILS_ENV'] = RAILS_ENV = 'ci'
-  sh "bundle install"
 end
 
 desc "Tasks that launches the remote specs and emails a result"
