@@ -5,7 +5,7 @@ namespace :stores do
   desc "Inserts the www.auchandirect.fr store in the DB"
   task :create_auchan_direct => :environment do
     if Store.find_by_url(AuchanDirectStoreCartAPI.url).nil?
-      Store.create(:ur => AuchanDirectStoreCartAPI.url, :exepected_items => 7000)
+      Store.create(:ur => AuchanDirectStoreCartAPI.url, :expected_items => 7000)
     end
   end
 

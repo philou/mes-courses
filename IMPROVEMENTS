@@ -4,14 +4,12 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-use RSS and feedburner to send newsletter
 
 TODO
 ----
 Website:
 Speed up deployment when integrating : in parallel, or asynchronously on another server
 Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
-if integrating versions change (ex of cucumber) it can fail and has to be launched again -> Maybe I should use a ruby script instead of a rake task ... ?
 add a foreign key from cart_lines -> items
  - move items to a new category instead of deleting them, fix global item search
  - or version the items : check that it will not be too big
@@ -40,6 +38,10 @@ Rspec-spies + .ordered, try to add it (wait for rspec 2)
 Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
 Evaluer les tests avec moins de mock
 try to launch ci on heroku (might be a problem with db drop ...)
+
+Kanban:
+Simplify marketing metrics and use metrics of the pirates
+
 
 Ongoing changes :
 Upgrade gems before every feature
