@@ -18,6 +18,7 @@ class ImportReporter < MonitoringMailer
   end
 
   def result(record_stats, expected_items)
+    expected_items ||= 0
     delta = record_stats[:delta]
 
     if record_stats[:count] < expected_items

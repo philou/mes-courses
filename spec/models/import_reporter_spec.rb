@@ -35,6 +35,13 @@ shared_examples_for "Any ImportReporter" do
     @subject.should_not include("OK")
   end
 
+  it "should have a subjet containing \"OK\" when there are no stores to import" do
+    send_monitoring_email(@total_duration, nil)
+
+    @subject.should include("OK")
+    @subject.should_not include("WARNING")
+  end
+
   it "should contain a line describing the delta of each record type" do
     send_monitoring_email
 
