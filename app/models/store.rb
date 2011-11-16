@@ -17,23 +17,24 @@ class Store < ActiveRecord::Base
 
   # import all stores, or the one specified with url
   def self.import(url = nil)
-    ModelStat::update!
-    start_time = now
+    Timing.duration_of do |timer|
+      ModelStat::update!
 
-    begin
-      stores = stores_to_import(url)
-      Rails.logger.info "Importing #{stores.length.to_s} stores"
-      stores.each do |store|
-        Rails.logger.info "Importing items from #{store.url}"
-        store.import
-        Rails.logger.info "Done"
+      begin
+        stores = stores_to_import(url)
+        Rails.logger.info "Importing #{stores.length.to_s} stores"
+        stores.each do |store|
+          Rails.logger.info "Importing items from #{store.url}"
+          store.import
+          Rails.logger.info "Done"
+        end
+      rescue Exception => e
+        Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
+        raise
       end
-    rescue Exception => e
-      Rails.logger.fatal "Import unexpectedly stoped with exception #{e.inspect}"
-      raise
-    end
 
-    ImportReporter.deliver_delta(now - start_time, Store.maximum(:expected_items))
+      ImportReporter.deliver_delta(timer.seconds, Store.maximum(:expected_items))
+    end
   end
 
   # short name for the store
@@ -131,11 +132,6 @@ class Store < ActiveRecord::Base
   end
 
   private
-  # Time.now synonym, used for mocking
-  def self.now
-    Time.now
-  end
-
   # array of stores to import, according to the 'url' environment variable
   def self.stores_to_import(url = nil)
     if url.nil?

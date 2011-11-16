@@ -1,6 +1,7 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
 require 'action_view/helpers/number_helper'
+require 'lib/time_span_helper'
 
 # Object responsible for mailing an import report
 class ImportReporter < MonitoringMailer
@@ -59,7 +60,7 @@ class ImportReporter < MonitoringMailer
       "#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{pretty_delta(record_stats)}"
     end
 
-    lines.push(Time.at(import_duration_seconds).strftime("Import took : %H:%M:%S"))
+    lines.push("Import took : #{import_duration_seconds.to_pretty_duration}")
     lines.push("Logs : #{safe_heroku_logs}}")
 
     lines.join("\n")

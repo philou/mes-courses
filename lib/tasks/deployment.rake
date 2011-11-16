@@ -54,12 +54,12 @@ module DeploymentHelpers
   end
 
   def DeploymentHelpers.with_timing
-    start_time = Time.now
-    begin
-      yield
-    ensure
-      duration = Time.at(Time.now - start_time)
-      puts duration.strftime("\nTook %H:%M:%S")
+    Timing.duration_of do |timer|
+      begin
+        yield
+      ensure
+        puts "\nTook #{timer.seconds.to_pretty_duration}"
+      end
     end
   end
 

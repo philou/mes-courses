@@ -54,7 +54,7 @@ shared_examples_for "Any ImportReporter" do
   it "should contain a line with the total import duration" do
     send_monitoring_email
 
-    @body.should include(Time.at(@total_duration).strftime("Import took : %H:%M:%S"))
+    @body.should include("Import took : #{@total_duration.to_pretty_duration}")
   end
 
   should_contain_the_logs
