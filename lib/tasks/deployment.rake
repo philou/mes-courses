@@ -1,5 +1,7 @@
 # Copyright (C) 2011 by Philippe Bourgau
 
+require 'lib/time_span_helper'
+
 module DeploymentHelpers
 
   def DeploymentHelpers.shell(command)
