@@ -6,8 +6,9 @@ Feature: Cart quantities and prices
 
   Scenario: Different items are in the cart
     Given there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
-    And   there are "PdT Charlottes" in the cart
     And   there is a "Viandes > Boeuf > Bavette" item at 4.0€
+    And   I am logged in
+    And   there are "PdT Charlottes" in the cart
     And   there is "Bavette" in the cart
     When  I go to the cart page
     Then  I should see "PdT Charlottes"
@@ -16,6 +17,7 @@ Feature: Cart quantities and prices
 
   Scenario: Many identical items are in the cart
     Given there is a "Viandes > Boeuf > Bavette" item at 3.0€
+    And   I am logged in
     And   there are 2 "Bavette" in the cart
     When  I go to the cart page
     Then  I should see "2"
@@ -23,8 +25,9 @@ Feature: Cart quantities and prices
 
   Scenario: Emptying the cart
     Given there is a "Viandes > Boeuf > Bavette" item at 3.0€
-    And   there are 2 "Bavette" in the cart
     And   there is a "Marché > Légumes > Tomates" item at 2.4€
+    And   I am logged in
+    And   there are 2 "Bavette" in the cart
     And   there are 1 "Tomates" in the cart
     And   I am on the cart page
     When  I press "Vider le panier"

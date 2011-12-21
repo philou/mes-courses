@@ -4,44 +4,49 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
+migrer vers ruby 1.9
 
 TODO
 ----
-Website:
-Speed up deployment when integrating : in parallel, or asynchronously on another server
-Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
-add a foreign key from cart_lines -> items
- - move items to a new category instead of deleting them, fix global item search
- - or version the items : check that it will not be too big
 upgrade gems 'bundle update' before starting any dev !
  - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
  - add a rake task to upgrate + test
 migrer à rails 3
+find a way to subclass Devise::SessionsController without cut-and-paste
+Understand why capybara is now prefered to web steps
+ - read this : http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off
+ - upgrade our cucumber steps
+Website:
+- use heroku daily backup instead of our duck tape solution
+- Speed up deployment when integrating : in parallel, or asynchronously on another server
+- Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
+add a foreign key from cart_lines -> items
+ - move items to a new category instead of deleting them, fix global item search
+ - or version the items : check that it will not be too big
 Use tags to segregate remote specs and features
 Write scripts
    - see radiant:upgrade task to see how they managed an update or even git ops through rake
-   - a sh script in the dropbox to install git, ruby, gems, bundler and rake
+   - a sh script in the dropbox to install git, compile ruby and gems
+   - a script in the project to compile gems, and then gem install bundler and rake
    - a rake setup task in the project to install all dependencies with bundler and apt-get
-   - in order to get a single entry point, check to see if push.sh, pull-cms.sh and push-cms.sh could be moved to rake tasks
-migrer vers ruby 1.9
-Put everything in the repo : thirdparties source code, dev tools, follow up, marketing …
+Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
 Install windows and all browsers with VirtuaBox
+Make a web site where one can check logs of heroku apps
 
 CMS:
 factorize pull-cms and push-cms scripts in deployment.rake
 
 Spikes :
-Should we use rake scripts instead of sh scripts ?
 2 way associations in active record
 How to control accessibility in models
 Rspec-spies + .ordered, try to add it (wait for rspec 2)
 Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
-Evaluer les tests avec moins de mock
+Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
 try to launch ci on heroku (might be a problem with db drop ...)
 
 Kanban:
 Simplify marketing metrics and use metrics of the pirates
-
+Simplify the milestones and planning ... it must be automatic
 
 Ongoing changes :
 Upgrade gems before every feature

@@ -6,6 +6,8 @@ require 'lib/array_extras'
 describe ItemCategoriesController do
   include ApplicationHelper
 
+  ignore_user_authentication
+
   before :each do
     ItemCategory.stub(:root).and_return(stub_model(ItemCategory, :name => ItemCategory::ROOT_NAME, :items => []))
 

@@ -4,16 +4,27 @@ Feature: Path bar
   A customer
   Wants to have a path bar at the top of each page
 
-  Scenario: Path bar in dishes
-    When I go to the full dish catalog page
+  Scenario: Path bar before login
+    When I go to the login page
     Then The path bar should be
+      """
+      a link "Connection" to the login page
+      """
+
+
+
+  Scenario: Path bar in dishes
+    Given I am logged in
+    When  I go to the full dish catalog page
+    Then  The path bar should be
       """
       a link "Recettes" to the full dish catalog page
       """
 
   Scenario: Path bar for new dishes
-    When I go to the dish creation page
-    Then The path bar should be
+    Given I am logged in
+    When  I go to the dish creation page
+    Then  The path bar should be
       """
       a link "Recettes" to the full dish catalog page
       a link "Nouvelle recette" to the dish creation page
@@ -21,6 +32,7 @@ Feature: Path bar
 
   Scenario: Path bar for existing dishes
     Given there is a dish "Lasagnes"
+    And   I am logged in
     When  I go to the "Lasagnes" dish page
     Then  The path bar should be
       """
@@ -31,6 +43,7 @@ Feature: Path bar
   Scenario: Path bar when adding items to a dish
     Given there is a dish "Cake aux olives"
     And   there is a "Marché" item category
+    And   I am logged in
     When  I go to the "Cake aux olives" dish "Marché" item category page
     Then  The path bar should be
       """
@@ -43,14 +56,16 @@ Feature: Path bar
 
 
   Scenario: Path bar in cart
-    When I go to the cart page
-    Then The path bar should be
+    Given I am logged in
+    When  I go to the cart page
+    Then  The path bar should be
       """
       a link "Panier" to the cart page
       """
 
   Scenario: Path bar when forwarding the cart
     Given the "www.dummy-store.fr" store
+    And   I am logged in
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
@@ -63,14 +78,16 @@ Feature: Path bar
 
 
   Scenario: Path bar in root item category
-    When I go to the item categories page
-    Then The path bar should be
+    Given I am logged in
+    When  I go to the item categories page
+    Then  The path bar should be
       """
       a link "Ingrédients" to the item categories page
       """
 
   Scenario: Path bar in child item categories
     Given there is a "Produits laitiers > Fromages" item sub category
+    And   I am logged in
     When  I go to the "Fromages" item sub category page
     Then  The path bar should be
       """
@@ -81,6 +98,7 @@ Feature: Path bar
 
   Scenario: Path bar in item searches
     Given there is a "Produits laitiers" item category
+    And   I am logged in
     And   I am on the "Produits laitiers" item category page
     When  I search for "Camembert"
     Then  The path bar should be

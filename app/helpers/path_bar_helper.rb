@@ -30,4 +30,8 @@ module PathBarHelper
     path_bar_element("Panier", cart_lines_path)
   end
 
+  def path_bar_session_root
+    path_bar_element("Connection", new_user_session_path)
+  end
+
 end

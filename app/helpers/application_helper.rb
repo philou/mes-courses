@@ -5,15 +5,6 @@ module ApplicationHelper
   include HerokuHelper
   include PathBarHelper
 
-  # returns an https url (ignored localy, piggyback on heroku)
-  def https_url_for(params = {})
-    if on_heroku?
-      url_for( {:protocol => 'https', :host => "#{app_name}.heroku.com"}.merge(params))
-    else
-      url_for(params)
-    end
-  end
-
   # path for a category, defaults to the main browser for a nil or new category
   def any_item_category_path(*args)
     root_category_path = item_categories_path

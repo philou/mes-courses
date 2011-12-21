@@ -15,6 +15,12 @@ describe "layouts/application.html.erb" do
     response.should contain notice
   end
 
+  it "should render flash[:alert]" do
+    flash[:alert] = alert = "Something went really bad ..."
+    render
+    response.should contain alert
+  end
+
   it "should render the link in a @path_bar element" do
     text = "Promotions !"
     controller = "cart_lines"
@@ -55,6 +61,15 @@ describe "layouts/application.html.erb" do
     render
 
     response.should have_xpath("//meta[@http-equiv='refresh']")
+  end
+
+  it "should display the assigned session place" do
+    text = assigns[:session_place_text] = "Sign in"
+    url = assigns[:session_place_url] = "/sign_in_now"
+
+    render
+
+    response.should have_place(:text => text, :url => url)
   end
 
 end

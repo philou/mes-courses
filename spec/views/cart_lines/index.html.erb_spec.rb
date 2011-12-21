@@ -50,7 +50,7 @@ describe "cart_lines/index.html.erb" do
   it "displays a store forwarding forms" do
     @stores.each do |store|
       response.should have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
-                                 "[starts-with(@action, '#{https_url_for(:controller => 'orders', :action => 'create')}')]" +
+                                 "[starts-with(@action, '#{url_for(:controller => 'orders', :action => 'create')}')]" +
                                  "[contains(@action, 'store_id=#{store.id}')]" +
                                  "[contains(@action, 'cart_id=#{@cart.id}')]")
     end

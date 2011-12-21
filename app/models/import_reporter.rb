@@ -38,7 +38,7 @@ class ImportReporter < MonitoringMailer
     if delta.nil?
       "+#{item_stats[:count]} records"
     else
-      result = number_to_percentage(100 * (delta - 1), :precision => 2)
+      result = number_to_percentage(100 * (delta - 1), :precision => 2, :separator => '.')
       if 1 <= delta
         result = '+' + result
       end

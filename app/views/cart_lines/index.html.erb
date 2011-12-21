@@ -23,7 +23,7 @@
   <div class="section">
     <span class="section-title">Passer cette commande sur <%=h store.name %></span>
     <p> Entrez vos identifiant et mot de passe <%=h store.name %></p>
-    <% form_for :store, :url => https_url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
+    <% form_for :store, :url => url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
       <span>Identifiant:</span>
       <%= form.text_field "login", :size => 40 %> </input>
       <span>Mot de passe:</span>

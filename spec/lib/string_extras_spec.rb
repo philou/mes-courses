@@ -5,10 +5,10 @@ require 'lib/string_extras'
 describe "String extras" do
 
   it "starts_with? should work" do
-    "Nice weather today".starts_with?("Nice").should == true
-    "Bad weather today".starts_with?("Nice").should == false
-    "Whatever".starts_with?("").should == true
-    "Sunny weather today".starts_with?("Sunny t").should == false
+    "Nice weather today".should be_starting_with("Nice")
+    "Bad weather today".should_not be_starting_with("Nice")
+    "Whatever".should be_starting_with("")
+    "Sunny weather today".should_not be_starting_with("Sunny t")
   end
 
 end

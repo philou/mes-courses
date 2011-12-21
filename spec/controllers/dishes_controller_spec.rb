@@ -3,6 +3,8 @@ require 'spec_helper'
 describe DishesController do
   include PathBarHelper
 
+  ignore_user_authentication
+
   describe 'GET index' do
     before :each do
       @all_dishes = [Dish.new(:name => "Salade de tomates"), Dish.new(:name => "Boeuf bourguignon")]

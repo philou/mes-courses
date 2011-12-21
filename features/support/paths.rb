@@ -14,6 +14,10 @@ module NavigationHelpers
       "#{response.env['PATH_INFO']}?#{response.env['QUERY_STRING']}"
     when /the home\s?page/
       '/'
+    when /the login page/
+      new_user_session_path
+    when /logout/
+      destroy_user_session_path
     when /the cart page/
       cart_lines_path
     when /the full dish catalog page/

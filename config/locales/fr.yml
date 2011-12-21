@@ -1,0 +1,13 @@
+# Localization file for French. Add more files in this directory for other locales.
+# See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+fr:
+  number:
+    format:
+      separator: ","
+      precision: 3
+      delimiter: " "
+  helpers:
+    label:
+      user:
+        password: 'Mot de passe'

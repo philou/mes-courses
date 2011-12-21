@@ -6,6 +6,7 @@ Feature: Cart Forwarding
 
   Scenario: An empty cart is forwarded to the store
     Given the "www.dummy-store.fr" store
+    And   I am logged in
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
@@ -15,6 +16,7 @@ Feature: Cart Forwarding
   Scenario: A real cart is forwarded to the store
     Given the "www.dummy-store.fr" store
     And   there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
+    And   I am logged in
     And   there are "PdT Charlottes" in the cart
     And   I am on the cart page
     And   I entered valid store account identifiers
@@ -24,6 +26,7 @@ Feature: Cart Forwarding
 
   Scenario: A customer is redirected to a report page after his cart is forwarded
     Given the "www.dummy-store.fr" store
+    And   I am logged in
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
@@ -34,6 +37,7 @@ Feature: Cart Forwarding
 
   Scenario: Failure due to invalid login-password
     Given the "www.dummy-store.fr" store
+    And   I am logged in
     And   I am on the cart page
     And   I entered invalid store account identifiers
     When  I press "Transférer le panier"
@@ -44,8 +48,9 @@ Feature: Cart Forwarding
   Scenario: A cart with unavailable items is forwarded to the store
     Given the "www.dummy-store.fr" store
     And   there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
-    And   there are "PdT Charlottes" in the cart
     And   "PdT Charlottes" are unavailable in the store
+    And   I am logged in
+    And   there are "PdT Charlottes" in the cart
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
@@ -54,6 +59,7 @@ Feature: Cart Forwarding
 
   Scenario: The customer sees a work in progress page during the cart transfer
     Given the "www.dummy-store.fr" store
+    And   I am logged in
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"

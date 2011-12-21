@@ -4,6 +4,8 @@ require 'spec_helper'
 
 describe ItemsController do
 
+  ignore_user_authentication
+
   before :each do
     @new_item = stub_model(Item, :name => "Chocolat noir à dessert")
     Item.stub!(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)

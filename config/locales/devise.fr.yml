@@ -1,0 +1,39 @@
+# Copyright (C) 2011 by Philippe Bourgau
+
+# TODO une fois sur rails 3, il y a des traduction ~officielles~ en français sur le wiki de devise
+
+fr:
+  devise:
+    sessions:
+      link: 'Connection'
+      signed_in: 'Connection réussie.'
+      signed_out: 'Déconnection réussie.'
+      unauthenticated: 'Vous devez vous connecter ou créer un compte pour continuer.'
+      unconfirmed: 'Vous devez confirmer votre compte pour continuer.'
+      locked: 'Votre compte est bloqué.'
+      invalid: 'Email ou mot de passe invalide.'
+      invalid_token: "Jeton d'authentification invalide."
+      timeout: 'Votre session a expirée, connectez vous pour continuer.'
+      inactive: "Votre compte n'est pas encore activé."
+    passwords:
+      link: 'Mot de passe oublié?'
+      send_instructions: 'Vous allez recevoir un email avec les instructions pour réinitialiser votre mot de passe dans quelques minutes.'
+      updated: 'Votre mot de passe à été modifié avec succés.Vous êtes maintenant connecté.'
+    confirmations:
+      link: "Vous n'avez pas reçu les instructions pour confirmer votre compte?"
+      send_instructions: 'Vous allez recevoir un email avec les instructions pour confirmer votre compte dans quelques minutes.'
+      confirmed: 'Votre compte a été confirmé avec succés, Vous êtes maintenant connecté.'
+    registrations:
+      link: 'Créer un compte'
+      signed_up: 'Vous avez créer un compte avec succés. Si activée, une confirmation vous a été envoyée par email.'
+      updated: 'Vous avez mis à jour votre compte avec succés.'
+      destroyed: 'Votre compte a été annulé avec succés. Nous espérons vous revoir bientôt.'
+    unlocks:
+      link: "Vous n'avez pas reçu les instructions pour débloquer votre compte?"
+      send_instructions: 'Vous allez recevoir un email avec les instructions pour débloquer votre compte dans quelques minutes.'
+      unlocked: 'Votre compte a été débloqué avec succés. Vous êtes maintenant connecté.'
+    mailer:
+      confirmation_instructions: 'Instructions pour confirmer votre compte'
+      reset_password_instructions: 'Instructions pour réinitialiser votre mot de passe'
+      unlock_instructions: 'Instruction pour débloquer votre compte'
+

@@ -6,6 +6,7 @@ Feature: Dish buying
 
   Scenario: Adding a dish to the cart
     Given there is a dish "Pates au Saumon"
+    And   I am logged in
     And   I am on the full dish catalog page
     When  I press "Ajouter au panier"
     Then  there should be "Pates" in my cart

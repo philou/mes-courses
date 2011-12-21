@@ -35,6 +35,8 @@ GEM
     delayed_job (2.0.7)
       activesupport (~> 2.0)
       daemons (= 1.0.10)
+    devise (1.0.11)
+      warden (~> 0.10.3)
     diff-lcs (1.1.3)
     factory_girl (1.2.4)
     fattr (2.2.0)
@@ -81,10 +83,13 @@ GEM
     sqlite3 (1.3.4)
     sqlite3-ruby (1.3.3)
       sqlite3 (>= 1.3.3)
+    ssl_requirement (0.1.0)
     super_exception_notifier (3.0.13)
       actionmailer
       rake
     term-ansicolor (1.0.7)
+    warden (0.10.7)
+      rack (>= 1.0.0)
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -100,6 +105,7 @@ DEPENDENCIES
   cucumber-rails (= 0.3.2)
   database_cleaner (= 0.5.2)
   delayed_job
+  devise (~> 1.0.11)
   factory_girl (= 1.2.4)
   foreigner (~> 0.9.2)
   heroku (~> 2.5.2)
@@ -112,5 +118,6 @@ DEPENDENCIES
   rspec-rails (= 1.3.2)
   rspec-spies (= 1.2.9)
   sqlite3-ruby
+  ssl_requirement
   super_exception_notifier (= 3.0.13)
   webrat (= 0.7.1)

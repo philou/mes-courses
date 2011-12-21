@@ -37,6 +37,8 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
 
+  map.devise_for :users
+
   map.resources :item_categories
 
   map.resources :dishes, :has_many => [:item_categories, :items]
@@ -51,10 +53,5 @@ ActionController::Routing::Routes.draw do |map|
     map.test ':controller/:action/:id'
     map.test ':controller/:action/:id.:format'
   end
-
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing or commenting them out if you're using named routes and resources.
-  #  map.default ':controller/:action/:id'
-  #  map.default ':controller/:action/:id.:format'
 
 end

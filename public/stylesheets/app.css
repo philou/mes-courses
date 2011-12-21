@@ -40,7 +40,7 @@ div.section p {
 }
 
 /* Store error notices to users */
-div.notice {
+div.notice div.alert{
     border: 2px solid red;
     padding: 1em;
     margin: 2em 0;

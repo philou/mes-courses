@@ -5,6 +5,8 @@ require 'spec_helper'
 describe CartLinesController do
   include PathBarHelper
 
+  ignore_user_authentication
+
   before(:each) do
     @cart = stub_model(Cart)
     @cart.stub(:save!)

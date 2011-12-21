@@ -1,0 +1,12 @@
+# Copyright (C) 2011 by Philippe Bourgau
+
+class SessionsController < ApplicationController
+
+  before_filter :assign_path_bar
+
+  def assign_path_bar
+    Rails.logger.info 'Assigning path bar from SessionsController'
+    path_bar = ["toto"]
+  end
+
+end

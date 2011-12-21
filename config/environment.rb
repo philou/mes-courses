@@ -46,14 +46,16 @@ Rails::Initializer.run do |config|
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  # config.i18n.default_locale = :de
+  config.i18n.default_locale = :fr
 
   # Send emails from heroku
   if !on_heroku?
     config.action_mailer.delivery_method = :test
+    config.action_mailer.default_url_options = { :host => 'localhost' }
 
   else
     config.action_mailer.delivery_method = :smtp
+    config.action_mailer.default_url_options = { :host => "#{app_name}.heroku.com" }
     ActionMailer::Base.smtp_settings = {
       :address        => 'smtp.sendgrid.net',
       :port           => '25',
