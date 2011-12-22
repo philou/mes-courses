@@ -4,25 +4,24 @@ Feature: Places bar
   A customer
   Wants the current section at the top of the page to be styled
 
-  Scenario: Body id in dishes
+  Scenario: Place in dishes
     Given I am logged in
     When  I go to the full dish catalog page
-    And   I go to the full dish catalog page
-    Then  the body id should be "dish"
+    Then  the place "Recettes" should be highlighted
 
   Scenario: Body id in cart
     Given I am logged in
     When  I go to the cart page
-    Then  the body id should be "cart"
+    Then  the place "Panier" should be highlighted
 
   Scenario: Body id in root item category
     Given I am logged in
     When  I go to the item categories page
-    Then  the body id should be "items"
+    Then  the place "Ingrédients" should be highlighted
 
   Scenario: Body id when loging in
     When I go to the login page
-    Then the body id should be "session"
+    Then  the place "Connection" should be highlighted
 
   Scenario: Places bar before login
     When I go to the login page
