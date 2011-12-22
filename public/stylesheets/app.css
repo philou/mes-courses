@@ -40,13 +40,21 @@ div.section p {
 }
 
 /* Store error notices to users */
-div.notice div.alert{
-    border: 2px solid red;
+div.notice, div.alert{
+    border: 2px solid;
     padding: 1em;
     margin: 2em 0;
+    font-weight: bold;
+}
+div.alert{
+    border-color: red;
     background-color: #FFA0A0;
     color: white;
-    font-weight: bold;
+}
+div.notice {
+    border-color: green;
+    background-color: #A0FFA0;
+    color: green;
 }
 
 /* search panel */
