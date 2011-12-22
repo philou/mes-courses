@@ -25,6 +25,7 @@ add a foreign key from cart_lines -> items
  - or version the items : check that it will not be too big
 Use tags to segregate remote specs and features
 Write scripts
+   - move scripts that don't change the db or the app env in script/XXX
    - see radiant:upgrade task to see how they managed an update or even git ops through rake
    - a sh script in the dropbox to install git, compile ruby and gems
    - a script in the project to compile gems, and then gem install bundler and rake
@@ -43,6 +44,7 @@ Rspec-spies + .ordered, try to add it (wait for rspec 2)
 Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
 Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
 try to launch ci on heroku (might be a problem with db drop ...)
+see how to test ssl requirements in cucumber and/or local dev
 
 Kanban:
 Simplify marketing metrics and use metrics of the pirates

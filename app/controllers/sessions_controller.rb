@@ -51,7 +51,7 @@ end
 class SessionsController
   include PathBarHelper
 
-  ssl_required :create
+  ssl_required :create, :new
   before_filter :assign_path_bar
 
   private
