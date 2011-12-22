@@ -15,7 +15,7 @@ describe Password do
 
   it "generates password with the specified number of vowels" do
     size = 5
-    Password.generate(size).scan(/[aeiouy]/).should have_exactly(size+1).items
+    Password.generate(size).scan(/[aeiouy]/).should have_at_least(size+1).items
   end
 
   it "generates password with a specified size" do
