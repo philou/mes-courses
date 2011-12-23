@@ -34,6 +34,12 @@ shared_examples_for "Any StoreItemsAPI" do
     result
   end
 
+  def parseable_categories_attributes
+    (sample_categories + sample_sub_categories).map do |category|
+      category.attributes rescue {}
+    end
+  end
+
   it "should have many item categories" do
     @store.categories.should have_at_least(3).items
   end
@@ -55,14 +61,14 @@ shared_examples_for "Any StoreItemsAPI" do
     sample_items_attributes.should mostly have_unique(:name)
   end
 
+  it "should have parseable item category attributes" do
+    parseable_categories_attributes.should mostly have_key(:name)
+  end
+
   it "should have valid item category attributes" do
-    lambda do
-
-      (sample_categories + sample_sub_categories).each do |category|
-        ItemCategory.new(category.attributes)
-      end
-
-    end.should_not raise_error
+    parseable_categories_attributes.each do |attributes|
+      ItemCategory.new(attributes)
+    end
   end
 
   it "should have some valid item attributes" do

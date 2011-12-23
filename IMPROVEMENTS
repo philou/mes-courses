@@ -35,7 +35,7 @@ Install windows and all browsers with VirtuaBox
 Make a web site where one can check logs of heroku apps
 
 CMS:
-factorize pull-cms and push-cms scripts in deployment.rake
+move pull-cms and push-cms in scripts/
 
 Spikes :
 2 way associations in active record

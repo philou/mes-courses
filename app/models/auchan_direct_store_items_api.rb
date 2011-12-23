@@ -55,9 +55,20 @@ module Walker
   end
   def check_one(element_string, selector, elements)
     if elements.empty?
-      raise StoreItemsBrowsingError.new("#{element_string} does not contain any elements like \"#{selector}\"")
+      raise StoreItemsBrowsingError.new("#{element_string} does not contain any elements like \"#{selector}\"\n#{genealogy_to_s}")
     end
     elements.first
+  end
+
+  def genealogy_to_s
+    genealogy.join("\n")
+  end
+  def genealogy
+    if @father.nil?
+      []
+    else
+      @father.genealogy + ["#{self.class} ##{@index} @ #{uri}"]
+    end
   end
 
   protected
@@ -82,7 +93,7 @@ class AuchanDirectStoreItemsAPI
   end
 
   def categories
-    links_with(page, '#carroussel > div a').map { |link| AuchanDirectCategoryWalker.new(link) }
+    links_with(page, '#carroussel > div a').each_with_index.map { |link, i| AuchanDirectCategoryWalker.new(link, self, i) }
   end
 
   private
@@ -92,8 +103,10 @@ end
 class AuchanDirectCategoryWalker
   include Walker
 
-  def initialize(link)
+  def initialize(link, father, index)
     @link = link
+    @father = father
+    @index = index
   end
 
   def link_text
@@ -101,7 +114,7 @@ class AuchanDirectCategoryWalker
   end
 
   def categories
-    links_with(page, '#blocCentral > div a').map { |link| AuchanDirectSubCategoryWalker.new(link) }
+    links_with(page, '#blocCentral > div a').each_with_index.map { |link, i| AuchanDirectSubCategoryWalker.new(link, self, i) }
   end
 
   protected
@@ -116,8 +129,10 @@ end
 class AuchanDirectSubCategoryWalker
   include Walker
 
-  def initialize(link)
+  def initialize(link, father, index)
     @link = link
+    @father = father
+    @index = index
   end
 
   def link_text
@@ -125,7 +140,7 @@ class AuchanDirectSubCategoryWalker
   end
 
   def items
-    links_with(page, '#blocs_articles a.lienArticle').map { |link| AuchanDirectItemWalker.new(link) }
+    links_with(page, '#blocs_articles a.lienArticle').each_with_index.map { |link, i| AuchanDirectItemWalker.new(link, self, i) }
   end
 
   protected
@@ -140,8 +155,10 @@ end
 class AuchanDirectItemWalker
   include Walker
 
-  def initialize(link)
+  def initialize(link, father, index)
     @link = link
+    @father = father
+    @index = index
   end
 
   def link_text
