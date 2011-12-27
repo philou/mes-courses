@@ -10,7 +10,7 @@ class StoreItemsAPI
     if store_url == DummyStoreCartAPI.url
       DummyStoreItemsAPI.new_default_store(store_url)
     else
-      AuchanDirectStoreItemsAPI.new(store_url)
+      auchan_direct_store_items_api(store_url)
     end
   end
 

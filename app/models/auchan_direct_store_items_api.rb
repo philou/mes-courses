@@ -29,13 +29,15 @@ module Walker
     []
   end
 
+  protected
+
   # Filtered links with a Nokogiri css or xpath selector.
   # The result should not contain two links with the same uri.
   def links_with(page, selector)
     uri2links = {}
     page.search_links(selector).each do |link|
       target_uri = link.uri
-      uri2links[target_uri.to_s] = link if keep_link? page.uri, target_uri
+      uri2links[target_uri.to_s] = link if keep_link? uri, target_uri
     end
     # enforcing deterministicity for testing and debugging
     uri2links.values.sort_by {|link| link.uri.to_s }
@@ -48,10 +50,10 @@ module Walker
 
   # searching xpath and css wrappers
   def get_one(page, selector)
-    check_one("Page \"#{page.uri}\"", selector, page.search(selector))
+    check_one("Page \"#{uri}\"", selector, page.search(selector))
   end
   def get_one_css(page, element, selector)
-    check_one("In page \"#{page.uri}\", element \"#{element.path}\"", selector, element.css(selector))
+    check_one("In page \"#{uri}\", element \"#{element.path}\"", selector, element.css(selector))
   end
   def check_one(element_string, selector, elements)
     if elements.empty?
@@ -71,19 +73,24 @@ module Walker
     end
   end
 
-  protected
   def scrap_attributes
     {}
   end
 
+  def sub_walkers(css, sub_walker_class)
+    return [] if css.nil?
+
+    links_with(page, css).each_with_index.map { |link, i| sub_walker_class.new(link, self, i) }
+  end
 end
 
 
 # Objects able to walk a store and discover available items
-class AuchanDirectStoreItemsAPI
+class StoreItemsAPI
   include Walker
 
-  def initialize(url)
+  def initialize(options, url)
+    @options = options
     @agent = Mechanize.new do |agent|
       # NOTE: by default Mechanize has infinite history, and causes memory leaks
       agent.history.max_size = 0
@@ -93,17 +100,27 @@ class AuchanDirectStoreItemsAPI
   end
 
   def categories
-    links_with(page, '#carroussel > div a').each_with_index.map { |link, i| AuchanDirectCategoryWalker.new(link, self, i) }
+    sub_walkers(categories_selector, categories_factory)
   end
 
   private
   attr_reader :page
+
+  def categories_selector
+    @options[:categories_selector]
+  end
+  def categories_factory
+    @options[:categories_factory]
+  end
+
 end
 
-class AuchanDirectCategoryWalker
+class StoreWalker
   include Walker
 
-  def initialize(link, father, index)
+  def initialize(options, scrap_attributes_block, link, father, index)
+    @options = options
+    @scrap_attributes_block = scrap_attributes_block
     @link = link
     @father = father
     @index = index
@@ -111,77 +128,131 @@ class AuchanDirectCategoryWalker
 
   def link_text
     @link.text
+  end
+
+  def page
+    @page ||= @link.click
   end
 
   def categories
-    links_with(page, '#blocCentral > div a').each_with_index.map { |link, i| AuchanDirectSubCategoryWalker.new(link, self, i) }
-  end
-
-  protected
-  def scrap_attributes
-    { :name => get_one(page, "#bandeau_label_recherche").content }
-  end
-  def page
-    @page ||= @link.click
-  end
-end
-
-class AuchanDirectSubCategoryWalker
-  include Walker
-
-  def initialize(link, father, index)
-    @link = link
-    @father = father
-    @index = index
-  end
-
-  def link_text
-    @link.text
+    sub_walkers(categories_selector, categories_factory)
   end
 
   def items
-    links_with(page, '#blocs_articles a.lienArticle').each_with_index.map { |link, i| AuchanDirectItemWalker.new(link, self, i) }
+    sub_walkers(items_selector, items_factory)
   end
 
-  protected
+  private
   def scrap_attributes
-    { :name => get_one(page, "#bandeau_label_recherche").content }
+    instance_eval(&@scrap_attributes_block)
   end
-  def page
-    @page ||= @link.click
+
+  def items_selector
+    @options[:items_selector]
+  end
+  def items_factory
+    @options[:items_factory]
+  end
+  def categories_selector
+    @options[:categories_selector]
+  end
+  def categories_factory
+    @options[:categories_factory]
   end
 end
 
-class AuchanDirectItemWalker
-  include Walker
+class StoreItemsAPIBuilder
 
-  def initialize(link, father, index)
-    @link = link
-    @father = father
-    @index = index
+  def self.define(&block)
+    returning new do |result|
+      result.instance_eval(&block)
+    end
   end
 
-  def link_text
-    @link.text
+  def initialize()
+    @options = {}
   end
 
-  protected
-  def scrap_attributes
-    product_type = get_one(page, '.typeProduit')
-    product_infos = get_one(page, '#infosProduit')
-
-    remote_id = /article\/(\d+)(\.html)?$/.match(page.uri.to_s)[1].to_i
-
-    return {
-      :name => get_one_css(page, product_type, '.nomRayon').content,
-      :summary => get_one_css(page, product_type, '.nomProduit').content,
-      :price => get_one_css(page, product_infos, '.prixQteVal1').content.to_f,
-      :image => get_one_css(page, product_infos, '#imgProdDetail')['src'],
-      :remote_id => remote_id
-    }
+  def categories(selector, &block)
+    @options[:categories_selector] = selector
+    @options[:categories_factory] = StoreWalkerBuilder.define(&block)
   end
 
-  def page
-    @page ||= @link.click
+  def new(url)
+    StoreItemsAPI.new(@options, url)
   end
 end
+
+class StoreWalkerBuilder
+
+  def self.define(&block)
+    returning new do |result|
+      result.instance_eval(&block)
+    end
+  end
+
+  def initialize()
+    @scrap_attributes_block = lambda do {} end
+    @options = {}
+  end
+
+  def attributes(&block)
+    @scrap_attributes_block = block
+  end
+
+  def categories(selector, &block)
+    @options[:categories_selector] = selector
+    @options[:categories_factory] = StoreWalkerBuilder.define(&block)
+  end
+
+  def items(selector, &block)
+    @options[:items_selector] = selector
+    @options[:items_factory] = StoreWalkerBuilder.define(&block)
+  end
+
+  def new(link, father, index)
+    StoreWalker.new(@options, @scrap_attributes_block, link, father, index)
+  end
+end
+
+def define_store_items_api(name, &block)
+  builder = StoreItemsAPIBuilder.define &block
+
+  self.class.send :define_method, name do |url|
+    builder.new(url)
+  end
+end
+
+
+define_store_items_api :auchan_direct_store_items_api do
+
+  categories '#carroussel > div a' do
+    attributes do
+      { :name => get_one(page, "#bandeau_label_recherche").content }
+    end
+
+    categories '#blocCentral > div a' do
+      attributes do
+        { :name => get_one(page, "#bandeau_label_recherche").content }
+      end
+
+      items '#blocs_articles a.lienArticle' do
+        attributes do
+          product_type = get_one(page, '.typeProduit')
+          product_infos = get_one(page, '#infosProduit')
+
+          remote_id = /article\/(\d+)(\.html)?$/.match(uri.to_s)[1].to_i
+
+          {
+            :name => get_one_css(page, product_type, '.nomRayon').content,
+            :summary => get_one_css(page, product_type, '.nomProduit').content,
+            :price => get_one_css(page, product_infos, '.prixQteVal1').content.to_f,
+            :image => get_one_css(page, product_infos, '#imgProdDetail')['src'],
+            :remote_id => remote_id
+          }
+        end
+      end
+    end
+  end
+end
+

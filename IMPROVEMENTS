@@ -4,10 +4,15 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-migrer vers ruby 1.9
 
 TODO
 ----
+réinstaller sur linux mint (debian ou pas)
+ - checker qu'il y a bien rbenv / ruby-build
+ - valider le script de compile de ruby (git, ruby, rubygems)
+ - valider le script/setup qui install bundler, les extensions natives, et les gems
+ - valider un script d'env de dev (emacs etc ...)
+migrer vers ruby 1.9
 upgrade gems 'bundle update' before starting any dev !
  - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
  - add a rake task to upgrate + test
@@ -27,9 +32,6 @@ Use tags to segregate remote specs and features
 Write scripts
    - move scripts that don't change the db or the app env in script/XXX
    - see radiant:upgrade task to see how they managed an update or even git ops through rake
-   - a sh script in the dropbox to install git, compile ruby and gems
-   - a script in the project to compile gems, and then gem install bundler and rake
-   - a rake setup task in the project to install all dependencies with bundler and apt-get
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
 Install windows and all browsers with VirtuaBox
 Make a web site where one can check logs of heroku apps

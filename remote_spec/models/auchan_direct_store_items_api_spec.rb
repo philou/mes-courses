@@ -9,7 +9,7 @@ include OfflineTestHelper
 when_online "AuchanDirectStoreItemsAPI remote spec" do
 
   describe AuchanDirectStoreItemsAPI do
-    before :all do @store = AuchanDirectStoreItemsAPI.new("http://www.auchandirect.fr") end
+    before :all do @store = auchan_direct_store_items_api("http://www.auchandirect.fr") end
     it_should_behave_like "Any AuchanDirectStoreItemsAPI"
   end
 
