@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class DummyStoreItemsAPI
   def self.new_custom_store(root_categories)
@@ -91,7 +91,7 @@ class DummyStoreItemsAPI
 
   attr_reader :uri, :attributes, :items, :categories
 
-  def link_text
+  def title
     attributes[:name]
   end
 
