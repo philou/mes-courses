@@ -16,17 +16,12 @@ define_store_items_api :auchan_direct_store_items_api do
 
       items '#blocs_articles a.lienArticle' do
         attributes do
-          product_type = page.get_one('.typeProduit')
-          product_infos = page.get_one('#infosProduit')
-
-          remote_id = /article\/(\d+)(\.html)?$/.match(uri.to_s)[1].to_i
-
           {
-            :name => page.get_one_css(product_type, '.nomRayon').content,
-            :summary => page.get_one_css(product_type, '.nomProduit').content,
-            :price => page.get_one_css(product_infos, '.prixQteVal1').content.to_f,
-            :image => page.get_one_css(product_infos, '#imgProdDetail')['src'],
-            :remote_id => remote_id
+            :name => page.get_one('.typeProduit .nomRayon').content,
+            :summary => page.get_one('.typeProduit .nomProduit').content,
+            :price => page.get_one('#infosProduit .prixQteVal1').content.to_f,
+            :image => page.get_one('#infosProduit #imgProdDetail')['src'],
+            :remote_id => /article\/(\d+)(\.html)?$/.match(uri.to_s)[1].to_i
           }
         end
       end

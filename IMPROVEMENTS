@@ -7,12 +7,9 @@ WIP
 
 TODO
 ----
-réinstaller sur linux mint (debian ou pas)
- - checker qu'il y a bien rbenv / ruby-build
- - valider le script de compile de ruby (git, ruby, rubygems)
- - valider le script/setup qui install bundler, les extensions natives, et les gems
- - valider un script d'env de dev (emacs etc ...)
 migrer vers ruby 1.9
+ - écrire et valider le script de compile de ruby (git, rb-env, ruby-build, ruby, rubygems)
+ - écrire et valider le script/setup qui install bundler, les extensions natives, et les gems
 upgrade gems 'bundle update' before starting any dev !
  - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
  - add a rake task to upgrate + test
@@ -28,13 +25,23 @@ Website:
 add a foreign key from cart_lines -> items
  - move items to a new category instead of deleting them, fix global item search
  - or version the items : check that it will not be too big
+faire un migrate up, migrate down, remigrate up pour valider les migrations dans les 2 sens
 Use tags to segregate remote specs and features
 Write scripts
-   - move scripts that don't change the db or the app env in script/XXX
-   - see radiant:upgrade task to see how they managed an update or even git ops through rake
+ - écrire et valider un script d'env de dev (emacs etc ...)
+ - move scripts that don't change the db or the app env in script/XXX
+ - see radiant:upgrade task to see how they managed an update or even git ops through rake
+ - valider les scripts pendant l'intégration continue en utilisant des vms
 Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
+ - faire du ménage dans les trucs qui ne sert en fait à rien
 Install windows and all browsers with VirtuaBox
 Make a web site where one can check logs of heroku apps
+Utiliser des modules pour faire des namespaces
+Regarder comment accélérer les tests
+Mettre en place des rcov, heckle et autres dans le script d'intégration continue
+  - écrire le specdoc dans autotest
+sortir des choses de models
+Créer un vrai dummy store avec des vrais fichiers pour Cucumber
 
 CMS:
 move pull-cms and push-cms in scripts/
@@ -45,8 +52,10 @@ How to control accessibility in models
 Rspec-spies + .ordered, try to add it (wait for rspec 2)
 Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
 Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
+  - choisir un test en particulier, le changer et comparer avec l'existant : essayer sur les tests du API Builder
 try to launch ci on heroku (might be a problem with db drop ...)
 see how to test ssl requirements in cucumber and/or local dev
+Evalutate IceScrum to replace my excel sheet
 
 Kanban:
 Simplify marketing metrics and use metrics of the pirates

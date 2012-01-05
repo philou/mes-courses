@@ -1,21 +1,22 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'mechanize'
 require 'lib/uri_domain'
 
+class StoreWalkerPageError < StandardError
+end
+
 class StoreWalkerPage
-  def initialize(mechanize_page)
-    @mechanize_page = mechanize_page
+
+  def self.open(uri)
+    Getter.new(uri)
   end
 
-  #TODO try this : delegate :uri, :to => :mechanize_page
-  def uri
-    @mechanize_page.uri
-  end
+  delegate :uri, :to => :@mechanize_page
 
-  def search_links_in_same_domain(selector)
+  def search_links(selector)
     uri2links = {}
-    search_links(selector).each do |link|
+    search_all_links(selector).each do |link|
       target_uri = link.uri
       uri2links[target_uri.to_s] = link if same_domain? uri, target_uri
     end
@@ -24,33 +25,70 @@ class StoreWalkerPage
   end
 
   def get_one(selector)
-    check_one("Page \"#{uri}\"", selector, search(selector))
-  end
-  def get_one_css(element, selector)
-    check_one("In page \"#{uri}\", element \"#{element.path}\"", selector, element.css(selector))
+    elements = @mechanize_page.search(selector)
+    if elements.empty?
+      raise StoreWalkerPageError.new("Page \"#{uri}\" does not contain any elements like \"#{selector}\"")
+    end
+    elements.first
   end
 
   private
+
+  def initialize(mechanize_page)
+    @mechanize_page = mechanize_page
+  end
 
   def same_domain?(source_uri, target_uri)
     target_uri.relative? || (source_uri.domain == target_uri.domain)
   end
 
-  def search_links(selector)
-    search(selector).map do |xmlA|
-      Mechanize::Page::Link.new(xmlA, @mechanize_page.mech, @mechanize_page)
+  def search_all_links(selector)
+    @mechanize_page.search(selector).map do |xmlA|
+      Link.new(Mechanize::Page::Link.new(xmlA, @mechanize_page.mech, @mechanize_page))
     end
   end
 
-  def search(selector)
-    @mechanize_page.search(selector)
+  class Getter
+    attr_reader :uri
+
+    def initialize(uri)
+      @uri = uri
+    end
+    def get
+      @page ||= get_page
+    end
+
+    def text
+      @uri.to_s
+    end
+
+    private
+
+    def get_page
+      agent = Mechanize.new do |it|
+        # NOTE: by default Mechanize has infinite history, and causes memory leaks
+        it.history.max_size = 0
+      end
+
+      StoreWalkerPage.new(agent.get(@uri))
+    end
   end
 
-  def check_one(element_string, selector, elements)
-    if elements.empty?
-      raise StoreItemsBrowsingError.new("#{element_string} does not contain any elements like \"#{selector}\"\n#{genealogy_to_s}")
+  class Link
+    def initialize(mechanize_link)
+      @mechanize_link = mechanize_link
     end
-    elements.first
+
+    delegate :uri, :to => :@mechanize_link
+
+    def get
+      StoreWalkerPage.new(@mechanize_link.click)
+    end
+
+    def text
+      @mechanize_link.text
+    end
   end
 
 end
+
