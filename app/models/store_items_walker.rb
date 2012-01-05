@@ -13,15 +13,22 @@ class StoreItemsWalker
     @getter = getter
   end
 
+  def title
+    @getter.text
+  end
+
   def uri
     page.uri
   end
+
   def attributes
     @attributes ||= scrap_attributes
   end
+
   def categories
     categories_digger.sub_walkers(page, self)
   end
+
   def items
     items_digger.sub_walkers(page, self)
   end

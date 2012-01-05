@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -91,7 +91,7 @@ shared_examples_for "Any StoreCartAPI" do
 
     def milk_subcat(parent)
       parent.categories.each do |cat|
-        return cat if cat.link_text.downcase.include?("lait")
+        return cat if cat.title.downcase.include?("lait")
       end
 
       return nil
