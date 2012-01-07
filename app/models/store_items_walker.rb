@@ -34,7 +34,11 @@ class StoreItemsWalker
   end
 
   def to_s
-    "#{self.class} ##{index} @ #{uri}"
+    "#{self.class} ##{index} @#{uri}"
+  end
+
+  def genealogy
+    genealogy_prefix + to_s
   end
 
   private
@@ -42,14 +46,11 @@ class StoreItemsWalker
     @page ||= @getter.get
   end
 
-  def genealogy_to_s
-    genealogy.join("\n")
-  end
-  def genealogy
+  def genealogy_prefix
     if father.nil?
-      []
+      ""
     else
-      father.genealogy + [to_s]
+      father.genealogy + "\n"
     end
   end
 
@@ -57,7 +58,7 @@ class StoreItemsWalker
     begin
       instance_eval(&@scrap_attributes_block)
     rescue StoreWalkerPageError => e
-      raise StoreItemsBrowsingError.new("#{e.message}\n#{genealogy_to_s}")
+      raise StoreItemsBrowsingError.new("#{e.message}\n#{genealogy}")
     end
   end
 end

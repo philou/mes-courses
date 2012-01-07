@@ -51,4 +51,27 @@ describe StoreItemsWalker do
     @walker.attributes.should == attributes
   end
 
+  context "when troubleshooting" do
+
+    it "has a meaningfull string representation" do
+      walker = StoreItemsWalker.new(@page_getter)
+      walker.index= 23
+      walker.to_s.should include(StoreItemsWalker.to_s)
+      walker.to_s.should include("##{walker.index}")
+      walker.to_s.should include("@#{walker.uri}")
+    end
+    it "has a full genealogy" do
+      link = stub("Link")
+      link.stub_chain(:get, :uri).and_return(@page.uri + "/viandes")
+      child_walker = StoreItemsWalker.new(link)
+      child_walker.index = 12
+      child_walker.father = @walker
+
+      genealogy = child_walker.genealogy.split("\n")
+
+      genealogy.should == [@walker.to_s, child_walker.to_s]
+    end
+
+  end
+
 end
