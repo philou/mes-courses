@@ -1,10 +1,10 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'lib/password'
 
 namespace :mes_courses do
 
-  desc "Creates a new user in the database with a generated password"
+  desc "Creates a new user in the database with a generated password (with email=toto@mail.com)"
   task :create_user => :environment do
 
     email = ENV["email"]

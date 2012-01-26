@@ -4,13 +4,13 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-- move pull-cms and push-cms in scripts/
+- faire un script qui install l'environnement ruby 1.9
+- faire un script/setup qui install bundler, les extensions natives et les gems
+- faire un script qui install des outils de dev (debug, browser, emacs, extensions ...)
+- migrer vers ruby 1.9
 
 TODO
 ----
-- faire un script qui install l'environnement ruby 1.9
-- faire un script/setup qui install bundler, les extensions natives et les gems
-- migrer vers ruby 1.9
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
@@ -50,6 +50,7 @@ TODO
   - faire un truc pour patcher les fichier auchan_direct offline
   - faire un truc pour que mechanize ne passe pas par le file system pendant les tests
 - comprendre pourquoi super exception notifier ne prévient pas toujours dans les erreurs cron : faire une appli avec des taches cron et qui embarque tout le code de l'exception notifier, deployer sur heroku et bricoler jusqu'à ce qu'on comprenne, faire un article de blog
+- upgrader devise et voir si on peut simplifier l'interacation avec ssl_requirements
 
 Spikes :
 - 2 way associations in active record
@@ -59,7 +60,7 @@ Spikes :
 - Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
   - choisir un test en particulier, le changer et comparer avec l'existant : essayer sur les tests du API Builder
 - try to launch ci on heroku (might be a problem with db drop ...)
-- see how to test ssl requirements in cucumber and/or local dev
+- see how to test ssl requirements in cucumber and/or local dev : already 2 bugs because of this ! (sign in and cart forward)
 - Evalutate IceScrum to replace my excel sheet
 
 Kanban:

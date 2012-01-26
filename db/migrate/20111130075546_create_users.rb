@@ -1,6 +1,10 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class CreateUsers < ActiveRecord::Migration
+
+  class User < ActiveRecord::Base
+  end
+
   def self.up
     create_table :users do |t|
       t.database_authenticatable
