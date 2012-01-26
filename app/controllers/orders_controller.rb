@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   include PathBarHelper
 
   protect_from_forgery :except => :create
-  ssl_required :create
+  ssl_required :show, :create
 
   def show
     self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
