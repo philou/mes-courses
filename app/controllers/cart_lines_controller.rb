@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'models/invalid_store_account_error'
 
@@ -7,6 +7,8 @@ require 'models/invalid_store_account_error'
 # the cart can be transferred from a domain to another
 class CartLinesController < ApplicationController
   include PathBarHelper
+
+  ssl_required :index
 
   before_filter :find_cart
   before_filter :find_stores
