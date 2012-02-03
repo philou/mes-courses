@@ -24,7 +24,6 @@ TODO
   - read this : http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off
   - upgrade our cucumber steps
 - Website:
-- use heroku daily backup instead of our duck tape solution
 - Speed up deployment when integrating : in parallel, or asynchronously on another server
 - Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
 - add a foreign key from cart_lines -> items
@@ -33,7 +32,6 @@ TODO
 - faire un migrate up, migrate down, remigrate up pour valider les migrations dans les 2 sens
 - Use tags to segregate remote specs and features
 - Write scripts
-  - écrire et valider un script d'env de dev (emacs etc ...)
   - move scripts that don't change the db or the app env in script/XXX
   - see radiant:upgrade task to see how they managed an update or even git ops through rake
   - valider les scripts pendant l'intégration continue en utilisant des vms
@@ -61,7 +59,7 @@ Spikes :
 - Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
   - choisir un test en particulier, le changer et comparer avec l'existant : essayer sur les tests du API Builder
 - try to launch ci on heroku (might be a problem with db drop ...)
-- see how to test ssl requirements in cucumber and/or local dev : already 2 bugs because of this ! (sign in and cart forward)
+- see how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
 - Evalutate IceScrum to replace my excel sheet
 
 Kanban:
