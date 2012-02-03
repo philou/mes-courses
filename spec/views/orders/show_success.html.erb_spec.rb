@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -17,8 +17,8 @@ describe "orders/show_success.html.erb" do
   it "renders a link to the online store" do
     response.should have_button_to("Payer sur #{@order.store.name}", @order.remote_store_order_url, 'post')
   end
-  it "renders forward report notices" do
-    response.should have_selector("div", :class => "notice") do |div|
+  it "renders forward report warnings" do
+    response.should have_selector("div", :class => "warning") do |div|
       @order.warning_notices.each do |notice|
         div.should contain(notice)
       end

@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'rubygems'
 require 'mechanize'
@@ -44,14 +44,14 @@ attempt = 1
   res = agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
              { 'Action' => 'liste_ins',
                # indispensables
-               'ClientId' => 785619,
-               'ListeId' => 9365085,
+               'ClientId' => clientId,
+               'ListeId' => panierId,
                'ListeType' => 'P',
                'Articles' => '[{'+
                # indispensables
                '"maxcde":10,'+ # ça marche aussi avec 100 ...
                '"type":"p",'+
-               '"id":66666666,'+ # on le trouve dans l'url du produit
+               '"id":4436,'+ # on le trouve dans l'url du produit
                '"qte":1,'+
                '"prix_total":2.5'+ # on l'a pour chaque produit, quoi qu'on mette, il met le prix du magasin !
 

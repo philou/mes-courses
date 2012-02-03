@@ -40,7 +40,7 @@ div.section p {
 }
 
 /* Store error notices to users */
-div.notice, div.alert{
+div.notice, div.alert, div.warning{
     border: 2px solid;
     padding: 1em;
     margin: 2em 0;
@@ -50,6 +50,11 @@ div.alert{
     border-color: red;
     background-color: #FFA0A0;
     color: white;
+}
+div.warning{
+    border-color: orange;
+    background-color: #F5E6D7;
+    color: orange;
 }
 div.notice {
     border-color: green;
