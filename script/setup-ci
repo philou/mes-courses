@@ -5,6 +5,7 @@ echo "You should already have a dev env on this machine"
 
 ## installing gems
 bundle install
+rbenv rehash
 
 ## post requirements
 echo "create a terminal shortcut to this directory with a different background color"

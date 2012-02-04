@@ -1,14 +1,12 @@
 #!/bin/sh
 
-## bundler
-gem install bundler
-
 ## packages dependencies
 # TODO insert these packeges in the Gemfile somewhere (comments or special function) and get them later on
 sudo apt-get install libxml2-dev libxslt1-dev postgresql libpq-dev sqlite3 libsqlite3-dev
 
 ## installing gems
 bundle install
+rbenv rehash
 
 ## creating dbs
 sudo -u postgres createuser --superuser $USER

@@ -9,3 +9,5 @@ TODO
 tmp
 *.out
 memory
+.bundle
+vendor/bundle
