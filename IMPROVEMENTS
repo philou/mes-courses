@@ -7,10 +7,6 @@ WIP
 
 TODO
 ----
-- faire un script/setup qui install bundler, les extensions natives et les gems
-  - faire un script pour l'env de dev
-  - faire un script pour l'env d'intégration
-  - faire un script qui les faits tous ?
 - migrer vers ruby 1.9
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
@@ -50,6 +46,7 @@ TODO
   - faire un truc pour que mechanize ne passe pas par le file system pendant les tests
 - comprendre pourquoi super exception notifier ne prévient pas toujours dans les erreurs cron : faire une appli avec des taches cron et qui embarque tout le code de l'exception notifier, deployer sur heroku et bricoler jusqu'à ce qu'on comprenne, faire un article de blog
 - upgrader devise et voir si on peut simplifier l'interacation avec ssl_requirements
+- faire un script 'setup' pour le cms
 
 Spikes :
 - 2 way associations in active record

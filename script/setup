@@ -1,0 +1,24 @@
+#!/bin/sh
+
+## bundler
+gem install bundler
+
+## packages dependencies
+# TODO insert these packeges in the Gemfile somewhere (comments or special function) and get them later on
+sudo apt-get install libxml2-dev libxslt1-dev postgresql libpq-dev sqlite3 libsqlite3-dev
+
+## installing gems
+bundle install
+
+## creating dbs
+sudo -u postgres createuser --superuser $USER
+sudo -u postgres createdb mes_courses_development
+sudo -u postgres createdb mes_courses_cucumber
+sudo -u postgres createdb mes_courses_ci
+sudo -u postgres createdb mes_courses_production
+
+## initializing dbs
+rake db:migrate
+RAILS_ENV=test rake db:migrate
+RAILS_ENV=cucumber rake db:migrate
+RAILS_ENV=production rake db:migrate
