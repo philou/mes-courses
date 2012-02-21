@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -41,12 +41,13 @@ describe Order do
     end
   end
 
-  context "when sending" do
+  context "when passing" do
 
     before :each do
       @order.stub(:save!)
-      @store_session = stub(StoreCartSession, :logout_url => "http://www.store.com/logout").as_null_object
-      StoreCartSession.stub(:login).with(@store.url, StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
+      @store_session = stub(StoreCartSession).as_null_object
+      StoreCart.stub(:for_url).with(@store.url).and_return(store_cart = stub(StoreCart))
+      store_cart.stub(:login).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
       class << @store_session
         include WithLogoutMixin
       end
@@ -68,12 +69,6 @@ describe Order do
       end
 
       pass_order
-    end
-
-    it "should store the logout url of the store in the order" do
-      pass_order
-
-      @order.remote_store_order_url.should == @store_session.logout_url
     end
 
     it "should have the SUCCEEDED status after it is passed" do

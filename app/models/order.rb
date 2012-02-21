@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class Order < ActiveRecord::Base
 
@@ -43,9 +43,8 @@ class Order < ActiveRecord::Base
   def pass(login, password)
     begin
       self.status = Order::PASSING
-      self.store.with_session(login, password) do |session|
-        self.cart.forward_to(session, self)
-        self.remote_store_order_url = session.logout_url
+      store.with_session(login, password) do |session|
+        cart.forward_to(session, self)
       end
       self.status = Order::SUCCEEDED
 
@@ -58,7 +57,7 @@ class Order < ActiveRecord::Base
       raise
 
     ensure
-      self.save!
+      save!
 
     end
   end

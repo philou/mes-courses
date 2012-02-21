@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'store_cart_api'
 
@@ -15,29 +15,26 @@ class DummyStoreCartAPI < StoreCartAPI
     "valid-password"
   end
 
-  attr_reader :url, :login, :password, :log
+  attr_reader :login, :password, :log
 
   def initialize(login = nil, password = nil)
     @log = []
-    @url = ""
     @login = ""
     @password = ""
     @unavailable_items = {}
     @content = {}
 
     if !login.nil? || !password.nil?
-      login(DummyStoreCartAPI.url, login, password)
+      relog(login, password)
     end
-
   end
 
-  def login(store_url, login, password)
+  def relog(login, password)
     if login != DummyStoreCartAPI.valid_login
       raise InvalidStoreAccountError.new
     end
 
     @log.push(:login)
-    @store_url = store_url
     @login = login
     @password = password
   end
@@ -59,8 +56,8 @@ class DummyStoreCartAPI < StoreCartAPI
     end
   end
 
-  def logout_url
-    @store_url+"/logout"
+  def self.logout_url
+    url+"/logout"
   end
 
   def value_of_the_cart

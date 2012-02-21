@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'uri'
 require 'cgi'
@@ -14,8 +14,8 @@ When /^(?:|I )try to go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-Then /^"([^\"]*)" should link to (.+ page)$/ do |link_text, page_name|
-  find_link_href(link_text).should == path_to(page_name)
+Then /^I should see a link "([^\"]*)" to "([^\"]*)"$/ do |text, url|
+  response.should have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
 end
 
 Then /^I should see a button "([^\"]*)" to "([^\"]*)"$/ do |text, url|
@@ -35,4 +35,8 @@ Then /^I should be redirected to (.+)$/ do |page_name|
   location = @integration_session.headers["Location"]
   location.should be_starting_with(path_to(page_name))
   visit location
+end
+
+Then /^there should be an iframe with id "([^"]*)" and url "([^"]*)"$/ do |id, url|
+  response.should have_xpath("//iframe[@id='#{id}'][@src='#{url}']")
 end

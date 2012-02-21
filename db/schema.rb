@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124080753) do
+ActiveRecord::Schema.define(:version => 20120218053615) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(:version => 20120124080753) do
     t.text     "warning_notices_text",       :null => false
     t.string   "error_notice",               :null => false
     t.integer  "forwarded_cart_lines_count", :null => false
-    t.string   "remote_store_order_url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status",                     :null => false
@@ -105,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20120124080753) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "expected_items", :default => 0, :null => false
+    t.string   "sponsored_url",                 :null => false
   end
 
   add_index "stores", ["url"], :name => "stores_url_index", :unique => true

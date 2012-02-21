@@ -1,12 +1,11 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # A loged in session on the remote store. Manipulates the remote cart, and performs error checking.
 class StoreCartSession
   include WithLogoutMixin
 
-  # Logs in the store account of a user and returns a StoreCartAPI instance
-  def self.login(store_url, login, password)
-    StoreCartSession.new(StoreCartAPI.login(store_url, login, password))
+  def initialize(store_api)
+    @store_api = store_api
   end
 
   # logs out from the store
@@ -17,11 +16,6 @@ class StoreCartSession
   # total value of the remote cart
   def value_of_the_cart
     @cart_value ||= @store_api.value_of_the_cart
-  end
-
-  # url at which a client browser can logout
-  def logout_url
-    @store_api.logout_url
   end
 
   # empties the cart of the current user
@@ -42,12 +36,6 @@ class StoreCartSession
     raise UnavailableItemError.new("Item '#{item.name}' is not available") unless new_cart_value != old_cart_value
 
     @cart_value = new_cart_value
-  end
-
-  private
-
-  def initialize(store_api)
-    @store_api = store_api
   end
 
 end

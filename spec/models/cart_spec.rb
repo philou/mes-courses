@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -80,7 +80,6 @@ describe Cart do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
       @store_session = stub(StoreCartSession).as_null_object
-      @store_session.stub(:logout_url).and_return("http://www.a-store.com/logout")
       @order = Order.new
       @order.stub!(:save!)
     end

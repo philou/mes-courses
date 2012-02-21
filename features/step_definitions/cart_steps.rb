@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 def given_in_cart(quantity, item_name)
   # maybe would be better find out how not to use side effects of functions
@@ -32,7 +32,7 @@ end
 
 When /^I wait for the transfer to end$/ do
   Delayed::Worker.new(:quiet => true).work_off(1)
-  reload
+  reload # ??? what is this for ???
 end
 
 Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|

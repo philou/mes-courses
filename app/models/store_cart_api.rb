@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'mechanize'
 require 'auchan_direct_store_cart_api'
@@ -7,15 +7,19 @@ require 'auchan_direct_store_cart_api'
 class StoreCartAPI
   include WithLogoutMixin
 
-  # Logs in the store account of a user and returns a StoreCartAPI instance
-  def self.login(store_url, login, password)
+  # factory of store cart api for a given url
+  def self.for_url(store_url)
     if store_url == AuchanDirectStoreCartAPI.url
-      AuchanDirectStoreCartAPI.new(login, password)
+      AuchanDirectStoreCartAPI
     elsif store_url == DummyStoreCartAPI.url
-      DummyStoreCartAPI.new(login, password)
+      DummyStoreCartAPI
     else
       raise ArgumentError.new("StoreCartAPI does not handle store at '#{store_url}'")
     end
+  end
+
+  class << self
+    alias :login :new
   end
 
   # main url of the store
@@ -31,7 +35,7 @@ class StoreCartAPI
   # def logout
 
   # url at which a client browser can logout
-  # def logout_url
+  # def self.logout_url
 
   # total value of the remote cart
   # def value_of_the_cart

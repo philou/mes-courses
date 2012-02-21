@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -16,8 +16,7 @@ describe OrdersController do
   context "displaying an order" do
 
     before :each do
-      @remote_store_order_url = "http://www.mega-store.com/logout"
-      @order = stub_model(Order, :cart => @cart, :store => @store, :remote_store_order_url => @remote_store_order_url)
+      @order = stub_model(Order, :cart => @cart, :store => @store)
       Order.stub(:find_by_id).with(@order.id).and_return(@order)
     end
 
@@ -103,7 +102,6 @@ describe OrdersController do
   context "forwarding to a store" do
 
     before(:each) do
-      @logout_url = "#{@store.url}/deconnexion"
       @missing_items_notices = []
       Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
       Store.stub(:find_by_id).with(@store.id).and_return(@store)
@@ -113,7 +111,6 @@ describe OrdersController do
       @order.stub(:pass) do |login, password|
         @order.forwarded_cart_lines_count = @cart.lines.size
         @order.stub(:warning_notices).and_return(@missing_items_notices)
-        @order.remote_store_order_url = @logout_url
       end
     end
 

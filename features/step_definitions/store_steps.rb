@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 def configure_dummy_store(items_config)
   # Using stubs with item api makes sure the static modifications are rolledback after each scenario
@@ -24,12 +24,12 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
   configure_dummy_store(@items_config)
 
   @cart_api = DummyStoreCartAPI.new
-  StoreCartAPI.stub!(:login) do |store_url, login, password|
-    @cart_api.login(store_url, login, password)
+  DummyStoreCartAPI.stub(:login) do |login,password|
+    @cart_api.relog(login, password)
     @cart_api
   end
 
-  @store = Store.find_or_create_by_url("http://"+web_store)
+  @store = Store.find_or_create_by_url("http://"+web_store) { |store| store.sponsored_url = "http://#{web_store}/sponsored" }
 end
 
 Given /^items from the store were already imported$/ do

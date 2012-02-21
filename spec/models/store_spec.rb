@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -37,6 +37,16 @@ describe Store do
 
   it "should use its url host as name" do
     Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
+  end
+
+  it "should know the logout url of the cart api" do
+    url = "http://www.megastore.com"
+    StoreCart.stub(:for_url).and_return(store_cart = stub(StoreCart))
+    store_cart.stub(:logout_url).and_return(url+"/logout")
+
+    store = Store.new(:url => url)
+
+    store.logout_url.should == store_cart.logout_url
   end
 
   context "importing all stores" do

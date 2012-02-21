@@ -35,6 +35,7 @@ TODO
 - faire un matcher pour les path bar
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements
+- faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
 - Understand why capybara is now prefered to web steps
   - read this : http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off
   - upgrade our cucumber steps
@@ -67,6 +68,7 @@ TODO
 - upgrader devise et voir si on peut simplifier l'interacation avec ssl_requirements
 - faire un script 'setup' pour le cms
 - faire un script pour créer une nouvelle app heroku
+- dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 
 Spikes :
 - 2 way associations in active record
@@ -75,9 +77,11 @@ Spikes :
 - Regarder ce qu'apporte NoSql pour les problèmes de Foreign Keys
 - Evaluer les tests avec moins de mock - try to add an rspec extension creating proxies
   - choisir un test en particulier, le changer et comparer avec l'existant : essayer sur les tests du API Builder
+  - regarder ça : http://xtargets.com/2010/03/19/proxy-mocks-with-rspec/
 - try to launch ci on heroku (might be a problem with db drop ...)
 - see how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
 - Evalutate IceScrum to replace my excel sheet
+- spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
 
 Kanban:
 - Simplify marketing metrics and use metrics of the pirates

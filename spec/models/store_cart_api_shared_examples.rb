@@ -4,16 +4,20 @@ require 'spec_helper'
 
 shared_examples_for "Any StoreCartAPI" do
 
+  it "should know its logout url" do
+    @store_cart_api.logout_url.should_not be_empty
+  end
+
   it "should raise when login in with an invalid account" do
     lambda {
-      @store_cart_api.new("unknown-account", "wrong-password")
+      @store_cart_api.login("unknown-account", "wrong-password")
     }.should raise_error(InvalidStoreAccountError)
   end
 
   context "with a valid account" do
 
     before(:each) do
-      @api = @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password)
+      @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
     end
     after(:each) do
       @api.logout
@@ -46,12 +50,12 @@ shared_examples_for "Any StoreCartAPI" do
     it "should synchronize different sessions with logout login" do
       @api.set_item_quantity_in_cart(1, sample_item_id)
 
-      @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api2|
+      @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api2|
         api2.empty_the_cart
       end
 
       @api.logout
-      @api = @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password)
+      @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
 
       @api.value_of_the_cart.should == 0
     end
@@ -83,7 +87,7 @@ shared_examples_for "Any StoreCartAPI" do
     end
 
     def item_available?(item_id)
-      @store_cart_api.new(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api|
+      @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api|
         api.set_item_quantity_in_cart(1, item_id)
         return 0 < api.value_of_the_cart
       end

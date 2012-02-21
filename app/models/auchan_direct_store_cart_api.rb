@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'store_cart_api'
 
@@ -29,11 +29,11 @@ class AuchanDirectStoreCartAPI < StoreCartAPI
 
   # logs out from the store
   def logout
-    @agent.get(logout_url)
+    @agent.get(self.class.logout_url)
   end
 
   # url at which a client browser can logout
-  def logout_url
+  def self.logout_url
     url+"/frontoffice/index/deconnexion/"
   end
 

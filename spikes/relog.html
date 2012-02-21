@@ -1,0 +1,39 @@
+<html>
+  <body>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js" ></script>
+
+    <script language="javascript">
+      var reloged = false;
+
+      function auchanLog() {
+        if (reloged)
+          return;
+
+        reloged = true;
+        alert("reloging");
+        $('#log-form').submit();
+      }
+
+      function forceRelog() {
+        navigateAuchanFrame(delog, log);
+//        window.location.href = "http://www.auchandirect.fr"
+      }
+    </script>
+
+    <form>
+      <input type="button" value="Auchan" onclick="forceRelog();" />
+    </form>
+
+    <form action="http://www.auchandirect.fr/frontoffice/index/deconnexion/" method="post" target="auchan-frame" id="delog-form" >
+      <input type="submit" value="Delog from auchan" />
+    </form>
+
+    <form action="https://www.auchandirect.fr/frontoffice/index/connexion/" method="post" target="auchan-frame" id="log-form">
+      <input type="hidden" name="Username" value="aclaire_durand@yahoo.fr" />
+      <input type="hidden" name="Password" value="doudou**" />
+      <input type="submit" value="Log to auchan" />
+    </form>
+
+    <iframe id="auchan-frame" src="http://www.auchandirect.fr/frontoffice/index/deconnexion" style="width:100%; height: 100%" onload="auchanLog()" />
+  </body>
+</html>
