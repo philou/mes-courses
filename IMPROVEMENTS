@@ -4,29 +4,10 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
+- migrer vers ruby 1.9
 
 TODO
 ----
-- migrer vers ruby 1.9
-  - [DONE] fixer le "invalid date format in specification"
-    - [DONE] bundle update : ça a fixé json et gherkin
-    - [DONE] term-ansicolor-1.0.7 toujours HS : rollbacké à 1.0.6
-  - fixer le crash à l'éxécution
-    - visiblement, c'est encore un problème de gems ... http://stackoverflow.com/questions/4262616/ruby-1-9-2-blows-up-with-json-gem-dependency
-      - il doit y avoir un conflit entre différentes versions de ruby
-    - commencer par virer les ruby system et les packages XXX-ruby (bindings) ??? ou le faire après ...
-    - [DONE] faire un env 1.8.7 (2010-06-23 patchlevel 299) avec rbenv
-      - [DONE] gem est déjà installé
-      - [DONE] ajouter bundler
-      - [DONE] gem update --system
-      - [DONE] gem update
-    - virer le ruby system
-    - réinstaller les gems
-      - gem update --system
-      - gem update
-      - gem pristine --all
-      - réinstaller les gems avec bundler
-  - verifier sur mes-courses-integ
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
@@ -69,6 +50,7 @@ TODO
 - faire un script 'setup' pour le cms
 - faire un script pour créer une nouvelle app heroku
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
+- ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 
 Spikes :
 - 2 way associations in active record

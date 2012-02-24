@@ -3,7 +3,7 @@
 class StoreItemsAPIBuilder
 
   def self.define(api_class, digger_class, &block)
-    returning new(api_class, digger_class) do |result|
+    new(api_class, digger_class).tap do |result|
       result.instance_eval(&block)
     end
   end
@@ -29,7 +29,7 @@ class StoreItemsAPIBuilder
   end
 
   def new(page_getter, father = nil, index = nil)
-    returning @api_class.new(page_getter) do |result|
+    @api_class.new(page_getter).tap do |result|
       result.categories_digger = @categories_digger
       result.items_digger = @items_digger
       result.scrap_attributes_block = @scrap_attributes_block

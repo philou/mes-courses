@@ -1,4 +1,4 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2012 by Philippe Bourgau
 
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
@@ -17,6 +17,7 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].e
 # Use a null db by default when running examples
 require 'nulldb_rspec'
 include NullDB::RSpec::NullifiedDatabase
+::ActiveSupport::Deprecation.silenced = true # TODO remove this once we migrated to nulldb 0.2.1
 
 require 'spec/support/controller_macros'
 
