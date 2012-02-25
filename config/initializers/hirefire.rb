@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011 by Philippe Bourgau
 
 unless ["cucumber","ci","test"].include? Rails.env

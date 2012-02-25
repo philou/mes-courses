@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Objects representing a quantity of a bought item in the cart

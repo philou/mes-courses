@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # An item for sale

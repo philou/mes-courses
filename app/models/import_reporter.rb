@@ -1,7 +1,8 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'action_view/helpers/number_helper'
-require 'lib/time_span_helper'
+require 'time_span_helper'
 
 # Object responsible for mailing an import report
 class ImportReporter < MonitoringMailer

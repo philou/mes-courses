@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Settings specified here will take precedence over those in config/environment.rb

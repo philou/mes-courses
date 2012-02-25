@@ -50,6 +50,8 @@ GEM
     hirefire (0.1.4)
       heroku (>= 1.4)
       rush (~> 0.6.7)
+    hoe (2.14.0)
+      rake (~> 0.8)
     json (1.6.5)
     launchy (2.0.5)
       addressable (~> 2.2.6)
@@ -88,6 +90,8 @@ GEM
       actionmailer
       rake
     term-ansicolor (1.0.7)
+    test-unit (1.2.3)
+      hoe (>= 1.5.1)
     warden (0.10.7)
       rack (>= 1.0.0)
     webrat (0.7.3)
@@ -120,4 +124,5 @@ DEPENDENCIES
   sqlite3-ruby
   ssl_requirement
   super_exception_notifier (= 3.0.13)
+  test-unit (= 1.2.3)
   webrat (~> 0.7.1)

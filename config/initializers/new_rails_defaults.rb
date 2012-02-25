@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010 by Philippe Bourgau
 
 # Be sure to restart your server when you modify this file.

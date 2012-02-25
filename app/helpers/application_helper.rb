@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
 # Methods added to this helper will be available to all templates in the application.

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2012 by Philippe Bourgau
 
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
@@ -18,8 +19,6 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].e
 require 'nulldb_rspec'
 include NullDB::RSpec::NullifiedDatabase
 ::ActiveSupport::Deprecation.silenced = true # TODO remove this once we migrated to nulldb 0.2.1
-
-require 'spec/support/controller_macros'
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these

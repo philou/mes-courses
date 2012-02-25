@@ -13,6 +13,7 @@ TODO
   - add a rake task to upgrate + test
 - migrer à rails 3
 - find a way to subclass Devise::SessionsController without cut-and-paste
+- see if we could use the special testing features of devise
 - faire un matcher pour les path bar
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements

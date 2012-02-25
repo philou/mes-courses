@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011 by Philippe Bourgau
 
 # base mailer class for online maintainer monitoring

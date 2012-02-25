@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class CreateItemTypes < ActiveRecord::Migration
   def self.up
     create_table :item_types do |t|

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011 by Philippe Bourgau
 
 # class responsible to alert of dishes broken by deleted items during import

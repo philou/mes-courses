@@ -1,7 +1,8 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'lib/array_extras'
+require 'array_extras'
 
 describe ItemCategoriesController do
   include ApplicationHelper

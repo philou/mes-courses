@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010 by Philippe Bourgau
 
 # Matcher to verify that most items match something else

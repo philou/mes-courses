@@ -1,10 +1,11 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'uri'
 require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 require 'webrat/core/locators/link_locator'
-require 'lib/string_extras'
+require 'string_extras'
 
 Given /^(?:|I )tried to go to (.+)$/ do |page_name|
   visit path_to(page_name)

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Be sure to restart your server when you modify this file
@@ -6,7 +7,7 @@
 require File.join(File.dirname(__FILE__), 'boot')
 
 require 'exception_notification'
-require 'lib/heroku_helper'
+require File.join(File.dirname(__FILE__), '../lib/heroku_helper')
 require File.join(File.dirname(__FILE__), 'email_constants')
 require 'pp'
 

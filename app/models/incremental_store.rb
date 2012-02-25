@@ -1,6 +1,7 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require 'lib/attributes_comparison'
+require 'attributes_comparison'
 
 # Objects deciding what to do with what the store importer found in
 # the online store's web page. They get hashes of parameters as input

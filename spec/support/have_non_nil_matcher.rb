@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010 by Philippe Bourgau
 
 # Matcher to verify that an object responds to :attribute and returns something not null

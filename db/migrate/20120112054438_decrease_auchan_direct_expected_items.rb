@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2012 by Philippe Bourgau
 
 # Decrease the expected items of auchandirect store to 6000 because 7000 was often too high

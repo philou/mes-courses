@@ -24,6 +24,7 @@ gem "rspec-rails", "~> 1", :groups => [:test, :cucumber, :ci]
 gem "rspec-spies", "~> 1.2.9", :groups => [:test, :cucumber, :ci]
 gem "factory_girl", "~> 1.2.4", :groups => [:test, :cucumber, :ci]
 gem "ZenTest", "~> 4.4.2", :groups => [:test, :cucumber, :ci]
+gem "test-unit", "= 1.2.3", :groups => [:test, :cucumber, :ci] # test-unit 1.2.3 for rspec 1
 
 gem "pg", :groups => [:production, :cucumber, :ci]
 
