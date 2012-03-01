@@ -1,10 +1,15 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
+
+# Added when migrated to ruby 1.9
+# to_yaml calls failed with wrong number of arguments (1 for 0)
+require 'yaml'
+YAML::ENGINE.yamler = 'syck'
 
 module Rails
   class << self

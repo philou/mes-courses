@@ -8,10 +8,15 @@ WIP
 
 TODO
 ----
+- migrer à rails 3
+  - see if possible to remove the Yaml engine override from boot.rb
+  - in features/support/env.rb change require 'spec/stubs/cucumber' to require 'cucumber/rspec/doubles'
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
-- migrer à rails 3
+- comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
+- clean up all warnings
+- ajouter un header par defaut aux fichiers créés avec emacs (encoding)
 - find a way to subclass Devise::SessionsController without cut-and-paste
 - see if we could use the special testing features of devise
 - faire un matcher pour les path bar
@@ -52,6 +57,7 @@ TODO
 - faire un script pour créer une nouvelle app heroku
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
+- speed up load time see http://rhnh.net/2011/05/28/speeding-up-rails-startup-time & http://www.rubyinside.com/ruby-1-9-3-faster-loading-times-require-4927.html
 
 Spikes :
 - 2 way associations in active record

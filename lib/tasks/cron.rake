@@ -1,7 +1,7 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require "exception_notification/notified_task"
-require "lib/heroku_helper"
+require "heroku_helper"
 
 desc "Performs tasks, specified in the CRON_TASKS environment variable as a ; separated list"
 cron_task = NotifiedTask.new :cron => :environment do

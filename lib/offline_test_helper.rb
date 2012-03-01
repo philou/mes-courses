@@ -1,13 +1,14 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
-
-require 'ping'
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # Something to ask if we are online or not
-
 module OfflineTestHelper
 
-  ONLINE = Ping.pingecho('google.com',10,80)
+  def OfflineTestHelper.ping(server, ping_count)
+    system "ping -q -c #{ping_count} #{server}"
+  end
+
+  ONLINE = ping('google.com',10)
 
   # offline and onine predicates
   def offline?

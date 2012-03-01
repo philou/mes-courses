@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'uri'
 require 'cgi'
@@ -20,7 +20,7 @@ def path_bar_link_constraint(path_bar_line)
 end
 
 Then /^The path bar should be$/ do |path_bar_lines|
-  path_bar_lines.each_with_index do |path_bar_line, index|
+  path_bar_lines.lines.each_with_index do |path_bar_line, index|
     response.should have_xpath("//div[@id='path-bar']/a[#{index+1}]#{path_bar_link_constraint(path_bar_line)}")
   end
   response.should_not have_xpath("//div[@id='path-bar']/a[#{path_bar_lines.lines.count+2}]")

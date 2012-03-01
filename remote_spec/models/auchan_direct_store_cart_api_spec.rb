@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'rubygems'
 require 'spec_helper'
 require 'models/store_cart_api_shared_examples'
-require 'lib/offline_test_helper'
+require 'offline_test_helper'
 
 include OfflineTestHelper
 
