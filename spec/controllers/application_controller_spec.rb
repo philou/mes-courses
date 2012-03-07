@@ -1,9 +1,11 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
 class TestController < ApplicationController
   include PathBarHelper
+
+  before_filter :authenticate_user!, :only => [:an_action_with_authentication]
 
   def an_action_with_cart_path_bar
     self.path_bar = [path_bar_cart_lines_root, dummy_path_bar_element]
@@ -22,6 +24,10 @@ class TestController < ApplicationController
   end
   def an_action_with_redirection
     redirect_to :action => "nowhere"
+  end
+
+  def an_action_with_authentication
+    self.path_bar = [path_bar_dishes_root, dummy_path_bar_element]
   end
 
   private
@@ -76,22 +82,22 @@ describe ApplicationController do
 
   end
 
-  context "user authentication" do
+  # context "user authentication" do
 
-    ["an_action_with_cart_path_bar", "an_action_with_dish_path_bar", "an_action_with_item_path_bar", "an_action_with_redirection"].each do |action|
+  #   ["an_action_with_cart_path_bar", "an_action_with_dish_path_bar", "an_action_with_item_path_bar", "an_action_with_redirection"].each do |action|
 
-      it "should authenticate user before #{action}" do
-        controller.should_receive(:authenticate_user!)
+  #     it "should authenticate user before #{action}" do
+  #       controller.should_receive(:authenticate_user!)
 
-        get action
-      end
-    end
-  end
+  #       get action
+  #     end
+  #   end
+  # end
 
   it "assigns a signin session_place before authentification" do
-    controller.stub(:user_signed_in?).and_return(false)
+    controller.stub(:authenticate_user!)
 
-    get 'an_action_with_session_path_bar'
+    get 'an_action_with_authentication'
 
     assigns[:session_place_text].should == "Connection"
     assigns[:session_place_url].should == new_user_session_path
@@ -99,9 +105,9 @@ describe ApplicationController do
 
   it "assigns a signout session_place after authentification" do
     email = "gyzmo@mail.com"
-    controller.stub(:current_user).and_return(stub_model(User, :email => email))
+    stub_signed_in_user(:email => email)
 
-    get 'an_action_with_cart_path_bar'
+    get 'an_action_with_authentication'
 
     assigns[:session_place_text].should == "Deconnection (#{email})"
     assigns[:session_place_url].should == destroy_user_session_path

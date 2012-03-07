@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -7,6 +7,7 @@ describe "/dishes/index.html.erb" do
   before(:each) do
     @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }
     assigns[:dishes] = @dishes
+    assigns[:can_modify_dishes] = false
   end
 
   it "should display the name of each dish" do
@@ -29,9 +30,22 @@ describe "/dishes/index.html.erb" do
     end
   end
 
-  it "should display a link to add a new dish" do
-    render
-    response.should have_selector("a", :href => new_dish_path)
+  context "adding a new dish" do
+
+    it "is forbidden by default" do
+      render
+
+      response.should_not have_selector("a", :href => new_dish_path)
+    end
+
+    it "can be allowed" do
+      assigns[:can_modify_dishes] = true
+
+      render
+
+      response.should have_selector("a", :href => new_dish_path)
+    end
+
   end
 
 end

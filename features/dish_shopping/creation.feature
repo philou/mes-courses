@@ -4,7 +4,7 @@ Feature: Dish creation
   A customer
   Wants to add his own dishes
 
-  Scenario: Creating a new dish
+  Scenario: Default name of a new dish
     Given I am logged in
     And   I am on the full dish catalog page
     When  I follow "Ajouter une recette"
@@ -17,7 +17,7 @@ Feature: Dish creation
     Then  I should be on the "Salade de tomates" dish page
     And   I should see "Salade de tomates"
 
-  Scenario: Shopping a new dish
+  Scenario: Shopping a newly created dish
     Given I am logged in
     And   I am on the dish creation page
     When  I set the dish name to "Salade niçoise"

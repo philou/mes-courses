@@ -5,26 +5,50 @@ describe DishesController do
 
   ignore_user_authentication
 
+  def self.allows_dish_modifications_for_signed_in_users_only(&http_request_proc)
+
+    it "should forbid dish modifications by default" do
+      instance_eval(&http_request_proc)
+
+      assigns[:can_modify_dishes].should == false
+    end
+
+    it "should let signed in users modify dishes" do
+      stub_signed_in_user
+
+      instance_eval(&http_request_proc)
+
+      assigns[:can_modify_dishes].should == true
+    end
+
+  end
+
   describe 'GET index' do
     before :each do
       @all_dishes = [Dish.new(:name => "Salade de tomates"), Dish.new(:name => "Boeuf bourguignon")]
       Dish.stub(:find).and_return(@all_dishes)
-
-      get 'index'
     end
 
     it "should render 'index'" do
+      get 'index'
+
       response.should be_success
       response.should render_template('index')
     end
 
-    it "should assign the list of all dishes to :dishes" do
+    it "should publish the list of all dishes" do
+      get 'index'
+
       assigns[:dishes].should == @all_dishes
     end
 
-    it "should assign a path bar with a link to the root dish page" do
+    it "should create a path bar with a link to the root dish page" do
+      get 'index'
+
       assigns[:path_bar].should == [path_bar_dishes_root]
     end
+
+    allows_dish_modifications_for_signed_in_users_only { get 'index' }
 
   end
 
@@ -38,7 +62,7 @@ describe DishesController do
       response.should render_template('new')
     end
 
-    it "should assign a new dish" do
+    it "should publish a new dish" do
       assigns[:dish].should be_instance_of(Dish)
       assigns[:dish].id.should be_nil
     end
@@ -47,7 +71,7 @@ describe DishesController do
       assigns[:dish].name.should == "Nouvelle recette"
     end
 
-    it "should assign a path bar with a link to the dish creation page" do
+    it "should create a path bar with a link to the dish creation page" do
       assigns[:path_bar].should == [path_bar_dishes_root,
                                     path_bar_element_for_current_resource("Nouvelle recette")]
     end
@@ -79,23 +103,29 @@ describe DishesController do
       @dish = stub_model(Dish, :name => "Salade de tomates")
       Dish.stub(:find_by_id).and_return(@dish)
 
-      get 'show', :id => @dish.id
     end
 
     it "should render 'show'" do
+      get 'show', :id => @dish.id
+
       response.should be_success
       response.should render_template('show')
     end
 
-    it "should assign the requested dish" do
+    it "should publish the requested dish" do
+      get 'show', :id => @dish.id
+
       assigns[:dish].should == @dish
     end
 
-    it "should assign a path bar with a link to the curent dish page" do
+    it "should create a path bar with a link to the curent dish page" do
+      get 'show', :id => @dish.id
+
       assigns[:path_bar].should == [path_bar_dishes_root,
                                     path_bar_element_for_current_resource(@dish.name)]
     end
 
+    allows_dish_modifications_for_signed_in_users_only { get 'show', :id => @dish.id }
   end
 
 end

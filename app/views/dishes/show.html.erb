@@ -1,13 +1,17 @@
-<!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
 
 <% extra_columns_proc = lambda do |item| %>
-  <td><%= button_to 'Enlever de la recette', dish_item_path(@dish, item), :method => 'delete', :confirm => 'Cet ingrédient sera supprimé de la recette.' %></td>
+  <% if @can_modify_dishes %>
+    <td><%= button_to 'Enlever de la recette', dish_item_path(@dish, item), :method => 'delete', :confirm => 'Cet ingrédient sera supprimé de la recette.' %></td>
+  <% end %>
 <% end %>
 
 <% render(:layout => "shared/items", :object => @dish.items, :locals => { :extra_columns_proc => extra_columns_proc }) do %>
-  <tr>
-    <td>
-      <%= link_to 'Ajouter un ingrédient', dish_item_categories_path(@dish) %>
-    </td>
-  </tr>
+  <% if @can_modify_dishes %>
+    <tr>
+      <td>
+        <%= link_to 'Ajouter un ingrédient', dish_item_categories_path(@dish) %>
+      </td>
+    </tr>
+  <% end %>
 <% end %>

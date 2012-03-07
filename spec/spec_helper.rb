@@ -19,8 +19,6 @@ require 'nulldb_rspec'
 include NullDB::RSpec::NullifiedDatabase
 ::ActiveSupport::Deprecation.silenced = true # TODO remove this once we migrated to nulldb 0.2.1
 
-require 'spec/support/controller_macros'
-
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
@@ -28,7 +26,7 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-  config.extend(ControllerMacros, :type => :controller)
+  config.include(AuthenticationControllerMacros, :type => :controller)
 
   # == Fixtures
   #

@@ -12,6 +12,10 @@ TODO
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
 - migrer à rails 3
+- ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
+- mettre à jour ubuntu
+- mettre le working repo dans dropbox
+- merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
 - find a way to subclass Devise::SessionsController without cut-and-paste
 - faire un matcher pour les path bar
   - peut être deux : un path_bar_element(index, text, url)
@@ -28,6 +32,7 @@ TODO
   - or version the items : check that it will not be too big
 - faire un migrate up, migrate down, remigrate up pour valider les migrations dans les 2 sens
 - Use tags to segregate remote specs and features
+- Would it be possible to classify features with tags instead of directories, ex user & dishes for dish modifications
 - Write scripts
   - move scripts that don't change the db or the app env in script/XXX
   - see radiant:upgrade task to see how they managed an update or even git ops through rake
@@ -51,6 +56,7 @@ TODO
 - faire un script pour créer une nouvelle app heroku
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
+- tester org-mode pour mes todo list
 
 Spikes :
 - 2 way associations in active record

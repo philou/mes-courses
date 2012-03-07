@@ -14,7 +14,6 @@ Feature: Path bar
 
 
   Scenario: Path bar in dishes
-    Given I am logged in
     When  I go to the full dish catalog page
     Then  The path bar should be
       """
@@ -32,7 +31,6 @@ Feature: Path bar
 
   Scenario: Path bar for existing dishes
     Given there is a dish "Lasagnes"
-    And   I am logged in
     When  I go to the "Lasagnes" dish page
     Then  The path bar should be
       """
@@ -56,7 +54,6 @@ Feature: Path bar
 
 
   Scenario: Path bar in cart
-    Given I am logged in
     When  I go to the cart page
     Then  The path bar should be
       """
@@ -65,7 +62,6 @@ Feature: Path bar
 
   Scenario: Path bar when forwarding the cart
     Given the "www.dummy-store.fr" store
-    And   I am logged in
     And   I am on the cart page
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
@@ -78,7 +74,6 @@ Feature: Path bar
 
 
   Scenario: Path bar in root item category
-    Given I am logged in
     When  I go to the item categories page
     Then  The path bar should be
       """
@@ -87,7 +82,6 @@ Feature: Path bar
 
   Scenario: Path bar in child item categories
     Given there is a "Produits laitiers > Fromages" item sub category
-    And   I am logged in
     When  I go to the "Fromages" item sub category page
     Then  The path bar should be
       """
@@ -98,7 +92,6 @@ Feature: Path bar
 
   Scenario: Path bar in item searches
     Given there is a "Produits laitiers" item category
-    And   I am logged in
     And   I am on the "Produits laitiers" item category page
     When  I search for "Camembert"
     Then  The path bar should be
