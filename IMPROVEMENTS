@@ -53,7 +53,6 @@ TODO
 - comprendre pourquoi super exception notifier ne prévient pas toujours dans les erreurs cron : faire une appli avec des taches cron et qui embarque tout le code de l'exception notifier, deployer sur heroku et bricoler jusqu'à ce qu'on comprenne, faire un article de blog
 - upgrader devise et voir si on peut simplifier l'interacation avec ssl_requirements
 - faire un script 'setup' pour le cms
-- faire un script pour créer une nouvelle app heroku
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - tester org-mode pour mes todo list
