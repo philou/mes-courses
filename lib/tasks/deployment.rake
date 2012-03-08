@@ -47,7 +47,7 @@ module DeploymentHelpers
 
   def deploy(repo)
     puts "Deploying to #{heroku_app(repo)}"
-    push git_repo
+    push repo
     migrate repo
   end
 
