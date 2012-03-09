@@ -1,11 +1,12 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 namespace :stores do
 
   desc "Inserts the www.auchandirect.fr store in the DB"
   task :create_auchan_direct => :environment do
-    if Store.find_by_url(AuchanDirectStoreCartAPI.url).nil?
-      Store.create(:url => AuchanDirectStoreCartAPI.url, :expected_items => 7000)
+    Store.find_or_create_by_url(AuchanDirectStoreCartAPI.url) do |store|
+      store.expected_items = 7000
+      store.sponsored_url = 'http://clic.reussissonsensemble.fr/click.asp?ref=574846&site=8005&type=text&tnb=2'
     end
   end
 
