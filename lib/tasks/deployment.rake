@@ -145,6 +145,6 @@ namespace :mes_courses do
     heroku "addons:upgrade logging:expanded", :repo => repo
     heroku "addons:add sendgrid:starter", :repo => repo
 
-    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRUle$", :repo => repo
+    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRule$", :repo => repo
   end
 end
