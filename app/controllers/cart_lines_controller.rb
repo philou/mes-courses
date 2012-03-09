@@ -8,8 +8,6 @@ require 'models/invalid_store_account_error'
 class CartLinesController < ApplicationController
   include PathBarHelper
 
-  ssl_required :index, :destroy_all
-
   before_filter :find_cart
   before_filter :find_stores
 
