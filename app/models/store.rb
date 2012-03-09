@@ -22,7 +22,7 @@ class Store < ActiveRecord::Base
 
       begin
         stores = stores_to_import(url)
-        Rails.logger.info "Importing #{stores.length.to_s} stores"
+        Rails.logger.info "Importing #{stores.length.to_s} store(s)"
         stores.each do |store|
           Rails.logger.info "Importing items from #{store.url}"
           store.import

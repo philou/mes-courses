@@ -8,6 +8,9 @@ require 'models/invalid_store_account_error'
 class CartLinesController < ApplicationController
   include PathBarHelper
 
+  # if not, post data are lost when forwarding the cart
+  ssl_required :index, :destroy_all
+
   before_filter :find_cart
   before_filter :find_stores
 
