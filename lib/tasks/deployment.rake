@@ -1,53 +1,61 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'time_span_helper'
 
 module DeploymentHelpers
 
-  def DeploymentHelpers.shell(command)
+  HEROKU_STACK = "bamboo-ree-1.8.7"
+
+  def shell(command)
     unless system command
       raise RuntimeError.new("Command \"#{command}\" failed.")
     end
   end
 
-  def DeploymentHelpers.bundle(subcommand)
+  def bundle(subcommand)
     shell "bundle #{subcommand}"
   end
 
-  def DeploymentHelpers.bundled_rake(task)
-    bundle "exec rake #{task}"
+  def bundle_exec(subcommand)
+    bundle "exec #{subcommand}"
   end
 
-  def DeploymentHelpers.pull(repo)
+  def bundled_rake(task)
+    bundle_exec "rake #{task}"
+  end
+
+  def pull(repo)
     shell "git pull #{repo} master"
   end
-  def DeploymentHelpers.push(repo)
+  def push(repo)
     shell "git push #{repo} master"
   end
 
-  def DeploymentHelpers.git_repo(app)
-    prefix = "mes-courses-"
-
-    raise ArgumentError.new("heroku application '#{app}' does not start with 'mes-courses-'") unless app.starts_with?(prefix)
-
-    app[prefix.length..-1]
+  def heroku_app(repo)
+    "mes-courses-#{repo}"
+  end
+  def heroku(command, options = {})
+    if options.include?(:repo)
+      bundle_exec "heroku #{command} --app #{heroku_app(options[:repo])}"
+    else
+      bundle_exec "heroku #{command}"
+    end
+  end
+  def migrate(repo)
+    heroku "rake db:migrate", :repo => repo
   end
 
-  def DeploymentHelpers.migrate(app)
-    shell "heroku rake db:migrate --app #{app}"
+  def deploy(repo)
+    puts "Deploying to #{heroku_app(repo)}"
+    push repo
+    migrate repo
   end
 
-  def DeploymentHelpers.deploy(app)
-    puts "Deploying to #{app}"
-    push git_repo(app)
-    migrate app
-  end
-
-  def DeploymentHelpers.y_or_n?(text)
+  def y_or_n?(text)
     text.strip.downcase == 'y'
   end
 
-  def DeploymentHelpers.with_confirmation(task_summary)
+  def with_confirmation(task_summary)
     puts "Are you sure you want to #{task_summary} ? (y/n)"
     answer = STDIN.readline
     if y_or_n?(answer)
@@ -55,7 +63,7 @@ module DeploymentHelpers
     end
   end
 
-  def DeploymentHelpers.with_timing
+  def with_timing
     Timing.duration_of do |timer|
       begin
         yield
@@ -65,46 +73,47 @@ module DeploymentHelpers
     end
   end
 
-  def DeploymentHelpers.import_tester_apps
-    0.upto(6).map { |i| "mes-courses-import-tester-#{i}" }
+  def import_tester_repos
+    0.upto(6).map { |i| "import-tester-#{i}" }
   end
-  def DeploymentHelpers.test_and_integration_apps
-    import_tester_apps + ["mes-courses-cart-tester", "mes-courses-integ"]
+  def test_and_integration_repos
+    import_tester_repos + ["cart-tester", "integ"]
   end
 
 end
 
 namespace :mes_courses do
+  include DeploymentHelpers
 
-  desc "Deploys master branch to the specified remote heroku app (ex: app=mes-courses-integ)"
+  desc "Deploys master branch to the specified remote heroku app (ex: repo=integ)"
   task :deploy do
-    app = ENV["app"]
-    raise ArgumentError.new("An heroku app to push to must be specified") unless !app.nil?
-    DeploymentHelpers::with_confirmation("deploy master branch to the \"#{app}\" heroku app") do
-      DeploymentHelpers::deploy(app)
+    repo = ENV["repo"]
+    raise ArgumentError.new("An heroku git repo to push to must be specified") unless !repo.nil?
+    with_confirmation("deploy master branch to the \"#{repo}\" heroku git repo") do
+      deploy(repo)
     end
   end
 
   desc "Integrates the latest developments to the main repository, deploys to test and integration heroku applications"
   task :integrate do
-    DeploymentHelpers::with_confirmation("integrate the latest developments") do
-      DeploymentHelpers::with_timing do
+    with_confirmation("integrate the latest developments") do
+      with_timing do
 
         puts "\nPulling latest developments"
-        DeploymentHelpers::pull "dev"
+        pull "dev"
 
         puts "\nInstalling dependencies"
-        DeploymentHelpers::bundle "install"
+        bundle "install"
 
         puts "\nRunning integration script"
-        DeploymentHelpers::bundled_rake "behaviours"
+        bundled_rake "behaviours"
 
         puts "\nPushing to main source repository"
-        DeploymentHelpers::push "main"
+        push "main"
 
         puts "\nDeploying to test and integration environments"
-        DeploymentHelpers::test_and_integration_apps.each do |app|
-          DeploymentHelpers::deploy(app)
+        test_and_integration_repos.each do |repo|
+          deploy(repo)
         end
 
         puts "\nIntegration successful !"
@@ -114,16 +123,28 @@ namespace :mes_courses do
 
   desc "prints the names of all import tester apps (launch with rake -s to get rid of the 'in directory' announcement)"
   task :import_testers do
-    DeploymentHelpers::import_tester_apps.each do |app|
-      puts app
+    import_tester_repos.each do |repo|
+      puts heroku_app(repo)
     end
   end
 
   desc "prints the names of all test and integration apps (launch with rake -s to get rid of the 'in directory' announcement)"
   task :test_and_integration_apps do
-    DeploymentHelpers::test_and_integration_apps.each do |app|
-      puts app
+    test_and_integration_repos.each do |repo|
+      puts heroku_app(repo)
     end
   end
 
+  desc "create an heroku app with the corresponding git remote (ex repo=dev)"
+  task :create_heroku_app do
+    repo = ENV["repo"]
+    raise ArgumentError.new("An heroku git repo name must be specified") unless !repo.nil?
+    heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
+
+    heroku "addons:add cron:daily", :repo => repo
+    heroku "addons:upgrade logging:expanded", :repo => repo
+    heroku "addons:add sendgrid:starter", :repo => repo
+
+    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRule$", :repo => repo
+  end
 end

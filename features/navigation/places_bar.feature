@@ -5,17 +5,14 @@ Feature: Places bar
   Wants the current section at the top of the page to be styled
 
   Scenario: Place in dishes
-    Given I am logged in
     When  I go to the full dish catalog page
     Then  the place "Recettes" should be highlighted
 
   Scenario: Body id in cart
-    Given I am logged in
     When  I go to the cart page
     Then  the place "Panier" should be highlighted
 
   Scenario: Body id in root item category
-    Given I am logged in
     When  I go to the item categories page
     Then  the place "Ingrédients" should be highlighted
 

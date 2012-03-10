@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
 
 <table>
   <% @dishes.each do |dish| %>
@@ -6,11 +6,13 @@
       <td><%= link_to h(dish.name), dish_path(dish) %></td>
     <td class="buy-button"><%= button_to 'Ajouter au panier', add_dish_to_cart_lines_path(dish) %></td>
     </tr>
-  <% end%>
-  <tr>
-    <td>
-      <%= link_to 'Ajouter une recette', :action => 'new' %>
-    </td>
-  </tr>
+  <% end %>
+  <% if @can_modify_dishes %>
+    <tr>
+      <td>
+        <%= link_to 'Ajouter une recette', :action => 'new' %>
+      </td>
+    </tr>
+  <% end %>
 </table>
 

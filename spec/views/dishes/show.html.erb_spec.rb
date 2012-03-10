@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -8,6 +8,7 @@ describe "/dishes/show.html.erb" do
   before :each do
     items = [Factory.create(:item), Factory.create(:item)]
     assigns[:dish] = @dish = stub_model(Dish, :items => items)
+    assigns[:can_modify_dishes] = false
   end
 
 
@@ -21,18 +22,39 @@ describe "/dishes/show.html.erb" do
     end
   end
 
-  it "should display a link to add items to the dish" do
-    render
+  context "adding items to the dish" do
+    it "is forbidden by default" do
+      render
 
-    response.should contain("Ajouter un ingrédient")
-    response.should have_selector("a", :href => dish_item_categories_path(@dish))
+      response.should_not contain("Ajouter un ingrédient")
+    end
+
+    it "can be allowed" do
+      assigns[:can_modify_dishes] = true
+
+      render
+
+      response.should contain("Ajouter un ingrédient")
+      response.should have_selector("a", :href => dish_item_categories_path(@dish))
+    end
   end
 
-  it "should display a remove button for every item of the dish" do
-    render
+  context "removing items from the dish" do
 
-    @dish.items.each do |item|
-      response.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
+    it "is forbidden by default" do
+      render
+
+      response.should_not contain("Enlever de la recette")
+    end
+
+    it "can be allowed" do
+      assigns[:can_modify_dishes] = true
+
+      render
+
+      @dish.items.each do |item|
+        response.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
+      end
     end
   end
 
