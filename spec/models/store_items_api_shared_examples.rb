@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 require 'pp'
@@ -31,7 +31,7 @@ shared_examples_for "Any StoreItemsAPI" do
         Rails.logger.debug e.message
       end
     end
-    result
+    result.uniq
   end
 
   def parseable_categories_attributes

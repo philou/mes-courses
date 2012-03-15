@@ -39,6 +39,7 @@ TODO
   - valider les scripts pendant l'intégration continue en utilisant des vms
 - Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
   - faire du ménage dans les trucs qui ne sert en fait à rien
+  - voir si il n'y a pas des mode emacs pour remplacer certains tableurs par des modes emacs
 - Install windows and all browsers with VirtuaBox
 - Make a web site where one can check logs of heroku apps
 - Utiliser des modules pour faire des namespaces
@@ -56,6 +57,7 @@ TODO
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - tester org-mode pour mes todo list
+- commande emacs pour fermer tous les buffers dans un sous repertoire
 
 Spikes :
 - 2 way associations in active record
@@ -75,6 +77,7 @@ Kanban:
 
 Ongoing changes :
 - Upgrade gems before every feature
+- apprendre un truc emacs régulièrement
 
 CMS:
 
