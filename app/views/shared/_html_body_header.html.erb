@@ -1,7 +1,7 @@
 <%= render(:partial => "shared/html_body_header_1") %>
-        <a href="http://www.mes-courses.fr/" id="place-presentation">A propos</a>
+        <a href="http://www.mes-courses.fr/" id="place-presentation" onclick="_gaq.push(['_link', 'http://mes-courses-beta.heroku.com']); return false;">A propos</a>
         <span class="separator"> | </span>
-        <a href="http://www.mes-courses.fr/blog" id="place-blog">Blog</a>
+        <a href="http://www.mes-courses.fr/blog" id="place-blog" onclick="_gaq.push(['_link', 'http://mes-courses-beta.heroku.com']); return false;">Blog</a>
         <span class="separator"> | </span>
         <%= link_to 'Recettes', dishes_path, :id => 'place-dish' %>
         <span class="separator"> | </span>
