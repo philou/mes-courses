@@ -8,13 +8,14 @@ WIP
 
 TODO
 ----
+- faire une page fonctionalités
+-
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
 - migrer à rails 3
 - ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
 - mettre à jour ubuntu
-- mettre le working repo dans dropbox
 - merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
 - find a way to subclass Devise::SessionsController without cut-and-paste
 - faire un matcher pour les path bar
@@ -58,6 +59,14 @@ TODO
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - tester org-mode pour mes todo list
 - commande emacs pour fermer tous les buffers dans un sous repertoire
+- revoir les partages entre le cms et le site
+  - copier coller
+  - rest api sur le cms (plus de lien git du tout)
+  - mettre les snippets, layouts et styles dans le git du cms (comme au début)
+    - split entre design / écriture d'article
+    - marchera peut être mieux qu'au début parce que:
+      - le design est stabilisé
+      - j'ai un modem 3G
 
 Spikes :
 - 2 way associations in active record
@@ -71,13 +80,3 @@ Spikes :
 - see how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
 - Evalutate IceScrum to replace my excel sheet
 - spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
-
-Kanban:
-- Simplify marketing metrics and use metrics of the pirates
-
-Ongoing changes :
-- Upgrade gems before every feature
-- apprendre un truc emacs régulièrement
-
-CMS:
-
