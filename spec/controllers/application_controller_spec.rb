@@ -7,6 +7,9 @@ class TestController < ApplicationController
 
   before_filter :authenticate_user!, :only => [:an_action_with_authentication]
 
+  def an_action_with_no_link_path_bar
+    self.path_bar = [path_bar_element_with_no_link("on my own")]
+  end
   def an_action_with_cart_path_bar
     self.path_bar = [path_bar_cart_lines_root, dummy_path_bar_element]
   end
@@ -45,6 +48,12 @@ describe ApplicationController do
   ignore_user_authentication
 
   context "assigning @body_id" do
+
+    it "should be '' for a @path_bar starting with no link" do
+      get 'an_action_with_no_link_path_bar'
+
+      assigns[:body_id].should == ''
+    end
 
     it "should be cart for a @path_bar starting with cart lines" do
       get 'an_action_with_cart_path_bar'

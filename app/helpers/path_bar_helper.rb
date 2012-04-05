@@ -1,10 +1,13 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 module PathBarHelper
 
   # Path bar element with no link
   def path_bar_element_with_no_link(text)
     text
+  end
+  def path_bar_element_with_no_link?(element)
+    element.instance_of?(String)
   end
 
   # path bar element with a default link (current controller and action)

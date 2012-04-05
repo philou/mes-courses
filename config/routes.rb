@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
@@ -48,6 +48,8 @@ ActionController::Routing::Routes.draw do |map|
   map.add_dish_to_cart_lines '/cart_lines/add_dish/:id', :controller => "cart_lines", :action => "add_dish", :conditions => { :method => :post }
 
   map.resources :orders
+
+  map.features '/features', :controller => 'features', :action => 'index'
 
   if ['test','cucumber','ci'].include?(Rails.env)
     map.test ':controller/:action/:id'

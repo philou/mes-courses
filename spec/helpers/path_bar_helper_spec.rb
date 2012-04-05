@@ -1,4 +1,4 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -7,6 +7,11 @@ describe PathBarHelper do
 
   it "should build path elements with no link" do
     path_bar_element_with_no_link("Going nowhere").should == "Going nowhere"
+  end
+
+  it "matches elements with no link" do
+    path_bar_element_with_no_link?(path_bar_element_with_no_link("anything")).should == true
+    path_bar_element_with_no_link?(path_bar_element_for_current_resource("anything")).should == false
   end
 
   it "should build path elements for current resource" do
