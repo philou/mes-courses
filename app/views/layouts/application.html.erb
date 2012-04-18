@@ -7,6 +7,9 @@
     <% if !!@auto_refresh %>
       <meta http-equiv="refresh" content="3" />
     <% end %>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
     <%= render(:partial => "shared/html_head_content") %>
     <link rel="stylesheet" href="/stylesheets/app.css" type="text/css" name="app stylesheet" />
 
@@ -53,4 +56,7 @@
     <%= render(:partial => "shared/html_body_footer") %>
   </body>
 
+    <%= yield %>
+
+  </body>
 </html>

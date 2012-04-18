@@ -5,7 +5,7 @@ task :behaviours => [:spec, :remote_spec, :ci, 'db:migrate:reset', :cucumber]
 
 desc "Sets rails in ci mode"
 task :ci do
-  ENV['RAILS_ENV'] = RAILS_ENV = 'ci'
+  ENV['RAILS_ENV'] = Rails.env = 'ci'
 end
 
 desc "Tasks that launches the remote specs and emails a result"

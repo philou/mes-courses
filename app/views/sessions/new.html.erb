@@ -1,8 +1,8 @@
-<!--Copyright (C) 2011 by Philippe Bourgau-->
+<!--Copyright (C) 2011, 2012 by Philippe Bourgau-->
 
 <h2>Identifiez vous</h2>
 
-<% form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
+<%= form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
   <p><%= f.label :email %></p>
   <p><%= f.text_field :email %></p>
 

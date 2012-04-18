@@ -1,7 +1,7 @@
-<!-- Copyright (C) 2011 by Philippe Bourgau -->
+<!-- Copyright (C) 2011, 2012 by Philippe Bourgau -->
 
 <div id="search-panel">
-  <% form_tag @search_url, :method => :get, :id => "search" do %>
+  <%= form_tag @search_url, :method => :get, :id => "search" do %>
     <%= text_field_tag "search[search_string]", nil, :size => 60 %></input>
     <%= submit_tag "Rechercher" %></input>
   <% end %>

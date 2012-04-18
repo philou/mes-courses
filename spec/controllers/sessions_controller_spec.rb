@@ -8,6 +8,8 @@ describe SessionsController do
   context "when get 'new'" do
 
     before :each do
+      pending "setup devise session"
+
       get 'new'
     end
 
@@ -17,7 +19,7 @@ describe SessionsController do
     end
 
     it "assigns a 'Connection' path bar" do
-      assigns[:path_bar].should == [path_bar_session_root]
+      assigns(:path_bar).should == [path_bar_session_root]
     end
 
   end

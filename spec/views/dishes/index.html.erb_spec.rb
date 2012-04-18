@@ -3,23 +3,23 @@
 
 require 'spec_helper'
 
-describe "/dishes/index.html.erb" do
+describe "dishes/index" do
 
   before(:each) do
     @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }
-    assigns[:dishes] = @dishes
-    assigns[:can_modify_dishes] = false
+    assign :dishes, @dishes
+    assign :can_modify_dishes, false
   end
 
   it "should display the name of each dish" do
     render
-    @dishes.each {|dish| response.should contain(dish.name) }
+    @dishes.each {|dish| rendered.should contain(dish.name) }
   end
 
   it "should display a link to add all the items of a dish to the cart" do
     render
     @dishes.each do |dish|
-      response.should have_button_to("Ajouter au panier", add_dish_to_cart_lines_path(:id => dish.id), 'post')
+      rendered.should have_button_to("Ajouter au panier", add_dish_to_cart_lines_path(:id => dish.id), 'post')
     end
   end
 
@@ -27,7 +27,7 @@ describe "/dishes/index.html.erb" do
     render
 
     @dishes.each do |dish|
-      response.should have_selector("a", :href => dish_path(dish))
+      rendered.should have_selector("a", :href => dish_path(dish))
     end
   end
 
@@ -36,15 +36,15 @@ describe "/dishes/index.html.erb" do
     it "is forbidden by default" do
       render
 
-      response.should_not have_selector("a", :href => new_dish_path)
+      rendered.should_not have_selector("a", :href => new_dish_path)
     end
 
     it "can be allowed" do
-      assigns[:can_modify_dishes] = true
+      assign :can_modify_dishes, true
 
       render
 
-      response.should have_selector("a", :href => new_dish_path)
+      rendered.should have_selector("a", :href => new_dish_path)
     end
 
   end

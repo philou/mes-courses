@@ -32,14 +32,14 @@ describe OrdersController do
     it "should assign a @path_bar with two items" do
       get 'show', :id => @order.id
 
-      assigns[:path_bar].should == [path_bar_cart_lines_root,
+      assigns(:path_bar).should == [path_bar_cart_lines_root,
                                     path_bar_element_with_no_link("Transfert")]
     end
 
     it "should assign an order to the view" do
       get 'show', :id => @order.id
 
-      assigns[:order].should == @order
+      assigns(:order).should == @order
     end
 
     context "using an invalid store account" do
@@ -89,13 +89,13 @@ describe OrdersController do
 
         get 'show', :id => @order.id
 
-        assigns[:forward_completion_percents].should == 100 * 4 / 7
+        assigns(:forward_completion_percents).should == 100 * 4 / 7
       end
 
       it "should ask to page to auto refresh" do
         get 'show', :id => @order.id
 
-        assigns[:auto_refresh].should be_true
+        assigns(:auto_refresh).should be_true
       end
     end
   end

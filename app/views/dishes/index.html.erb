@@ -4,13 +4,14 @@
   <% @dishes.each do |dish| %>
     <tr>
       <td><%= link_to h(dish.name), dish_path(dish) %></td>
-    <td class="buy-button"><%= button_to 'Ajouter au panier', add_dish_to_cart_lines_path(dish) %></td>
+      <td class="buy-button"><%= button_to 'Ajouter au panier', add_dish_to_cart_lines_path(dish) %></td>
     </tr>
   <% end %>
+  <%= "@can_modify_dishes = #{@can_modifiy_dishes.inspect}" %>
   <% if @can_modify_dishes %>
     <tr>
       <td>
-        <%= link_to 'Ajouter une recette', :action => 'new' %>
+        <%= link_to 'Ajouter une recette', new_dish_path %>
       </td>
     </tr>
   <% end %>

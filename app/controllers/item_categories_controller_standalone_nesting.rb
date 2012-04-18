@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 class ItemCategoriesControllerStandaloneNesting
-  include ActionController::UrlWriter
+  include Rails.application.routes.url_helpers
 
   def root_path_bar
     []

@@ -83,19 +83,19 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:search_url].should == @nesting.item_category_path
+      assigns(:search_url).should == @nesting.item_category_path
     end
 
     it "should assign sub categories attributes" do
       get_show
 
-      assigns[:categories].should == @item_category.children
+      assigns(:categories).should == @item_category.children
     end
 
     it "should assign items attributes" do
       get_show
 
-      assigns[:items].should == @item_category.items
+      assigns(:items).should == @item_category.items
     end
 
     it "should assign a path bar starting with its nesting root path bar" do
@@ -103,13 +103,13 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:path_bar].should be_starting_with(@nesting.root_path_bar)
+      assigns(:path_bar).should be_starting_with(@nesting.root_path_bar)
     end
 
     it "should assign a path bar with current category" do
       get_show
 
-      assigns[:path_bar].should be_ending_with([path_bar_items_root,
+      assigns(:path_bar).should be_ending_with([path_bar_items_root,
                                                 path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
 
@@ -119,7 +119,7 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:path_bar].should be_ending_with([path_bar_items_root,
+      assigns(:path_bar).should be_ending_with([path_bar_items_root,
                                                 path_bar_element(parent_category.name, item_category_path(parent_category)),
                                                 path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
@@ -131,9 +131,9 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:add_item_label].should == @nesting.add_item_label
-      assigns[:add_item_url_options].should == @nesting.add_item_url_options
-      assigns[:add_item_html_options].should == @nesting.add_item_html_options
+      assigns(:add_item_label).should == @nesting.add_item_label
+      assigns(:add_item_url_options).should == @nesting.add_item_url_options.stringify_keys
+      assigns(:add_item_html_options).should == @nesting.add_item_html_options.stringify_keys
     end
 
     it "should assign show sub category link params" do
@@ -141,7 +141,7 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns[:show_sub_category_url_options].should == @nesting.show_sub_category_url_options
+      assigns(:show_sub_category_url_options).should == @nesting.show_sub_category_url_options.stringify_keys
     end
 
     describe "when showing ItemCategory root" do
@@ -151,7 +151,7 @@ describe ItemCategoriesController do
 
         get 'show', :id => ItemCategory.root.id
 
-        assigns[:path_bar].should be_ending_with([path_bar_items_root])
+        assigns(:path_bar).should be_ending_with([path_bar_items_root])
       end
 
     end
@@ -179,14 +179,14 @@ describe ItemCategoriesController do
       it "should assign a path_bar containing the searched category" do
         get_show_search
 
-        assigns[:path_bar].should be_containing([path_bar_items_root,
+        assigns(:path_bar).should be_containing([path_bar_items_root,
                                                  path_bar_element(@item_category.name, item_category_path(@item_category))])
       end
 
       it "should assign a path_bar ending with the search" do
         get_show_search
 
-        assigns[:path_bar].should be_ending_with([path_bar_element_with_no_link(@search_string)])
+        assigns(:path_bar).should be_ending_with([path_bar_element_with_no_link(@search_string)])
       end
 
       it "should assign no categories" do
@@ -194,7 +194,7 @@ describe ItemCategoriesController do
 
         get_show_search
 
-        assigns[:categories].should == []
+        assigns(:categories).should == []
       end
 
       it "should assign searched items" do
@@ -203,7 +203,7 @@ describe ItemCategoriesController do
 
         get_show_search
 
-        assigns[:items].should == searched_items
+        assigns(:items).should == searched_items
       end
 
     end

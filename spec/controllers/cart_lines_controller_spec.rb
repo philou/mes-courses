@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -60,19 +60,19 @@ describe CartLinesController do
   it "should assign a path_bar with index" do
     get :index
 
-    assigns[:path_bar].should == [path_bar_cart_lines_root]
+    assigns(:path_bar).should == [path_bar_cart_lines_root]
   end
 
   it "should assign a cart with index" do
     get :index
 
-    assigns[:cart].should be @cart
+    assigns(:cart).should == @cart
   end
 
   it "should assign stores with index" do
     get :index
 
-    assigns[:stores].should be @stores
+    assigns(:stores).should == @stores
   end
 
   # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...

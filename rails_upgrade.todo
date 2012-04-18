@@ -1,0 +1,98 @@
+Soon-to-be-deprecated ActiveRecord calls
+Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
+More information: http://m.onkey.org/2010/1/22/active-record-query-interface
+
+The culprits:
+	- app/models/store.rb
+	- app/models/model_stat.rb
+	- app/models/item.rb
+	- app/controllers/cart_lines_controller.rb
+	- app/controllers/dishes_controller.rb
+	- app/models/store.rb
+	- app/models/item.rb
+
+Old router API
+The router API has totally changed.
+More information: http://yehudakatz.com/2009/12/26/the-rails-3-router-rack-it-up/
+
+The culprits:
+	- config/routes.rb
+
+Deprecated test_help path
+You now must require 'rails/test_help' not just 'test_help'.
+More information: http://weblog.rubyonrails.org/2009/9/1/gem-packaging-best-practices
+
+The culprits:
+	- test/test_helper.rb
+
+New file needed: config/application.rb
+You need to add a config/application.rb.
+More information: http://omgbloglol.com/post/353978923/the-path-to-rails-3-approaching-the-upgrade
+
+The culprits:
+	- config/application.rb
+
+Deprecated constant(s)
+Constants like RAILS_ENV, RAILS_ROOT, and RAILS_DEFAULT_LOGGER are now deprecated.
+More information: http://litanyagainstfear.com/blog/2010/02/03/the-rails-module/
+
+The culprits:
+	- app/controllers/application_controller.rb
+	- lib/tasks/ci.rake
+	- lib/tasks/rspec.rake
+
+Deprecated ActionMailer API
+You're using the old ActionMailer API to send e-mails in a controller, model, or observer.
+More information: http://lindsaar.net/2010/1/26/new-actionmailer-api-in-rails-3
+
+The culprits:
+	- app/models/incremental_store.rb
+	- app/models/store.rb
+
+Old ActionMailer class API
+You're using the old API in a mailer class.
+More information: http://lindsaar.net/2010/1/26/new-actionmailer-api-in-rails-3
+
+The culprits:
+	- app/models/monitoring_mailer.rb
+	- app/models/monitoring_mailer.rb
+	- app/models/import_reporter.rb
+
+Deprecated ERb helper calls
+Block helpers that use concat (e.g., form_for) should use <%= instead of <%.  The current form will continue to work for now, but you will get deprecation warnings since this form will go away in the future.
+More information: http://weblog.rubyonrails.org/
+
+The culprits:
+	- app/views/cart_lines/index.html.erb
+	- app/views/dishes/new.html.erb
+	- app/views/sessions/new.html.erb
+	- app/views/item_categories/show.html.erb
+
+Deprecated cookie secret setting
+Previously, cookie secret was set directly on ActionController::Base; it's now config.secret_token.
+More information: http://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store
+
+The culprits:
+	- config/initializers/cookie_verification_secret.rb
+
+Deprecated session secret setting
+Previously, session secret was set directly on ActionController::Base; it's now config.secret_token.
+More information: http://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store
+
+The culprits:
+	- config/initializers/session_store.rb
+
+Deprecated ActionMailer attribute :sent_on
+Using the new mailer API, you can specify :date to the mail method.
+More information: http://stackoverflow.com/questions/7367185/weird-error-when-delivering-mail-undefined-method-index-for-2011-09-09-2215
+
+The culprits:
+	- app/models/monitoring_mailer.rb
+
+Deprecated filter_parameter_logging calls
+The list of filtered parameters are now stored in /config/application.rb. For example: config.filter_parameters += [:password]
+More information: http://de.asciicasts.com/episodes/224-controller-in-rails-3
+
+The culprits:
+	- app/controllers/application_controller.rb
+

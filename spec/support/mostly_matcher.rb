@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010 by Philippe Bourgau
+# Copyright (C) 2010, 2012 by Philippe Bourgau
 
 # Matcher to verify that most items match something else
-Spec::Matchers.define :mostly do |item_matcher|
+RSpec::Matchers.define :mostly do |item_matcher|
   match do |actual_items|
     if item_matcher.respond_to?(:in)
       item_matcher.in(actual_items)

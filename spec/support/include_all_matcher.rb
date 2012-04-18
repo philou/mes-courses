@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
 # Matcher to verify that many elements are present in a collection
-Spec::Matchers.define :include_all do |required_items|
+RSpec::Matchers.define :include_all do |required_items|
   match do |actual|
     include_all?(actual,required_items)
   end

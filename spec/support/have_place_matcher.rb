@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class HavePlace
   def initialize(options)
@@ -8,8 +8,7 @@ class HavePlace
   end
 
   def matches?(response)
-    @response = response
-    @doc = Nokogiri::HTML(@response.body)
+    @doc = Nokogiri::HTML(response)
 
     !@doc.xpath(place_xpath).empty?
   end

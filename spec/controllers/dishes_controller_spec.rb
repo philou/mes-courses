@@ -11,7 +11,7 @@ describe DishesController do
     it "should forbid dish modifications by default" do
       instance_eval(&http_request_proc)
 
-      assigns[:can_modify_dishes].should == false
+      assigns(:can_modify_dishes).should == false
     end
 
     it "should let signed in users modify dishes" do
@@ -19,7 +19,7 @@ describe DishesController do
 
       instance_eval(&http_request_proc)
 
-      assigns[:can_modify_dishes].should == true
+      assigns(:can_modify_dishes).should == true
     end
 
   end
@@ -40,13 +40,13 @@ describe DishesController do
     it "should publish the list of all dishes" do
       get 'index'
 
-      assigns[:dishes].should == @all_dishes
+      assigns(:dishes).should == @all_dishes
     end
 
     it "should create a path bar with a link to the root dish page" do
       get 'index'
 
-      assigns[:path_bar].should == [path_bar_dishes_root]
+      assigns(:path_bar).should == [path_bar_dishes_root]
     end
 
     allows_dish_modifications_for_signed_in_users_only { get 'index' }
@@ -64,16 +64,16 @@ describe DishesController do
     end
 
     it "should publish a new dish" do
-      assigns[:dish].should be_instance_of(Dish)
-      assigns[:dish].id.should be_nil
+      assigns(:dish).should be_instance_of(Dish)
+      assigns(:dish).id.should be_nil
     end
 
     it "should use a nice default name for the dish" do
-      assigns[:dish].name.should == "Nouvelle recette"
+      assigns(:dish).name.should == "Nouvelle recette"
     end
 
     it "should create a path bar with a link to the dish creation page" do
-      assigns[:path_bar].should == [path_bar_dishes_root,
+      assigns(:path_bar).should == [path_bar_dishes_root,
                                     path_bar_element_for_current_resource("Nouvelle recette")]
     end
   end
@@ -116,13 +116,13 @@ describe DishesController do
     it "should publish the requested dish" do
       get 'show', :id => @dish.id
 
-      assigns[:dish].should == @dish
+      assigns(:dish).should == @dish
     end
 
     it "should create a path bar with a link to the curent dish page" do
       get 'show', :id => @dish.id
 
-      assigns[:path_bar].should == [path_bar_dishes_root,
+      assigns(:path_bar).should == [path_bar_dishes_root,
                                     path_bar_element_for_current_resource(@dish.name)]
     end
 

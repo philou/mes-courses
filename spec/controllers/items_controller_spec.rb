@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -8,15 +8,15 @@ describe ItemsController do
   ignore_user_authentication
 
   before :each do
-    @new_item = stub_model(Item, :name => "Chocolat noir à dessert")
+    @new_item = stub(Item, :id => 1, :name => "Chocolat noir à dessert")
     Item.stub!(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)
 
-    @old_item = stub_model(Item, :name => "Oeufs frais")
+    @old_item = stub(Item, :id => 2, :name => "Oeufs frais")
     Item.stub!(:find_by_id).with(@old_item.id.to_s).and_return(@old_item)
 
-    @dish = stub_model(Dish, :name => "Gateau au chocolat", :items => [@old_item])
-    Dish.stub!(:find_by_id).with(@dish.id.to_s).and_return(@dish)
+    @dish = stub(Dish, :id => 3, :name => "Gateau au chocolat", :items => [@old_item])
     @dish.stub!(:save!)
+    Dish.stub!(:find_by_id).with(@dish.id.to_s).and_return(@dish)
   end
 
   [:put_create, :delete_destroy].each do |action|
@@ -25,7 +25,7 @@ describe ItemsController do
       it "should redirect to the specified dish page" do
         self.send(action)
 
-        response.should redirect_to(dish_path(@dish.id))
+        response.should redirect_to(dish_path(@dish))
       end
 
       it "should save the modified dish" do

@@ -6,7 +6,7 @@
   <% end %>
 <% end %>
 
-<% render(:layout => "shared/items", :object => @dish.items, :locals => { :extra_columns_proc => extra_columns_proc }) do %>
+<%= render(:layout => "shared/items", :object => @dish.items, :locals => { :extra_columns_proc => extra_columns_proc }) do %>
   <% if @can_modify_dishes %>
     <tr>
       <td>
