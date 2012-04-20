@@ -8,7 +8,8 @@ describe SessionsController do
   context "when get 'new'" do
 
     before :each do
-      pending "setup devise session"
+      # NB see http://stackoverflow.com/questions/4291755/rspec-test-of-custom-devise-session-controller-fails-with-abstractcontrollerac for the following line :
+      request.env['devise.mapping'] = Devise.mappings[:user]
 
       get 'new'
     end

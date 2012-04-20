@@ -21,6 +21,8 @@ end
 
 describe ApplicationController do
 
+  ignore_user_authentication
+
   context "body_id from path_bar" do
 
     context "starting with cart lines" do
@@ -81,8 +83,6 @@ describe ApplicationController do
       end
 
       it "should be session" do
-        pending "setup devise session"
-
         get :index
 
         assigns(:body_id).should == 'session'
@@ -103,12 +103,12 @@ describe ApplicationController do
       end
     end
 
-    context "with a redirection" do
+    context "with no path bar" do
       controller do
         include DummyController
 
         def index
-          redirect_to :action => "nowhere"
+          redirect_to '/'
         end
       end
 
@@ -120,12 +120,10 @@ describe ApplicationController do
     end
   end
 
-  context "an action with authentication" do
+  context "session place" do
 
     controller do
       include DummyController
-
-      before_filter :authenticate_user!
 
       def new_path_bar
         [path_bar_dishes_root, dummy_path_bar_element]
@@ -133,20 +131,14 @@ describe ApplicationController do
 
     end
 
-    it "assigns a signin session_place before authentication" do
-      pending "setup devise session"
-
-      controller.stub(:authenticate_user!)
-
+    it "is signin before authentication" do
       get :index
 
       assigns(:session_place_text).should == "Connection"
       assigns(:session_place_url).should == new_user_session_path
     end
 
-    it "assigns a signout session_place after authentication" do
-      pending "setup devise session"
-
+    it "is signout after authentication" do
       email = "gyzmo@mail.com"
       stub_signed_in_user(:email => email)
 

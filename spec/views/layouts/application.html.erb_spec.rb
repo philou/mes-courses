@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -8,6 +8,8 @@ describe "layouts/application" do
 
   before :each do
     assign :path_bar, []
+    assign :session_place_text, "Connection"
+    assign :session_place_url, "/sessions"
   end
 
   it "should render flash[:notice]" do
