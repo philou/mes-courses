@@ -14,10 +14,6 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-# Use a null db by default when running examples
-# require 'nulldb_rspec'
-# include NullDB::RSpec::NullifiedDatabase
-
 # Load schema for in memory sqlite database
 load_schema = lambda do
     load "#{Rails.root.to_s}/db/schema.rb" # use db agnostic schema by default
