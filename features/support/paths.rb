@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 module NavigationHelpers
   # Maps a name to a path. Used by the
@@ -8,11 +8,9 @@ module NavigationHelpers
   #
   # step definition in web_steps.rb
   #
-  def path_to(page_name, response = nil)
+  def path_to(page_name)
     case page_name
 
-    when /the current page/
-      "#{response.env['PATH_INFO']}?#{response.env['QUERY_STRING']}"
     when /the home\s?page/
       '/'
     when /the login page/

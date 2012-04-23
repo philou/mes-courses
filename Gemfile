@@ -12,15 +12,13 @@ gem 'acts_as_tree', :git => "https://github.com/marceloribeiro/rails-acts_as_tre
 gem 'devise'
 
 # databases
-gem "pg", :group => [:development, :production, :cucumber, :ci]
-
-# testing tools
-gem "rspec-rails", :group => [:development, :test, :cucumber, :ci]
-gem "factory_girl_rails", :group => [:development, :test, :cucumber, :ci]
-gem "ZenTest", :group => [:development, :test, :cucumber, :ci]
-
+gem "pg", :group => [:development, :production, :ci]
 gem "sqlite3-ruby", :require => "sqlite3", :group => :test
 
-gem "cucumber-rails", :group => [:cucumber, :ci]
-gem "database_cleaner", :group => [:cucumber, :ci]
-gem "webrat", :group => [:cucumber, :ci]
+# testing tools
+gem "rspec-rails", :group => [:development, :test, :ci]
+gem "factory_girl_rails", :group => [:test, :ci]
+gem "ZenTest", :group => [:test, :ci]
+gem "cucumber-rails", :group => [:test, :ci]
+gem "database_cleaner", :group => [:test, :ci]
+gem "webrat", :group => [:test, :ci]

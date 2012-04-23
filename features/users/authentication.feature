@@ -10,3 +10,8 @@ Feature: Authenticating users when they connect
     Given I am not logged in
     When I log in
     Then I should be on the dishes page
+
+  Scenario: Users are redirected to the home page after logout
+    Given I am logged in
+    When I log out
+    Then I should be on the dishes page

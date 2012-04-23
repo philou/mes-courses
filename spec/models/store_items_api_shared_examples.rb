@@ -53,7 +53,7 @@ module StoreItemsAPISpecMacros
       end
 
       it "should have items with a price" do
-        sample_items_attributes.should all have_key(:price)
+        sample_items_attributes.should all_do have_key(:price)
       end
 
       it "should mostly have items with an image" do
@@ -65,11 +65,11 @@ module StoreItemsAPISpecMacros
       end
 
       it "should have items with unique remote id" do
-        sample_items_attributes.should all have_unique(:remote_id)
+        sample_items_attributes.should all_do have_unique(:remote_id)
       end
 
       it "should have items with unique uris" do
-        sample_items.should all have_unique(:uri)
+        sample_items.should all_do have_unique(:uri)
       end
     end
   end

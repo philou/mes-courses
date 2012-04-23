@@ -16,19 +16,19 @@ When /^(?:|I )try to go to (.+)$/ do |page_name|
 end
 
 Then /^I should see a link "([^\"]*)" to "([^\"]*)"$/ do |text, url|
-  response.should have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
+  page.should have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
 end
 
 Then /^I should see a button "([^\"]*)" to "([^\"]*)"$/ do |text, url|
-  response.should have_xpath("//form[@action='#{url}']//input[@type='submit'][@value='#{text}']")
+  page.should have_xpath("//form[@action='#{url}']//input[@type='submit'][@value='#{text}']")
 end
 
 Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)""?$/ do |field, form, value|
-  response.should have_xpath("//form[@id='#{form}']/input[@name='#{form}[#{field}]'][@value='#{value}']")
+  page.should have_xpath("//form[@id='#{form}']/input[@name='#{form}[#{field}]'][@value='#{value}']")
 end
 
 Then /^the page should auto refresh$/ do
-  response.should have_xpath("//meta[@http-equiv='refresh']")
+  page.should have_xpath("//meta[@http-equiv='refresh']")
 end
 
 Then /^I should be redirected to (.+)$/ do |page_name|
@@ -39,5 +39,5 @@ Then /^I should be redirected to (.+)$/ do |page_name|
 end
 
 Then /^there should be an iframe with id "([^"]*)" and url "([^"]*)"$/ do |id, url|
-  response.should have_xpath("//iframe[@id='#{id}'][@src='#{url}']")
+  page.should have_xpath("//iframe[@id='#{id}'][@src='#{url}']")
 end

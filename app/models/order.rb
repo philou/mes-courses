@@ -21,13 +21,7 @@ class Order < ActiveRecord::Base
 
   validates_presence_of :forwarded_cart_lines_count
 
-  def initialize(attributes = {})
-    defaults = { :status => Order::NOT_PASSED,
-                 :warning_notices_text => "",
-                 :error_notice => "",
-                 :forwarded_cart_lines_count => 0}
-    super(defaults.merge(attributes))
-  end
+  after_initialize :assign_default_values
 
   def add_missing_cart_line(cart_line)
     self.warning_notices_text = self.warning_notices_text + Order.missing_cart_line_notice(cart_line, self.store) + Order::WARNING_NOTICE_SEPARATOR
@@ -66,5 +60,15 @@ class Order < ActiveRecord::Base
   private
 
   WARNING_NOTICE_SEPARATOR = "\n"
+
+  def assign_default_values
+
+    if new_record?
+      self.status ||= Order::NOT_PASSED
+      self.warning_notices_text ||= ""
+      self.error_notice ||= ""
+      self.forwarded_cart_lines_count ||= 0
+    end
+  end
 
 end

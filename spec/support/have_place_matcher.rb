@@ -24,6 +24,7 @@ class HavePlace
     else # @doc.xpath(place_xpath).empty?
       link = @doc.xpath(place_name_xpath)
       description + " but it is linking to '#{link.attribute('href').value}'"
+
     end
   end
 

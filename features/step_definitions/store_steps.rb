@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
+require 'cucumber/rspec/doubles'
+
 def configure_dummy_store(items_config)
   # Using stubs with item api makes sure the static modifications are rolledback after each scenario
   DummyStoreItemsAPI.stub(:new_default_store).and_return(DummyStoreItemsAPI.new(items_config))

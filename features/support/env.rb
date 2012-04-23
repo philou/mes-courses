@@ -64,3 +64,7 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+# Factory girl steps
+require "factory_girl"
+Dir[Rails.root.join("spec/factories/*.rb")].each {|f| require f}
+require "factory_girl/step_definitions"

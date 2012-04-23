@@ -13,10 +13,7 @@ class Item < ActiveRecord::Base
 
   attr_protected :tokens
 
-  def initialize(attributes = {})
-    super(attributes)
-    index
-  end
+  after_initialize :index
 
   def name=(name)
     write_attribute("name", name)

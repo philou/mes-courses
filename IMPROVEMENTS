@@ -11,6 +11,15 @@ WIP
 
 TODO
 ----
+- clean up and homogenize usage FactoryGirl and stub_model
+  - use the standard FactoryGirl synthax
+  - understand how to use FactoryGirl and stub_model together
+  - try to use real model instances with stub_model ?
+  - use mock_model and mock_model.as_new_record instead of raw mocks
+  - decide wether and when to use mock_model and mock or stub_models and FactoryGirl
+  - avoid mixing real records and stubs
+- regarder si je peux pas avoir act_as_tree dans une gem : act_as_tree_rails3
+- mettre des valeurs par défauts aux colonnes (Order)
 - replace cron heroku addon by scheduler
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
@@ -30,9 +39,10 @@ TODO
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements
 - faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
-- Understand why capybara is now prefered to web steps
-  - read this : http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off
-  - upgrade our cucumber steps
+- Upgrade our cucumber steps
+  - delete all unused steps from web_steps ...
+  - make them more high level
+  - migrate to capybara
 - Website:
 - Speed up deployment when integrating : in parallel, or asynchronously on another server
 - Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status

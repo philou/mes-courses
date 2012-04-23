@@ -22,3 +22,7 @@ end
 When /^I log in$/ do
   log_in
 end
+
+When /^I log out$/ do
+  click_link "Deconnection (#{@user.email})"
+end

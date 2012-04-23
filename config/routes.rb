@@ -56,7 +56,7 @@ MesCoursesDevR3::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  root :to => 'dishes#index'
+  root :to => redirect('/dishes')
 
   devise_for :users, :controllers => { :sessions => "sessions" }
 

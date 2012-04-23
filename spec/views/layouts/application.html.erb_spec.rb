@@ -72,7 +72,7 @@ describe "layouts/application" do
 
     render
 
-    rendered.should have_place(:text => text, :url => url)
+    rendered.should have_place(text: text, url: url)
   end
 
 end

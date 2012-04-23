@@ -5,6 +5,7 @@ require 'store_importer'
 require 'incremental_store'
 require 'visited_url'
 require 'uri'
+require 'time_span_helper'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
