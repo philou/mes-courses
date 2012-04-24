@@ -11,6 +11,20 @@ WIP
 
 TODO
 ----
+- migrate active record calls
+  Soon-to-be-deprecated ActiveRecord calls
+  Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
+  More information: http://m.onkey.org/2010/1/22/active-record-query-interface
+
+  The culprits:
+	- app/models/store.rb
+	- app/models/model_stat.rb
+	- app/models/item.rb
+	- app/controllers/cart_lines_controller.rb
+	- app/controllers/dishes_controller.rb
+	- app/models/store.rb
+	- app/models/item.rb
+
 - clean up and homogenize usage FactoryGirl and stub_model
   - use the standard FactoryGirl synthax
   - understand how to use FactoryGirl and stub_model together
