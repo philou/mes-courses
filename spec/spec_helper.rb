@@ -7,6 +7,9 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
+# Require factory girl
+require 'factory_girl_rails'
+
 # Uncomment the next line to use webrat's matchers
 # require 'webrat/integrations/rspec-rails'
 
