@@ -89,6 +89,8 @@ TODO
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - speed up testing
+  - launching just a few specs
+  - launching just a few features
   - load time see http://rhnh.net/2011/05/28/speeding-up-rails-startup-time & http://www.rubyinside.com/ruby-1-9-3-faster-loading-times-require-4927.html
   - spork (a test runner server)
   - migrate to ruby 1.9.3
