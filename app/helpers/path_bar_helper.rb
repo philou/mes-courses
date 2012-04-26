@@ -11,6 +11,9 @@ module PathBarHelper
   def path_bar_element_with_no_link(text)
     text
   end
+  def path_bar_element_with_no_link?(element)
+    element.instance_of?(String)
+  end
 
   # path bar element with a default link (current controller and action)
   # ignores eventual GET parameters

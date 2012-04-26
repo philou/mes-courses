@@ -1,3 +1,5 @@
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+
 MesCourses::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -73,4 +75,5 @@ MesCourses::Application.routes.draw do
 
   resources :orders
 
+  match '/features' => "features#index"
 end

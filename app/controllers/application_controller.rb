@@ -22,6 +22,9 @@ class ApplicationController < ActionController::Base
 
   def extract_body_id(path_bar)
     path_bar_root = path_bar[0]
+
+    return '' if path_bar_element_with_no_link?(path_bar_root)
+
     case path_bar_root
     when path_bar_cart_lines_root
       'cart'

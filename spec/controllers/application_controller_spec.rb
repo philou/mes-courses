@@ -25,6 +25,23 @@ describe ApplicationController do
 
   context "body_id from path_bar" do
 
+    context "starting with no link" do
+      controller do
+        include DummyController
+
+        def new_path_bar
+          [path_bar_element_with_no_link("on my own")]
+        end
+      end
+
+
+      it "should be ''" do
+        get :index
+
+        assigns[:body_id].should == ''
+      end
+    end
+
     context "starting with cart lines" do
       controller do
         include DummyController

@@ -97,7 +97,7 @@ module StoreItemsAPISpecMacros
         Rails.logger.debug e.message
       end
     end
-    result
+    result.uniq
   end
 
   def parseable_categories_attributes
