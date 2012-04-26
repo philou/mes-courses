@@ -5,4 +5,4 @@
 require File.expand_path('../application', __FILE__)
 
 # Initialize the rails application
-MesCoursesDevR3::Application.initialize!
+MesCourses::Application.initialize!

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-MesCoursesDevR3::Application.configure do
+MesCourses::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on

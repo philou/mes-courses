@@ -17,7 +17,7 @@ gem "sqlite3-ruby", :require => "sqlite3", :group => :test
 # testing tools
 gem "rspec-rails", :group => [:development, :test, :ci]
 gem "factory_girl_rails", :group => [:test, :ci], :require => false
+gem "webrat", :group => [:test, :ci]
 gem "ZenTest", :group => [:test, :ci]
 gem "cucumber-rails", :group => [:test, :ci]
 gem "database_cleaner", :group => [:test, :ci]
-gem "webrat", :group => [:test, :ci]

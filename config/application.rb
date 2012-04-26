@@ -16,7 +16,7 @@ require File.join(File.dirname(__FILE__), '../lib/heroku_helper')
 require File.join(File.dirname(__FILE__), 'email_constants')
 require 'pp'
 
-module MesCoursesDevR3
+module MesCourses
   class Application < Rails::Application
     include HerokuHelper
 
@@ -44,6 +44,9 @@ module MesCoursesDevR3
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
+
+    # Force ssl for the whole app on heroku
+    config.force_ssl = on_heroku?
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]

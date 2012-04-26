@@ -3,27 +3,6 @@
 
 require 'spec_helper'
 
-# shared_examples_for "Any MonitoringMailer" do
-#   include MonitoringMailerSpecMacros
-
-#   before(:each) do
-#     HerokuHelper.stub(:app_name).and_return("mes-courses-tests")
-#   end
-
-#   it "should send a non empty email" do
-#     send_monitoring_email
-
-#     @emails.should have(1).entry
-#     @email.to.should_not be_empty
-#   end
-
-#   it "should have a subject including the app name" do
-#     send_monitoring_email
-
-#     @subject.should include(HerokuHelper.app_name)
-#   end
-# end
-
 module MonitoringMailerSpecMacros
 
   def self.included(base)

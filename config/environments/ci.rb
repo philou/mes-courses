@@ -4,7 +4,7 @@
 # Configuration for continuous integration, mostly like production, but
 #  - with rspec and cucumber
 
-MesCoursesDevR3::Application.configure do
+MesCourses::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests

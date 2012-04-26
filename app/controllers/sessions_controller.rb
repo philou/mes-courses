@@ -4,8 +4,6 @@
 class SessionsController < Devise::SessionsController
   include PathBarHelper
 
-  force_ssl
-
   before_filter :assign_path_bar
 
   private

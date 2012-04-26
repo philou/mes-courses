@@ -1,4 +1,4 @@
-MesCoursesDevR3::Application.routes.draw do
+MesCourses::Application.routes.draw do
   match '/' => 'welcome#index'
   match 'users' => '#index', :as => :devise_for
   resources :item_categories
