@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-MesCoursesDevR3::Application.load_tasks
+MesCourses::Application.load_tasks
