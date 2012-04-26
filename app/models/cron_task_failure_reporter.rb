@@ -7,7 +7,7 @@ class CronTaskFailureReporter < MonitoringMailer
 
   def failure(task_name, exception)
     setup_content(exception)
-    setup_mail(subject(task_name))
+    setup_mail(subject(task_name, exception))
   end
 
   private
@@ -17,7 +17,7 @@ class CronTaskFailureReporter < MonitoringMailer
     @logs = safe_heroku_logs
   end
 
-  def subject(task_name)
-    "ERROR cron task '#{task_name}' failed"
+  def subject(task_name, exception)
+    "ERROR task '#{task_name}' (#{exception.class.name}) #{exception.message}"
   end
 end
