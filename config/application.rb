@@ -91,15 +91,13 @@ module MesCourses
         :domain         => ENV['SENDGRID_DOMAIN']}
     end
 
-    # Disable delivery errors, bad email addresses will be ignored
-    # config.action_mailer.raise_delivery_errors = false
-    # ::ExceptionNotifier::Notifier.configure_exception_notifier do |config|
-    #   config[:app_name]                 = app_name
-    #   config[:sender_address]           = EmailConstants.sender
-    #   config[:exception_recipients]     = EmailConstants.recipients
-    #   config[:subject_prepend]          = "[#{app_name}] ERROR "
-    #   config[:skip_local_notification]  = false
-    # end
+    # setup exception notifier on heroku
+    if on_heroku?
+      config.middleware.use ExceptionNotifier,
+        :email_prefix => "[#{app_name}] ERROR ",
+        :sender_address => EmailConstants.sender,
+        :exception_recipients => EmailConstants.recipients
+    end
 
   end
 end
