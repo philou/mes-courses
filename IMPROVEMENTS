@@ -8,6 +8,7 @@ WIP
 
 TODO
 ----
+- completely disable stock test stack from rails
 - migrate active record calls
   Soon-to-be-deprecated ActiveRecord calls
   Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.

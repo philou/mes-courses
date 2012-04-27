@@ -3,6 +3,19 @@
 
 require 'spec_helper'
 
+class String
+  def occurences_of(substring)
+    before, match, after = partition(substring)
+    if !after.empty?
+      after.occurences_of(substring) + 1
+    elsif !match.empty?
+      1
+    else
+      0
+    end
+  end
+end
+
 describe "layouts/application" do
   include PathBarHelper
 
@@ -73,6 +86,14 @@ describe "layouts/application" do
     render
 
     rendered.should have_place(text: text, url: url)
+  end
+
+  it "should render the inner content" do
+    content = "unique content"
+
+    render text: content, layout: "layouts/application.html"
+
+    rendered.occurences_of(content).should == 1
   end
 
 end
