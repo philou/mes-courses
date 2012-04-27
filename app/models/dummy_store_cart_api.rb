@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'store_cart_api'
-
 # Logger mock for StoreCartAPI.
 class DummyStoreCartAPI < StoreCartAPI
 
