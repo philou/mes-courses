@@ -4,16 +4,15 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-- migrer vers ruby 1.9
+- migrer à rails 3
 
 TODO
 ----
-- faire une page fonctionalités
--
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
-- migrer à rails 3
+- upgrade radiant to the latest version using bundler !
+  - merge latest design modifications
 - ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
 - mettre à jour ubuntu
 - merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
@@ -59,7 +58,7 @@ TODO
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - tester org-mode pour mes todo list
 - commande emacs pour fermer tous les buffers dans un sous repertoire
-- revoir les partages entre le cms et le site
+- redesign cms pull and push
   - copier coller
   - rest api sur le cms (plus de lien git du tout)
   - mettre les snippets, layouts et styles dans le git du cms (comme au début)
