@@ -1,10 +1,10 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'lib/time_span_helper'
+require 'time_span_helper'
 
 module DeploymentHelpers
 
-  HEROKU_STACK = "bamboo-ree-1.8.7"
+  HEROKU_STACK = "bamboo-ree-1.9.2"
 
   def shell(command)
     unless system command

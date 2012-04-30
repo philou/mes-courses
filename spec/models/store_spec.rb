@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
@@ -6,7 +7,7 @@ describe Store do
 
   # setting static constants up
   before(:each) do
-    @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE }
+    @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE, :expected_items => 10, :sponsored_url => AUCHAN_DIRECT_OFFLINE }
 
     @importer = mock(StoreImporter).as_null_object
     StoreImporter.stub(:new).and_return(@importer)
@@ -75,7 +76,8 @@ describe Store do
       end_time = Time.local(2011, 10, 29, 17, 48, 12)
       Timing.stub(:now).and_return(start_time, end_time)
 
-      ImportReporter.should_receive(:deliver_delta).with(end_time - start_time, anything)
+      ImportReporter.should_receive(:delta).with(end_time - start_time, anything).and_return(email = stub("Email"))
+      email.should_receive(:deliver)
 
       Store.import
     end
@@ -84,7 +86,8 @@ describe Store do
       expected_items = 3000
       Store.stub(:maximum).with(:expected_items).and_return(expected_items)
 
-      ImportReporter.should_receive(:deliver_delta).with(anything, expected_items)
+      ImportReporter.should_receive(:delta).with(anything, expected_items).and_return(email = stub("Email"))
+      email.should_receive(:deliver)
 
       Store.import
     end

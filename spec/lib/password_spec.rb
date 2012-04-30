@@ -1,7 +1,8 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'lib/password'
-require 'lib/string_extras'
+require 'password'
+require 'string_extras'
 
 describe Password do
 

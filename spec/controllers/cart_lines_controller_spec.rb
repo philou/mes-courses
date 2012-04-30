@@ -1,4 +1,5 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -26,16 +27,11 @@ describe CartLinesController do
       Dish.stub(:find).and_return(stub_model(Dish))
     end
 
-    # for every action
-    [[:get, :index],
-     [:delete, :destroy_all],
-     [:post, :create],
-     [:post, :add_dish]].each do |method, action|
-
+    def self.it_should_find_or_create_a_session_when_answering (action, &http_request)
       context "when answering #{action}" do
 
         it "should create a new cart in session if no one exists" do
-          send(method, action)
+          instance_eval(&http_request)
 
           session[:cart_id].should == @cart.id
         end
@@ -46,12 +42,16 @@ describe CartLinesController do
 
           Cart.should_not_receive(:create)
 
-          send(method, action)
+          instance_eval(&http_request)
         end
 
       end
-
     end
+
+    it_should_find_or_create_a_session_when_answering(:index) { get :index }
+    it_should_find_or_create_a_session_when_answering(:destroy_all) { delete :destroy_all}
+    it_should_find_or_create_a_session_when_answering(:create) { post :create}
+    it_should_find_or_create_a_session_when_answering(:add_dish) { post :add_dish, :id => @cart.id }
 
   end
 
@@ -59,19 +59,19 @@ describe CartLinesController do
   it "should assign a path_bar with index" do
     get :index
 
-    assigns[:path_bar].should == [path_bar_cart_lines_root]
+    assigns(:path_bar).should == [path_bar_cart_lines_root]
   end
 
   it "should assign a cart with index" do
     get :index
 
-    assigns[:cart].should be @cart
+    assigns(:cart).should == @cart
   end
 
   it "should assign stores with index" do
     get :index
 
-    assigns[:stores].should be @stores
+    assigns(:stores).should == @stores
   end
 
   # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...

@@ -1,10 +1,11 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe ItemCategoriesControllerDishNesting do
+  include Rails.application.routes.url_helpers
   include PathBarHelper
-  controller_name :item_categories
 
   before :each do
     @dish = stub_model(Dish, :name => "Salade")

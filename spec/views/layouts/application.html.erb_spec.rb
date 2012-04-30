@@ -1,75 +1,99 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
-describe "layouts/application.html.erb" do
+class String
+  def occurences_of(substring)
+    before, match, after = partition(substring)
+    if !after.empty?
+      after.occurences_of(substring) + 1
+    elsif !match.empty?
+      1
+    else
+      0
+    end
+  end
+end
+
+describe "layouts/application" do
   include PathBarHelper
 
   before :each do
-    assigns[:path_bar] = []
+    assign :path_bar, []
+    assign :session_place_text, "Connection"
+    assign :session_place_url, "/sessions"
   end
 
   it "should render flash[:notice]" do
     flash[:notice] = notice = "Something went bad ..."
     render
-    response.should contain notice
+    rendered.should contain notice
   end
 
   it "should render flash[:alert]" do
     flash[:alert] = alert = "Something went really bad ..."
     render
-    response.should contain alert
+    rendered.should contain alert
   end
 
   it "should render the link in a @path_bar element" do
     text = "Promotions !"
     controller = "cart_lines"
-    assigns[:path_bar] = path_bar = [path_bar_element(text, :controller => controller)]
+    assign :path_bar, path_bar = [path_bar_element(text, :controller => controller)]
     render
-    response.should have_xpath("//div[@id='path-bar']/a[@href='/#{controller}'][text()='#{text}']")
+    rendered.should have_xpath("//div[@id='path-bar']/a[@href='/#{controller}'][text()='#{text}']")
   end
 
   it "should render an empty @path_bar" do
-    assigns[:path_bar] = path_bar = []
+    assign :path_bar, path_bar = []
     render
   end
 
   it "should render a @path_bar element with no link" do
     text = "Recettes"
-    assigns[:path_bar] = path_bar = [path_bar_element_with_no_link(text)]
+    assign :path_bar, path_bar = [path_bar_element_with_no_link(text)]
     render
-    response.should have_xpath("//div[@id='path-bar']/a[not(@href)][text()='#{text}']")
+    rendered.should have_xpath("//div[@id='path-bar']/a[not(@href)][text()='#{text}']")
   end
 
   it "should display nicely a @path_bar with many elements" do
-    assigns[:path_bar] = path_bar = [path_bar_element_with_no_link("Ingrédients"),
+    assign :path_bar, path_bar = [path_bar_element_with_no_link("Ingrédients"),
                                      path_bar_element_with_no_link("Marché"),
                                      path_bar_element_with_no_link("Poisson")]
     render
-    response.should contain "Ingrédients > Marché > Poisson"
+    rendered.should contain "Ingrédients > Marché > Poisson"
   end
 
   it "should not auto refresh by default" do
     render
 
-    response.should_not have_xpath("//meta[@http-equiv='refresh']")
+    rendered.should_not have_xpath("//meta[@http-equiv='refresh']")
   end
 
   it "should auto refresh if @auto_refresh is assigned" do
-    assigns[:auto_refresh] = true
+    assign :auto_refresh, true
 
     render
 
-    response.should have_xpath("//meta[@http-equiv='refresh']")
+    rendered.should have_xpath("//meta[@http-equiv='refresh']")
   end
 
   it "should display the assigned session place" do
-    text = assigns[:session_place_text] = "Sign in"
-    url = assigns[:session_place_url] = "/sign_in_now"
+    text = assign :session_place_text, "Sign in"
+    url = assign :session_place_url, "/sign_in_now"
 
     render
 
-    response.should have_place(:text => text, :url => url)
+    rendered.should have_place(text: text, url: url)
+  end
+
+  it "should render the inner content" do
+    content = "unique content"
+
+    render text: content, layout: "layouts/application.html"
+
+    rendered.occurences_of(content).should == 1
   end
 
 end

@@ -1,7 +1,5 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
-
-require 'mechanize'
-require 'auchan_direct_store_cart_api'
 
 # Objects providing an api like access to third party online stores
 class StoreCartAPI

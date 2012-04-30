@@ -1,6 +1,6 @@
-<!-- Copyright (C) 2010, 2011 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
 
-<% form_for :dish, :url => { :action => :create }, :html => { :id => 'dish' } do |form| %>
+<%= form_for :dish, :url => { :action => :create }, :html => { :id => 'dish' } do |form| %>
 
   <%= form.text_field :name, :size => 30 %>
   <%= submit_tag "Créer" %>

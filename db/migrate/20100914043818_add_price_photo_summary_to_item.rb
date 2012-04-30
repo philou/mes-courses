@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 class AddPricePhotoSummaryToItem < ActiveRecord::Migration
   def self.up
     add_column :items, :price, :decimal

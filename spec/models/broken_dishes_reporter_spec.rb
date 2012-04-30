@@ -1,10 +1,13 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 require 'models/monitoring_mailer_shared_examples'
 
 describe BrokenDishesReporter do
-  it_should_behave_like "Any MonitoringMailer"
+  include MonitoringMailerSpecMacros
+
+  it_should_behave_like_any_monitoring_mailer
 
   before(:each) do
     @mailer_class = BrokenDishesReporter

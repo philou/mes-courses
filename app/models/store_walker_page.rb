@@ -1,7 +1,8 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'mechanize'
-require 'lib/uri_domain'
+require 'uri_domain'
 
 class StoreWalkerPageError < StandardError
 end

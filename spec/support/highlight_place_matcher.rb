@@ -1,13 +1,13 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class HighlightPlace
   def initialize(text)
     @text = text
   end
 
-  def matches?(response)
-    @response = response
-    @doc = Nokogiri::HTML(@response.body)
+  def matches?(body)
+    @doc = Nokogiri::HTML(body)
 
     @body_id = @doc.xpath("//body/@id").text
     return false if @body_id.empty?

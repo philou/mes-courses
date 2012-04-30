@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
@@ -81,7 +82,8 @@ describe Order do
       it_should_eventually_save_the_order
     end
 
-    shared_examples_for "Any exception raised during pass" do
+    def self.it_aborts_passing_orders_on(exception)
+
       before :each do
         @cart.stub(:forward_to).and_raise(exception)
       end
@@ -102,11 +104,7 @@ describe Order do
     end
 
     context "when pass raises an unexpected exception" do
-      it_should_behave_like "Any exception raised during pass"
-
-      def exception
-        SocketError.new("Connection lost")
-      end
+      it_aborts_passing_orders_on(SocketError.new("Connection lost"))
 
       it "should let the exception climb up" do
         lambda { pass_order }.should raise_error(SocketError)
@@ -114,11 +112,7 @@ describe Order do
     end
 
     context "when pass fails because of invalid store login and password" do
-      it_should_behave_like "Any exception raised during pass"
-
-      def exception
-        InvalidStoreAccountError.new
-      end
+      it_aborts_passing_orders_on(InvalidStoreAccountError.new)
 
       it "should not let any exception climb up" do
         lambda { pass_order }.should_not raise_error

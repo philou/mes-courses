@@ -13,17 +13,53 @@ TODO
   - add a rake task to upgrate + test
 - upgrade radiant to the latest version using bundler !
   - merge latest design modifications
+- completely disable stock test stack from rails
+- migrate active record calls
+  Soon-to-be-deprecated ActiveRecord calls
+  Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
+  More information: http://m.onkey.org/2010/1/22/active-record-query-interface
+
+  The culprits:
+	- app/models/store.rb
+	- app/models/model_stat.rb
+	- app/models/item.rb
+	- app/controllers/cart_lines_controller.rb
+	- app/controllers/dishes_controller.rb
+	- app/models/store.rb
+	- app/models/item.rb
+
+- clean up and homogenize usage FactoryGirl and stub_model
+  - use the standard FactoryGirl synthax
+  - understand how to use FactoryGirl and stub_model together
+  - try to use real model instances with stub_model ?
+  - use mock_model and mock_model.as_new_record instead of raw mocks
+  - decide wether and when to use mock_model and mock or stub_models and FactoryGirl
+  - avoid mixing real records and stubs
+- regarder si je peux pas avoir act_as_tree dans une gem : act_as_tree_rails3
+- mettre des valeurs par défauts aux colonnes (Order)
+- replace cron heroku addon by scheduler
+- faire une page fonctionalités
+- upgrade gems 'bundle update' before starting any dev !
+  - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
+  - add a rake task to upgrate + test
+- comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
+- utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
+- configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
+- clean up all warnings
+- ajouter un header par defaut aux fichiers créés avec emacs (encoding)
 - ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
 - mettre à jour ubuntu
 - merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
 - find a way to subclass Devise::SessionsController without cut-and-paste
+- see if we could use the special testing features of devise
 - faire un matcher pour les path bar
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements
 - faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
-- Understand why capybara is now prefered to web steps
-  - read this : http://aslakhellesoy.com/post/11055981222/the-training-wheels-came-off
-  - upgrade our cucumber steps
+- Upgrade our cucumber steps
+  - delete all unused steps from web_steps ...
+  - make them more high level
+  - migrate to capybara
 - Website:
 - Speed up deployment when integrating : in parallel, or asynchronously on another server
 - Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
@@ -56,6 +92,14 @@ TODO
 - faire un script 'setup' pour le cms
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
+- speed up testing
+  - launching just a few specs
+  - launching just a few features
+  - load time see http://rhnh.net/2011/05/28/speeding-up-rails-startup-time & http://www.rubyinside.com/ruby-1-9-3-faster-loading-times-require-4927.html
+  - spork (a test runner server)
+  - migrate to ruby 1.9.3
+  - avoid loading spec_helper multiple times http://kpumuk.info/ruby-on-rails/my-top-7-rspec-best-practices/
+  - tutorial http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
 - tester org-mode pour mes todo list
 - commande emacs pour fermer tous les buffers dans un sous repertoire
 - redesign cms pull and push

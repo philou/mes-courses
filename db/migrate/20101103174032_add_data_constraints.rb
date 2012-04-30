@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010 by Philippe Bourgau
 
 # Add non null and uniqueness constraints and indexes

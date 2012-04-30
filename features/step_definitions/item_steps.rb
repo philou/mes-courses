@@ -1,4 +1,5 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
   @item = categorized_item(category_name, sub_category_name, :name => item_name)
@@ -23,7 +24,8 @@ Then /^all items should be organized by type and subtype$/ do
 end
 
 Then /^all items should have an? (.*)$/ do |attribute|
-  Item.find(:all).should all have_non_nil(attribute)
+  items = Item.all
+  items.should all_do have_non_nil(attribute)
 end
 
 Then /^most items should have an? (.*)$/ do |attribute|
@@ -33,13 +35,13 @@ end
 Then /^I should see the "([^"]*)" of "([^"]*)"$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  response.should contain(attribute_text)
+  page.should have_content(attribute_text)
 end
 
 Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  response.should have_selector("img", :src => attribute_text)
+  page.should have_selector("img", :src => attribute_text)
 end
 
 Then /^new items should have been inserted$/ do
@@ -79,13 +81,13 @@ Then /^item organization should have shrank$/ do
 end
 
 Then /^I should see an? "([^"]*)" item"?$/ do |item_name|
-  response.should have_selector("div", :id => "items-panel") do |div|
-    div.should contain(item_name)
+  page.should have_selector("div", :id => "items-panel") do |div|
+    div.should have_content(item_name)
   end
 end
 
 Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
-  response.should have_selector("div", :id => "items-panel") do |div|
-    div.should_not contain(item_name)
+  page.should have_selector("div", :id => "items-panel") do |div|
+    div.should_not have_content(item_name)
   end
 end

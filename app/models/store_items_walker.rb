@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'store_walker_page'
@@ -9,7 +10,7 @@ class StoreItemsWalker
   def initialize(getter)
     self.categories_digger = NullStoreItemsDigger.new
     self.items_digger = NullStoreItemsDigger.new
-    self.scrap_attributes_block = lambda do { } end
+    self.scrap_attributes_block = proc do { } end
     @getter = getter
   end
 

@@ -1,7 +1,8 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'action_view/helpers/number_helper'
-require 'lib/time_span_helper'
+require 'time_span_helper'
 
 # Object responsible for mailing an import report
 class ImportReporter < MonitoringMailer
@@ -9,7 +10,13 @@ class ImportReporter < MonitoringMailer
   include HerokuHelper
 
   # Reports delta from latest statistics by mail and log
-  # def self.deliver_delta
+  def delta(import_duration_seconds, expected_items)
+    delta_stats = ModelStat.generate_delta
+    subject = generate_subject(delta_stats, expected_items)
+
+    @content = generate_body(delta_stats, import_duration_seconds)
+    setup_mail(subject)
+  end
 
   private
 
@@ -44,14 +51,6 @@ class ImportReporter < MonitoringMailer
       end
       result
     end
-  end
-
-  # mailer template function
-  def delta(import_duration_seconds, expected_items)
-    delta_stats = ModelStat.generate_delta
-    subject = generate_subject(delta_stats, expected_items)
-
-    setup_mail(subject, :content => generate_body(delta_stats, import_duration_seconds))
   end
 
   def generate_body(delta_stats, import_duration_seconds)

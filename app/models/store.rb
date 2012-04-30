@@ -1,9 +1,11 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'store_importer'
 require 'incremental_store'
 require 'visited_url'
 require 'uri'
+require 'time_span_helper'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
@@ -33,7 +35,7 @@ class Store < ActiveRecord::Base
         raise
       end
 
-      ImportReporter.deliver_delta(timer.seconds, Store.maximum(:expected_items))
+      ImportReporter.delta(timer.seconds, Store.maximum(:expected_items)).deliver
     end
   end
 

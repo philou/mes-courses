@@ -1,4 +1,5 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class HavePlace
   def initialize(options)
@@ -7,8 +8,7 @@ class HavePlace
   end
 
   def matches?(response)
-    @response = response
-    @doc = Nokogiri::HTML(@response.body)
+    @doc = Nokogiri::HTML(response)
 
     !@doc.xpath(place_xpath).empty?
   end
@@ -24,6 +24,7 @@ class HavePlace
     else # @doc.xpath(place_xpath).empty?
       link = @doc.xpath(place_name_xpath)
       description + " but it is linking to '#{link.attribute('href').value}'"
+
     end
   end
 

@@ -1,15 +1,13 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # base mailer class for online maintainer monitoring
 class MonitoringMailer < ActionMailer::Base
   include HerokuHelper
 
-  def setup_mail(subject, body = {})
-    @subject = "[#{app_name}] " + subject
-    @body = body
-    @recipients = EmailConstants.recipients
-    @from = EmailConstants.sender
-    @sent_on = Time.now
-    @headers = {}
+  default :from => EmailConstants.sender, :to => EmailConstants.recipients
+
+  def setup_mail(subject)
+    mail :subject => "[#{app_name}] " + subject, :date => Time.now
   end
 end

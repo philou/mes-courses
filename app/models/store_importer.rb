@@ -1,7 +1,8 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'rubygems'
-require 'lib/logging'
+require 'logging'
 
 # Objects able to dig into an online store and notify their "store" about
 # the items and item categories that they found for sale.

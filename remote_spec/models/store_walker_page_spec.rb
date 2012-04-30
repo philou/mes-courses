@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
@@ -65,7 +66,7 @@ describe StoreWalkerPage do
     end
 
     it "links to other instances of StoreWalkerPage" do
-      @page.search_links("#myself").map { |link| link.get }.should all(be_instance_of(StoreWalkerPage))
+      @page.search_links("#myself").map { |link| link.get }.should all_do(be_instance_of(StoreWalkerPage))
     end
 
     it "knows the text of the links" do
@@ -73,5 +74,7 @@ describe StoreWalkerPage do
         link.text.should == "myself"
       end
     end
+
   end
+
 end

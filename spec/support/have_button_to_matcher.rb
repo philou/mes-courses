@@ -1,8 +1,9 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
-Spec::Matchers.define :have_button_to do |label, href, method|
+RSpec::Matchers.define :have_button_to do |label, href, method|
   match do |response|
     extend Webrat::Matchers
 

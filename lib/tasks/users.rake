@@ -1,6 +1,6 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'lib/password'
+require 'password'
 
 namespace :mes_courses do
 

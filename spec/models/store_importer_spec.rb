@@ -1,4 +1,5 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -188,7 +189,9 @@ describe StoreImporter do
     end
 
     it "should ask if urls were already visited with string uris" do
-      @store.should_receive(:already_visited_url?).with(instance_of(String)).exactly(3).times.and_return(false)
+      uris = [@store_api.uri, @root_categories.first.uri, @sub_categories.first.uri, @items.first.uri]
+
+      @store.should_receive(:already_visited_url?).with(instance_of(String)).exactly(uris.size).and_return(false)
 
       import
     end

@@ -1,13 +1,15 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
-describe "/dishes/show.html.erb" do
+describe "dishes/show" do
 
   before :each do
-    items = [Factory.create(:item), Factory.create(:item)]
-    assigns[:dish] = @dish = stub_model(Dish, :items => items)
-    assigns[:can_modify_dishes] = false
+    @dish = stub_model(Dish)
+    @dish.stub(:items).and_return([Factory.create(:item),Factory.create(:item)])
+    assign :dish, @dish
+    assign :can_modify_dishes, false
   end
 
 
@@ -15,9 +17,9 @@ describe "/dishes/show.html.erb" do
     render
 
     @dish.items.each do |item|
-      response.should have_selector('img', :src => item.image)
-      response.should contain(item.name)
-      response.should contain(item.summary)
+      rendered.should have_selector('img', :src => item.image)
+      rendered.should contain(item.name)
+      rendered.should contain(item.summary)
     end
   end
 
@@ -25,16 +27,16 @@ describe "/dishes/show.html.erb" do
     it "is forbidden by default" do
       render
 
-      response.should_not contain("Ajouter un ingrédient")
+      rendered.should_not contain("Ajouter un ingrédient")
     end
 
     it "can be allowed" do
-      assigns[:can_modify_dishes] = true
+      assign :can_modify_dishes, true
 
       render
 
-      response.should contain("Ajouter un ingrédient")
-      response.should have_selector("a", :href => dish_item_categories_path(@dish))
+      rendered.should contain("Ajouter un ingrédient")
+      rendered.should have_selector("a", :href => dish_item_categories_path(@dish))
     end
   end
 
@@ -43,16 +45,16 @@ describe "/dishes/show.html.erb" do
     it "is forbidden by default" do
       render
 
-      response.should_not contain("Enlever de la recette")
+      rendered.should_not contain("Enlever de la recette")
     end
 
     it "can be allowed" do
-      assigns[:can_modify_dishes] = true
+      assign :can_modify_dishes, true
 
       render
 
       @dish.items.each do |item|
-        response.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
+        rendered.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
       end
     end
   end

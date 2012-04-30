@@ -1,4 +1,7 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+
+require 'tokenizer'
 
 # An item for sale
 class Item < ActiveRecord::Base
@@ -10,10 +13,7 @@ class Item < ActiveRecord::Base
 
   attr_protected :tokens
 
-  def initialize(attributes = {})
-    super(attributes)
-    index
-  end
+  after_initialize :index
 
   def name=(name)
     write_attribute("name", name)

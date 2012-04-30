@@ -1,6 +1,6 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011 by Philippe Bourgau
 
-require 'rubygems'
 require 'auchan_direct_store_items_api'
 
 # Objects able to walk a store and discover available items

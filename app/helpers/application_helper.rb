@@ -1,9 +1,13 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   include HerokuHelper
-  include PathBarHelper
+
+  def self.included(base)
+    base.send :include, PathBarHelper
+  end
 
   # path for a category, defaults to the main browser for a nil or new category
   def any_item_category_path(*args)

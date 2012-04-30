@@ -1,16 +1,13 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
-  include ExceptionNotification::ExceptionNotifiable
-  include SslRequirement
+#  include ExceptionNotification::ExceptionNotifiable
 
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
-
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
 
   before_filter :assign_session_place
 
@@ -19,11 +16,6 @@ class ApplicationController < ActionController::Base
   def path_bar=(path_bar)
     @path_bar = path_bar
     @body_id = extract_body_id(path_bar)
-  end
-
-  def ssl_required?
-    return false if local_request? || RAILS_ENV == 'test'
-    super
   end
 
   private

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+text=$1
+file=$2
+
+buffer=/tmp/prepend-buffer
+
+echo $text > $buffer
+cat $file >> $buffer
+
+mv $buffer $file
+

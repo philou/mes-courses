@@ -1,7 +1,8 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 class ItemCategoriesControllerDishNesting
-  include ActionController::UrlWriter
+  include Rails.application.routes.url_helpers
   include PathBarHelper
 
   def initialize(dish_id)

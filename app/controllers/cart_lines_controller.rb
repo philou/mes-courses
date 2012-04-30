@@ -1,15 +1,11 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
-
-require 'models/invalid_store_account_error'
 
 # Controller for the shopping cart
 # it stores the cart in the db, and its id in the session, so that
 # the cart can be transferred from a domain to another
 class CartLinesController < ApplicationController
   include PathBarHelper
-
-  # if not, post data are lost when forwarding the cart
-  ssl_required :index, :destroy_all
 
   before_filter :find_cart
   before_filter :find_stores

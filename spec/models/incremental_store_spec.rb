@@ -1,4 +1,5 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -48,7 +49,7 @@ describe IncrementalStore do
     it "should not send an email if no dish are broken" do
       @store.stub(:find_sold_out_items).and_return([Factory.create(:item)])
 
-      BrokenDishesReporter.should_not_receive(:deliver_email)
+      BrokenDishesReporter.should_not_receive(:email)
     end
 
     context "when there are broken dishes" do
@@ -62,7 +63,8 @@ describe IncrementalStore do
       end
 
       it "should send an email with broken dishes" do
-        BrokenDishesReporter.should_receive(:deliver_email).with(@dish_breaking_items)
+        BrokenDishesReporter.should_receive(:email).with(@dish_breaking_items).and_return(email = stub("Email"))
+        email.should_receive(:deliver)
       end
 
       it "should fix broken dishes" do

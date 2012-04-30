@@ -1,6 +1,7 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require 'lib/attributes_comparison'
+require 'attributes_comparison'
 
 # Objects deciding what to do with what the store importer found in
 # the online store's web page. They get hashes of parameters as input
@@ -79,7 +80,9 @@ class IncrementalStore
   def handle_broken_dishes()
     sold_out_items = @store.find_sold_out_items
     dish_breaking_items = sold_out_items.reject { |item| item.dishes.empty? }
-    BrokenDishesReporter.deliver_email dish_breaking_items unless dish_breaking_items.empty?
+    unless dish_breaking_items.empty?
+      BrokenDishesReporter.email(dish_breaking_items).deliver
+    end
 
     dish_breaking_items.each do |item|
       item.dishes.each do |dish|

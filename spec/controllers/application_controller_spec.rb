@@ -1,125 +1,168 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
-class TestController < ApplicationController
+# NB : I did not manage to create a spec macro because I did not manage to extend
+# Rails.application.routes.url_helpers
+# there must be a better way
+module DummyController
   include PathBarHelper
-
-  before_filter :authenticate_user!, :only => [:an_action_with_authentication]
-
-  def an_action_with_no_link_path_bar
-    self.path_bar = [path_bar_element_with_no_link("on my own")]
-  end
-  def an_action_with_cart_path_bar
-    self.path_bar = [path_bar_cart_lines_root, dummy_path_bar_element]
-  end
-  def an_action_with_dish_path_bar
-    self.path_bar = [path_bar_dishes_root, dummy_path_bar_element]
-  end
-  def an_action_with_item_path_bar
-    self.path_bar = [path_bar_items_root, dummy_path_bar_element]
-  end
-  def an_action_with_session_path_bar
-    self.path_bar = [path_bar_session_root, dummy_path_bar_element]
-  end
-  def an_action_with_unhandled_path_bar
-    self.path_bar = [:unhandled_path_bar_element]
-  end
-  def an_action_with_redirection
-    redirect_to :action => "nowhere"
-  end
-
-  def an_action_with_authentication
-    self.path_bar = [path_bar_dishes_root, dummy_path_bar_element]
-  end
-
-  private
 
   def dummy_path_bar_element
     path_bar_element_with_no_link("path bar element")
   end
 
+  def index
+    self.path_bar = new_path_bar
+    redirect_to '/'
+  end
 end
 
 describe ApplicationController do
 
-  controller_name :test
-
   ignore_user_authentication
 
-  context "assigning @body_id" do
+  context "body_id from path_bar" do
 
-    it "should be '' for a @path_bar starting with no link" do
-      get 'an_action_with_no_link_path_bar'
+    context "starting with no link" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should == ''
+        def new_path_bar
+          [path_bar_element_with_no_link("on my own")]
+        end
+      end
+
+
+      it "should be ''" do
+        get :index
+
+        assigns[:body_id].should == ''
+      end
     end
 
-    it "should be cart for a @path_bar starting with cart lines" do
-      get 'an_action_with_cart_path_bar'
+    context "starting with cart lines" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should == 'cart'
+        def new_path_bar
+          [path_bar_cart_lines_root, dummy_path_bar_element]
+        end
+      end
+
+      it "should be cart" do
+        get :index
+
+        assigns(:body_id).should == 'cart'
+      end
     end
 
-    it "should be dish for a @path_bar starting with dishes" do
-      get 'an_action_with_dish_path_bar'
+    context "starting with dishes" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should == 'dish'
+        def new_path_bar
+          [path_bar_dishes_root, dummy_path_bar_element]
+        end
+      end
+
+      it "should be dish" do
+        get :index
+
+        assigns(:body_id).should == 'dish'
+      end
     end
 
-    it "should be item for a @path_bar starting with items" do
-      get 'an_action_with_item_path_bar'
+    context "starting with items" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should == 'items'
+        def new_path_bar
+          [path_bar_items_root, dummy_path_bar_element]
+        end
+      end
+
+      it "should be item" do
+        get :index
+
+        assigns(:body_id).should == 'items'
+      end
     end
 
-    it "should be session for a @path_bar starting with session" do
-      get 'an_action_with_session_path_bar'
+    context "starting with session" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should == 'session'
+        def new_path_bar
+          [path_bar_session_root, dummy_path_bar_element]
+        end
+      end
+
+      it "should be session" do
+        get :index
+
+        assigns(:body_id).should == 'session'
+      end
     end
 
-    it "should throw for a @path_bar starting with something else" do
-      lambda { get 'an_action_with_unhandled_path_bar' }.should raise_error
+    context "starting with something else" do
+      controller do
+        include DummyController
+
+        def new_path_bar
+          [:unhandled_path_bar_element]
+        end
+      end
+
+      it "should throw" do
+        lambda { get :index }.should raise_error
+      end
     end
 
-    it "should not assign any body_id when there is a redirection" do
-      get 'an_action_with_redirection'
+    context "with no path bar" do
+      controller do
+        include DummyController
 
-      assigns[:body_id].should be_nil
+        def index
+          redirect_to '/'
+        end
+      end
+
+      it "should not be assigned" do
+        get :index
+
+        assigns(:body_id).should be_nil
+      end
     end
-
   end
 
-  # context "user authentication" do
+  context "session place" do
 
-  #   ["an_action_with_cart_path_bar", "an_action_with_dish_path_bar", "an_action_with_item_path_bar", "an_action_with_redirection"].each do |action|
+    controller do
+      include DummyController
 
-  #     it "should authenticate user before #{action}" do
-  #       controller.should_receive(:authenticate_user!)
+      def new_path_bar
+        [path_bar_dishes_root, dummy_path_bar_element]
+      end
 
-  #       get action
-  #     end
-  #   end
-  # end
+    end
 
-  it "assigns a signin session_place before authentification" do
-    controller.stub(:authenticate_user!)
+    it "is signin before authentication" do
+      get :index
 
-    get 'an_action_with_authentication'
+      assigns(:session_place_text).should == "Connection"
+      assigns(:session_place_url).should == new_user_session_path
+    end
 
-    assigns[:session_place_text].should == "Connection"
-    assigns[:session_place_url].should == new_user_session_path
+    it "is signout after authentication" do
+      email = "gyzmo@mail.com"
+      stub_signed_in_user(:email => email)
+
+      get :index
+
+      assigns(:session_place_text).should == "Deconnection (#{email})"
+      assigns(:session_place_url).should == destroy_user_session_path
+    end
   end
-
-  it "assigns a signout session_place after authentification" do
-    email = "gyzmo@mail.com"
-    stub_signed_in_user(:email => email)
-
-    get 'an_action_with_authentication'
-
-    assigns[:session_place_text].should == "Deconnection (#{email})"
-    assigns[:session_place_url].should == destroy_user_session_path
-  end
-
 end

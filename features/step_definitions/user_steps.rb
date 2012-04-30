@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2011 by Philippe Bourgau
 
 def log_in
@@ -20,4 +21,8 @@ end
 
 When /^I log in$/ do
   log_in
+end
+
+When /^I log out$/ do
+  click_link "Deconnection (#{@user.email})"
 end

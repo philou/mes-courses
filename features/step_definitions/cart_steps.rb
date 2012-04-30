@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 def given_in_cart(quantity, item_name)
@@ -32,10 +33,10 @@ end
 
 When /^I wait for the transfer to end$/ do
   Delayed::Worker.new(:quiet => true).work_off(1)
-  reload # ??? what is this for ???
+  visit current_path
 end
 
 Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
   visit path_to("the cart page")
-  response.should contain(item_name)
+  page.should have_content(item_name)
 end

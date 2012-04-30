@@ -19,10 +19,9 @@ namespace :stores do
   task :import => :environment do
     if Time.now.wday != import_day
       Rails.logger.info "Skipping stores import this day of the week"
-      return
+    else
+      Store.import(ENV['url'])
     end
-
-    Store.import(ENV['url'])
   end
 
   private

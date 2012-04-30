@@ -1,8 +1,8 @@
-# Copyright (C) 2010 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'lib/attributes_comparison'
-require 'app/models/item'
+require 'attributes_comparison'
 
 describe "ActiveRecord attributes comparison" do
 

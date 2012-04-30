@@ -1,4 +1,5 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# -*- encoding: utf-8 -*-
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -60,7 +61,7 @@ describe Item do
     end
 
     it "should index at creation" do
-      should_be_indexed(@item)
+      should_be_indexed(Item.new)
     end
 
     def should_be_indexed(item)
