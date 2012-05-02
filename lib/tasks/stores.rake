@@ -12,7 +12,10 @@ namespace :stores do
 
   desc "Inserts the www.dummy-store.com store in the DB"
   task :create_dummy_store => :environment do
-    Store.find_or_create_by_url(DummyStoreCartAPI.url)
+    Store.find_or_create_by_url(DummyStoreCartAPI.url) do |store|
+      store.expected_items = 0
+      store.sponsored_url = DummyStoreCartAPI.url
+    end
   end
 
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only. Define STORES_IMPORT_DAY to run a specified day of the week."

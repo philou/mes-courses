@@ -32,7 +32,7 @@ Given /^I entered invalid store account identifiers$/ do
 end
 
 When /^I wait for the transfer to end$/ do
-  Delayed::Worker.new(:quiet => true).work_off(1)
+  Delayed::Worker.new().work_off()
   visit current_path
 end
 
