@@ -12,12 +12,12 @@ gem 'devise'
 
 # databases
 gem "pg", :group => [:production, :ci, :cucumber, :develpment]
-gem "sqlite3-ruby", :require => "sqlite3", :group => :test
+gem "sqlite3-ruby", :require => "sqlite3", :group => [:test]
 
 # testing tools
 gem "rspec-rails", :group => [:development, :test, :cucumber, :ci]
 gem "factory_girl_rails", :group => [:test, :cucumber, :ci], :require => false
 gem "webrat", :group => [:test]
-gem "ZenTest", :group => [:test, :cucumber, :ci]
+gem "ZenTest", :group => [:development]
 gem "cucumber-rails", :group => [:cucumber, :ci]
 gem "database_cleaner", :group => [:cucumber, :ci]
