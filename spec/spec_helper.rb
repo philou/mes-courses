@@ -7,6 +7,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
+extend HerokuHelper
+
 # Require factory girl
 require 'factory_girl_rails'
 
@@ -18,11 +20,13 @@ require 'factory_girl_rails'
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 # Load schema for in memory sqlite database
-load_schema = lambda do
+unless on_heroku?
+  load_schema = lambda do
     load "#{Rails.root.to_s}/db/schema.rb" # use db agnostic schema by default
     # ActiveRecord::Migrator.up('db/migrate') # use migrations
+  end
+  silence_stream(STDOUT, &load_schema)
 end
-silence_stream(STDOUT, &load_schema)
 
 RSpec.configure do |config|
   # ## Mock Framework
