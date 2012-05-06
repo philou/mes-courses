@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 Given /^there is a dish "([^"]*)""?$/ do |dish_name|
   item_names = dish_name.split(/ aux? /)
@@ -9,7 +9,7 @@ Given /^there is a dish "([^"]*)""?$/ do |dish_name|
 
   else
     items = item_names.map do |item_name|
-      Factory.create(:item, :name => item_name)
+      FactoryGirl.create(:item, :name => item_name)
     end
 
     @known_dish = Dish.create!(:name => dish_name, :items => items)

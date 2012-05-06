@@ -190,7 +190,7 @@ describe ItemCategoriesController do
       end
 
       it "should assign no categories" do
-        @item_category.children = [Factory.create(:item_category)]
+        @item_category.children = [FactoryGirl.create(:item_category)]
 
         get_show_search
 
@@ -198,7 +198,7 @@ describe ItemCategoriesController do
       end
 
       it "should assign searched items" do
-        searched_items = [Factory.create(:item)]
+        searched_items = [FactoryGirl.create(:item)]
         Item.should_receive(:search_by_string_and_category).with(@search_string, @item_category).and_return(searched_items)
 
         get_show_search

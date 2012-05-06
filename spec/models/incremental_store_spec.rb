@@ -47,18 +47,18 @@ describe IncrementalStore do
     end
 
     it "should not send an email if no dish are broken" do
-      @store.stub(:find_sold_out_items).and_return([Factory.create(:item)])
+      @store.stub(:find_sold_out_items).and_return([FactoryGirl.create(:item)])
 
       BrokenDishesReporter.should_not_receive(:email)
     end
 
     context "when there are broken dishes" do
       before :each do
-        @dish_breaking_items = [Factory.create(:item), Factory.create(:item)]
+        @dish_breaking_items = [FactoryGirl.create(:item), FactoryGirl.create(:item)]
         @dish_breaking_items.each do |item|
-          item.dishes = [Factory.create(:dish)]
+          item.dishes = [FactoryGirl.create(:dish)]
         end
-        items = @dish_breaking_items + [Factory.create(:item)]
+        items = @dish_breaking_items + [FactoryGirl.create(:item)]
         @store.stub(:find_sold_out_items).and_return(items)
       end
 

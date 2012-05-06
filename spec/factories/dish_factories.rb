@@ -1,12 +1,18 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
-Factory.sequence :dish_name do |n|
-  "Dish-#{n}"
+FactoryGirl.define do
+
+  sequence :dish_name do |n|
+    "Dish-#{n}"
+  end
+
+  factory :dish do
+    name { FactoryGirl.generate(:dish_name) }
+
+    after_create do |dish|
+      FactoryGirl.create_list(:item, 2, dishes: [dish])
+    end
+  end
+
 end
-
-Factory.define :dish do |dish|
-  dish.name { Factory.next(:dish_name) }
-  dish.items { [Factory.create(:item), Factory.create(:item)]}
-end
-
