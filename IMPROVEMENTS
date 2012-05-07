@@ -8,6 +8,7 @@ WIP
 
 TODO
 ----
+- changer mon mot de passe heroku pour ne pas me faire tout piraté si qq1 rentre sur mes sites heroku
 - essayer auto_test_rails
 - utiliser une gem pour act-as-tree
 - upgrade gems 'bundle update' before starting any dev !

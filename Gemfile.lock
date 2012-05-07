@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/djberg96/net-ping.git
+  revision: 92520769a3e39a166b1833bf328f0c1533624458
+  specs:
+    net-ping (1.5.3)
+      ffi (>= 1.0.0)
+      net-ldap (~> 0.2.2)
+
+GIT
   remote: https://github.com/marceloribeiro/rails-acts_as_tree.git
   revision: 2c978b0ab7451bfb54ce932aebf0a597cf077e3f
   specs:
@@ -118,6 +126,7 @@ GEM
     multi_json (1.3.4)
     net-http-digest_auth (1.2)
     net-http-persistent (2.6)
+    net-ldap (0.2.2)
     netrc (0.7.1)
     nokogiri (1.5.2)
     ntlm-http (0.1.1)
@@ -218,6 +227,7 @@ DEPENDENCIES
   heroku
   hirefire
   mechanize
+  net-ping!
   pg
   rails
   rspec-rails

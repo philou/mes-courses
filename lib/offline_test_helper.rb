@@ -1,21 +1,17 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
+require 'net/ping'
+
 # Something to ask if we are online or not
 module OfflineTestHelper
-
-  def OfflineTestHelper.ping(server, ping_count)
-    system "ping -q -c #{ping_count} #{server}"
-  end
-
-  ONLINE = ping('google.com',10)
 
   # offline and onine predicates
   def offline?
     !online?
   end
   def online?
-    ONLINE
+    @online ||= Net::Ping::TCP.new('www.google.com', 'http').ping?
   end
 
   # puts a colored warning if offline, otherwise
