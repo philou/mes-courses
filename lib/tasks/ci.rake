@@ -11,8 +11,8 @@ unless Rails.env == "production"
   end
 
   desc "Tasks that launches the remote specs and emails a result"
-  task :watchdog => :remote_spec do
-    WatchdogNotifier.deliver_success_email
+  task :watchdog => [:environment, :remote_spec] do
+    WatchdogNotifier.success_email.deliver
   end
 
 end
