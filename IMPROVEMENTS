@@ -4,10 +4,12 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-- migrer à rails 3
+
 
 TODO
 ----
+- delete all unused steps from web_steps ...
+
 - changer mon mot de passe heroku pour ne pas me faire tout piraté si qq1 rentre sur mes sites heroku
 - essayer auto_test_rails
 - utiliser une gem pour act-as-tree
@@ -17,19 +19,6 @@ TODO
 - upgrade radiant to the latest version using bundler !
   - merge latest design modifications
 - completely disable stock test::unit stack from rails
-- migrate active record calls
-  Soon-to-be-deprecated ActiveRecord calls
-  Methods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
-  More information: http://m.onkey.org/2010/1/22/active-record-query-interface
-
-  The culprits:
-	- app/models/store.rb
-	- app/models/model_stat.rb
-	- app/models/item.rb
-	- app/controllers/cart_lines_controller.rb
-	- app/controllers/dishes_controller.rb
-	- app/models/store.rb
-	- app/models/item.rb
 
 - clean up and homogenize usage FactoryGirl and stub_model
   - use the standard FactoryGirl synthax
@@ -38,7 +27,6 @@ TODO
   - use mock_model and mock_model.as_new_record instead of raw mocks
   - decide wether and when to use mock_model and mock or stub_models and FactoryGirl
   - avoid mixing real records and stubs
-- regarder si je peux pas avoir act_as_tree dans une gem : act_as_tree_rails3
 - mettre des valeurs par défauts aux colonnes (Order)
 - replace cron heroku addon by scheduler
 - comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
@@ -53,10 +41,8 @@ TODO
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements
 - faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
-- Upgrade our cucumber steps
-  - delete all unused steps from web_steps ...
-  - make them more high level
-  - migrate to capybara
+- make cucumber steps more high level
+
 - Website:
 - Speed up deployment when integrating : in parallel, or asynchronously on another server
 - Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status

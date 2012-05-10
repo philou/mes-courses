@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -29,13 +29,13 @@ describe ModelStat do
     old_stats = @stats.map do |model, stat|
       ModelStat.new(:name => model, :count => stat[:old_count])
     end
-    ModelStat.stub(:find).and_return(old_stats)
+    ModelStat.stub(:all).and_return(old_stats)
 
     ModelStat.generate_delta.should == @stats
   end
 
   it "should generate delta without previous stats should have old_count == 0" do
-    ModelStat.stub(:find).and_return([])
+    ModelStat.stub(:all).and_return([])
 
     ModelStat.generate_delta.each do |name, stats|
       stats[:old_count].should == 0

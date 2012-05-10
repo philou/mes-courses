@@ -16,7 +16,7 @@ describe CartLinesController do
 
     @store = stub_model(Store, :url => "http://www.mega-store.com")
     @stores = [@store]
-    Store.stub(:find).and_return(@stores)
+    Store.stub(:all).and_return(@stores)
     Store.stub(:find_by_id).with(@store.id).and_return(@store)
   end
 

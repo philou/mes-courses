@@ -7,7 +7,7 @@ class DishesController < ApplicationController
   before_filter :assign_root_path_bar, :assign_dish_modification_right
 
   def index
-    @dishes = Dish.find(:all)
+    @dishes = Dish.all
   end
 
   def new

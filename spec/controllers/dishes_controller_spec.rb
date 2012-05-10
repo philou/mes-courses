@@ -27,7 +27,7 @@ describe DishesController do
   describe 'GET index' do
     before :each do
       @all_dishes = [Dish.new(:name => "Salade de tomates"), Dish.new(:name => "Boeuf bourguignon")]
-      Dish.stub(:find).and_return(@all_dishes)
+      Dish.stub(:all).and_return(@all_dishes)
     end
 
     it "should render 'index'" do

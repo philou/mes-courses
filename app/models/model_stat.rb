@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # Stats about instances saved in the database
 class ModelStat < ActiveRecord::Base
@@ -23,7 +23,7 @@ class ModelStat < ActiveRecord::Base
   def self.generate_delta
     stats = count_rows()
 
-    ModelStat.find(:all).each do |model_stat|
+    ModelStat.all.each do |model_stat|
       stats[model_stat.name][:old_count] = model_stat.count
     end
 

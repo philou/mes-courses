@@ -50,7 +50,7 @@ class Item < ActiveRecord::Base
       end
     end
 
-    Item.find(:all, :conditions => [condition_sql, condition_params])
+    Item.where(condition_sql, condition_params)
   end
 
   private

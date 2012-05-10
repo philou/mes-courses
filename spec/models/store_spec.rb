@@ -55,7 +55,7 @@ describe Store do
     before :each do
       @stores = Array.new(2) { stub_model(Store) }
       @stores.each { |store| store.stub(:import) }
-      Store.stub(:find).with(:all).and_return(@stores)
+      Store.stub(:all).and_return(@stores)
     end
 
     it "should import all stores" do

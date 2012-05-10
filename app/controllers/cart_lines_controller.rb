@@ -52,7 +52,7 @@ class CartLinesController < ApplicationController
   end
 
   def find_stores
-    @stores = Store.find(:all)
+    @stores = Store.all
   end
 
 end

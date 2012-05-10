@@ -89,7 +89,7 @@ class Store < ActiveRecord::Base
   end
 
   def find_sold_out_items
-    Item.find(:all, :conditions => ["id IN (SELECT item_id FROM to_delete_items)"])
+    Item.where("id IN (SELECT item_id FROM to_delete_items)")
   end
 
   # Delete all marked items
@@ -142,7 +142,7 @@ class Store < ActiveRecord::Base
   # array of stores to import, according to the 'url' environment variable
   def self.stores_to_import(url = nil)
     if url.nil?
-      Store.find(:all)
+      Store.all
     else
       [Store.find_or_create_by_url(url)]
     end

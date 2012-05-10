@@ -3,34 +3,6 @@
 
 require 'spec_helper'
 
-# argument matcher for :conditions => parameters in active record find method
-class WhereConditionsContainingMatcher
-  def initialize(sql, params)
-    @sql = sql
-    @params = params
-  end
-  def ==(actual)
-    actual_sql = actual[:conditions][0]
-    return false unless actual_sql.include?(@sql)
-
-    actual_params = actual[:conditions][1]
-    @params.each do |k,v|
-      return false unless actual_params[k] == v
-    end
-    true
-  end
-  def description
-    "Something ~deep including~ #{{:conditions => [@sql, @params]}.inspect}"
-  end
-end
-
-def where_conditions_containing(sql, params = {})
-  WhereConditionsContainingMatcher.new(sql, params)
-end
-def where_conditions()
-  WhereConditionsContainingMatcher.new("", {})
-end
-
 describe Item do
 
   context "indexing" do
@@ -102,8 +74,8 @@ describe Item do
       keyword = "tomates"
       expected = [@tomates, @tomates_cerises]
 
-      Item.should_receive(:find).
-        with(:all, where_conditions_containing("item_category_id = :category_id", :category_id => @legumes.id)).
+      Item.should_receive(:where).
+        with(/item_category_id = :category_id/, hash_including(:category_id => @legumes.id)).
         and_return(expected)
 
       Item.search_by_string_and_category(keyword, @legumes).should == expected
@@ -113,8 +85,8 @@ describe Item do
       keyword = "cerises"
       expected = [@tomates_cerises, @cerises]
 
-      Item.should_receive(:find).
-        with(:all, where_conditions_containing("item_category_id in (:category_ids)", :category_ids => [@legumes.id,@fruits.id])).
+      Item.should_receive(:where).
+        with(/item_category_id in \(:category_ids\)/, hash_including(:category_ids => [@legumes.id,@fruits.id])).
         and_return(expected)
 
       Item.search_by_string_and_category(keyword, @marche).should == expected
@@ -124,9 +96,7 @@ describe Item do
       keyword = "tomates"
       expected = [@tomates, @tomates_cerises, @tomates_confites]
 
-      Item.should_receive(:find).
-        with(:all, where_conditions).
-        and_return(expected)
+      Item.should_receive(:where).and_return(expected)
 
       Item.search_by_string_and_category(keyword, @root_item_category).should == expected
     end
@@ -134,8 +104,8 @@ describe Item do
     it "should search in tokens column" do
       search_string = "poulet"
 
-      Item.should_receive(:find).
-        with(:all, where_conditions_containing("tokens like :token0", :token0 => "%#{search_string}%")).
+      Item.should_receive(:where).
+        with(/tokens like :token0/, hash_including(:token0 => "%#{search_string}%")).
         exactly(3).times.
         and_return([@salade_cesar])
 
@@ -149,8 +119,8 @@ describe Item do
       tokens = %w(poulet salade)
       Tokenizer.stub(:run).and_return(tokens)
 
-      Item.should_receive(:find).
-        with(:all, where_conditions_containing("tokens like :token0 and tokens like :token1", :token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
+      Item.should_receive(:where).
+        with(/tokens like :token0 and tokens like :token1/, hash_including(:token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
         exactly(3).times.
         and_return([@salade_cesar])
 
