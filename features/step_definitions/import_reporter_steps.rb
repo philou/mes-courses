@@ -1,9 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
-
-When /^stats are updated$/ do
-  ImportReporter.deliver_delta(0)
-end
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 def find_email(subject)
   emails = ActionMailer::Base.deliveries

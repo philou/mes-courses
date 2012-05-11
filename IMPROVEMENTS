@@ -8,8 +8,6 @@ WIP
 
 TODO
 ----
-- delete all unused steps from web_steps ...
-
 - changer mon mot de passe heroku pour ne pas me faire tout piraté si qq1 rentre sur mes sites heroku
 - essayer auto_test_rails
 - utiliser une gem pour act-as-tree
@@ -19,7 +17,6 @@ TODO
 - upgrade radiant to the latest version using bundler !
   - merge latest design modifications
 - completely disable stock test::unit stack from rails
-
 - clean up and homogenize usage FactoryGirl and stub_model
   - use the standard FactoryGirl synthax
   - understand how to use FactoryGirl and stub_model together
