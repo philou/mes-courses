@@ -4,6 +4,7 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
+- mettre des valeurs par défauts aux colonnes (Order)
 
 
 TODO
@@ -24,7 +25,6 @@ TODO
   - use mock_model and mock_model.as_new_record instead of raw mocks
   - decide wether and when to use mock_model and mock or stub_models and FactoryGirl
   - avoid mixing real records and stubs
-- mettre des valeurs par défauts aux colonnes (Order)
 - replace cron heroku addon by scheduler
 - comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
 - utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
@@ -89,6 +89,10 @@ TODO
     - marchera peut être mieux qu'au début parce que:
       - le design est stabilisé
       - j'ai un modem 3G
+- build something to scrap analytics to an email :
+  - revenue
+  - expenditures
+  - conversion rates
 
 Spikes :
 - 2 way associations in active record

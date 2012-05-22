@@ -11,22 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120419051554) do
+ActiveRecord::Schema.define(:version => 20120511072404) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
     t.integer  "item_id",    :null => false
     t.integer  "cart_id",    :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "cart_lines", ["cart_id", "item_id"], :name => "cart_lines_cart_id_item_id_index", :unique => true
   add_index "cart_lines", ["cart_id"], :name => "cart_lines_cart_id_index"
 
   create_table "carts", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -38,15 +38,15 @@ ActiveRecord::Schema.define(:version => 20120419051554) do
     t.datetime "locked_at"
     t.datetime "failed_at"
     t.text     "locked_by"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "queue"
   end
 
   create_table "dishes", :force => true do |t|
     t.string   "name",       :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "dishes", ["name"], :name => "dishes_name_index", :unique => true
@@ -62,16 +62,16 @@ ActiveRecord::Schema.define(:version => 20120419051554) do
   create_table "item_categories", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id_index", :unique => true
 
   create_table "items", :force => true do |t|
     t.string   "name",             :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "item_category_id", :null => false
     t.decimal  "price",            :null => false
     t.string   "image"
@@ -85,27 +85,27 @@ ActiveRecord::Schema.define(:version => 20120419051554) do
   create_table "model_stats", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "count",      :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "model_stats", ["name"], :name => "model_name_name_index", :unique => true
 
   create_table "orders", :force => true do |t|
-    t.integer  "cart_id",                    :null => false
-    t.integer  "store_id",                   :null => false
-    t.text     "warning_notices_text",       :null => false
-    t.string   "error_notice",               :null => false
-    t.integer  "forwarded_cart_lines_count", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",                     :null => false
+    t.integer  "cart_id",                                              :null => false
+    t.integer  "store_id",                                             :null => false
+    t.string   "warning_notices_text",       :default => "",           :null => false
+    t.string   "error_notice",               :default => "",           :null => false
+    t.integer  "forwarded_cart_lines_count", :default => 0,            :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
+    t.string   "status",                     :default => "not_passed", :null => false
   end
 
   create_table "stores", :force => true do |t|
     t.string   "url",                           :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "expected_items", :default => 0, :null => false
     t.string   "sponsored_url",                 :null => false
   end
@@ -118,8 +118,8 @@ ActiveRecord::Schema.define(:version => 20120419051554) do
   create_table "users", :force => true do |t|
     t.string   "email",              :default => "", :null => false
     t.string   "encrypted_password", :default => "", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "users", ["email"], :name => "users_email_index", :unique => true
