@@ -9,14 +9,13 @@ bundle install
 rbenv rehash
 
 ## creating dbs
-sudo -u postgres createuser --superuser $USER
-sudo -u postgres createdb mes_courses_development
-sudo -u postgres createdb mes_courses_cucumber
-sudo -u postgres createdb mes_courses_ci
-sudo -u postgres createdb mes_courses_production
+sudo -u postgres createuser --superuser mes_courses
+sudo -u postgres psql --command="alter user mes_courses with encrypted password 'password'"
+sudo sed -i 's/\(local *all *all *\)peer/\1md5/' /etc/postgresql/9.1/main/pg_hba.conf
+bundle exec rake db:create:all
 
 ## initializing dbs
-rake db:migrate
-RAILS_ENV=test rake db:migrate
-RAILS_ENV=cucumber rake db:migrate
-RAILS_ENV=production rake db:migrate
+bundle exec rake db:migrate
+RAILS_ENV=cucumber bundle exec rake db:migrate
+RAILS_ENV=ci bundle exec rake db:migrate
+RAILS_ENV=production bundle exec rake db:migrate

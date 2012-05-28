@@ -4,7 +4,10 @@ development:
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: philou
+  username: mes_courses
+  password: password
+  host: localhost
+  port: 5433
 
 test: &test
   adapter: sqlite3
@@ -16,7 +19,10 @@ cucumber:
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: philou
+  username: mes_courses
+  password: password
+  host: localhost
+  port: 5433
 
 ci:
   adapter: postgresql
@@ -24,7 +30,10 @@ ci:
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: philou
+  username: mes_courses
+  password: password
+  host: localhost
+  port: 5433
 
 production:
   adapter: postgresql
@@ -32,5 +41,8 @@ production:
   encoding: utf8
   pool: 5
   timeout: 5000
-  username: philou
+  username: mes_courses
+  password: password
+  host: localhost
+  port: 5433
 
