@@ -4,12 +4,9 @@ Things to do (at least partialy) at the first occasion when coding something arr
 
 WIP
 ---
-- mettre des valeurs par défauts aux colonnes (Order)
-
 
 TODO
 ----
-- mettre à jour ubuntu
 - upgrade radiant to the latest version using bundler !
   - merge latest design modifications
 - changer mon mot de passe heroku pour ne pas me faire tout piraté si qq1 rentre sur mes sites heroku
@@ -18,7 +15,6 @@ TODO
   - launching just a few features
   - load time see http://rhnh.net/2011/05/28/speeding-up-rails-startup-time & http://www.rubyinside.com/ruby-1-9-3-faster-loading-times-require-4927.html
   - spork (a test runner server)
-  - migrate to ruby 1.9.3
   - avoid loading spec_helper multiple times http://kpumuk.info/ruby-on-rails/my-top-7-rspec-best-practices/
   - tutorial http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
 - Speed up deployment when integrating : in parallel, or asynchronously on another server
@@ -42,6 +38,12 @@ TODO
 - utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
 - configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
 - ajouter un header par defaut aux fichiers créés avec emacs (encoding)
+- essayer d'améliorer emacs pour ruby
+  http://nsaunders.wordpress.com/2009/11/18/turn-emacs-into-an-ide/
+  http://stackoverflow.com/questions/7989090/emacs-ruby-autocomplete-almost-working
+  http://stackoverflow.com/questions/4277788/ruby-navigation-in-emacs
+  http://ozmm.org/posts/textmate_minor_mode.html
+  http://ecb.sourceforge.net/
 - ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
 - merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
 - clean up and homogenize usage FactoryGirl and stub_model
