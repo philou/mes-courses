@@ -29,8 +29,6 @@ TODO
       - j'ai un modem 3G
 - essayer auto_test_rails
 - upgrade gems 'bundle update' before starting any dev !
-  - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
-  - add a rake task to upgrate + test
 - completely disable stock test::unit stack from rails
 - replace cron heroku addon by scheduler
 - comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
