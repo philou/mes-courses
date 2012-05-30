@@ -1,0 +1,10 @@
+#!/bin/usr/env ruby
+
+require_relative '../lib/deployment'
+include Deployment
+
+with_help_support("print_test_and_integration_apps", "prints the names of all test and integration apps") do
+  test_and_integration_repos.each do |repo|
+    puts heroku_app(repo)
+  end
+end

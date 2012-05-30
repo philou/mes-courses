@@ -1,0 +1,8 @@
+#!/bin/usr/env ruby
+
+require_relative '../lib/deployment'
+include Deployment
+
+with_repo_argument("create_heroku_app", "create an heroku app with the corresponding git remote") do |repo|
+  create_heroku_app(repo)
+end

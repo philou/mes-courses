@@ -28,7 +28,6 @@ TODO
       - le design est stabilisé
       - j'ai un modem 3G
 - essayer auto_test_rails
-- utiliser une gem pour act-as-tree
 - upgrade gems 'bundle update' before starting any dev !
   - try to set very loose version specifiers in Gemfile, let the update specify real version in Gemfile.lock
   - add a rake task to upgrate + test
@@ -65,10 +64,6 @@ TODO
 - faire un migrate up, migrate down, remigrate up pour valider les migrations dans les 2 sens
 - Use tags to segregate remote specs and features
 - Would it be possible to classify features with tags instead of directories, ex user & dishes for dish modifications
-- Write scripts
-  - move scripts that don't change the db or the app env in script/XXX
-  - see radiant:upgrade task to see how they managed an update or even git ops through rake
-  - valider les scripts pendant l'intégration continue en utilisant des vms
 - Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
   - faire du ménage dans les trucs qui ne sert en fait à rien
   - voir si il n'y a pas des mode emacs pour remplacer certains tableurs par des modes emacs

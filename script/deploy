@@ -1,0 +1,10 @@
+#!/bin/usr/env ruby
+
+require_relative '../lib/deployment'
+include Deployment
+
+with_repo_argument("deploy", "Deploys master branch to the specified remote heroku repo") do |repo|
+  with_confirmation("deploy master branch to the \"#{repo}\" heroku git repo") do
+    deploy(repo)
+  end
+end

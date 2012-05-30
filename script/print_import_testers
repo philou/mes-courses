@@ -1,0 +1,10 @@
+#!/bin/usr/env ruby
+
+require_relative '../lib/deployment'
+include Deployment
+
+with_help_support("print_import_testers", "prints the names of all import tester apps") do
+  import_tester_repos.each do |repo|
+    puts heroku_app(repo)
+  end
+end
