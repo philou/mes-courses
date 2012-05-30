@@ -113,7 +113,7 @@ module Deployment
     push "main"
 
     puts "\nDeploying to test and integration environments"
-    pids_2_repos
+    pids_2_repos = {}
     test_and_integration_repos.each do |repo|
       pid = fork { deploy(repo) }
       pids_2_repos[pid] = repo
@@ -127,7 +127,7 @@ module Deployment
       puts "\nIntegration failed :-("
       deploy_statuses.each do |pid, status|
         unless status.success?
-          puts "\n   Deployment to #{pids_2_repos[pid]} failed with code #{status.exitstatus}"
+          puts "   Deployment to #{pids_2_repos[pid]} failed with status #{status.exitstatus}"
         end
       end
     end
