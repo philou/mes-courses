@@ -17,7 +17,6 @@ TODO
   - spork (a test runner server)
   - avoid loading spec_helper multiple times http://kpumuk.info/ruby-on-rails/my-top-7-rspec-best-practices/
   - tutorial http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html
-- Speed up deployment when integrating : in parallel, or asynchronously on another server
 - redesign cms pull and push
   - utiliser des subtree plutot que des subtree-merge (c'est un wrapper par dessus, cf : http://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)
   - copier coller
@@ -77,7 +76,6 @@ TODO
   - faire un truc pour que mechanize ne passe pas par le file system pendant les tests
 - faire un script 'setup' pour le cms
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
-- ajouter un truc pour cleaner les sessions quand on push une nouvelle version : heroku rake db:sessions:clear
 - tester org-mode pour mes todo list
 - commande emacs pour fermer tous les buffers dans un sous repertoire
 - build something to scrap analytics to an email :

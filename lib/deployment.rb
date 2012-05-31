@@ -27,6 +27,7 @@ module Deployment
   def pull(repo)
     shell "git pull #{repo} master"
   end
+
   def push(repo)
     shell "git push #{repo} master"
   end
@@ -34,6 +35,7 @@ module Deployment
   def heroku_app(repo)
     "mes-courses-#{repo}"
   end
+
   def heroku(command, options = {})
     if options.include?(:repo)
       bundle_exec "heroku #{command} --app #{heroku_app(options[:repo])}"
@@ -41,6 +43,7 @@ module Deployment
       bundle_exec "heroku #{command}"
     end
   end
+
   def migrate(repo)
     heroku "rake db:migrate", :repo => repo
   end
@@ -80,6 +83,7 @@ module Deployment
       yield
     end
   end
+
   def with_repo_argument(name, description)
     if ARGV.count == 0 or ["help", "-h","--help"].include?(ARGV[0])
       print_help("#{name} REPO", description)
@@ -88,16 +92,10 @@ module Deployment
     end
   end
 
-  def print_help(name, description)
-      puts description
-      puts
-      puts "  ruby script/#{name}"
-      puts
-  end
-
   def import_tester_repos
     0.upto(6).map { |i| "import-tester-#{i}" }
   end
+
   def test_and_integration_repos
     import_tester_repos + ["cart-tester", "integ"]
   end
@@ -118,14 +116,51 @@ module Deployment
     puts "\nIntegration successful :-)"
   end
 
+  def create_heroku_app(repo)
+    heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
+
+    heroku "addons:add cron:daily", :repo => repo
+    heroku "addons:upgrade logging:expanded", :repo => repo
+    heroku "addons:add sendgrid:starter", :repo => repo
+
+    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRule$", :repo => repo
+  end
+
+  private
+
+  def print_help(name, description)
+      puts description
+      puts
+      puts "  ruby script/#{name}"
+      puts
+  end
+
   def parallel_deploy(repos)
+    pids_2_repos = launch_deployment_processes(repos)
+    deploy_statuses = Process.waitall
+    print_deployment_logs(repos)
+    forward_failure(deploy_statuses, pids_2_repos)
+  end
+
+  def launch_deployment_processes(repos)
     pids_2_repos = {}
     repos.each do |repo|
-      pid = fork { deploy(repo) }
+      pid = fork do
+        $stderr = $stdout = File.new(deploy_temp_log(repo), "w")
+        deploy(repo)
+      end
       pids_2_repos[pid] = repo
     end
+    return pids_2_repos
+  end
 
-    deploy_statuses = Process.waitall
+  def print_deployment_logs(repos)
+    repos.each do |repo|
+      IO.foreach(deploy_temp_log(repo)) {|line| puts line}
+    end
+  end
+
+  def forward_failure(deploy_statuses, pids_2_repos)
     success = deploy_statuses.all? {|pid, status| status.success? }
     unless success
       message = ["Deployment failed :-("]
@@ -138,14 +173,8 @@ module Deployment
     end
   end
 
-  def create_heroku_app(repo)
-    heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
-
-    heroku "addons:add cron:daily", :repo => repo
-    heroku "addons:upgrade logging:expanded", :repo => repo
-    heroku "addons:add sendgrid:starter", :repo => repo
-
-    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRule$", :repo => repo
+  def deploy_temp_log(repo)
+    "/tmp/deployment_to_#{heroku_app(repo)}.log"
   end
 
 end
