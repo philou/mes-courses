@@ -113,23 +113,28 @@ module Deployment
     push "main"
 
     puts "\nDeploying to test and integration environments"
+    parallel_deploy(test_and_integration_repos)
+
+    puts "\nIntegration successful :-)"
+  end
+
+  def parallel_deploy(repos)
     pids_2_repos = {}
-    test_and_integration_repos.each do |repo|
+    repos.each do |repo|
       pid = fork { deploy(repo) }
       pids_2_repos[pid] = repo
     end
 
     deploy_statuses = Process.waitall
     success = deploy_statuses.all? {|pid, status| status.success? }
-    if success
-      puts "\nIntegration successful :-)"
-    else
-      puts "\nIntegration failed :-("
+    unless success
+      message = ["Deployment failed :-("]
       deploy_statuses.each do |pid, status|
         unless status.success?
-          puts "   Deployment to #{pids_2_repos[pid]} failed with status #{status.exitstatus}"
+          message << "   Deployment to #{pids_2_repos[pid]} failed with status #{status.exitstatus}"
         end
       end
+      raise RuntimeError.new(message.join("\n"))
     end
   end
 
