@@ -10,7 +10,7 @@ FactoryGirl.define do
   factory :dish do
     name { FactoryGirl.generate(:dish_name) }
 
-    after_create do |dish|
+    after :create do |dish|
       FactoryGirl.create_list(:item, 2, dishes: [dish])
     end
   end
