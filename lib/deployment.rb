@@ -45,7 +45,7 @@ module Deployment
   end
 
   def migrate(repo)
-    heroku "rake db:migrate", :repo => repo
+    heroku "run rake db:migrate", :repo => repo
   end
 
   def deploy(repo)
