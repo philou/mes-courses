@@ -68,3 +68,51 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 require "factory_girl"
 Dir[Rails.root.join("spec/factories/*.rb")].each {|f| require f}
 require "factory_girl/step_definitions"
+
+# custom matchers
+require File.join(Rails.root, 'spec/support/constants')
+require File.join(Rails.root, 'spec/support/mostly_matcher')
+require File.join(Rails.root, 'spec/support/all_do_matcher')
+require File.join(Rails.root, 'spec/support/have_non_nil_matcher')
+require File.join(Rails.root, 'spec/support/have_place_matcher')
+require File.join(Rails.root, 'spec/support/highlight_place_matcher')
+require File.join(Rails.root, 'spec/support/have_body_id_matcher')
+
+# Add the capability to retreive and store db metrics in an active record model
+class ActiveRecord::Base
+  # Current db model metrics
+  def self.current_metrics
+    {
+      :count => count,
+      :updated_at => maximum(:updated_at),
+      :created_at => maximum(:created_at),
+      :all => find(:all)
+    }
+  end
+
+  def self.past_metrics
+    @past_metrics
+  end
+
+  # Fills metrics from the db, NOW!
+  def self.collect_past_metrics
+    @past_metrics = current_metrics
+  end
+end
+
+# Reimports a store, waits for the next second
+# records db metrics before reimporting
+def reimport(store)
+
+  [Item, ItemCategory].each do |record|
+    record.collect_past_metrics
+  end
+
+  [Item, ItemCategory].each do |record|
+    while record.past_metrics[:updated_at].sec == Time.now.sec
+      sleep(0.01)
+    end
+  end
+
+  Store.import
+end
