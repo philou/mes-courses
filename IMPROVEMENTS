@@ -7,10 +7,19 @@ WIP
 
 TODO
 ----
+- capturer tous les logs dans le deployment fork, et pas seulement les puts
+  - faire un script deploy.rb qui prend un repo en parametre
+  - lancer les deploys via system "ruby deploy.rb 2> toto.log"
+  - lancer les process de deploy dans un thread qui fait deploy, puis puts "deployment ok" ou qui set une erreur quelque part
+  - faire un join et lancer une exception en cas de pb
+- trouver un bon indexeur de fichier pour ubuntu
+- setuper calibre
+- voir comment installer les rdoc avec les gem via bundle
 - faire le ménage dans le repertoire mes-courses-fr
+- regarder orgmod vs github tasks, kanban avec orgmode
+- passer sur github + ubuntu one ?
 - upgrade radiant to the latest version using bundler !
   - merge latest design modifications
-- changer mon mot de passe heroku pour ne pas me faire tout piraté si qq1 rentre sur mes sites heroku
 - speed up testing
   - launching just a few specs
   - launching just a few features

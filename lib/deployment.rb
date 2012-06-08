@@ -123,7 +123,7 @@ module Deployment
     heroku "addons:upgrade logging:expanded", :repo => repo
     heroku "addons:add sendgrid:starter", :repo => repo
 
-    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@free.fr HIREFIRE_PASSWORD=No@hRule$", :repo => repo
+    heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", :repo => repo
   end
 
   private
