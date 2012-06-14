@@ -60,6 +60,7 @@ TODO
   - decide wether and when to use mock_model and mock or stub_models and FactoryGirl
   - avoid mixing real records and stubs
 - faire un matcher pour les path bar
+  - les should have_selector(...), failure message imbriqués permettent de faire exactement ce qu'on veut, il nous faudrait juste les packagés comme des un matcher, si c'est simple, on devrait pouvoir simplifier des matchers existants aussi
   - peut être deux : un path_bar_element(index, text, url)
   - un autre pour path_bar avec une liste d'elements
 - faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
@@ -81,9 +82,9 @@ TODO
   - écrire le specdoc dans autotest
 - sortir des choses de models
 - améliorer les tests cucumber d'imports
-  - Créer un vrai dummy store avec des vrais fichiers pour Cucumber
-  - faire un truc pour patcher les fichier auchan_direct offline
-  - faire un truc pour que mechanize ne passe pas par le file system pendant les tests
+  - Passer les tests cucumber sur RealDummyStore
+  - Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
+  - Supprimer complétement DummyStoreItemsAPI
 - faire un script 'setup' pour le cms
 - dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 - tester org-mode pour mes todo list

@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'store_items_api_builder'
 
-define_store_items_api :auchan_direct_store_items_api do
+define_store_items_api "www.auchandirect.fr" do
 
   categories '#carroussel > div a' do
     attributes do

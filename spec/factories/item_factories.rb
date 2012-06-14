@@ -10,13 +10,16 @@ FactoryGirl.define do
     "#{n}"
   end
 
-  factory :item do |item|
+  factory :item_attributes, class: Item do |item|
     item.name { FactoryGirl.generate(:item_name) }
-    item.item_category { |a| a.association(:item_sub_category) }
     item.price { |a| a.name.length.to_f / 100.0 + 1.0 }
     item.summary { |a| "Fabuleux #{a.name}" }
     item.image { |a| "http://www.photofabric.com/#{a.name}" }
     item.remote_id { FactoryGirl.generate(:remote_id) }
+  end
+
+  factory :item, parent: :item_attributes do |item|
+    item.item_category { |a| a.association(:item_sub_category) }
   end
 
 end

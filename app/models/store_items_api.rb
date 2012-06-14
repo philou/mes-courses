@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'auchan_direct_store_items_api'
 
@@ -10,8 +10,12 @@ class StoreItemsAPI
     if store_url == DummyStoreCartAPI.url
       DummyStoreItemsAPI.new_default_store(store_url)
     else
-      auchan_direct_store_items_api(store_url)
+      builder(store_url).new(StoreWalkerPage.open(store_url))
     end
+  end
+
+  def self.register_builder(name, builder)
+    builders[name] = builder
   end
 
   # Uri of the main page of the store
@@ -25,5 +29,20 @@ class StoreItemsAPI
 
   # Walkers of the root items in the store
   # def items
+
+  private
+
+  def self.builder(store_url)
+    builders.each do |name, builder|
+      if store_url.include?(name)
+        return builder
+      end
+    end
+    raise NotImplementedError.new("Could not find a store item api for '#{store_url}'")
+  end
+
+  def self.builders
+    @builders ||= {}
+  end
 end
 

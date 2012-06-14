@@ -1,10 +1,13 @@
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 Feature: Handling deleted items in import
 
   In order to have full dishes
   A customer
   Wants dishes to be updated when one of their item is removed from the store
+
+  After an import, dishes with sold out items are be disabled. A notification email is also
+  sent to the webmaster so that he can fix the dishes.
 
   Scenario: Browsing a dish just after the item was removed
     Given the "www.dummy-store.com" store

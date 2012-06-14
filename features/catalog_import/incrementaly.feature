@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 Feature: Incremental catalog import
 
@@ -6,6 +6,9 @@ Feature: Incremental catalog import
   A customer
   Wants available items to be automatically and regularly
     updated from the online store.
+
+  Items needs to be tracked from one import to the next, so that
+  dishes using them are kept correct.
 
   Scenario: Existing items are re-imported from the store
     Given the "www.dummy-store.com" store
@@ -27,11 +30,22 @@ Feature: Incremental catalog import
     When  modified items from the store are re-imported
     Then  some items should have been modified
 
-  Scenario: Sold out items are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  sold out items from the store are re-imported
-    Then  some items should have been deleted
+  Scenario: Second import with deleted items
+
+    If some items are not available from the remote store any more.
+    They are shown disabled.
+
+    Given the "www.dummy-store.com" store with items
+      | Category | Sub category | Item    |
+      | Fruits   | Marché       | Tomates |
+    And "www.dummy-store.com"  store was already imported
+    And the following items were removed from "www.dummy-store.com"
+      | Category | Sub category | Item    |
+      | Fruits   | Marché       | Tomates |
+    When "www.dummy-store.com" is imported again
+    Then the following items should be disabled
+      | Category | Sub category | Item    |
+      | Fruits   | Marché       | Tomates |
 
   Scenario: Existing item categories and sub categories are re-imported from the store
     Given the "www.dummy-store.com" store

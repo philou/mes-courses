@@ -45,7 +45,5 @@ end
 def define_store_items_api(name, &block)
   builder = StoreItemsAPIBuilder.define(StoreItemsWalker, StoreItemsDigger, &block)
 
-  self.class.send :define_method, name do |url|
-    builder.new(StoreWalkerPage.open(url))
-  end
+  StoreItemsAPI.register_builder(name, builder)
 end

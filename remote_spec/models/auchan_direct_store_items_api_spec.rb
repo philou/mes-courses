@@ -13,7 +13,7 @@ when_online "AuchanDirectStoreItemsAPI remote spec" do
     include AuchanDirectStoreItemsAPISpecMacros
 
     before :all do
-      @store = auchan_direct_store_items_api("http://www.auchandirect.fr")
+      @store = StoreItemsAPI.browse("http://www.auchandirect.fr")
     end
 
     it_should_behave_like_any_auchan_direct_store_items_api

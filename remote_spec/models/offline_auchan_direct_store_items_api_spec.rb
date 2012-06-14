@@ -8,7 +8,7 @@ describe "OfflineAuchanDirectStoreItemsAPI" do
   include AuchanDirectStoreItemsAPISpecMacros
 
   before :all do
-    @store = auchan_direct_store_items_api(AUCHAN_DIRECT_OFFLINE)
+    @store = StoreItemsAPI.browse(AUCHAN_DIRECT_OFFLINE)
   end
 
   it_should_behave_like_any_auchan_direct_store_items_api
