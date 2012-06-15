@@ -46,7 +46,7 @@ end
 
 # You may also want to configure DatabaseCleaner to use different strategies for certain features and scenarios.
 # See the DatabaseCleaner documentation for details. Example:
-#
+#²
 #   Before('@no-txn,@selenium,@culerity,@celerity,@javascript') do
 #     # { :except => [:widgets] } may not do what you expect here
 #     # as tCucumber::Rails::Database.javascript_strategy overrides
@@ -68,15 +68,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 require "factory_girl"
 Dir[Rails.root.join("spec/factories/*.rb")].each {|f| require f}
 require "factory_girl/step_definitions"
-
-# custom matchers
-require File.join(Rails.root, 'spec/support/constants')
-require File.join(Rails.root, 'spec/support/mostly_matcher')
-require File.join(Rails.root, 'spec/support/all_do_matcher')
-require File.join(Rails.root, 'spec/support/have_non_nil_matcher')
-require File.join(Rails.root, 'spec/support/have_place_matcher')
-require File.join(Rails.root, 'spec/support/highlight_place_matcher')
-require File.join(Rails.root, 'spec/support/have_body_id_matcher')
 
 # Add the capability to retreive and store db metrics in an active record model
 class ActiveRecord::Base
@@ -115,4 +106,12 @@ def reimport(store)
   end
 
   Store.import
+end
+
+# real dummy stores
+require_relative "../../remote_spec/models/real_dummy_store_generator"
+require_relative "../../remote_spec/models/real_dummy_store_items_api"
+
+Before do
+    RealDummyStore.wipe_out
 end
