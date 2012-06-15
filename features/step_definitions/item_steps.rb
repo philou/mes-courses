@@ -76,10 +76,6 @@ Then /^item organization should not have changed$/ do
   ItemCategory.current_metrics.should == ItemCategory.past_metrics
 end
 
-Then /^item organization should have shrank$/ do
-  ItemCategory.current_metrics[:count].should < ItemCategory.past_metrics[:count]
-end
-
 def i_should_see_an_item(name)
   page.should have_selector("div", :id => "items-panel") do |div|
     div.should have_content(item_name)
@@ -96,23 +92,12 @@ Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
   end
 end
 
-def item_should_be_disabled(item)
-  page.should have_selector("div", :id => "items-panel") do |div|
-    div.should have_xpath(".//tr[contains(/td,'#{item}')]") do |tr|
-      tr.should have_xpath(".//img[@src='disabled.png']")
-      tr.should have_xpath(".//input[@type='submit'][@disabled='disabled']")
-    end
-  end
-end
-
 Then /^the following items should be disabled$/ do |table|
-  pending
-
   table.each_item do |category, sub_category, item|
     visit item_categories_path
     click_link(category)
     click_link(sub_category)
     i_should_see_an_item(item)
-    item_should_be_disabled(item)
+    page.should contain_a(disabled_item_with_name(item))
   end
 end

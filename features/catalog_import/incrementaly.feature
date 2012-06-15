@@ -53,8 +53,3 @@ Feature: Incremental catalog import
     When  items from the store are re-imported
     Then  item organization should not have changed
 
-  Scenario: Emptied item categories and sub categories are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  sold out items from the store are re-imported
-    Then  item organization should have shrank

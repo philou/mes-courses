@@ -14,6 +14,9 @@ TODO
   - faire un join et lancer une exception en cas de pb
 - trouver un bon indexeur de fichier pour ubuntu
 - setuper calibre
+- spliter du code dans des gems
+  - ContainA matcher et PagePart
+  - store apis
 - voir comment installer les rdoc avec les gem via bundle
 - faire le ménage dans le repertoire mes-courses-fr
 - regarder orgmod vs github tasks, kanban avec orgmode

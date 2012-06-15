@@ -9,7 +9,6 @@ describe IncrementalStore do
     @store = mock_model(Store).as_null_object
     @store.stub(:known_item_category).and_return(nil)
     @store.stub(:known_item).and_return(nil)
-    @store.stub(:delete_empty_item_categories).and_return(0)
     @i_store = IncrementalStore.new(@store)
 
     ItemCategory.stub(:root).and_return(ItemCategory.new(:name => ItemCategory::ROOT_NAME))
@@ -33,15 +32,6 @@ describe IncrementalStore do
       @i_store.finishing_import
     end
 
-    it "should delete sold out items from the store" do
-      @store.should_receive(:delete_sold_out_items)
-    end
-    it "should delete empty item categories" do
-      @store.should_receive(:delete_empty_item_categories).once.and_return(0)
-    end
-    it "should delete categories until no more are empty" do
-      @store.should_receive(:delete_empty_item_categories).twice.and_return(1,0)
-    end
     it "should delete visited urls" do
       @store.should_receive(:delete_visited_urls)
     end

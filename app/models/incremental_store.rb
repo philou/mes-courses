@@ -19,8 +19,6 @@ class IncrementalStore
   def finishing_import
     handle_broken_dishes()
 
-    @store.delete_sold_out_items
-    delete_empty_item_categories
     @store.delete_visited_urls
   end
 
@@ -68,13 +66,6 @@ class IncrementalStore
   end
   def is_updated?(record,params)
     !record.equal_to_attributes?(params)
-  end
-
-  def delete_empty_item_categories
-    items_to_delete = 1
-    while 0 < items_to_delete
-      items_to_delete = @store.delete_empty_item_categories
-    end
   end
 
   def handle_broken_dishes()

@@ -92,20 +92,6 @@ class Store < ActiveRecord::Base
     Item.where("id IN (SELECT item_id FROM to_delete_items)")
   end
 
-  # Delete all marked items
-  def delete_sold_out_items
-    result = execute_delete("DELETE FROM items WHERE id IN (SELECT item_id FROM to_delete_items)")
-    remove_all_marks
-    result
-  end
-  # Cleans up useless item categories
-  def delete_empty_item_categories
-    execute_delete(%{DELETE FROM item_categories
-                     WHERE id NOT IN (SELECT item_category_id FROM items WHERE item_category_id IS NOT NULL)
-                     AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
-                    })
-  end
-
   def execute_delete(statement)
     result = result_size connection.execute(statement)
     logger.debug "Delete statement '#{statement}' removed #{result} rows"

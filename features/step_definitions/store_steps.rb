@@ -108,11 +108,6 @@ When /^modified items from the store are re-imported$/ do
   reimport(@store)
 end
 
-When /^sold out items from the store are re-imported$/ do
-  configure_dummy_store(DummyStoreItemsAPI.shrinked_config(1))
-  reimport(@store)
-end
-
 Then /^an empty cart should be created in the store account of the user$/ do
   @cart_api.log.should include(:empty_the_cart)
 end
