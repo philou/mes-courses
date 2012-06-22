@@ -8,7 +8,7 @@ def given_in_cart(quantity, item_name)
 
   # this won't work if I have many items with the same item category
   quantity.times do
-    visit item_category_path(item.item_category)
+    visit item_category_path(item.item_categories.first)
     click_button("Ajouter au panier")
   end
 end

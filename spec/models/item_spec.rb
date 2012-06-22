@@ -76,9 +76,15 @@ describe Item do
 
       Item.should_receive(:where).
         with(/item_category_id = :category_id/, hash_including(:category_id => @legumes.id)).
-        and_return(expected)
+        and_return(join_mock(expected))
 
       Item.search_by_string_and_category(keyword, @legumes).should == expected
+    end
+
+    def join_mock(result)
+      mock = stub("Where clause")
+      mock.stub(:joins).with("INNER JOIN item_categories_items ON (items.id = item_categories_items.item_id)").and_return(result)
+      mock
     end
 
     it "should search in sub categories when it has no parent" do
@@ -87,7 +93,7 @@ describe Item do
 
       Item.should_receive(:where).
         with(/item_category_id in \(:category_ids\)/, hash_including(:category_ids => [@legumes.id,@fruits.id])).
-        and_return(expected)
+        and_return(join_mock(expected))
 
       Item.search_by_string_and_category(keyword, @marche).should == expected
     end
@@ -96,7 +102,7 @@ describe Item do
       keyword = "tomates"
       expected = [@tomates, @tomates_cerises, @tomates_confites]
 
-      Item.should_receive(:where).and_return(expected)
+      Item.should_receive(:where).and_return(join_mock(expected))
 
       Item.search_by_string_and_category(keyword, @root_item_category).should == expected
     end
@@ -105,9 +111,9 @@ describe Item do
       search_string = "poulet"
 
       Item.should_receive(:where).
-        with(/tokens like :token0/, hash_including(:token0 => "%#{search_string}%")).
+        with(/items.tokens like :token0/, hash_including(:token0 => "%#{search_string}%")).
         exactly(3).times.
-        and_return([@salade_cesar])
+        and_return(join_mock([@salade_cesar]))
 
       Item.search_by_string_and_category(search_string, @root_item_category)
       Item.search_by_string_and_category(search_string, @traiteur)
@@ -120,9 +126,9 @@ describe Item do
       Tokenizer.stub(:run).and_return(tokens)
 
       Item.should_receive(:where).
-        with(/tokens like :token0 and tokens like :token1/, hash_including(:token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
+        with(/items.tokens like :token0 and items.tokens like :token1/, hash_including(:token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
         exactly(3).times.
-        and_return([@salade_cesar])
+        and_return(join_mock([@salade_cesar]))
 
       Item.search_by_string_and_category(search_string, @root_item_category)
       Item.search_by_string_and_category(search_string, @traiteur)

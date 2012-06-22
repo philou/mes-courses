@@ -12,8 +12,9 @@ TODO
   - lancer les deploys via system "ruby deploy.rb 2> toto.log"
   - lancer les process de deploy dans un thread qui fait deploy, puis puts "deployment ok" ou qui set une erreur quelque part
   - faire un join et lancer une exception en cas de pb
-- trouver un bon indexeur de fichier pour ubuntu
-- setuper calibre
+- améliorer la recherche dans les ebooks
+  - trouver un bon indexeur de fichier pour ubuntu
+  - setuper calibre
 - spliter du code dans des gems
   - ContainA matcher et PagePart
   - store apis
@@ -42,8 +43,9 @@ TODO
 - essayer auto_test_rails
 - upgrade gems 'bundle update' before starting any dev !
 - completely disable stock test::unit stack from rails
+- migrate to heroku cedar stack
 - replace cron heroku addon by scheduler
-- comprendre ce qui ne va pas avec le .emacs (pas de iswitch mode, pas de serveur edit-in-emacs)
+- fixer pas de serveur edit-in-emacs, faire un launcher plus rapide dans unity
 - utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
 - configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
 - ajouter un header par defaut aux fichiers créés avec emacs (encoding)
@@ -69,10 +71,8 @@ TODO
 - faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
 - make cucumber steps more high level
 - Check the deployment was successful by doing a get to http://app-name.heroku.com and checking the http return status
-- add a foreign key from cart_lines -> items
-  - move items to a new category instead of deleting them, fix global item search
-  - or version the items : check that it will not be too big
 - faire un migrate up, migrate down, remigrate up pour valider les migrations dans les 2 sens
+- tester les db:fixtures:load dans le script d'intégration
 - Use tags to segregate remote specs and features
 - Would it be possible to classify features with tags instead of directories, ex user & dishes for dish modifications
 - Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules

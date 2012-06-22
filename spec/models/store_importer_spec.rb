@@ -122,7 +122,7 @@ describe StoreImporter do
       given_a_store_with_items
 
       @items.each do |item|
-        @store.should_receive(:register_item).with(item.attributes.merge(:item_category => @sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil))))
+        @store.should_receive(:register_item).with(item.attributes.merge(:item_categories => [@sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil))]))
       end
 
       import

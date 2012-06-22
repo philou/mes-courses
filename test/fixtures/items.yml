@@ -1,6 +1,6 @@
 tomates:
    name: Tomates
-   item_category: tomates
+   item_categories: tomates
    price: 2.5
    summary: Tomates rondes d'Espagne
    image: /images/unknown-product.png
@@ -9,7 +9,7 @@ tomates:
 
 boeuf_hache:
    name: Viande de boeuf hachée
-   item_category: boeuf
+   item_categories: boeuf
    price: 3.3
    summary: Boeuf origine France
    image: /images/unknown-product.png
@@ -18,7 +18,7 @@ boeuf_hache:
 
 spaghettis:
    name: Spaghettis
-   item_category: pates
+   item_categories: pates
    price: 1.2
    summary: Spaghettis italiennnes Barrilla
    image: /images/unknown-product.png
@@ -27,7 +27,7 @@ spaghettis:
 
 escalopes_de_poulet:
    name: Escalopes de poulet
-   item_category: volailles
+   item_categories: volailles
    price: 4.5
    summary: Poulet fermier origine France
    image: /images/unknown-product.png
@@ -36,7 +36,7 @@ escalopes_de_poulet:
 
 riz:
    name: Riz
-   item_category: riz
+   item_categories: riz
    price: 1
    summary: Riz basmati
    image: /images/unknown-product.png
@@ -45,7 +45,7 @@ riz:
 
 creme:
    name: Crème
-   item_category: cremes
+   item_categories: cremes
    price: 0.6
    summary: Crème épaisse de Normandie
    image: /images/unknown-product.png
@@ -54,7 +54,7 @@ creme:
 
 echalottes:
    name: Echalottes
-   item_category: legumes_frais
+   item_categories: legumes_frais
    price: 2
    summary: Botte d'échalottes de Bretagne
    image: /images/unknown-product.png
@@ -63,7 +63,7 @@ echalottes:
 
 haricots_verts:
    name: Haricots verts
-   item_category: legumes_congeles
+   item_categories: legumes_congeles
    price: 1
    summary: Haricots verts extra fins congelés
    image: /images/unknown-product.png
@@ -72,7 +72,7 @@ haricots_verts:
 
 bavette:
    name: Bavette de boeuf
-   item_category: boeuf
+   item_categories: boeuf
    price: 5.5
    summary: Boeuf Charal origine france
    image: /images/unknown-product.png
@@ -81,7 +81,7 @@ bavette:
 
 jambon:
    name: Jambon blanc
-   item_category: charcuterie
+   item_categories: charcuterie
    price: 2.9
    summary: Jambon blanc à la coupe origine France
    image: /images/unknown-product.png
@@ -90,7 +90,7 @@ jambon:
 
 gnochis:
    name: Gnochis
-   item_category: pates
+   item_categories: pates
    price: 2
    summary: Gnochis de pommes de terre
    image: /images/unknown-product.png
@@ -99,7 +99,7 @@ gnochis:
 
 champignons:
    name: Champignons de Paris
-   item_category: legumes_frais
+   item_categories: legumes_frais
    price: 1
    summary: Champignons frais - France
    image: /images/unknown-product.png
@@ -108,7 +108,7 @@ champignons:
 
 poivron_vert:
    name: Poivron vert
-   item_category: legumes_frais
+   item_categories: legumes_frais
    price: 3.2
    summary: Poivrons vert origine Espagne
    image: /images/unknown-product.png
@@ -117,7 +117,7 @@ poivron_vert:
 
 feta:
    name: Feta
-   item_category: fromages
+   item_categories: fromages
    price: 2.5
    summary: Fromage de brebis Grec
    image: /images/unknown-product.png
@@ -126,7 +126,7 @@ feta:
 
 olives_noires:
    name: Olives noires
-   item_category: legumes_prepares
+   item_categories: legumes_prepares
    price: 1.2
    summary: Olives noires dénoyautés origine Italie
    image: /images/unknown-product.png
@@ -135,7 +135,7 @@ olives_noires:
 
 concombre:
    name: Concombre
-   item_category: legumes_frais
+   item_categories: legumes_frais
    price: 1
    summary: Concombre frais origine France
    image: /images/unknown-product.png

@@ -1,21 +1,18 @@
-root:
-  name: <INTERNAL ROOT>
-
 fruit_legumes:
   name: Fruits & Légumes
-  parent: root
+  parent_id: <%= ItemCategory.root.id %>
 
 viandes:
   name: Viandes
-  parent: root
+  parent_id: <%= ItemCategory.root.id %>
 
 feculents:
   name: Féculents
-  parent: root
+  parent_id: <%= ItemCategory.root.id %>
 
 produits_laitiers:
   name: Produits laitiers
-  parent: root
+  parent_id: <%= ItemCategory.root.id %>
 
 
 tomates:

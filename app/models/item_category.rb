@@ -3,7 +3,7 @@
 
 # Hierarchichal category of items,
 class ItemCategory < ActiveRecord::Base
-  has_many :items
+  has_and_belongs_to_many :items
   acts_as_tree :order => "name"
 
   validates_presence_of :name

@@ -6,9 +6,9 @@ require 'tokenizer'
 # An item for sale
 class Item < ActiveRecord::Base
   has_and_belongs_to_many :dishes
-  belongs_to :item_category
+  has_and_belongs_to_many :item_categories
 
-  validates_presence_of :name, :item_category, :price, :remote_id, :tokens
+  validates_presence_of :name, :price, :tokens, :remote_id
   validates_uniqueness_of :remote_id
 
   attr_protected :tokens
@@ -35,22 +35,22 @@ class Item < ActiveRecord::Base
     condition_params = {}
     Tokenizer.run(search_string).each_with_index do |token, i_token|
       param = "token#{i_token}"
-      sql_clauses.push("tokens like :#{param}")
+      sql_clauses.push("items.tokens like :#{param}")
       condition_params[param.intern] = "%#{token}%"
     end
     condition_sql = sql_clauses.join(" and ")
 
     if !category.root?
       if category.children.empty?
-        condition_sql = condition_sql + " and item_category_id = :category_id"
+        condition_sql = condition_sql + " and item_categories_items.item_category_id = :category_id"
         condition_params = condition_params.merge(:category_id => category.id)
       else
-        condition_sql = condition_sql + " and item_category_id in (:category_ids)"
+        condition_sql = condition_sql + " and item_categories_items.item_category_id in (:category_ids)"
         condition_params = condition_params.merge(:category_ids => category.children.map{ |c| c.id})
       end
     end
 
-    Item.where(condition_sql, condition_params)
+    Item.where(condition_sql, condition_params).joins("INNER JOIN item_categories_items ON (items.id = item_categories_items.item_id)")
   end
 
   private

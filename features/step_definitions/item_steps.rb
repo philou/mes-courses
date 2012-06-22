@@ -18,8 +18,10 @@ end
 
 Then /^all items should be organized by type and subtype$/ do
   Item.find(:all).each do |item|
-    item.item_category.should_not be_nil
-    item.item_category.parent.should_not be_nil
+    item.item_categories.should_not be_empty
+    item.item_categories.each do |item_category|
+      item_category.parent.should_not be_nil
+    end
   end
 end
 

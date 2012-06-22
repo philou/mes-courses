@@ -42,7 +42,7 @@ class StoreImporter
   def walk_item(walker, item_category)
     unless_already_visited(walker) do
       params = walker.attributes
-      params[:item_category] = item_category
+      params[:item_categories] = [item_category]
 
       log :debug, "Found item #{params.inspect}"
       store.register_item(params)

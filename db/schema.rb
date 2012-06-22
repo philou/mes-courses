@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120618042654) do
+ActiveRecord::Schema.define(:version => 20120620040704) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -68,16 +68,23 @@ ActiveRecord::Schema.define(:version => 20120618042654) do
 
   add_index "item_categories", ["name", "parent_id"], :name => "item_sub_types_name_item_type_id_index", :unique => true
 
+  create_table "item_categories_items", :id => false, :force => true do |t|
+    t.integer "item_id",          :null => false
+    t.integer "item_category_id", :null => false
+  end
+
+  add_index "item_categories_items", ["item_category_id"], :name => "item_categories_items_item_category_id_index"
+  add_index "item_categories_items", ["item_id"], :name => "item_categories_items_item_id_index"
+
   create_table "items", :force => true do |t|
-    t.string   "name",             :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "item_category_id", :null => false
-    t.decimal  "price",            :null => false
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.decimal  "price",      :null => false
     t.string   "image"
     t.string   "summary"
-    t.integer  "remote_id",        :null => false
-    t.string   "tokens",           :null => false
+    t.integer  "remote_id",  :null => false
+    t.string   "tokens",     :null => false
   end
 
   add_index "items", ["remote_id"], :name => "items_remote_id_index", :unique => true
@@ -136,8 +143,6 @@ ActiveRecord::Schema.define(:version => 20120618042654) do
   add_foreign_key "dishes_items", "items", :name => "dishes_items_item_id_fk"
 
   add_foreign_key "item_categories", "item_categories", :name => "item_categories_parent_id_fk", :column => "parent_id"
-
-  add_foreign_key "items", "item_categories", :name => "items_item_category_id_fk"
 
   add_foreign_key "orders", "carts", :name => "orders_cart_id_fk"
   add_foreign_key "orders", "stores", :name => "orders_store_id_fk"
