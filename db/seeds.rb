@@ -9,4 +9,5 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-ItemCategory.create!(:name => ItemCategory::ROOT_NAME)
+ItemCategory.create!(:name => Constants::ROOT_ITEM_CATEGORY_NAME)
+ItemCategory.create!(:name => Constants::DISABLED_ITEM_CATEGORY_NAME)

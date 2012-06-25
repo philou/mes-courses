@@ -11,7 +11,7 @@ describe IncrementalStore do
     @store.stub(:known_item).and_return(nil)
     @i_store = IncrementalStore.new(@store)
 
-    ItemCategory.stub(:root).and_return(ItemCategory.new(:name => ItemCategory::ROOT_NAME))
+    ItemCategory.stub(:root).and_return(ItemCategory.new(:name => ItemCategory.root_name))
   end
 
   context "when starting import" do

@@ -2,8 +2,16 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
+require_relative 'singleton_builder_spec_macros'
 
 describe Item do
+  extend SingletonBuilderSpecMacros
+
+  has_singleton(:lost, Constants::LOST_ITEM_NAME)
+
+  it "has a lost item that is disabled" do
+    Item.lost.item_categories.should include(ItemCategory.disabled), "item categories of lost item"
+  end
 
   context "indexing" do
 
@@ -66,7 +74,7 @@ describe Item do
       @traiteur = ItemCategory.new(:name => "Traiteur", :id => 55, :children => [@italien])
       @traiteur.children.each { |child| child.parent = @traiteur}
 
-      @root_item_category = ItemCategory.new(:name => ItemCategory::ROOT_NAME, :id => 66, :children => [@marche, @traiteur])
+      @root_item_category = ItemCategory.new(:name => ItemCategory.root_name, :id => 66, :children => [@marche, @traiteur])
       @root_item_category.children.each { |child| child.parent = @root_item_category}
     end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120620040704) do
+ActiveRecord::Schema.define(:version => 20120622070725) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -80,10 +80,10 @@ ActiveRecord::Schema.define(:version => 20120620040704) do
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.decimal  "price",      :null => false
+    t.decimal  "price"
     t.string   "image"
     t.string   "summary"
-    t.integer  "remote_id",  :null => false
+    t.integer  "remote_id"
     t.string   "tokens",     :null => false
   end
 
@@ -138,11 +138,15 @@ ActiveRecord::Schema.define(:version => 20120620040704) do
   add_index "visited_urls", ["url"], :name => "visited_urls_url_index", :unique => true
 
   add_foreign_key "cart_lines", "carts", :name => "cart_lines_cart_id_fk"
+  add_foreign_key "cart_lines", "items", :name => "cart_lines_item_id_fk"
 
   add_foreign_key "dishes_items", "dishes", :name => "dishes_items_dish_id_fk"
   add_foreign_key "dishes_items", "items", :name => "dishes_items_item_id_fk"
 
   add_foreign_key "item_categories", "item_categories", :name => "item_categories_parent_id_fk", :column => "parent_id"
+
+  add_foreign_key "item_categories_items", "item_categories", :name => "item_categories_items_item_category_id_fk"
+  add_foreign_key "item_categories_items", "items", :name => "item_categories_items_item_id_fk"
 
   add_foreign_key "orders", "carts", :name => "orders_cart_id_fk"
   add_foreign_key "orders", "stores", :name => "orders_store_id_fk"

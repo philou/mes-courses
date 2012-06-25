@@ -5,15 +5,23 @@ require 'tokenizer'
 
 # An item for sale
 class Item < ActiveRecord::Base
+  include SingletonBuilder
+
   has_and_belongs_to_many :dishes
   has_and_belongs_to_many :item_categories
 
-  validates_presence_of :name, :price, :tokens, :remote_id
+  validates_presence_of :name, :tokens
+  validates_presence_of :remote_id, unless: :lost?
   validates_uniqueness_of :remote_id
+  validates_presence_of :price, unless: :lost?
 
   attr_protected :tokens
 
   after_initialize :index
+
+  singleton :lost, Constants::LOST_ITEM_NAME do |record|
+    record.item_categories.push(ItemCategory.disabled)
+  end
 
   def name=(name)
     write_attribute("name", name)

@@ -3,30 +3,14 @@
 
 # Hierarchichal category of items,
 class ItemCategory < ActiveRecord::Base
+  include SingletonBuilder
+
   has_and_belongs_to_many :items
   acts_as_tree :order => "name"
 
   validates_presence_of :name
   validates_uniqueness_of :name, :scope => "parent_id"
 
-  ROOT_NAME = "<INTERNAL ROOT>"
-
-  def self.root
-    find_by_name(ROOT_NAME)
-  end
-
-  def root?
-    name == ROOT_NAME
-  end
-
-  DISABLED_NAME = "<INTERNAL DISABLED>"
-
-  def self.disabled
-    find_by_name(DISABLED_NAME)
-  end
-
-  def disabled?
-    name == DISABLED_NAME
-  end
-
+  singleton(:root, Constants::ROOT_ITEM_CATEGORY_NAME)
+  singleton(:disabled, Constants::DISABLED_ITEM_CATEGORY_NAME)
 end

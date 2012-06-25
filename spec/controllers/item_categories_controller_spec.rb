@@ -10,7 +10,7 @@ describe ItemCategoriesController do
   ignore_user_authentication
 
   before :each do
-    ItemCategory.stub(:root).and_return(stub_model(ItemCategory, :name => ItemCategory::ROOT_NAME, :items => []))
+    ItemCategory.stub(:root).and_return(stub_model(ItemCategory, :name => ItemCategory.root_name, :items => []))
 
     @nesting = ItemCategoriesControllerStandaloneNesting.new
     ItemCategoriesControllerStandaloneNesting.stub(:new).and_return(@nesting)
