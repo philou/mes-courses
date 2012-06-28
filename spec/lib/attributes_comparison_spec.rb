@@ -7,7 +7,7 @@ require 'attributes_comparison'
 describe "ActiveRecord attributes comparison" do
 
   before(:each) do
-    @item_attributes = FactoryGirl.attributes_for :item_attributes
+    @item_attributes = FactoryGirl.attributes_for :item
     @item = Item.new(@item_attributes)
     @item_category_attributes = FactoryGirl.attributes_for :item_category
     @item_category = ItemCategory.new(@item_category_attributes)

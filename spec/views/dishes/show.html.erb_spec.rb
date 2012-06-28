@@ -7,7 +7,7 @@ describe "dishes/show" do
 
   before :each do
     @dish = stub_model(Dish)
-    @dish.stub(:items).and_return([FactoryGirl.build_stubbed(:item),FactoryGirl.build_stubbed(:item)])
+    @dish.stub(:items).and_return([FactoryGirl.build_stubbed(:item_with_categories),FactoryGirl.build_stubbed(:item_with_categories)])
     assign :dish, @dish
     assign :can_modify_dishes, false
   end

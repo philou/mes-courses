@@ -18,6 +18,7 @@ TODO
 - spliter du code dans des gems
   - ContainA matcher et PagePart
   - store apis
+  - association factories pour FactoryGirl
 - voir comment installer les rdoc avec les gem via bundle
 - faire le ménage dans le repertoire mes-courses-fr
 - regarder orgmod vs github tasks, kanban avec orgmode
@@ -96,7 +97,6 @@ TODO
   - revenue
   - expenditures
   - conversion rates
-- spike 2 way associations in active record : understand how they are added and updated
 - Spike how to control accessibility in models
 - Spike rspec-spies + .ordered, try to add it (wait for rspec 2)
 - Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys

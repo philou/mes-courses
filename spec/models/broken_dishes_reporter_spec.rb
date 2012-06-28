@@ -22,7 +22,7 @@ describe BrokenDishesReporter do
   end
 
   it "should contain the yaml of all removed items" do
-    removed_items = [FactoryGirl.create(:item), FactoryGirl.create(:item)]
+    removed_items = [FactoryGirl.create(:item_with_categories), FactoryGirl.create(:item_with_categories)]
 
     send_monitoring_email removed_items
 
@@ -32,8 +32,8 @@ describe BrokenDishesReporter do
   end
 
   it "should contain the id and name of all broken dishes" do
-    removed_item = FactoryGirl.create(:item)
-    removed_item.dishes = [FactoryGirl.create(:dish), FactoryGirl.create(:dish)]
+    removed_item = FactoryGirl.create(:item_with_categories)
+    removed_item.dishes = [FactoryGirl.create(:dish_with_items), FactoryGirl.create(:dish_with_items)]
 
     send_monitoring_email [removed_item]
 

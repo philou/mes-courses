@@ -206,7 +206,7 @@ class RealDummyStoreGenerator
 
   def attributes(options = {})
     @pages.map do |page|
-      attributes = FactoryGirl.attributes_for(:item_attributes, options.merge(name: page.name))
+      attributes = FactoryGirl.attributes_for(:item, options.merge(name: page.name))
       page.attributes(attributes.without([:name]))
     end
   end
