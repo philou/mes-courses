@@ -97,12 +97,13 @@ TODO
   - revenue
   - expenditures
   - conversion rates
+- reduce test maintenance
+  - add an essentiel cucumber tag in include these scenarios in autotest suite
+  - remove "plumbing" unit tests by essential cucumber scenarios
+  - refactor the code to more clear responsibilities
 - Spike how to control accessibility in models
 - Spike rspec-spies + .ordered, try to add it (wait for rspec 2)
 - Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys
-- Spiker les tests avec moins de mock - try to add an rspec extension creating proxies
-  - choisir un test en particulier, le changer et comparer avec l'existant : essayer sur les tests du API Builder
-  - regarder ça : http://xtargets.com/2010/03/19/proxy-mocks-with-rspec/
 - Spike launching ci on heroku (might be a problem with db drop ...)
 - Spike how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
 - Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
