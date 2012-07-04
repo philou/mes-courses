@@ -32,6 +32,10 @@ describe IncrementalStore do
       @i_store.finishing_import
     end
 
+    it "should disable sold out items" do
+      @store.should_receive(:disable_sold_out_items)
+    end
+
     it "should delete visited urls" do
       @store.should_receive(:delete_visited_urls)
     end

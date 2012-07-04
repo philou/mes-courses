@@ -30,11 +30,20 @@ class ContainA
   end
 
   def failure_message_for_should_ex(page_part)
-    if page_part.has_parent and !doc_contains(page_part.parent)
+    if parent_cannot_be_found(page_part)
       failure_message_for_should_ex(page_part.parent)
+    elsif !page_part.has_parent
+      [description,
+       "but could not find #{page_part.long_description}"].join("\n")
     else
-      description + "\nbut could not find #{page_part.long_description}"
+      [description,
+       "it found #{page_part.parent.long_description}",
+       "but not  #{page_part.long_description}"].join("\n")
     end
+  end
+
+  def parent_cannot_be_found(page_part)
+    page_part.has_parent and !doc_contains(page_part.parent)
   end
 end
 

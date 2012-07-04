@@ -17,7 +17,7 @@ Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name
 end
 
 Then /^all items should be organized by type and subtype$/ do
-  Item.find(:all).each do |item|
+  Item.all_but_lost.each do |item|
     item.item_categories.should_not be_empty
     item.item_categories.each do |item_category|
       item_category.parent.should_not be_nil
@@ -26,12 +26,12 @@ Then /^all items should be organized by type and subtype$/ do
 end
 
 Then /^all items should have an? (.*)$/ do |attribute|
-  items = Item.all
+  items = Item.all_but_lost
   items.should all_do have_non_nil(attribute)
 end
 
 Then /^most items should have an? (.*)$/ do |attribute|
-  Item.find(:all).should mostly have_non_nil(attribute)
+  Item.all_but_lost.should mostly have_non_nil(attribute)
 end
 
 Then /^I should see the "([^"]*)" of "([^"]*)"$/ do |attribute, item_name|
@@ -99,7 +99,6 @@ Then /^the following items should be disabled$/ do |table|
     visit item_categories_path
     click_link(category)
     click_link(sub_category)
-    i_should_see_an_item(item)
     page.should contain_a(disabled_item_with_name(item))
   end
 end

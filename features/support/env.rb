@@ -39,7 +39,7 @@ ActionController::Base.allow_rescue = false
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
 begin
-  DatabaseCleaner.strategy = :transaction
+  DatabaseCleaner.strategy = :truncation
 rescue NameError
   raise "You need to add database_cleaner to your Gemfile (in the :test group) if you wish to use it."
 end
@@ -114,4 +114,9 @@ require_relative "../../remote_spec/models/real_dummy_store_items_api"
 
 Before do
     RealDummyStore.wipe_out
+end
+
+AfterStep('@pause') do
+  print "Paused, press any key to continue"
+  STDIN.getc
 end

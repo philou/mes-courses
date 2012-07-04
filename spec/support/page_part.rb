@@ -19,10 +19,10 @@ class PagePart
   end
 
   def with(xpath, description)
-    PagePart.new(self.xpath+xpath, "#{self.description} with #{description}", self)
+    PagePart.new(self.xpath+xpath, description, self)
   end
   def that(xpath, description)
-    PagePart.new(self.xpath+xpath, "#{self.description} (that #{description})", self)
+    PagePart.new(self.xpath+xpath, "#{self.description} that #{description}", self)
   end
 
 end

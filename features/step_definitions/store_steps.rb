@@ -117,6 +117,6 @@ Then  /^a non empty cart should be created in the store account of the user$/ do
 end
 
 Then /^all items from the store should have been imported$/ do
-  Item.should have(DummyStoreItemsAPI.new_default_store.total_items_count).records
+  Item.all_but_lost.should have(DummyStoreItemsAPI.new_default_store.total_items_count).records
 end
 

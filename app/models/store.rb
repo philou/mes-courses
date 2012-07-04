@@ -80,16 +80,26 @@ class Store < ActiveRecord::Base
   # Marks all existing items for deletion
   def mark_existing_items
     remove_all_marks
-    connection.execute("INSERT INTO to_delete_items SELECT id from items")
+    connection.execute("INSERT INTO import_sold_out_items SELECT id FROM items")
   end
 
   # Removes the deletion mark on an item
   def mark_not_sold_out(item)
-    execute_delete("DELETE FROM to_delete_items where item_id = #{item.id}")
+    execute_delete("DELETE FROM import_sold_out_items WHERE item_id = #{item.id}")
   end
 
   def find_sold_out_items
-    Item.where("id IN (SELECT item_id FROM to_delete_items)")
+    Item.where("id IN (SELECT item_id FROM import_sold_out_items)")
+  end
+
+  def disable_sold_out_items
+    Item.transaction do
+      connection.execute("DELETE FROM item_categories_items WHERE item_category_id = #{ItemCategory.disabled.id}")
+      connection.execute <<-END_OF_SQL
+                            INSERT INTO item_categories_items(item_id,item_category_id)
+                            SELECT item_id, #{ItemCategory.disabled.id} FROM import_sold_out_items
+                            END_OF_SQL
+    end
   end
 
   def execute_delete(statement)
@@ -135,7 +145,7 @@ class Store < ActiveRecord::Base
   end
 
   def remove_all_marks
-    execute_delete("DELETE FROM to_delete_items")
+    execute_delete("DELETE FROM import_sold_out_items")
   end
 
 end

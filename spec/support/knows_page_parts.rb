@@ -8,11 +8,11 @@ module KnowsPageParts
   end
 
   def item_with_name(name)
-    items_panel.with("//tr[contains(/td,'#{name}')]", "an item named '#{name}'")
+    items_panel.with("//tr[td[contains(.,'#{name}')]]", "an item named '#{name}'")
   end
 
   def disabled_item_with_name(name)
-    item_with_name(name).that("[//img[@src='disabled.png']][//input[@type='submit'][@disabled='disabled']]", "is disabled")
+    item_with_name(name).that("[//img[@src='disabled.png'] and //input[@type='submit' and @disabled='disabled']]", "is disabled")
   end
 
 end

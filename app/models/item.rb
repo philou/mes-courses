@@ -23,6 +23,10 @@ class Item < ActiveRecord::Base
     record.item_categories.push(ItemCategory.disabled)
   end
 
+  def self.all_but_lost
+    where("id <> #{lost.id}")
+  end
+
   def name=(name)
     write_attribute("name", name)
     index
