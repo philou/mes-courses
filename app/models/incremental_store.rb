@@ -74,13 +74,6 @@ class IncrementalStore
     unless dish_breaking_items.empty?
       BrokenDishesReporter.email(dish_breaking_items).deliver
     end
-
-    dish_breaking_items.each do |item|
-      item.dishes.each do |dish|
-        dish.items.delete(item)
-        dish.save!
-      end
-    end
   end
 end
 

@@ -58,15 +58,6 @@ describe IncrementalStore do
         email.should_receive(:deliver)
       end
 
-      it "should fix broken dishes" do
-        @dish_breaking_items.each do |item|
-          item.dishes.each do |dish|
-            dish.items.should_receive(:delete).with(item).ordered
-            dish.should_receive(:save!).ordered
-          end
-        end
-      end
-
     end
 
   end
