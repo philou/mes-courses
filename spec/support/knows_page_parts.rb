@@ -12,7 +12,7 @@ module KnowsPageParts
   end
 
   def disabled_item_with_name(name)
-    item_with_name(name).that("[//img[@src='disabled.png'] and //input[@type='submit' and @disabled='disabled']]", "is disabled")
+    item_with_name(name).that("[//img[@src='/images/disabled.png'] and //input[@type='submit' and @disabled='disabled']]", "is disabled")
   end
 
 end

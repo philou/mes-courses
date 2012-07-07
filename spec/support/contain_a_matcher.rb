@@ -7,7 +7,7 @@ class ContainA
   end
 
   def matches?(page)
-    @doc = Nokogiri::HTML(page.body)
+    @doc = Nokogiri::HTML(body_of(page))
     doc_contains(@page_part)
   end
 
@@ -25,6 +25,14 @@ class ContainA
 
   private
 
+  def body_of(page)
+    if page.respond_to?(:body)
+      page.body
+    else
+      page
+    end
+  end
+
   def doc_contains(page_part)
     !@doc.xpath(page_part.xpath).empty?
   end
@@ -38,7 +46,7 @@ class ContainA
     else
       [description,
        "it found #{page_part.parent.long_description}",
-       "but not  #{page_part.long_description}"].join("\n")
+       "but not #{page_part.long_description}"].join("\n")
     end
   end
 

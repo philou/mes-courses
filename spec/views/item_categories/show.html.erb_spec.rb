@@ -1,10 +1,11 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe "item_categories/show" do
   include ApplicationHelper
+  include KnowsPageParts
 
   before(:each) do
     assign :show_sub_category_url_options, @show_sub_category_url_options = {:controller => 'item_categories', :action => 'index'}
@@ -85,6 +86,15 @@ describe "item_categories/show" do
       render
 
       rendered.should contain("#{@items.count} ingrédients")
+    end
+
+    it "displays disabled items accordingly" do
+      item = @items.first
+      item.stub(:item_categories).and_return([ItemCategory.disabled])
+
+      render
+
+      rendered.should contain_a(disabled_item_with_name(item.name))
     end
 
   end

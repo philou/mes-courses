@@ -13,6 +13,26 @@ describe Item do
     Item.lost.item_categories.should include(ItemCategory.disabled), "item categories of lost item"
   end
 
+  it "is not disabled by default" do
+    Item.new.should_not be_disabled
+  end
+
+  it "is disabled if it has the disabled category" do
+    Item.new.that_is_disabled.should be_disabled
+  end
+
+  it "has the specified image" do
+    image = "dirty_potatoes.png"
+    Item.new(image: image).image.should == image
+  end
+  it "has an unknown image if not specified" do
+    Item.new.image.should == "/images/unknown.png"
+  end
+  it "has a disabled image if disabled" do
+    Item.new.that_is_disabled.image.should == "/images/disabled.png"
+    Item.new(image: 'muchy_peas.png').that_is_disabled.image.should == "/images/disabled.png"
+  end
+
   context "indexing" do
 
     before :each do

@@ -27,6 +27,18 @@ class Item < ActiveRecord::Base
     where("id <> #{lost.id}")
   end
 
+  def disabled?
+    item_categories.include?(ItemCategory.disabled)
+  end
+
+  def image
+    if disabled?
+      "/images/disabled.png"
+    else
+      read_attribute("image") || "/images/unknown.png"
+    end
+  end
+
   def name=(name)
     write_attribute("name", name)
     index
