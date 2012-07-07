@@ -3,27 +3,21 @@
 
 class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
 
-  class Item < ActiveRecord::Base
-  end
-
   def self.up
     change_column :items, :price, :decimal, null: true
     change_column :items, :remote_id, :integer, null: true
 
-    lost_item = Item.create(name: Constants::LOST_ITEM_NAME, tokens: "")
+    execute "INSERT INTO items (name, tokens, created_at, updated_at) VALUES ('#{Constants::LOST_ITEM_NAME}', '', now(), now())"
+    lost_item_id = execute "SELECT id FROM items WHERE name = '#{Constants::LOST_ITEM_NAME}}'"
 
-    execute <<-END_OF_SQL
-               INSERT INTO item_categories_items (item_id, item_category_id)
-               SELECT i.id, ic.id
-               FROM items i, item_categories ic
-               WHERE i.name = '#{Constants::LOST_ITEM_NAME}'
-               AND ic.name = '#{Constants::DISABLED_ITEM_CATEGORY_NAME}'
-               END_OF_SQL
+    execute %{INSERT INTO item_categories_items (item_id, item_category_id)
+              SELECT i.id, ic.id
+              FROM items i, item_categories ic
+              WHERE i.name = '#{Constants::LOST_ITEM_NAME}'
+              AND ic.name = '#{Constants::DISABLED_ITEM_CATEGORY_NAME}'}
 
-    execute <<-END_OF_SQL
-               UPDATE cart_lines set item_id = #{lost_item.id}
-               WHERE item_id not in (SELECT id FROM items)
-               END_OF_SQL
+    execute %{UPDATE cart_lines set item_id = (SELECT id FROM items WHERE name = '#{Constants::LOST_ITEM_NAME}')
+              WHERE item_id not in (SELECT id FROM items)}
 
     add_foreign_key :cart_lines, :items
   end
@@ -38,7 +32,7 @@ class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
                AND iic.item_category_id = ic.id AND ic.name = '#{Constants::DISABLED_ITEM_CATEGORY_NAME}'
                END_OF_SQL
 
-    Item.find_by_name(Constants::LOST_ITEM_NAME).delete
+    execute "DELETE FROM items WHERE name = '#{Constants::LOST_ITEM_NAME}'"
 
     change_column :items, :price, :decimal, null: false
     change_column :items, :remote_id, :integer, null: false
