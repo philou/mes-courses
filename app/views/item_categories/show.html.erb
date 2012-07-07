@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 <!-- Copyright (C) 2011, 2012 by Philippe Bourgau -->
 
 <div id="search-panel">
@@ -17,11 +18,7 @@
 
 <% extra_columns_proc = lambda do |item| %>
   <td><%= item.price.to_s %>€</td>
-  <% if item.disabled? %>
-    <td class="buy-button"><%= button_to h(@add_item_label), @add_item_url_options.merge(:id => item.id), @add_item_html_options.merge(disabled: 'disabled') %></td>
-  <% else %>
-    <td class="buy-button"><%= button_to h(@add_item_label), @add_item_url_options.merge(:id => item.id), @add_item_html_options %></td>
-  <% end %>
+  <td class="buy-button"><%= button_to_add(item, @add_item_label, @add_item_url_options, @add_item_html_options) %></td>
 <% end %>
 
 <%= render(:partial => "shared/items", :object => @items, :locals => { :extra_columns_proc => extra_columns_proc }) %>
