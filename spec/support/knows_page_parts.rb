@@ -19,4 +19,16 @@ module KnowsPageParts
     item_with_name(name).that("[//input[@type='submit' and not(@disabled)]]", "is enabled")
   end
 
+  def dish_with_name(name)
+    PagePart.new("//body[@id='dish']//table//tr[td[contains(.,'#{name}')]]", "a dish named #{name}")
+  end
+
+  def disabled_dish_with_name(name)
+    dish_with_name(name).that("[//input[@type='submit' and @disabled='disabled']]", "is disabled")
+  end
+
+  def enabled_dish_with_name(name)
+    dish_with_name(name).that("[//input[@type='submit' and not(@disabled)]]", "is enabled")
+  end
+
 end

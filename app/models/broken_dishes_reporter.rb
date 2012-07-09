@@ -4,9 +4,11 @@
 # class responsible to alert of dishes broken by deleted items during import
 class BrokenDishesReporter < MonitoringMailer
 
+  SUBJECT = "There are broken dishes"
+
   def email(items)
     @items = items
-    setup_mail("There are broken dishes")
+    setup_mail(SUBJECT)
   end
 
 end

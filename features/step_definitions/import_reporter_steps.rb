@@ -16,3 +16,14 @@ Then /^an email ~"([^"]*)" containing "([^"]*)" and "([^"]*)" should be sent to 
   email.body.should =~ Regexp.new(body_part_1)
   email.body.should =~ Regexp.new(body_part_2)
 end
+
+Then /^a broken dishes report email should be sent to the maintainer with$/ do |details_table|
+  email = find_email(BrokenDishesReporter::SUBJECT)
+  email.should_not be_nil, "no broken dish email was sent"
+
+  details_table.hashes.each do |row|
+    row.each do |part, part_content|
+      email.body.should match(Regexp.new(part_content)), "broken dish email has no mention of a #{part} : '#{part_content}'"
+    end
+  end
+end
