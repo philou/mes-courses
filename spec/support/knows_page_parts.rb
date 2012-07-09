@@ -15,4 +15,8 @@ module KnowsPageParts
     item_with_name(name).that("[//img[@src='/images/disabled.png'] and //input[@type='submit' and @disabled='disabled']]", "is disabled")
   end
 
+  def enabled_item_with_name(name)
+    item_with_name(name).that("[//input[@type='submit' and not(@disabled)]]", "is enabled")
+  end
+
 end

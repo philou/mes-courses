@@ -6,10 +6,20 @@ Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name
   @item.remote_id = @item.id
   @item.save!
 end
+
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item at ([0-9\.]+)€"?$/ do |category_name, sub_category_name, item_name, price|
   @item = categorized_item(category_name, sub_category_name, :name => item_name, :price => price.to_f)
   @item.remote_id = @item.id
   @item.save!
+end
+
+Given /^the following items are disabled$/ do |item_table|
+  item_table.each_item do |cat_name, sub_cat_name, item_name|
+    category = ItemCategory.find_by_name(cat_name)
+    sub_category = category.children.find_by_name(sub_cat_name)
+    item = sub_category.items.find_by_name(item_name)
+    item.disable
+  end
 end
 
 Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name|
@@ -100,5 +110,14 @@ Then /^the following items should be disabled$/ do |table|
     click_link(category)
     click_link(sub_category)
     page.should contain_a(disabled_item_with_name(item))
+  end
+end
+
+Then /^the following items should be enabled$/ do |table|
+  table.each_item do |category, sub_category, item|
+    visit item_categories_path
+    click_link(category)
+    click_link(sub_category)
+    page.should contain_an(enabled_item_with_name(item))
   end
 end

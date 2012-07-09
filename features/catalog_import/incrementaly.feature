@@ -30,22 +30,35 @@ Feature: Incremental catalog import
     When  modified items from the store are re-imported
     Then  some items should have been modified
 
-  Scenario: Second import with deleted items
+  Scenario: Second import with sold out items
 
     If some items are not available from the remote store any more.
     They are shown disabled.
 
-    Given the "www.dummy-store.com" store with items
+    Given the imported store "www.dummy-store.com" with items
       | Category | Sub category | Item    |
-      | Fruits   | Marché       | Tomates |
-    And "www.dummy-store.com"  store was already imported
-    And the following items were removed from "www.dummy-store.com"
+      | Marché   | Légumes      | Tomates |
+    When the following items are removed from "www.dummy-store.com"
       | Category | Sub category | Item    |
-      | Fruits   | Marché       | Tomates |
-    When "www.dummy-store.com" is imported again
+      | Marché   | Légumes      | Tomates |
     Then the following items should be disabled
       | Category | Sub category | Item    |
-      | Fruits   | Marché       | Tomates |
+      | Marché   | Légumes      | Tomates |
+
+  Scenario: Second import with back again sold out items
+
+    Disabled items get re-enabled when they are back in the remote store.
+
+    Given the imported store "www.dummy-store.com" with items
+      | Category  | Sub category | Item        |
+      | Marché    | Légumes      | Tomates     |
+    And the following items are disabled
+      | Category | Sub category | Item    |
+      | Marché   | Légumes      | Tomates |
+    When "www.dummy-store.com" is imported again
+    Then the following items should be enabled
+      | Category | Sub category | Item    |
+      | Marché   | Légumes      | Tomates |
 
   Scenario: Existing item categories and sub categories are re-imported from the store
     Given the "www.dummy-store.com" store

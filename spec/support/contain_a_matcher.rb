@@ -58,3 +58,5 @@ end
 def contain_a(page_part)
   ContainA.new(page_part)
 end
+
+alias :contain_an :contain_a

@@ -6,6 +6,7 @@ module ItemSpecExtensions
     item_categories << ItemCategory.disabled
     self
   end
+  alias :disable :that_is_disabled
 end
 
 class Item
