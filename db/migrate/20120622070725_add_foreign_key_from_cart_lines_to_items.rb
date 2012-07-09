@@ -8,7 +8,6 @@ class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
     change_column :items, :remote_id, :integer, null: true
 
     execute "INSERT INTO items (name, tokens, created_at, updated_at) VALUES ('#{Constants::LOST_ITEM_NAME}', '', now(), now())"
-    lost_item_id = execute "SELECT id FROM items WHERE name = '#{Constants::LOST_ITEM_NAME}}'"
 
     execute %{INSERT INTO item_categories_items (item_id, item_category_id)
               SELECT i.id, ic.id
@@ -17,7 +16,7 @@ class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
               AND ic.name = '#{Constants::DISABLED_ITEM_CATEGORY_NAME}'}
 
     execute %{UPDATE cart_lines set item_id = (SELECT id FROM items WHERE name = '#{Constants::LOST_ITEM_NAME}')
-              WHERE item_id not in (SELECT id FROM items)}
+              WHERE item_id NOT IN (SELECT id FROM items)}
 
     add_foreign_key :cart_lines, :items
   end
