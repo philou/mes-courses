@@ -20,7 +20,7 @@ module KnowsPageParts
   end
 
   def dish_with_name(name)
-    PagePart.new("//body[@id='dish']//table//tr[td[contains(.,'#{name}')]]", "a dish named #{name}")
+    PagePart.new("//table[@id='dish-panel']//tr[td[contains(.,'#{name}')]]", "a dish named #{name}")
   end
 
   def disabled_dish_with_name(name)

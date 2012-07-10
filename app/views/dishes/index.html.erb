@@ -1,10 +1,10 @@
 <!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
 
-<table>
+<table id="dish-panel">
   <% @dishes.each do |dish| %>
     <tr>
       <td><%= link_to h(dish.name), dish_path(dish) %></td>
-      <td class="buy-button"><%= button_to 'Ajouter au panier', add_dish_to_cart_lines_path(dish) %></td>
+      <td class="buy-button"><%= button_to_add_dish(dish) %></td>
     </tr>
   <% end %>
   <% if @can_modify_dishes %>

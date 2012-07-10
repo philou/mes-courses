@@ -18,7 +18,7 @@
 
 <% extra_columns_proc = lambda do |item| %>
   <td><%= item.price.to_s %>€</td>
-  <td class="buy-button"><%= button_to_add(item, @add_item_label, @add_item_url_options, @add_item_html_options) %></td>
+  <td class="buy-button"><%= button_to_add_item(item, @add_item_label, @add_item_url_options, @add_item_html_options) %></td>
 <% end %>
 
 <%= render(:partial => "shared/items", :object => @items, :locals => { :extra_columns_proc => extra_columns_proc }) %>

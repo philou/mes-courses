@@ -4,6 +4,7 @@
 require 'spec_helper'
 
 describe "dishes/index" do
+  include KnowsPageParts
 
   before(:each) do
     @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }
@@ -21,6 +22,15 @@ describe "dishes/index" do
     @dishes.each do |dish|
       rendered.should have_button_to("Ajouter au panier", add_dish_to_cart_lines_path(:id => dish.id), 'post')
     end
+  end
+
+  it "displays disabled dishes accordingly" do
+    dish = @dishes.first
+    dish.stub(:disabled?).and_return(true)
+
+    render
+
+    rendered.should contain_a(disabled_dish_with_name(dish.name))
   end
 
   it "should display a link to the details of each dish" do

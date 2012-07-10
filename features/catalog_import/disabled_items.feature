@@ -32,7 +32,7 @@ Feature: Handling disabled items in import
       | Tomates farcies | Tomates       |
     And the dish "Tomates farcies" should still have items
       | Tomates |
-#    But the dish "Tomates farcies" should be disabled
+    But the dish "Tomates farcies" should be disabled
 
   Scenario: A broken dish gets fixed when a sold out item is available again
 
