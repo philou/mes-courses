@@ -109,8 +109,8 @@ def reimport(store)
 end
 
 # real dummy stores
-require_relative "../../remote_spec/models/real_dummy_store_generator"
-require_relative "../../remote_spec/models/real_dummy_store_items_api"
+require_relative "../../spec/models/real_dummy_store_generator"
+require_relative "../../spec/models/real_dummy_store_items_api"
 
 Before do
   RealDummyStore.wipe_out
