@@ -46,6 +46,13 @@ class RealDummyStore
 
   ROOT_DIR_NAME = "real_dummy_stores"
 
+  def self.host_dir_name
+    @host_dir_name ||= "tmp"
+  end
+  def self.host_dir_name=(dir_name)
+    @host_dir_name = dir_name
+  end
+
   def self.open(store_name)
     new(root_path(store_name), store_name)
   end
@@ -96,7 +103,7 @@ class RealDummyStore
   private
 
   def self.root_dir
-    File.join(Rails.root,"tmp/#{ROOT_DIR_NAME}/")
+    File.join(Rails.root, host_dir_name, ROOT_DIR_NAME)
   end
   def self.root_path(store_name)
     "#{root_dir}/#{store_name}/index.html"
