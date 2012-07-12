@@ -3,7 +3,7 @@
 unless Rails.env == "production"
 
   desc "Checks all specs, then drops, creates, and migrates the db, finaly runs all scenarios"
-  task :behaviours => [:spec, :remote_spec, :ci, 'db:migrate:reset', :cucumber]
+  task :behaviours => [:spec, :ci, 'db:migrate:reset', :cucumber]
 
   desc "Sets rails in ci mode"
   task :ci do

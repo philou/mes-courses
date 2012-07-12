@@ -5,7 +5,7 @@ require 'spec_helper'
 
 
 # @integration
-describe StoreWalkerPage do
+describe StoreWalkerPage, slow: true do
 
   before :each do
     @uri = URI.parse("file://" + File.expand_path(File.join(File.dirname(__FILE__), 'store_walker_page_spec_fixture.html')))

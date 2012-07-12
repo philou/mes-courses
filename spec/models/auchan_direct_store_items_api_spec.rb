@@ -9,7 +9,7 @@ include OfflineTestHelper
 
 when_online "AuchanDirectStoreItemsAPI remote spec" do
 
-  describe "AuchanDirectStoreItemsAPI" do
+  describe "AuchanDirectStoreItemsAPI", slow: true, remote: true do
     include AuchanDirectStoreItemsAPISpecMacros
 
     before :all do

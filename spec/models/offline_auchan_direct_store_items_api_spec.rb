@@ -4,7 +4,7 @@
 require 'spec_helper'
 require File.expand_path(File.join(File.dirname(__FILE__),'auchan_direct_store_items_api_shared_examples'))
 
-describe "OfflineAuchanDirectStoreItemsAPI" do
+describe "OfflineAuchanDirectStoreItemsAPI", slow: true do
   include AuchanDirectStoreItemsAPISpecMacros
 
   before :all do

@@ -6,7 +6,7 @@ require 'models/store_items_api_shared_examples'
 require_relative "real_dummy_store_generator"
 require_relative "real_dummy_store_items_api"
 
-describe "RealDummyStoreItemsAPI" do
+describe "RealDummyStoreItemsAPI", slow: true do
   include StoreItemsAPISpecMacros
 
   it_should_behave_like_any_store_items_api

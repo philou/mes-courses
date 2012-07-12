@@ -21,7 +21,7 @@ when_online("AuchanDirectStoreCartAPI remote spec") do
 
   end
 
-  describe AuchanDirectStoreCartAPI do
+  describe AuchanDirectStoreCartAPI, slow: true, remote: true do
     it_should_behave_like "Any StoreCartAPI"
 
     before(:all) do
