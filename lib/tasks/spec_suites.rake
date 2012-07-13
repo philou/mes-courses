@@ -5,7 +5,7 @@ unless Rails.env == "production"
 
   desc "Run specs depending on online thirdparty"
   Spec::Rake::SpecTask.new :remote_spec do |t|
-    t.spec_opts = %{--tag @remote @slow}
+    t.spec_opts = %{--tag @remote}
   end
 
   desc "Run slow specs"
