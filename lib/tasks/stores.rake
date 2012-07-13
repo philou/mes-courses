@@ -1,5 +1,7 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
+require "dummy_store_generation"
+
 namespace :stores do
 
   desc "Inserts the www.auchandirect.fr store in the DB"
@@ -15,6 +17,16 @@ namespace :stores do
     Store.find_or_create_by_url(DummyStoreCartAPI.url) do |store|
       store.expected_items = 0
       store.sponsored_url = DummyStoreCartAPI.url
+    end
+  end
+
+  desc "Generates a real dummy store and registers it in the DB"
+  task :generate_real_dummy_store => :environment do
+    generated_store = RealDummyStore.open("by-rake")
+    generated_store.generate(3).categories.and(3).categories.and(3).items
+
+    Store.find_or_create_by_url(generated_store.uri) do |store|
+      store.sponsored_url = store.url
     end
   end
 

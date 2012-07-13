@@ -3,8 +3,8 @@
 
 require 'spec_helper'
 require 'models/store_items_api_shared_examples'
+require File.join(Rails.root, 'app', 'models', 'real_dummy_store_items_api')
 require_relative "real_dummy_store_generator"
-require_relative "real_dummy_store_items_api"
 
 describe "RealDummyStoreItemsAPI", slow: true do
   include StoreItemsAPISpecMacros

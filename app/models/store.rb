@@ -7,6 +7,7 @@ require 'visited_url'
 require 'uri'
 require 'time_span_helper'
 require 'auchan_direct_store_items_api'
+require 'real_dummy_store_items_api'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base

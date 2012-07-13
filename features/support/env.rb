@@ -110,7 +110,6 @@ end
 
 # real dummy stores
 require_relative "../../spec/models/real_dummy_store_generator"
-require_relative "../../spec/models/real_dummy_store_items_api"
 
 Before do
   RealDummyStore.wipe_out

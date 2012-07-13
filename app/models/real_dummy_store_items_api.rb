@@ -3,22 +3,24 @@
 
 require "uri"
 require "webrick/httputils"
+require "heroku_helper"
 
-# monkey patch to avoid a regex uri encoding error when importing
-#      incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string) (Encoding::CompatibilityError)
-#      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:353:in `gsub'
-#      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:353:in `_escape'
-#      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:363:in `escape'
-#      ./app/models/store_walker_page.rb:83:in `uri'
-module WEBrick::HTTPUtils
-  def self.escape(s)
-    URI.escape(s)
+unless HerokuHelper::on_heroku?
+  # monkey patch to avoid a regex uri encoding error when importing
+  #      incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string) (Encoding::CompatibilityError)
+  #      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:353:in `gsub'
+  #      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:353:in `_escape'
+  #      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:363:in `escape'
+  #      ./app/models/store_walker_page.rb:83:in `uri'
+  module WEBrick::HTTPUtils
+    def self.escape(s)
+      URI.escape(s)
+    end
   end
 end
 
-
 require 'store_items_api_builder'
-define_store_items_api RealDummyStore::ROOT_DIR_NAME do
+define_store_items_api RealDummyStoreConstants::ROOT_DIR_NAME do
 
   categories 'a.category' do
     attributes do
