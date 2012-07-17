@@ -2,7 +2,7 @@
 # Copyright (C) 2012 by Philippe Bourgau
 
 class PagePart
-  def initialize(xpath, description, parent = nil)
+  def initialize(description, xpath, parent = nil)
     @xpath = xpath
     @description = description
     @parent = parent
@@ -18,11 +18,11 @@ class PagePart
     "#{description} (#{xpath})"
   end
 
-  def with(xpath, description)
-    PagePart.new(self.xpath+xpath, description, self)
+  def with(description, xpath)
+    PagePart.new(description, self.xpath+xpath, self)
   end
-  def that(xpath, description)
-    PagePart.new(self.xpath+xpath, "#{self.description} that #{description}", self)
+  def that(description, xpath)
+    PagePart.new("#{self.description} that #{description}", self.xpath+xpath, self)
   end
 
 end
