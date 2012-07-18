@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
   create_table "orders", :force => true do |t|
     t.integer  "cart_id",                                              :null => false
     t.integer  "store_id",                                             :null => false
-    t.string   "warning_notices_text",       :default => "",           :null => false
+    t.text     "warning_notices_text",       :default => "",           :null => false
     t.string   "error_notice",               :default => "",           :null => false
     t.integer  "forwarded_cart_lines_count", :default => 0,            :null => false
     t.datetime "created_at",                                           :null => false
