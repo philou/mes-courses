@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "cart_lines", ["cart_id", "item_id"], :name => "cart_lines_cart_id_item_id_index", :unique => true
   add_index "cart_lines", ["cart_id"], :name => "cart_lines_cart_id_index"
 
   create_table "carts", :force => true do |t|

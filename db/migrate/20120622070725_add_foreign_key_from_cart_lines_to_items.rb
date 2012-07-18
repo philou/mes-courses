@@ -4,6 +4,8 @@
 class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
 
   def self.up
+    remove_index "cart_lines", name: "cart_lines_cart_id_item_id_index"
+
     change_column :items, :price, :decimal, null: true
     change_column :items, :remote_id, :integer, null: true
 
@@ -35,5 +37,7 @@ class AddForeignKeyFromCartLinesToItems < ActiveRecord::Migration
 
     change_column :items, :price, :decimal, null: false
     change_column :items, :remote_id, :integer, null: false
+
+    add_index "cart_lines", ["cart_id", "item_id"], :name => "cart_lines_cart_id_item_id_index", :unique => true
   end
 end
