@@ -2,7 +2,7 @@
 
 <% extra_columns_proc = lambda do |item| %>
   <% if @can_modify_dishes %>
-    <td><%= button_to 'Enlever de la recette', dish_item_path(@dish, item), :method => 'delete', :confirm => 'Cet ingrédient sera supprimé de la recette.' %></td>
+    <td><%= button_to 'Enlever de la recette', dish_item_path(@dish, item), method: 'delete', data: { confirm: 'Cet ingrédient sera supprimé de la recette.' } %></td>
   <% end %>
 <% end %>
 
