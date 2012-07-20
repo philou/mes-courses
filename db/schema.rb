@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120630045506) do
+ActiveRecord::Schema.define(:version => 20120719064958) do
 
   create_table "cart_lines", :force => true do |t|
     t.integer  "quantity",   :null => false
@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
     t.text     "locked_by"
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
-    t.string   "queue"
+    t.text     "queue"
   end
 
   create_table "dishes", :force => true do |t|
-    t.string   "name",       :null => false
+    t.text     "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
   end
 
   create_table "item_categories", :force => true do |t|
-    t.string   "name",       :null => false
+    t.text     "name",       :null => false
     t.integer  "parent_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -79,20 +79,20 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
   add_index "item_categories_items", ["item_id"], :name => "item_categories_items_item_id_index"
 
   create_table "items", :force => true do |t|
-    t.string   "name",       :null => false
+    t.text     "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.decimal  "price"
-    t.string   "image"
-    t.string   "summary"
+    t.text     "image"
+    t.text     "summary"
     t.integer  "remote_id"
-    t.string   "tokens",     :null => false
+    t.text     "tokens",     :null => false
   end
 
   add_index "items", ["remote_id"], :name => "items_remote_id_index", :unique => true
 
   create_table "model_stats", :force => true do |t|
-    t.string   "name",       :null => false
+    t.text     "name",       :null => false
     t.integer  "count",      :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -104,26 +104,26 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
     t.integer  "cart_id",                                              :null => false
     t.integer  "store_id",                                             :null => false
     t.text     "warning_notices_text",       :default => "",           :null => false
-    t.string   "error_notice",               :default => "",           :null => false
+    t.text     "error_notice",               :default => "",           :null => false
     t.integer  "forwarded_cart_lines_count", :default => 0,            :null => false
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
-    t.string   "status",                     :default => "not_passed", :null => false
+    t.text     "status",                     :default => "not_passed", :null => false
   end
 
   create_table "stores", :force => true do |t|
-    t.string   "url",                           :null => false
+    t.text     "url",                           :null => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
     t.integer  "expected_items", :default => 0, :null => false
-    t.string   "sponsored_url",                 :null => false
+    t.text     "sponsored_url",                 :null => false
   end
 
   add_index "stores", ["url"], :name => "stores_url_index", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "email",              :default => "", :null => false
-    t.string   "encrypted_password", :default => "", :null => false
+    t.text     "email",              :default => "", :null => false
+    t.text     "encrypted_password", :default => "", :null => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
   end
@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(:version => 20120630045506) do
   add_index "users", ["email"], :name => "users_email_index", :unique => true
 
   create_table "visited_urls", :force => true do |t|
-    t.string "url", :null => false
+    t.text "url", :null => false
   end
 
   add_index "visited_urls", ["url"], :name => "visited_urls_url_index", :unique => true
