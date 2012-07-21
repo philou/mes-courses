@@ -9,6 +9,7 @@ class Tokenizer
     tokens = tokens.reject { |word| is_linking?(word) }
     tokens = tokens.map &:singularize
     tokens = tokens.map { |word| remove_accents(word) }
+    tokens = tokens.reject { |word| word.empty? }
     tokens = tokens.uniq
 
     tokens

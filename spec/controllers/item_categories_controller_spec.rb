@@ -169,6 +169,7 @@ describe ItemCategoriesController do
       before :each do
         @search_string = "poulet"
         @item_category.name = "Marché"
+        Item.stub(:search_string_is_valid?).and_return(true)
         Item.stub(:search_by_string_and_category).and_return([])
       end
 
@@ -206,6 +207,13 @@ describe ItemCategoriesController do
         assigns(:items).should == searched_items
       end
 
+      it "should not search with an invalid search string" do
+        Item.stub(:search_string_is_valid?).and_return(false)
+
+        Item.should_not_receive(:search_by_string_and_category)
+
+        get_show_search
+      end
     end
   end
 

@@ -52,6 +52,10 @@ class Item < ActiveRecord::Base
     self.tokens = Tokenizer.run("#{name} #{summary}").join(" ")
   end
 
+  def self.search_string_is_valid?(search_string)
+    Tokenizer.run(search_string) != []
+  end
+
   def self.search_by_string_and_category(search_string, category)
     throw NotImplementedError.new("Item search not yet implemented") unless hierarchy_handles_item_search?(category)
 

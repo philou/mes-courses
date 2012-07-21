@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 class ItemCategoriesController < ApplicationController
   include ApplicationHelper
@@ -17,8 +17,7 @@ class ItemCategoriesController < ApplicationController
     item_category = ItemCategory.find_by_id(params[:id])
     @search_url = @nesting.item_category_path(item_category)
 
-    if (params.has_key?("search"))
-      search_string = params["search"]["search_string"]
+    if search_requested?
       self.path_bar = search_path_bar(search_string, item_category)
       @categories = []
       @items = Item.search_by_string_and_category(search_string, item_category)
@@ -27,10 +26,19 @@ class ItemCategoriesController < ApplicationController
       self.path_bar = path_bar(item_category)
       @categories = item_category.children
       @items = item_category.items
+
     end
   end
 
   private
+
+  def search_requested?
+    params.has_key?("search") and Item.search_string_is_valid?(search_string)
+  end
+
+  def search_string
+    params["search"]["search_string"]
+  end
 
   def assign_add_item_attributes
     @add_item_label = @nesting.add_item_label

@@ -81,6 +81,12 @@ describe Item do
       @expected = stub("Array of items")
     end
 
+    it "does not allow invalid search strings" do
+      Item.search_string_is_valid?("something").should be_true
+      Item.search_string_is_valid?("").should be_false
+      Item.search_string_is_valid?("s").should be_false
+    end
+
     it "should directly search items when it has no children" do
       Item.should_receive(:where).
         with(/item_category_id = :category_id/, hash_including(:category_id => @legumes.id)).

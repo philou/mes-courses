@@ -31,4 +31,8 @@ describe Tokenizer do
   it "should remove duplicates" do
     Tokenizer.run("creme creme").should == ["creme"]
   end
+
+  it "removes empty or trimed words" do
+    Tokenizer.run("s").should == []
+  end
 end
