@@ -13,4 +13,9 @@ unless Rails.env == "production"
     t.spec_opts = %{--tag @slow}
   end
 
+  desc "Run fast specs"
+  Spec::Rake::SpecTask.new :fast_spec do |t|
+    t.spec_opts = %{--tag ~@slow}
+  end
+
 end
