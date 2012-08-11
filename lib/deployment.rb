@@ -50,6 +50,9 @@ module Deployment
 
   def deploy(repo)
     puts "Deploying to #{heroku_app(repo)}"
+    raw_deploy(repo)
+  end
+  def raw_deploy(repo)
     push repo
     migrate repo
   end
@@ -101,14 +104,14 @@ module Deployment
   end
 
   def integrate
-    puts "\nInstalling dependencies"
-    bundle "install"
+    # puts "\nInstalling dependencies"
+    # bundle "install"
 
-    puts "\nRunning integration script"
-    bundled_rake "behaviours"
+    # puts "\nRunning integration script"
+    # bundled_rake "behaviours"
 
-    puts "\nPushing to main source repository"
-    push "main"
+    # puts "\nPushing to main source repository"
+    # push "main"
 
     puts "\nDeploying to test and integration environments"
     parallel_deploy(test_and_integration_repos)
@@ -136,6 +139,7 @@ module Deployment
   end
 
   def parallel_deploy(repos)
+    repos.each {|repo| puts "Deploying to #{heroku_app(repo)}" }
     errors = run_deployment_processes(repos)
     print_deployment_logs(repos)
     forward_failure(errors)
@@ -147,7 +151,7 @@ module Deployment
       Thread.new do
         begin
           raw_deploy_script = File.join(File.dirname(__FILE__), "..", "script", "raw_deploy")
-          shell "ruby #{raw_deploy} 2> #{deploy_temp_log(repo)}"
+          shell "ruby #{raw_deploy_script} #{repo} 2> #{deploy_temp_log(repo)}"
         rescue
           errors << "Deployment to #{repo} failed"
         end
@@ -159,14 +163,15 @@ module Deployment
 
   def print_deployment_logs(repos)
     repos.each do |repo|
-      IO.foreach(deploy_temp_log(repo)) {|line| puts line}
+      log_file = deploy_temp_log(repo)
+      IO.foreach(log_file) {|line| puts line} if File.exist?(log_file)
     end
   end
 
   def forward_failure(errors)
-    success = deploy_statuses.empty?
+    success = errors.empty?
     unless success
-      message = ["Deployment failed :-("] + errors.map { |error| "   " + error }
+      message = ["Deployment failed :-("] + errors.map {|t| "   #{t}"}
       raise RuntimeError.new(message.join("\n"))
     end
   end
