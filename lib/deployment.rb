@@ -65,7 +65,13 @@ module Deployment
     puts "Are you sure you want to #{task_summary} ? (y/n)"
     answer = STDIN.readline
     if y_or_n?(answer)
-      yield
+      begin
+        yield
+        notify(task_summary, :success)
+      rescue
+        notify(task_summary, :failure)
+        raise
+      end
     end
   end
 
@@ -104,14 +110,14 @@ module Deployment
   end
 
   def integrate
-    # puts "\nInstalling dependencies"
-    # bundle "install"
+    puts "\nInstalling dependencies"
+    bundle "install"
 
-    # puts "\nRunning integration script"
-    # bundled_rake "behaviours"
+    puts "\nRunning integration script"
+    bundled_rake "behaviours"
 
-    # puts "\nPushing to main source repository"
-    # push "main"
+    puts "\nPushing to main source repository"
+    push "main"
 
     puts "\nDeploying to test and integration environments"
     parallel_deploy(test_and_integration_repos)
@@ -178,6 +184,10 @@ module Deployment
 
   def deploy_temp_log(repo)
     "/tmp/deployment_to_#{heroku_app(repo)}.log"
+  end
+
+  def notify(summary, status)
+    shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"task-#{status}.png")} 'mes-courses' '#{summary} #{status}'"
   end
 
 end
