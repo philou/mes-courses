@@ -136,22 +136,25 @@ module Deployment
   end
 
   def parallel_deploy(repos)
-    pids_2_repos = launch_deployment_processes(repos)
-    deploy_statuses = Process.waitall
+    errors = run_deployment_processes(repos)
     print_deployment_logs(repos)
-    forward_failure(deploy_statuses, pids_2_repos)
+    forward_failure(errors)
   end
 
-  def launch_deployment_processes(repos)
-    pids_2_repos = {}
-    repos.each do |repo|
-      pid = fork do
-        $stderr = $stdout = File.new(deploy_temp_log(repo), "w")
-        deploy(repo)
+  def run_deployment_processes(repos)
+    errors = []
+    threads = repos.map do |repo|
+      Thread.new do
+        begin
+          raw_deploy_script = File.join(File.dirname(__FILE__), "..", "script", "raw_deploy")
+          shell "ruby #{raw_deploy} 2> #{deploy_temp_log(repo)}"
+        rescue
+          errors << "Deployment to #{repo} failed"
+        end
       end
-      pids_2_repos[pid] = repo
     end
-    return pids_2_repos
+    threads.each {|thread| thread.join }
+    return errors
   end
 
   def print_deployment_logs(repos)
@@ -160,15 +163,10 @@ module Deployment
     end
   end
 
-  def forward_failure(deploy_statuses, pids_2_repos)
-    success = deploy_statuses.all? {|pid, status| status.success? }
+  def forward_failure(errors)
+    success = deploy_statuses.empty?
     unless success
-      message = ["Deployment failed :-("]
-      deploy_statuses.each do |pid, status|
-        unless status.success?
-          message << "   Deployment to #{pids_2_repos[pid]} failed with status #{status.exitstatus}"
-        end
-      end
+      message = ["Deployment failed :-("] + errors.map { |error| "   " + error }
       raise RuntimeError.new(message.join("\n"))
     end
   end
