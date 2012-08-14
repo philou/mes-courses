@@ -80,7 +80,7 @@ describe Cart do
     before :each do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
-      @store_session = stub(StoreCartSession).as_null_object
+      @store_session = stub(MesCourses::StoreCarts::StoreCartSession).as_null_object
       @order = Order.new
       @order.stub!(:save!)
     end

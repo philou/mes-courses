@@ -9,25 +9,28 @@ include OfflineTestHelper
 
 when_online("AuchanDirectStoreCartAPI remote spec") do
 
-  class AuchanDirectStoreCartAPI
+  module MesCourses
+    module StoreCarts
 
-    def self.valid_login
-      "mes.courses.fr.test@gmail.com"
-    end
-    def self.valid_password
-      # gmail password : "mes*courses"
-      "mescourses"
-    end
+      class AuchanDirectStoreCartAPI
 
+        def self.valid_login
+          "mes.courses.fr.test@gmail.com"
+        end
+        def self.valid_password
+          # gmail password : "mes*courses"
+          "mescourses"
+        end
+
+      end
+
+      describe AuchanDirectStoreCartAPI, slow: true, remote: true do
+        it_should_behave_like "Any StoreCartAPI"
+
+        before(:all) do
+          @store_cart_api = AuchanDirectStoreCartAPI
+        end
+      end
+    end
   end
-
-  describe AuchanDirectStoreCartAPI, slow: true, remote: true do
-    it_should_behave_like "Any StoreCartAPI"
-
-    before(:all) do
-      @store_cart_api = AuchanDirectStoreCartAPI
-    end
-
-  end
-
 end

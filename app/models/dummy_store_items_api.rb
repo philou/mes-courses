@@ -8,11 +8,11 @@ class DummyStoreItemsAPI
     new(completed_config(:categories => root_categories))
   end
 
-  def self.new_default_store(uri = DummyStoreCartAPI.url)
+  def self.new_default_store(uri = MesCourses::StoreCarts::DummyStoreCartAPI.url)
     new(full_config(uri))
   end
 
-  def self.full_config(uri = DummyStoreCartAPI.url)
+  def self.full_config(uri = MesCourses::StoreCarts::DummyStoreCartAPI.url)
     completed_config( :uri => uri,
                       :categories => [{ :name => "Produits frais",
                                         :categories => [{ :name => "Légumes",
@@ -122,7 +122,7 @@ class DummyStoreItemsAPI
   end
 
   def self.completed_config(config)
-    config = { :uri => DummyStoreCartAPI.url }.merge(config)
+    config = { :uri => MesCourses::StoreCarts::DummyStoreCartAPI.url }.merge(config)
     remote_id = 0
     completed_config_ex(config, config[:uri], false) { remote_id += 1 }
   end

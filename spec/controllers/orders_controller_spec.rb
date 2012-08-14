@@ -124,7 +124,7 @@ describe OrdersController do
     it "should asynchronously pass the order" do
       delayed_job = stub("Delayed_job")
       @order.should_receive(:delay).and_return(delayed_job)
-      delayed_job.should_receive(:pass).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password)
+      delayed_job.should_receive(:pass).with(MesCourses::StoreCarts::StoreCartAPI.valid_login, MesCourses::StoreCarts::StoreCartAPI.valid_password)
 
       forward_to_valid_store_account
     end
@@ -136,7 +136,7 @@ describe OrdersController do
     end
 
     def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => StoreCartAPI.valid_login, :password => StoreCartAPI.valid_password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => MesCourses::StoreCarts::StoreCartAPI.valid_login, :password => MesCourses::StoreCarts::StoreCartAPI.valid_password}
     end
 
   end

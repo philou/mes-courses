@@ -1,17 +1,20 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
-# Provides helper methods around the logout method idiom
-module WithLogoutMixin
+module MesCourses
+  module StoreCarts
 
-  # executes the block before logging out.
-  def with_logout
-    begin
-      yield self
-    ensure
-      logout
+    # Provides helper methods around the logout method idiom
+    module WithLogoutMixin
+
+      # executes the block before logging out.
+      def with_logout
+        begin
+          yield self
+        ensure
+          logout
+        end
+      end
     end
   end
-
-
 end

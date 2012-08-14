@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -30,7 +30,7 @@ describe CartLine do
   it "should add its items to the online cart when forwarded" do
     @cart_line.increment_quantity
 
-    store_api = stub(StoreCartAPI)
+    store_api = stub(MesCourses::StoreCarts::StoreCartAPI)
     store_api.should_receive(:set_item_quantity_in_cart).once.with(@cart_line.quantity, @item)
 
     @cart_line.forward_to(store_api)

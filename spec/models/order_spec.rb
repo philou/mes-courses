@@ -46,11 +46,11 @@ describe Order do
 
     before :each do
       @order.stub(:save!)
-      @store_session = stub(StoreCartSession).as_null_object
-      StoreCart.stub(:for_url).with(@store.url).and_return(store_cart = stub(StoreCart))
-      store_cart.stub(:login).with(StoreCartAPI.valid_login, StoreCartAPI.valid_password).and_return(@store_session)
+      @store_session = stub(MesCourses::StoreCarts::StoreCartSession).as_null_object
+      MesCourses::StoreCarts::StoreCart.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::StoreCarts::StoreCart))
+      store_cart.stub(:login).with(MesCourses::StoreCarts::StoreCartAPI.valid_login, MesCourses::StoreCarts::StoreCartAPI.valid_password).and_return(@store_session)
       class << @store_session
-        include WithLogoutMixin
+        include MesCourses::StoreCarts::WithLogoutMixin
       end
     end
 
@@ -140,10 +140,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(StoreCartAPI.valid_login, StoreCartAPI.valid_password)
+      @order.pass(MesCourses::StoreCarts::StoreCartAPI.valid_login, MesCourses::StoreCarts::StoreCartAPI.valid_password)
     end
-
   end
-
-
 end

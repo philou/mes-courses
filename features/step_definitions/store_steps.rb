@@ -26,8 +26,8 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
   @items_config = DummyStoreItemsAPI.shrinked_config(2)
   configure_dummy_store(@items_config)
 
-  @cart_api = DummyStoreCartAPI.new
-  DummyStoreCartAPI.stub(:login) do |login,password|
+  @cart_api = MesCourses::StoreCarts::DummyStoreCartAPI.new
+  MesCourses::StoreCarts::DummyStoreCartAPI.stub(:login) do |login,password|
     @cart_api.relog(login, password)
     @cart_api
   end

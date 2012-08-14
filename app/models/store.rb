@@ -49,12 +49,12 @@ class Store < ActiveRecord::Base
 
   # url for a client browser to logout of the store
   def logout_url
-    StoreCart.for_url(url).logout_url
+    MesCourses::StoreCarts::StoreCart.for_url(url).logout_url
   end
 
   # Opens a remote cart session to the remote store
   def with_session(login, password)
-    StoreCart.for_url(url).login(login, password).with_logout do |session|
+    MesCourses::StoreCarts::StoreCart.for_url(url).login(login, password).with_logout do |session|
       return yield session
     end
   end
