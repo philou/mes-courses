@@ -2,7 +2,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/store_cart_api_shared_examples'
+require_relative 'store_cart_api_shared_examples'
 require 'offline_test_helper'
 
 include OfflineTestHelper

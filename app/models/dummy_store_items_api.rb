@@ -1,6 +1,8 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
+require 'mes_courses/store_carts/dummy_store_cart_api'
+
 class DummyStoreItemsAPI
   def self.new_custom_store(root_categories)
     new(completed_config(:categories => root_categories))
