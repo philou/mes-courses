@@ -8,10 +8,10 @@ require 'uri'
 require 'time_span_helper'
 require 'auchan_direct_store_items_api'
 require 'real_dummy_store_items_api'
-require 'mes_courses/store_carts/store_cart'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
+  include MesCourses::StoreCarts
 
   validates_presence_of :url
   validates_uniqueness_of :url
@@ -49,12 +49,12 @@ class Store < ActiveRecord::Base
 
   # url for a client browser to logout of the store
   def logout_url
-    MesCourses::StoreCarts::StoreCart.for_url(url).logout_url
+    StoreCart.for_url(url).logout_url
   end
 
   # Opens a remote cart session to the remote store
   def with_session(login, password)
-    MesCourses::StoreCarts::StoreCart.for_url(url).login(login, password).with_logout do |session|
+    StoreCart.for_url(url).login(login, password).with_logout do |session|
       return yield session
     end
   end

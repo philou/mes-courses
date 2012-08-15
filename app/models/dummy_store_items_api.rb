@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'mes_courses/store_carts/dummy_store_cart_api'
-
 class DummyStoreItemsAPI
+  include MesCourses::StoreCarts
+
   def self.new_custom_store(root_categories)
     new(completed_config(:categories => root_categories))
   end
 
-  def self.new_default_store(uri = MesCourses::StoreCarts::DummyStoreCartAPI.url)
+  def self.new_default_store(uri = DummyStoreCartAPI.url)
     new(full_config(uri))
   end
 
-  def self.full_config(uri = MesCourses::StoreCarts::DummyStoreCartAPI.url)
+  def self.full_config(uri = DummyStoreCartAPI.url)
     completed_config( :uri => uri,
                       :categories => [{ :name => "Produits frais",
                                         :categories => [{ :name => "Légumes",
@@ -122,7 +122,7 @@ class DummyStoreItemsAPI
   end
 
   def self.completed_config(config)
-    config = { :uri => MesCourses::StoreCarts::DummyStoreCartAPI.url }.merge(config)
+    config = { :uri => DummyStoreCartAPI.url }.merge(config)
     remote_id = 0
     completed_config_ex(config, config[:uri], false) { remote_id += 1 }
   end

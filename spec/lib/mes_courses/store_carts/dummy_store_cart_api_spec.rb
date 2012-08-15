@@ -3,7 +3,6 @@
 
 require 'spec_helper'
 require_relative 'store_cart_api_shared_examples'
-require 'mes_courses/store_carts/dummy_store_cart_api'
 
 module MesCourses
   module StoreCarts

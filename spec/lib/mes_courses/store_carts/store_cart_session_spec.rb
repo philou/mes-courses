@@ -2,7 +2,6 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'mes_courses/store_carts/store_cart_session'
 
 module MesCourses
   module StoreCarts

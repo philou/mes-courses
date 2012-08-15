@@ -1,13 +1,8 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require_relative "with_logout_mixin"
-
 module MesCourses
   module StoreCarts
-
-    autoload :AuchanDirectStoreCartAPI, "mes_courses/store_carts/auchan_direct_store_cart_api"
-    autoload :DummyStoreCartAPI, "mes_courses/store_carts/dummy_store_cart_api"
 
     # Objects providing an api like access to third party online stores
     class StoreCartAPI
