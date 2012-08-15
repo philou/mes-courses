@@ -4,17 +4,13 @@
 require 'spec_helper'
 require_relative 'store_cart_api_shared_examples'
 
-module MesCourses
-  module StoreCarts
+module MesCourses::StoreCarts
 
-    describe DummyStoreCartAPI do
-      it_should_behave_like "Any StoreCartAPI"
+  describe DummyStoreCartAPI do
+    it_should_behave_like "Any StoreCartAPI"
 
-      before(:all) do
-        @store_cart_api = DummyStoreCartAPI
-      end
-
+    before(:all) do
+      @store_cart_api = DummyStoreCartAPI
     end
-
   end
 end
