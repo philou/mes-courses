@@ -109,7 +109,7 @@ describe Cart do
       fill_the_cart
 
       missing_lines = @cart.lines[2..3]
-      missing_lines.each { |line| line.stub(:forward_to).and_raise(UnavailableItemError) }
+      missing_lines.each { |line| line.stub(:forward_to).and_raise(MesCourses::StoreCarts::UnavailableItemError) }
       missing_lines.each { |line| @order.should_receive(:add_missing_cart_line).with(line)}
 
       forward_to_store

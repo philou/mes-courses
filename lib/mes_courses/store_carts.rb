@@ -9,5 +9,7 @@ module MesCourses
     autoload :DummyStoreCartAPI, "mes_courses/store_carts/dummy_store_cart_api"
     autoload :StoreCartSession, "mes_courses/store_carts/store_cart_session"
     autoload :WithLogoutMixin, "mes_courses/store_carts/with_logout_mixin"
+    autoload :UnavailableItemError, "mes_courses/store_carts/unavailable_item_error"
+    autoload :InvalidStoreAccountError, "mes_courses/store_carts/invalid_store_account_error"
   end
 end

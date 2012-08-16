@@ -112,7 +112,7 @@ describe Order do
     end
 
     context "when pass fails because of invalid store login and password" do
-      it_aborts_passing_orders_on(InvalidStoreAccountError.new)
+      it_aborts_passing_orders_on(MesCourses::StoreCarts::InvalidStoreAccountError.new)
 
       it "should not let any exception climb up" do
         lambda { pass_order }.should_not raise_error
