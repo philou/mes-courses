@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 
-module MesCourses::StoreCarts
+module MesCourses::StoreCart
 
   shared_examples_for "Any Api" do
 

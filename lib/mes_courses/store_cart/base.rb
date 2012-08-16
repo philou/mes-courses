@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-module MesCourses::StoreCarts
+module MesCourses::StoreCart
 
   # Providers of Store cart session
   class Base

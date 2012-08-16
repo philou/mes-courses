@@ -22,13 +22,13 @@ Given /^there are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
 end
 
 Given /^I entered valid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::StoreCarts::Api.valid_login)
-  fill_in("store[password]", :with => MesCourses::StoreCarts::Api.valid_password)
+  fill_in("store[login]", :with => MesCourses::StoreCart::Api.valid_login)
+  fill_in("store[password]", :with => MesCourses::StoreCart::Api.valid_password)
 end
 
 Given /^I entered invalid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::StoreCarts::Api.invalid_login)
-  fill_in("store[password]", :with => MesCourses::StoreCarts::Api.invalid_password)
+  fill_in("store[login]", :with => MesCourses::StoreCart::Api.invalid_login)
+  fill_in("store[password]", :with => MesCourses::StoreCart::Api.invalid_password)
 end
 
 When /^I wait for the transfer to end$/ do

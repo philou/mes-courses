@@ -4,7 +4,7 @@
 require 'spec_helper'
 require_relative 'api_shared_examples'
 
-module MesCourses::StoreCarts
+module MesCourses::StoreCart
 
   describe DummyApi do
     it_should_behave_like "Any Api"

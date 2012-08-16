@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 
-module MesCourses::StoreCarts
+module MesCourses::StoreCart
 
   class WithLogout
     include WithLogoutMixin

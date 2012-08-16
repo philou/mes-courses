@@ -9,7 +9,7 @@ include OfflineTestHelper
 
 when_online("AuchanDirectApi remote spec") do
 
-  module MesCourses::StoreCarts
+  module MesCourses::StoreCart
 
     class AuchanDirectApi
 

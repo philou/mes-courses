@@ -43,7 +43,7 @@ class Order < ActiveRecord::Base
       end
       self.status = Order::SUCCEEDED
 
-    rescue MesCourses::StoreCarts::InvalidAccountError
+    rescue MesCourses::StoreCart::InvalidAccountError
       self.status = Order::FAILED
       self.error_notice = Order.invalid_store_login_notice(self.store)
 

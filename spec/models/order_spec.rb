@@ -46,11 +46,11 @@ describe Order do
 
     before :each do
       @order.stub(:save!)
-      @store_session = stub(MesCourses::StoreCarts::Session).as_null_object
-      MesCourses::StoreCarts::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::StoreCarts::Base))
-      store_cart.stub(:login).with(MesCourses::StoreCarts::Api.valid_login, MesCourses::StoreCarts::Api.valid_password).and_return(@store_session)
+      @store_session = stub(MesCourses::StoreCart::Session).as_null_object
+      MesCourses::StoreCart::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::StoreCart::Base))
+      store_cart.stub(:login).with(MesCourses::StoreCart::Api.valid_login, MesCourses::StoreCart::Api.valid_password).and_return(@store_session)
       class << @store_session
-        include MesCourses::StoreCarts::WithLogoutMixin
+        include MesCourses::StoreCart::WithLogoutMixin
       end
     end
 
@@ -112,7 +112,7 @@ describe Order do
     end
 
     context "when pass fails because of invalid store login and password" do
-      it_aborts_passing_orders_on(MesCourses::StoreCarts::InvalidAccountError.new)
+      it_aborts_passing_orders_on(MesCourses::StoreCart::InvalidAccountError.new)
 
       it "should not let any exception climb up" do
         lambda { pass_order }.should_not raise_error
@@ -140,7 +140,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(MesCourses::StoreCarts::Api.valid_login, MesCourses::StoreCarts::Api.valid_password)
+      @order.pass(MesCourses::StoreCart::Api.valid_login, MesCourses::StoreCart::Api.valid_password)
     end
   end
 end

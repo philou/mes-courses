@@ -42,7 +42,7 @@ describe Store do
 
   it "should know the logout url of the cart api" do
     url = "http://www.megastore.com"
-    MesCourses::StoreCarts::Base.stub(:for_url).and_return(store_cart = stub(MesCourses::StoreCarts::Base))
+    MesCourses::StoreCart::Base.stub(:for_url).and_return(store_cart = stub(MesCourses::StoreCart::Base))
     store_cart.stub(:logout_url).and_return(url+"/logout")
 
     store = Store.new(:url => url)
