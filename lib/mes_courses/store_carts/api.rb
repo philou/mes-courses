@@ -4,17 +4,17 @@
 module MesCourses::StoreCarts
 
   # Objects providing an api like access to third party online stores
-  class StoreCartAPI
+  class Api
     include WithLogoutMixin
 
     # factory of store cart api for a given url
     def self.for_url(store_url)
-      if store_url == AuchanDirectStoreCartAPI.url
-        AuchanDirectStoreCartAPI
-      elsif store_url == DummyStoreCartAPI.url
-        DummyStoreCartAPI
+      if store_url == AuchanDirectApi.url
+        AuchanDirectApi
+      elsif store_url == DummyApi.url
+        DummyApi
       else
-        raise ArgumentError.new("StoreCartAPI does not handle store at '#{store_url}'")
+        raise ArgumentError.new("No store api found for store at '#{store_url}'")
       end
     end
 

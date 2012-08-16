@@ -3,8 +3,8 @@
 
 module MesCourses::StoreCarts
 
-  # Logger mock for StoreCartAPI.
-  class DummyStoreCartAPI < StoreCartAPI
+  # Logger mock api
+  class DummyApi < Api
 
     def self.url
       "http://www.dummy-store.com"
@@ -31,8 +31,8 @@ module MesCourses::StoreCarts
     end
 
     def relog(login, password)
-      if login != DummyStoreCartAPI.valid_login
-        raise InvalidStoreAccountError.new
+      if login != DummyApi.valid_login
+        raise InvalidAccountError.new
       end
 
       @log.push(:login)

@@ -2,16 +2,16 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require_relative 'store_cart_api_shared_examples'
 require 'offline_test_helper'
+require_relative 'api_shared_examples'
 
 include OfflineTestHelper
 
-when_online("AuchanDirectStoreCartAPI remote spec") do
+when_online("AuchanDirectApi remote spec") do
 
   module MesCourses::StoreCarts
 
-    class AuchanDirectStoreCartAPI
+    class AuchanDirectApi
 
       def self.valid_login
         "mes.courses.fr.test@gmail.com"
@@ -23,11 +23,11 @@ when_online("AuchanDirectStoreCartAPI remote spec") do
 
     end
 
-    describe AuchanDirectStoreCartAPI, slow: true, remote: true do
-      it_should_behave_like "Any StoreCartAPI"
+    describe AuchanDirectApi, slow: true, remote: true do
+      it_should_behave_like "Any Api"
 
       before(:all) do
-        @store_cart_api = AuchanDirectStoreCartAPI
+        @store_cart_api = AuchanDirectApi
       end
     end
   end

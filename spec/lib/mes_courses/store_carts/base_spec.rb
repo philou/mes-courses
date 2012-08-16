@@ -5,16 +5,16 @@ require 'spec_helper'
 
 module MesCourses::StoreCarts
 
-  describe StoreCart do
+  describe Base do
 
     before :each do
       url = "http://www.mega-store.fr"
-      StoreCartAPI.stub(:for_url).with(url).and_return(@store_api_class = stub("StoreCartAPI class"))
-      @store_api_class.stub(:login).and_return(@store_api = stub(StoreCartAPI))
+      Api.stub(:for_url).with(url).and_return(@store_api_class = stub("Api class"))
+      @store_api_class.stub(:login).and_return(@store_api = stub(Api))
       @store_api_class.stub(:logout_url).and_return(url+"/logout")
-      StoreCartSession.stub(:new).with(@store_api).and_return(@store_session = stub(StoreCartSession))
+      Session.stub(:new).with(@store_api).and_return(@store_session = stub(Session))
 
-      @store_cart = StoreCart.for_url(url)
+      @store_cart = Base.for_url(url)
     end
 
     it "should create a session wrapper on a loged in cart api" do

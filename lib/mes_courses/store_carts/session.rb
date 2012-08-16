@@ -4,7 +4,7 @@
 module MesCourses::StoreCarts
 
   # A loged in session on the remote store. Manipulates the remote cart, and performs error checking.
-  class StoreCartSession
+  class Session
     include WithLogoutMixin
 
     def initialize(store_api)

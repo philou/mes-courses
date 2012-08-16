@@ -5,7 +5,7 @@ require 'spec_helper'
 
 module MesCourses::StoreCarts
 
-  shared_examples_for "Any StoreCartAPI" do
+  shared_examples_for "Any Api" do
 
     it "should know its logout url" do
       @store_cart_api.logout_url.should_not be_empty
@@ -14,7 +14,7 @@ module MesCourses::StoreCarts
     it "should raise when login in with an invalid account" do
       lambda {
         @store_cart_api.login("unknown-account", "wrong-password")
-      }.should raise_error(InvalidStoreAccountError)
+      }.should raise_error(InvalidAccountError)
     end
 
     context "with a valid account" do

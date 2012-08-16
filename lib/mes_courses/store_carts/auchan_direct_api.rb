@@ -4,7 +4,7 @@
 module MesCourses::StoreCarts
 
   # Store API for AuchanDirect store
-  class AuchanDirectStoreCartAPI < StoreCartAPI
+  class AuchanDirectApi < Api
 
     # main url of the store
     def self.url
@@ -14,7 +14,7 @@ module MesCourses::StoreCarts
     # Logins to auchan direct store
     def initialize(login, password)
       @agent = Mechanize.new
-      page = @agent.get(AuchanDirectStoreCartAPI.url)
+      page = @agent.get(AuchanDirectApi.url)
 
       login_form = Mechanize::Form.new(page.search('#formIdentification').first,
                                        page.mech,
@@ -24,7 +24,7 @@ module MesCourses::StoreCarts
       login_form.submit()
 
       @client_id, @panier_id = extract_ids
-      raise InvalidStoreAccountError unless @client_id.to_i != 0
+      raise InvalidAccountError unless @client_id.to_i != 0
 
     end
 

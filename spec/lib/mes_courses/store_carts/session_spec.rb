@@ -5,13 +5,13 @@ require 'spec_helper'
 
 module MesCourses::StoreCarts
 
-  describe StoreCartSession do
+  describe Session do
 
     before :each do
-      @store_api = stub(StoreCartAPI).as_null_object
+      @store_api = stub(Api).as_null_object
       @store_api.stub(:value_of_the_cart).and_return(2.0)
 
-      @store_session = StoreCartSession.new(@store_api)
+      @store_session = Session.new(@store_api)
 
       @bavette = stub_model(Item, :name => "bavette", :price => 5.3, :remote_id => 12345)
       @pdt = stub_model(Item, :name => "PdT", :price => 2.5, :remote_id => 67890)

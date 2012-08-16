@@ -4,26 +4,26 @@
 module MesCourses::StoreCarts
 
   # Providers of Store cart session
-  class StoreCart
+  class Base
 
     # A new provider of store cart sessions for a given url
     def self.for_url(store_url)
-      StoreCart.new(StoreCartAPI.for_url(store_url))
+      Base.new(Api.for_url(store_url))
     end
 
-    # Logs in the store account of a user and returns a StoreCartSession instance
+    # Logs in the store account of a user and returns a Session instance
     def login(login, password)
-      StoreCartSession.new(@store_cart_api_factory.login(login, password))
+      Session.new(@api_factory.login(login, password))
     end
 
     # url for a client browser to log off the store
     def logout_url
-      @store_cart_api_factory.logout_url
+      @api_factory.logout_url
     end
 
     private
-    def initialize(store_cart_api_factory)
-      @store_cart_api_factory = store_cart_api_factory
+    def initialize(api_factory)
+      @api_factory = api_factory
     end
   end
 
