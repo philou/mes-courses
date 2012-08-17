@@ -1,7 +1,7 @@
 #!/bin/usr/env ruby
 
-require_relative '../lib/deployment'
-include Deployment
+require_relative '../lib/mes_courses/deployment'
+include MesCourses::Deployment
 
 with_help_support("print_import_testers", "prints the names of all import tester apps") do
   import_tester_repos.each do |repo|
