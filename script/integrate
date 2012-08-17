@@ -12,7 +12,7 @@ with_help_support("integrate", "Integrates the latest developments to the main r
       puts "\nPulling latest developments"
       pull "dev"
 
-      shell "ruby #{File.join(File.dirname(__FILE__), '..', 'lib', 'end_integrate.rb')}"
+      shell "ruby #{File.join(File.dirname(__FILE__), '..', 'lib', 'mes_courses', 'deployment', 'end_integrate.rb')}"
     end
   end
 end
