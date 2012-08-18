@@ -6,7 +6,7 @@ namespace :stores do
 
   desc "Inserts the www.auchandirect.fr store in the DB"
   task :create_auchan_direct => :environment do
-    Store.find_or_create_by_url(MesCourses::StoreCart::AuchanDirectApi.url) do |store|
+    Store.find_or_create_by_url(MesCourses::Stores::Carts::AuchanDirectApi.url) do |store|
       store.expected_items = 6000
       store.sponsored_url = 'http://clic.reussissonsensemble.fr/click.asp?ref=574846&site=8005&type=text&tnb=2'
     end
@@ -14,9 +14,9 @@ namespace :stores do
 
   desc "Inserts the www.dummy-store.com store in the DB"
   task :create_dummy_store => :environment do
-    Store.find_or_create_by_url(MesCourses::StoreCart::DummyApi.url) do |store|
+    Store.find_or_create_by_url(MesCourses::Stores::Carts::DummyApi.url) do |store|
       store.expected_items = 0
-      store.sponsored_url = MesCourses::StoreCart::DummyApi.url
+      store.sponsored_url = MesCourses::Stores::Carts::DummyApi.url
     end
   end
 

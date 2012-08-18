@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-module MesCourses::StoreCart
+module MesCourses::Stores::Carts
 
   # Store API for AuchanDirect store
   class AuchanDirectApi < Api

@@ -47,7 +47,7 @@ class Cart < ActiveRecord::Base
     lines.each_with_index do |line, line_index|
       begin
         line.forward_to(session)
-      rescue MesCourses::StoreCart::UnavailableItemError
+      rescue MesCourses::Stores::Carts::UnavailableItemError
         order.add_missing_cart_line(line)
       end
       order.notify_forwarded_cart_line

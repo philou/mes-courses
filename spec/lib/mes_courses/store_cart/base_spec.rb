@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 
-module MesCourses::StoreCart
+module MesCourses::Stores::Carts
 
   describe Base do
 

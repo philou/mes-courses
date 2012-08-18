@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-module MesCourses::StoreCart
+module MesCourses::Stores::Carts
   autoload_relative_ex :Base, "base"
   autoload_relative_ex :Api, "api"
   autoload_relative_ex :AuchanDirectApi, "auchan_direct_api"

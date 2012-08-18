@@ -5,7 +5,7 @@
 class StoreItemsAPI
 
   def self.browse(store_url)
-    if store_url == MesCourses::StoreCart::DummyApi.url
+    if store_url == MesCourses::Stores::Carts::DummyApi.url
       DummyStoreItemsAPI.new_default_store(store_url)
     else
       builder(store_url).new(StoreWalkerPage.open(store_url))

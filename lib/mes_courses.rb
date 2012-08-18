@@ -5,6 +5,6 @@ require_relative "mes_courses/initializers"
 
 module MesCourses
   autoload_relative_ex :Utils, "utils"
-  autoload_relative_ex :StoreCart, "store_cart"
+  autoload_relative_ex :Stores, "stores"
   autoload_relative_ex :Deployment, "deployment"
 end

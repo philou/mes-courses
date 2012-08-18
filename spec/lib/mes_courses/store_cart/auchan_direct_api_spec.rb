@@ -6,7 +6,7 @@ require_relative 'api_shared_examples'
 
 when_online("AuchanDirectApi remote spec") do
 
-  module MesCourses::StoreCart
+  module MesCourses::Stores::Carts
 
     class AuchanDirectApi
 
