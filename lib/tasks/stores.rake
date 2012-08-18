@@ -1,6 +1,6 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require "dummy_store_generation"
+require "mes_courses/stores/tools/dummy_generation"
 
 namespace :stores do
 
