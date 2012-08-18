@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require 'tokenizer'
-
 # An item for sale
 class Item < ActiveRecord::Base
   include SingletonBuilder
+  include MesCourses::Utils
 
   has_and_belongs_to_many :dishes
   has_and_belongs_to_many :item_categories

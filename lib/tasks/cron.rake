@@ -1,7 +1,5 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require "heroku_helper"
-
 desc "Performs tasks, specified in the CRON_TASKS environment variable as a ; separated list"
 task :cron => :environment do
 

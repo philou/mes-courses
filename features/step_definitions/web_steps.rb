@@ -5,7 +5,6 @@ require 'uri'
 require 'cgi'
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 require 'webrat/core/locators/link_locator'
-require 'string_extras'
 
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)

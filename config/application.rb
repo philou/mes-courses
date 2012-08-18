@@ -12,13 +12,15 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-require File.join(File.dirname(__FILE__), '../lib/heroku_helper')
-require File.join(File.dirname(__FILE__), 'email_constants')
+# Load lib files
+require_relative "../lib/mes_courses"
+
 require 'pp'
 
 module MesCourses
   class Application < Rails::Application
-    include HerokuHelper
+    include Utils::HerokuHelper
+    include Utils
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

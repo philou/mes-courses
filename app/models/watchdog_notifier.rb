@@ -3,7 +3,7 @@
 
 # Objects responsible for building and sending watchdog notification emails
 class WatchdogNotifier < MonitoringMailer
-  extend HerokuHelper
+  extend MesCourses::Utils::HerokuHelper
 
   def success_email
     @content = "All specs OK.\n\n#{safe_heroku_logs}"

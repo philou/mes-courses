@@ -1,10 +1,12 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require_relative '../time_span_helper'
+require_relative 'utils/timing'
+require_relative 'initializers/numeric_extras'
 
 module MesCourses
 
   module Deployment
+    include Utils
 
     HEROKU_STACK = "bamboo-ree-1.9.2"
 

@@ -7,7 +7,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
 
-extend HerokuHelper
+extend MesCourses::Utils::HerokuHelper
 
 # Require factory girl
 require 'factory_girl_rails'
@@ -27,6 +27,8 @@ unless on_heroku?
   end
   silence_stream(STDOUT, &load_schema)
 end
+
+include OfflineTestHelper
 
 RSpec.configure do |config|
   # ## Mock Framework

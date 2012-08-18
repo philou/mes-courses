@@ -12,7 +12,7 @@ module MonitoringMailerSpecMacros
   module ClassMethods
     def it_should_behave_like_any_monitoring_mailer
       before(:each) do
-        HerokuHelper.stub(:app_name).and_return("mes-courses-tests")
+        MesCourses::Utils::HerokuHelper.stub(:app_name).and_return("mes-courses-tests")
       end
 
       it "should send a non empty email" do
@@ -25,14 +25,14 @@ module MonitoringMailerSpecMacros
       it "should have a subject including the app name" do
         send_monitoring_email
 
-        @subject.should include(HerokuHelper.app_name)
+        @subject.should include(MesCourses::Utils::HerokuHelper.app_name)
       end
     end
 
     def should_contain_the_logs
       it "should contain the logs" do
         log_text = "all the long logs"
-        HerokuHelper.stub(:safe_heroku_logs).and_return(log_text)
+        MesCourses::Utils::HerokuHelper.stub(:safe_heroku_logs).and_return(log_text)
 
         send_monitoring_email
 

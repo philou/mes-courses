@@ -3,9 +3,10 @@
 
 # base mailer class for online maintainer monitoring
 class MonitoringMailer < ActionMailer::Base
-  include HerokuHelper
+  include MesCourses::Utils::HerokuHelper
+  extend MesCourses::Utils::EmailConstants
 
-  default :from => EmailConstants.sender, :to => EmailConstants.recipients
+  default :from => sender, :to => recipients
 
   def setup_mail(subject)
     mail :subject => "[#{app_name}] " + subject, :date => Time.now

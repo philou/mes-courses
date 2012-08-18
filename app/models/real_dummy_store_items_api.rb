@@ -3,9 +3,8 @@
 
 require "uri"
 require "webrick/httputils"
-require "heroku_helper"
 
-unless HerokuHelper::on_heroku?
+unless MesCourses::Utils::HerokuHelper::on_heroku?
   # monkey patch to avoid a regex uri encoding error when importing
   #      incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string) (Encoding::CompatibilityError)
   #      /home/philou/.rbenv/versions/1.9.3-p194/lib/ruby/1.9.1/webrick/httputils.rb:353:in `gsub'

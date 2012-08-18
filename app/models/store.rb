@@ -5,7 +5,6 @@ require 'store_importer'
 require 'incremental_store'
 require 'visited_url'
 require 'uri'
-require 'time_span_helper'
 require 'auchan_direct_store_items_api'
 require 'real_dummy_store_items_api'
 
@@ -22,7 +21,7 @@ class Store < ActiveRecord::Base
 
   # import all stores, or the one specified with url
   def self.import(url = nil)
-    Timing.duration_of do |timer|
+    Utils::Timing.duration_of do |timer|
       ModelStat::update!
 
       begin

@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'string_extras'
-
 describe "String extras" do
 
   it "starting_with? should work with string prefix" do

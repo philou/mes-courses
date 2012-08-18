@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'uri_domain'
-
 describe "URI" do
 
   it "should extract the domain of a domain only url" do

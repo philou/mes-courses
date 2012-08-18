@@ -1,7 +1,5 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'password'
-
 namespace :mes_courses do
 
   desc "Creates a new user in the database with a generated password (with email=toto@mail.com)"
@@ -10,7 +8,7 @@ namespace :mes_courses do
     email = ENV["email"]
     raise ArgumentError.new("An email must be specified") unless !email.nil?
 
-    password = Password.generate
+    password = MesCourses::Utils::Password.generate
     User.create(:email => email, :password => password)
 
     puts "Created user with"

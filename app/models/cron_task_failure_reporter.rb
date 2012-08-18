@@ -3,7 +3,7 @@
 
 # Object responsible for mailing cron task failures
 class CronTaskFailureReporter < MonitoringMailer
-  include HerokuHelper
+  include MesCourses::Utils::HerokuHelper
 
   def failure(task_name, exception)
     setup_content(exception)

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-class Tokenizer
+class MesCourses::Utils::Tokenizer
 
   def self.run(string)
     string = string.downcase

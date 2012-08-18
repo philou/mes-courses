@@ -2,12 +2,11 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'action_view/helpers/number_helper'
-require 'time_span_helper'
 
 # Object responsible for mailing an import report
 class ImportReporter < MonitoringMailer
   include ActionView::Helpers::NumberHelper
-  include HerokuHelper
+  include MesCourses::Utils::HerokuHelper
 
   # Reports delta from latest statistics by mail and log
   def delta(import_duration_seconds, expected_items)

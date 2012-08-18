@@ -2,7 +2,6 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'array_extras'
 
 describe ItemCategoriesController do
   include ApplicationHelper

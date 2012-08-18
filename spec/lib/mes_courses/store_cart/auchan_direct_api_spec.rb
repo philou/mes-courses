@@ -2,10 +2,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'offline_test_helper'
 require_relative 'api_shared_examples'
-
-include OfflineTestHelper
 
 when_online("AuchanDirectApi remote spec") do
 

@@ -74,7 +74,7 @@ describe Store do
     it "should deliver an import report email with time spent" do
       start_time = Time.local(2011, 10, 29, 16, 30, 24)
       end_time = Time.local(2011, 10, 29, 17, 48, 12)
-      Timing.stub(:now).and_return(start_time, end_time)
+      MesCourses::Utils::Timing.stub(:now).and_return(start_time, end_time)
 
       ImportReporter.should_receive(:delta).with(end_time - start_time, anything).and_return(email = stub("Email"))
       email.should_receive(:deliver)

@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require 'array_extras'
-
 describe "Array extras" do
 
   it "starting_with should work" do
