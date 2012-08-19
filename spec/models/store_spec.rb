@@ -25,8 +25,8 @@ describe Store do
     browser = stub("Store Items API")
     StoreItemsAPI.stub(:browse).and_return(browser)
 
-    robust_browser = stub(Retrier)
-    Retrier.stub(:new).with(browser, anything).and_return(robust_browser)
+    robust_browser = stub(MesCourses::Utils::Retrier)
+    MesCourses::Utils::Retrier.stub(:new).with(browser, anything).and_return(robust_browser)
 
     incremental_store = stub("Incremental store")
     IncrementalStore.stub(:new).with(store).and_return(incremental_store)

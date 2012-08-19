@@ -7,4 +7,5 @@ module MesCourses::Utils
   autoload_relative_ex :Timing, "timing"
   autoload_relative_ex :Tokenizer, "tokenizer"
   autoload_relative_ex :EmailConstants, "email_constants"
+  autoload_relative_ex :Retrier, "retrier"
 end
