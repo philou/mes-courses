@@ -5,11 +5,11 @@ require 'cucumber/rspec/doubles'
 
 def configure_dummy_store(items_config)
   # Using stubs with item api makes sure the static modifications are rolledback after each scenario
-  DummyStoreItemsAPI.stub(:new_default_store).and_return(DummyStoreItemsAPI.new(items_config))
+  MesCourses::Stores::Items::DummyApi.stub(:new_default_store).and_return(MesCourses::Stores::Items::DummyApi.new(items_config))
 end
 
 def given_a_sample_item
-  DummyStoreItemsAPI.new_default_store.categories[1].categories[0].items[0]
+  MesCourses::Stores::Items::DummyApi.new_default_store.categories[1].categories[0].items[0]
 end
 
 def remove_item_from(category_config, item_name)
@@ -23,7 +23,7 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
   new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
   Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
 
-  @items_config = DummyStoreItemsAPI.shrinked_config(2)
+  @items_config = MesCourses::Stores::Items::DummyApi.shrinked_config(2)
   configure_dummy_store(@items_config)
 
   @cart_api = MesCourses::Stores::Carts::DummyApi.new
@@ -96,7 +96,7 @@ When /^items from the store are re-imported$/ do
 end
 
 When /^more items from the store are re-imported$/ do
-  configure_dummy_store(DummyStoreItemsAPI.full_config)
+  configure_dummy_store(MesCourses::Stores::Items::DummyApi.full_config)
   reimport(@store)
 end
 
@@ -117,6 +117,6 @@ Then  /^a non empty cart should be created in the store account of the user$/ do
 end
 
 Then /^all items from the store should have been imported$/ do
-  Item.all_but_lost.should have(DummyStoreItemsAPI.new_default_store.total_items_count).records
+  Item.all_but_lost.should have(MesCourses::Stores::Items::DummyApi.new_default_store.total_items_count).records
 end
 

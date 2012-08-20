@@ -1,15 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require 'store_walker_page'
-
-class NullStoreItemsDigger
-  def sub_walkers(page, father)
-    []
-  end
-end
-
-class StoreItemsDigger
+class Digger
   def initialize(selector, factory)
     @selector = selector
     @factory = factory

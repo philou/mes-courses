@@ -109,10 +109,10 @@ def reimport(store)
 end
 
 # real dummy stores
-require_relative "../../spec/models/real_dummy_store_generator"
+require_relative "../../spec/lib/mes_courses/stores/items/real_dummy_generator"
 
 Before do
-  RealDummyStore.wipe_out
+  MesCourses::Stores::Items::RealDummy.wipe_out
 end
 
 AfterStep('@pause') do

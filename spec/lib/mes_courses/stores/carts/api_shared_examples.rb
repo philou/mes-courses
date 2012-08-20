@@ -73,7 +73,7 @@ module MesCourses::Stores::Carts
       private
 
       def extract_sample_item
-        produits_laitiers = milk_subcat(StoreItemsAPI.browse(@store_cart_api.url))
+        produits_laitiers = milk_subcat(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
         produits_laitiers.should_not be_nil
 
         laits = milk_subcat(produits_laitiers)

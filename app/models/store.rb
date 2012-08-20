@@ -5,18 +5,17 @@ require 'store_importer'
 require 'incremental_store'
 require 'visited_url'
 require 'uri'
-require 'auchan_direct_store_items_api'
-require 'real_dummy_store_items_api'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
   include MesCourses
+  include MesCourses::Stores
 
   validates_presence_of :url
   validates_uniqueness_of :url
 
   def self.import_retrier_options
-    { :max_retries => 5, :ignored_exceptions => [StoreItemsBrowsingError], :sleep_delay => 3, :wrap_result => [:categories, :items] }
+    { :max_retries => 5, :ignored_exceptions => [Items::BrowsingError], :sleep_delay => 3, :wrap_result => [:categories, :items] }
   end
 
   # import all stores, or the one specified with url
@@ -48,12 +47,12 @@ class Store < ActiveRecord::Base
 
   # url for a client browser to logout of the store
   def logout_url
-    Stores::Carts::Base.for_url(url).logout_url
+    Carts::Base.for_url(url).logout_url
   end
 
   # Opens a remote cart session to the remote store
   def with_session(login, password)
-    Stores::Carts::Base.for_url(url).login(login, password).with_logout do |session|
+    Carts::Base.for_url(url).login(login, password).with_logout do |session|
       return yield session
     end
   end
@@ -61,7 +60,7 @@ class Store < ActiveRecord::Base
   # Imports the items sold from the online store to our db
   def import
     importer = StoreImporter.new
-    browser = Utils::Retrier.new(StoreItemsAPI.browse(url), Store.import_retrier_options)
+    browser = Utils::Retrier.new(Items::Api.browse(url), Store.import_retrier_options)
     incremental_store = IncrementalStore.new(self)
     importer.import(browser, incremental_store)
   end

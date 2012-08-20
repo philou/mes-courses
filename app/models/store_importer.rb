@@ -74,7 +74,7 @@ class StoreImporter
       @walker_stack.push(summary)
       yield
 
-    rescue StoreItemsBrowsingError, ActiveRecord::RecordInvalid => e
+    rescue MesCourses::Stores::Items::BrowsingError, ActiveRecord::RecordInvalid => e
       # this should mean a page was not in an importable format
       # continue, this will eventually delete the faulty items
       log :warn, format_exception_message(summary, e)

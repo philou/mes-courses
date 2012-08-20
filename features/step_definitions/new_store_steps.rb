@@ -2,7 +2,7 @@
 # Copyright (C) 2012 by Philippe Bourgau
 
 def generate_store(store_name, item_table)
-  store = RealDummyStore.open(store_name)
+  store = MesCourses::Stores::Items::RealDummy.open(store_name)
   store.generate(3).categories.and(3).categories.and(3).items
 
   item_table.each_item do |category, sub_category, item|
@@ -13,11 +13,11 @@ def generate_store(store_name, item_table)
 end
 
 def import_real_dummy_store(store_name)
-  Store.find_by_url(RealDummyStore.uri(store_name)).import
+  Store.find_by_url(MesCourses::Stores::Items::RealDummy.uri(store_name)).import
 end
 
 def remove_items_from_generated_store(store_name, item_table)
-  store = RealDummyStore.open(store_name)
+  store = MesCourses::Stores::Items::RealDummy.open(store_name)
 
   item_table.each_item do |category, sub_category, item|
     store.category(category).category(sub_category).remove_item(item)

@@ -23,7 +23,7 @@ describe Store do
     store = Store.new(@valid_attributes)
 
     browser = stub("Store Items API")
-    StoreItemsAPI.stub(:browse).and_return(browser)
+    MesCourses::Stores::Items::Api.stub(:browse).and_return(browser)
 
     robust_browser = stub(MesCourses::Utils::Retrier)
     MesCourses::Utils::Retrier.stub(:new).with(browser, anything).and_return(robust_browser)

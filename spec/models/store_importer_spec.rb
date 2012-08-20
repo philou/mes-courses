@@ -17,7 +17,7 @@ describe StoreImporter do
   end
 
   def given_a_store_with(root_categories)
-    @store_api = DummyStoreItemsAPI.new_custom_store(root_categories)
+    @store_api = MesCourses::Stores::Items::DummyApi.new_custom_store(root_categories)
 
     @root_categories = @store_api.categories
     unless @root_categories.empty?

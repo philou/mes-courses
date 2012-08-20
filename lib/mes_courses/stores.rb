@@ -3,4 +3,5 @@
 
 module MesCourses::Stores
   autoload_relative_ex :Carts, "carts"
+  autoload_relative_ex :Items, "items"
 end
