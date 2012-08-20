@@ -4,7 +4,7 @@
 require 'action_view/helpers/number_helper'
 
 # Object responsible for mailing an import report
-class ImportReporter < MonitoringMailer
+class ImportReporter < MesCourses::RailsUtils::MonitoringMailer
   include ActionView::Helpers::NumberHelper
   include MesCourses::Utils::HerokuHelper
 

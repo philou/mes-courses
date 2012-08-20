@@ -7,4 +7,5 @@ module MesCourses
   autoload_relative_ex :Utils, "utils"
   autoload_relative_ex :Stores, "stores"
   autoload_relative_ex :Deployment, "deployment"
+  autoload_relative_ex :RailsUtils, "rails_utils"
 end

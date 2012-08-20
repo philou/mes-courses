@@ -2,10 +2,10 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require_relative 'singleton_builder_spec_macros'
+require 'lib/mes_courses/rails_utils/singleton_builder_spec_macros'
 
 describe Item do
-  extend SingletonBuilderSpecMacros
+  extend MesCourses::RailsUtils::SingletonBuilderSpecMacros
 
   has_singleton(:lost, Constants::LOST_ITEM_NAME)
 

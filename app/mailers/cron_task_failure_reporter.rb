@@ -2,7 +2,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # Object responsible for mailing cron task failures
-class CronTaskFailureReporter < MonitoringMailer
+class CronTaskFailureReporter < MesCourses::RailsUtils::MonitoringMailer
   include MesCourses::Utils::HerokuHelper
 
   def failure(task_name, exception)

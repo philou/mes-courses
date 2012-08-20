@@ -2,7 +2,7 @@
 # Copyright (C) 2010, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'attributes_comparison'
+require 'mes_courses/rails_utils/attributes_comparison'
 
 describe "ActiveRecord attributes comparison" do
 

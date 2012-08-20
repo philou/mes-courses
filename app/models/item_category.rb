@@ -3,7 +3,7 @@
 
 # Hierarchichal category of items,
 class ItemCategory < ActiveRecord::Base
-  include SingletonBuilder
+  include MesCourses::RailsUtils::SingletonBuilder
 
   has_and_belongs_to_many :items
   acts_as_tree :order => "name"

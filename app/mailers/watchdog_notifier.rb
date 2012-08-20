@@ -2,7 +2,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 # Objects responsible for building and sending watchdog notification emails
-class WatchdogNotifier < MonitoringMailer
+class WatchdogNotifier < MesCourses::RailsUtils::MonitoringMailer
   extend MesCourses::Utils::HerokuHelper
 
   def success_email

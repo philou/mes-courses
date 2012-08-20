@@ -2,9 +2,10 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
+require 'lib/mes_courses/rails_utils/monitoring_mailer_shared_examples'
 
 describe CronTaskFailureReporter do
-  include MonitoringMailerSpecMacros
+  include MesCourses::RailsUtils::MonitoringMailerSpecMacros
 
   before :each do
     @mailer_class = CronTaskFailureReporter

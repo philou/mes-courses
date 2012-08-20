@@ -2,10 +2,10 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require 'spec_helper'
-require 'models/monitoring_mailer_shared_examples'
+require 'lib/mes_courses/rails_utils/monitoring_mailer_shared_examples'
 
 describe BrokenDishesReporter do
-  include MonitoringMailerSpecMacros
+  include MesCourses::RailsUtils::MonitoringMailerSpecMacros
 
   it_should_behave_like_any_monitoring_mailer
 
