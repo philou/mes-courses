@@ -1,9 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
-require 'store_importer'
-require 'incremental_store'
-require 'visited_url'
 require 'uri'
 
 # Backend online store of a distributor
@@ -59,9 +56,9 @@ class Store < ActiveRecord::Base
 
   # Imports the items sold from the online store to our db
   def import
-    importer = StoreImporter.new
+    importer = Imports::Base.new
     browser = Utils::Retrier.new(Items::Api.browse(url), Store.import_retrier_options)
-    incremental_store = IncrementalStore.new(self)
+    incremental_store = Imports::Incremental.new(self)
     importer.import(browser, incremental_store)
   end
 

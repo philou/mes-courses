@@ -9,8 +9,8 @@ describe Store do
   before(:each) do
     @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE, :expected_items => 10, :sponsored_url => AUCHAN_DIRECT_OFFLINE }
 
-    @importer = mock(StoreImporter).as_null_object
-    StoreImporter.stub(:new).and_return(@importer)
+    @importer = mock(MesCourses::Stores::Imports::Base).as_null_object
+    MesCourses::Stores::Imports::Base.stub(:new).and_return(@importer)
 
     Store.stub(:maximum).with(:expected_items).and_return(0)
   end
@@ -29,7 +29,7 @@ describe Store do
     MesCourses::Utils::Retrier.stub(:new).with(browser, anything).and_return(robust_browser)
 
     incremental_store = stub("Incremental store")
-    IncrementalStore.stub(:new).with(store).and_return(incremental_store)
+    MesCourses::Stores::Imports::Incremental.stub(:new).with(store).and_return(incremental_store)
 
     @importer.should_receive(:import).with(robust_browser, incremental_store)
 
