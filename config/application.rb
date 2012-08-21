@@ -99,8 +99,8 @@ module MesCourses
     if on_heroku?
       config.middleware.use ExceptionNotifier,
         :email_prefix => "[#{app_name}] ERROR ",
-        :sender_address => EmailConstants.sender,
-        :exception_recipients => EmailConstants.recipients
+        :sender_address => EmailConstants::sender,
+        :exception_recipients => EmailConstants::recipients
     end
 
   end
