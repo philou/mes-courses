@@ -4,15 +4,19 @@
 require 'spec_helper'
 require_relative 'auchan_direct_api_shared_examples'
 
-module MesCourses::Stores::Items
-  describe "OfflineAuchanDirectApi", slow: true do
-    include AuchanDirectApiSpecMacros
+module MesCourses
+  module Stores
+    module Items
+      describe "OfflineAuchanDirectApi", slow: true do
+        include AuchanDirectApiSpecMacros
 
-    before :all do
-      @store = Api.browse(AUCHAN_DIRECT_OFFLINE)
+        before :all do
+          @store = Api.browse(AUCHAN_DIRECT_OFFLINE)
+        end
+
+        it_should_behave_like_any_auchan_direct_store_items_api
+
+      end
     end
-
-    it_should_behave_like_any_auchan_direct_store_items_api
-
   end
 end

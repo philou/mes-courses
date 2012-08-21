@@ -20,29 +20,33 @@ end
 
 require_relative 'api_builder'
 
-module MesCourses::Stores::Items
+module MesCourses
+  module Stores
+    module Items
 
-  define_api RealDummyConstants::ROOT_DIR_NAME do
+      define_api RealDummyConstants::ROOT_DIR_NAME do
 
-    categories 'a.category' do
-      attributes do
-        { :name => page.get_one("h1").content }
-      end
-
-      categories 'a.category' do
-        attributes do
-          { :name => page.get_one("h1").content }
-        end
-
-        items 'a.item' do
+        categories 'a.category' do
           attributes do
-            {
-              :name => page.get_one('h1').content,
-              :summary => page.get_one('#summary').content,
-              :price => page.get_one('#price').content.to_f,
-              :image => page.get_one('#image').content,
-              :remote_id => page.get_one('#remote_id').content.to_i
-            }
+            { :name => page.get_one("h1").content }
+          end
+
+          categories 'a.category' do
+            attributes do
+              { :name => page.get_one("h1").content }
+            end
+
+            items 'a.item' do
+              attributes do
+                {
+                  :name => page.get_one('h1').content,
+                  :summary => page.get_one('#summary').content,
+                  :price => page.get_one('#price').content.to_f,
+                  :image => page.get_one('#image').content,
+                  :remote_id => page.get_one('#remote_id').content.to_i
+                }
+              end
+            end
           end
         end
       end

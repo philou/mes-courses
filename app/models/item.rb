@@ -4,7 +4,6 @@
 # An item for sale
 class Item < ActiveRecord::Base
   include MesCourses::RailsUtils::SingletonBuilder
-  include MesCourses::Utils
 
   has_and_belongs_to_many :dishes
   has_and_belongs_to_many :item_categories
@@ -48,11 +47,11 @@ class Item < ActiveRecord::Base
   end
 
   def index
-    self.tokens = Tokenizer.run("#{name} #{summary}").join(" ")
+    self.tokens = MesCourses::Utils::Tokenizer.run("#{name} #{summary}").join(" ")
   end
 
   def self.search_string_is_valid?(search_string)
-    Tokenizer.run(search_string) != []
+    MesCourses::Utils::Tokenizer.run(search_string) != []
   end
 
   def self.search_by_string_and_category(search_string, category)
@@ -60,7 +59,7 @@ class Item < ActiveRecord::Base
 
     sql_clauses = []
     condition_params = {}
-    Tokenizer.run(search_string).each_with_index do |token, i_token|
+    MesCourses::Utils::Tokenizer.run(search_string).each_with_index do |token, i_token|
       param = "token#{i_token}"
       sql_clauses.push("items.tokens like :#{param}")
       condition_params[param.intern] = "%#{token}%"

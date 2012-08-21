@@ -14,6 +14,8 @@ end
 
 # Load lib files
 require_relative "../lib/mes_courses"
+require_relative "../lib/mes_courses/utils/heroku_helper"
+require_relative "../lib/mes_courses/utils/email_constants"
 
 require 'pp'
 
@@ -27,7 +29,7 @@ module MesCourses
     # -- all .rb files in that directory are automatically loaded.
 
     # Custom directories with classes and modules you want to be autoloadable.
-    # config.autoload_paths += %W(#{config.root}/extras)
+    config.autoload_paths += %W(#{config.root}/lib)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

@@ -5,8 +5,11 @@ require 'uri'
 
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
-  include MesCourses
-  include MesCourses::Stores
+
+  Utils = MesCourses::Utils
+  Carts = MesCourses::Stores::Carts
+  Items = MesCourses::Stores::Items
+  Imports = MesCourses::Stores::Imports
 
   validates_presence_of :url
   validates_uniqueness_of :url

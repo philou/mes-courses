@@ -6,26 +6,31 @@ require_relative 'api_shared_examples'
 
 when_online("AuchanDirectApi remote spec") do
 
-  module MesCourses::Stores::Carts
+  module MesCourses
+    module Stores
+      module Carts
 
-    class AuchanDirectApi
+        module AuchanDirectApiCredentials
+          def valid_login
+            "mes.courses.fr.test@gmail.com"
+          end
+          def valid_password
+            # gmail password : "mes*courses"
+            "mescourses"
+          end
+        end
+        # force autoload of AuchanDirectApi
+        AuchanDirectApi.send(:extend, AuchanDirectApiCredentials)
 
-      def self.valid_login
-        "mes.courses.fr.test@gmail.com"
-      end
-      def self.valid_password
-        # gmail password : "mes*courses"
-        "mescourses"
-      end
+        describe AuchanDirectApi, slow: true, remote: true do
+          it_should_behave_like "Any Api"
 
-    end
-
-    describe AuchanDirectApi, slow: true, remote: true do
-      it_should_behave_like "Any Api"
-
-      before(:all) do
-        @store_cart_api = AuchanDirectApi
+          before(:all) do
+            @store_cart_api = AuchanDirectApi
+          end
+        end
       end
     end
   end
 end
+
