@@ -49,7 +49,7 @@ module MesCourses
     end
 
     def migrate(repo)
-      heroku "run rake db:migrate", :repo => repo
+      heroku "run rake db:migrate --trace", :repo => repo
     end
 
     def deploy(repo)
