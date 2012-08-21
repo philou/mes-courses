@@ -5,6 +5,8 @@ require 'spec_helper'
 
 describe Cart do
 
+  Carts = MesCourses::Stores::Carts
+
   before(:each) do
     @bavette = stub_model(Item, :name => "Bavette", :price => 4.5)
 
@@ -80,7 +82,7 @@ describe Cart do
     before :each do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
-      @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
+      @store_session = stub(Carts::Session).as_null_object
       @order = Order.new
       @order.stub!(:save!)
     end
@@ -109,7 +111,7 @@ describe Cart do
       fill_the_cart
 
       missing_lines = @cart.lines[2..3]
-      missing_lines.each { |line| line.stub(:forward_to).and_raise(MesCourses::Stores::Carts::UnavailableItemError) }
+      missing_lines.each { |line| line.stub(:forward_to).and_raise(Carts::UnavailableItemError) }
       missing_lines.each { |line| @order.should_receive(:add_missing_cart_line).with(line)}
 
       forward_to_store
