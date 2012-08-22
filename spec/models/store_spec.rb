@@ -5,16 +5,12 @@ require 'spec_helper'
 
 describe Store do
 
-  Imports = MesCourses::Stores::Imports
-  Carts = MesCourses::Stores::Carts
-  Items = MesCourses::Stores::Items
-
   # setting static constants up
   before(:each) do
     @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE, :expected_items => 10, :sponsored_url => AUCHAN_DIRECT_OFFLINE }
 
-    @importer = mock(Imports::Base).as_null_object
-    Imports::Base.stub(:new).and_return(@importer)
+    @importer = mock(MesCourses::Stores::Imports::Base).as_null_object
+    MesCourses::Stores::Imports::Base.stub(:new).and_return(@importer)
 
     Store.stub(:maximum).with(:expected_items).and_return(0)
   end
@@ -27,13 +23,13 @@ describe Store do
     store = Store.new(@valid_attributes)
 
     browser = stub("Store Items API")
-    Items::Api.stub(:browse).and_return(browser)
+    MesCourses::Stores::Items::Api.stub(:browse).and_return(browser)
 
     robust_browser = stub(MesCourses::Utils::Retrier)
     MesCourses::Utils::Retrier.stub(:new).with(browser, anything).and_return(robust_browser)
 
     incremental_store = stub("Incremental store")
-    Imports::Incremental.stub(:new).with(store).and_return(incremental_store)
+    MesCourses::Stores::Imports::Incremental.stub(:new).with(store).and_return(incremental_store)
 
     @importer.should_receive(:import).with(robust_browser, incremental_store)
 
@@ -46,7 +42,7 @@ describe Store do
 
   it "should know the logout url of the cart api" do
     url = "http://www.megastore.com"
-    Carts::Base.stub(:for_url).and_return(store_cart = stub(Carts::Base))
+    MesCourses::Stores::Carts::Base.stub(:for_url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
     store_cart.stub(:logout_url).and_return(url+"/logout")
 
     store = Store.new(:url => url)

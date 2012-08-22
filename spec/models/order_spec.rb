@@ -5,8 +5,6 @@ require 'spec_helper'
 
 describe Order do
 
-  Carts = MesCourses::Stores::Carts
-
   before :each do
     @cart = Cart.new()
     @store = Store.new(:url => "http://www.funny-store.com")
@@ -48,11 +46,11 @@ describe Order do
 
     before :each do
       @order.stub(:save!)
-      @store_session = stub(Carts::Session).as_null_object
-      Carts::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(Carts::Base))
-      store_cart.stub(:login).with(Carts::Api.valid_login, Carts::Api.valid_password).and_return(@store_session)
+      @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
+      MesCourses::Stores::Carts::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
+      store_cart.stub(:login).with(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password).and_return(@store_session)
       class << @store_session
-        include Carts::WithLogoutMixin
+        include MesCourses::Stores::Carts::WithLogoutMixin
       end
     end
 
@@ -114,7 +112,7 @@ describe Order do
     end
 
     context "when pass fails because of invalid store login and password" do
-      it_aborts_passing_orders_on(Carts::InvalidAccountError.new)
+      it_aborts_passing_orders_on(MesCourses::Stores::Carts::InvalidAccountError.new)
 
       it "should not let any exception climb up" do
         lambda { pass_order }.should_not raise_error
@@ -142,7 +140,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(Carts::Api.valid_login, Carts::Api.valid_password)
+      @order.pass(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password)
     end
   end
 end

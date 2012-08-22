@@ -7,8 +7,6 @@ require 'lib/mes_courses/rails_utils/singleton_builder_spec_macros'
 describe Item do
   extend MesCourses::RailsUtils::SingletonBuilderSpecMacros
 
-  Tokenizer = MesCourses::Utils::Tokenizer
-
   has_singleton(:lost, Constants::LOST_ITEM_NAME)
 
   it "has a lost item that is disabled" do
@@ -43,7 +41,7 @@ describe Item do
 
     it "should run tokenizer when indexing" do
       tokens = %w(token1 token2)
-      Tokenizer.should_receive(:run).with("#{@item.name} #{@item.summary}").and_return(tokens)
+      MesCourses::Utils::Tokenizer.should_receive(:run).with("#{@item.name} #{@item.summary}").and_return(tokens)
 
       @item.index
 
@@ -67,7 +65,7 @@ describe Item do
     end
 
     def should_be_indexed(item)
-      item.tokens.should == Tokenizer.run("#{item.name} #{item.summary}").join(" ")
+      item.tokens.should == MesCourses::Utils::Tokenizer.run("#{item.name} #{item.summary}").join(" ")
     end
   end
 
@@ -133,7 +131,7 @@ describe Item do
     it "should search every tokens in the search string" do
       search_string = "any search string"
       tokens = %w(poulet salade)
-      Tokenizer.stub(:run).and_return(tokens)
+      MesCourses::Utils::Tokenizer.stub(:run).and_return(tokens)
 
       Item.should_receive(:where).
         with(/items.tokens like :token0 and items.tokens like :token1/, hash_including(:token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
