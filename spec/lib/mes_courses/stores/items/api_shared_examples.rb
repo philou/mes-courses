@@ -73,7 +73,7 @@ module MesCourses
             end
 
             it "should have items with unique uris" do
-              sample_items.should all_do have_unique(:uri)
+              valid_sample_items.should all_do have_unique(:uri)
             end
           end
         end
@@ -92,16 +92,24 @@ module MesCourses
         def sample_items
           collect_all(sample_sub_categories, :items)
         end
+        def valid_sample_items
+          valid_items(sample_items)
+        end
         def sample_items_attributes
+          (valid_sample_items.map &:attributes).uniq
+        end
+
+        def valid_items(items)
           result = []
           sample_items.each do |item|
             begin
-              result.push(item.attributes)
+              item.attributes
+              result.push(item)
             rescue BrowsingError => e
               Rails.logger.debug e.message
             end
           end
-          result.uniq
+          result
         end
 
         def parseable_categories_attributes
