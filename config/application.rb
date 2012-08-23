@@ -22,7 +22,7 @@ require 'pp'
 module MesCourses
   class Application < Rails::Application
     include Utils::HerokuHelper
-    include Utils
+    include Utils::EmailConstants
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -99,9 +99,8 @@ module MesCourses
     if on_heroku?
       config.middleware.use ExceptionNotifier,
         :email_prefix => "[#{app_name}] ERROR ",
-        :sender_address => EmailConstants::sender,
-        :exception_recipients => EmailConstants::recipients
+        :sender_address => sender,
+        :exception_recipients => recipients
     end
-
   end
 end
