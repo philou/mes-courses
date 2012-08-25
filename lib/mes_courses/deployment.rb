@@ -105,12 +105,8 @@ module MesCourses
       end
     end
 
-    def import_tester_repos
-      0.upto(6).map { |i| "import-tester-#{i}" }
-    end
-
     def test_and_integration_repos
-      import_tester_repos + ["cart-tester", "integ"]
+      ["cart-tester", "integ"]
     end
 
     def integrate
