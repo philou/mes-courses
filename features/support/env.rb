@@ -67,7 +67,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 # Factory girl steps
 require "factory_girl"
 Dir[Rails.root.join("spec/factories/*.rb")].each {|f| require f}
-require "factory_girl/step_definitions"
 
 # Add the capability to retreive and store db metrics in an active record model
 class ActiveRecord::Base
