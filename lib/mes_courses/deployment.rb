@@ -135,7 +135,7 @@ module MesCourses
       heroku "addons:upgrade logging:expanded", :repo => repo
       heroku "addons:add sendgrid:starter", :repo => repo
 
-      heroku "config:add CRON_TASKS=stores:import HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", :repo => repo
+      heroku "config:add CRON_TASKS=stores:import CRON_DAY_OF_WEEK=0 HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", :repo => repo
     end
 
     private

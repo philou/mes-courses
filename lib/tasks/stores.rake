@@ -32,17 +32,7 @@ namespace :stores do
 
   desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only. Define STORES_IMPORT_DAY to run a specified day of the week."
   task :import => :environment do
-    if Time.now.wday != import_day
-      Rails.logger.info "Skipping stores import this day of the week"
-    else
-      Store.import(ENV['url'])
-    end
-  end
-
-  private
-
-  def import_day
-    ENV['STORES_IMPORT_DAY'].to_i || 0
+    Store.import(ENV['url'])
   end
 
 end
