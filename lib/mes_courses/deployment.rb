@@ -122,8 +122,8 @@ module MesCourses
       puts "\nDeploying to test and integration environments"
       parallel_deploy(test_and_integration_repos)
 
-      puts "\nStarting stores import in integration environment"
-      import_stores_asynchronously("integ")
+      puts "\nLaunching stores import in integration environment"
+      launch_stores_import("integ")
 
       puts "\nIntegration successful :-)"
     end
@@ -193,7 +193,19 @@ module MesCourses
       shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} 'mes-courses' '#{summary} #{status}'"
     end
 
-    def import_stores_asynchronously(repo)
+    def launch_stores_import(repo)
+      kill_current_stores_imports(repo)
+      do_launch_stores_import(repo)
+    end
+    def kill_current_stores_imports(repo)
+      current_stores_imports(repo).each do |process|
+        heroku "ps:stop #{process}", :repo => repo
+      end
+    end
+    def current_stores_imports(repo)
+      `heroku ps --app #{heroku_app(repo)} | grep "rake stores:import" | sed "s/:.*//"`.split("\n")
+    end
+    def do_launch_stores_import(repo)
       heroku "run:detached rake stores:import", :repo => repo
     end
   end
