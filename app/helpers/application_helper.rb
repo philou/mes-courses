@@ -20,4 +20,8 @@ module ApplicationHelper
 
     item_category_path(*args)
   end
+
+  def google_analytics_enabled?
+    ENV["GOOGLE_ANALYTICS_ENABLED"] == true.to_s
+  end
 end
