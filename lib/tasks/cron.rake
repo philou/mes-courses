@@ -17,7 +17,7 @@ task :cron => :environment do
 end
 
 def cron_should_run_today
-  import_day.is_nil? or Time.now.wday == import_day.to_i
+  import_day.nil? or Time.now.wday == import_day.to_i
 end
 def import_day
   ENV['CRON_DAY_OF_WEEK']
