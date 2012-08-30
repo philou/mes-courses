@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2012 by Philippe Bourgau
 
-puts $LOADED_FEATURES
-
 # figure out where we are being loaded from
 if $LOADED_FEATURES.grep(/spec\/spec_helper\.rb/).any?
   begin

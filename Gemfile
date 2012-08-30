@@ -18,7 +18,7 @@ gem "sqlite3", :require => "sqlite3", :group => [:test]
 gem "rspec-rails", :group => [:development, :test, :cucumber, :ci]
 gem "factory_girl_rails", :group => [:test, :cucumber, :ci], :require => false
 gem "webrat", :group => [:test]
-gem "ZenTest", :group => [:development]
+gem "autotest-rails", :group => [:development]
 gem "cucumber-rails", :group => [:cucumber, :ci]
 gem "database_cleaner", :group => [:cucumber, :ci]
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git', :group => [:test, :ci]
