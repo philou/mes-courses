@@ -15,6 +15,7 @@ gem "pg", :group => [:production, :ci, :cucumber, :develpment]
 gem "sqlite3", :require => "sqlite3", :group => [:test]
 
 # testing tools
+gem "spork", :group => [:development, :test, :cucumber, :ci]
 gem "rspec-rails", :group => [:development, :test, :cucumber, :ci]
 gem "factory_girl_rails", :group => [:test, :cucumber, :ci], :require => false
 gem "webrat", :group => [:test]
