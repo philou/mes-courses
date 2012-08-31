@@ -17,3 +17,8 @@ unless Rails.env == "production"
 
 end
 
+desc "Testing task that always fails"
+task :failing do
+  raise StandardError.new("This task always fails")
+end
+

@@ -30,7 +30,7 @@ namespace :stores do
     end
   end
 
-  desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only. Define STORES_IMPORT_DAY to run a specified day of the week."
+  desc "Import stores, by default, (re)import all existing stores, if url=http://... is specified, imports (and maybe creates) this store only."
   task :import => :environment do
     Store.import(ENV['url'])
   end

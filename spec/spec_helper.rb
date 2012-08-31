@@ -76,6 +76,7 @@ Spork.prefork do
 end
 
 Spork.each_run do
+
   # Load schema for in memory sqlite database
   unless on_heroku?
     load_schema = lambda do
@@ -84,4 +85,5 @@ Spork.each_run do
     end
     silence_stream(STDOUT, &load_schema)
   end
+
 end
