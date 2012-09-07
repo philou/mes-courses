@@ -1,6 +1,6 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-Feature: Handling disabled items in import
+Feature: Broken dishes
 
   In order to have full dishes
   A customer
