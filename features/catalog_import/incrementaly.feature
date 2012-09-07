@@ -38,6 +38,8 @@ Feature: Incremental catalog import
     Given the imported store "www.dummy-store.com" with items
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
+    And the dish "Salade de tomates" with items
+      | Tomates |
     When the following items are removed from "www.dummy-store.com"
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
@@ -45,18 +47,35 @@ Feature: Incremental catalog import
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
 
-  Scenario: Second import with back again sold out items
+  Scenario: Second import with items that are available again
 
     Disabled items get re-enabled when they are back in the remote store.
 
     Given the imported store "www.dummy-store.com" with items
       | Category  | Sub category | Item        |
       | Marché    | Légumes      | Tomates     |
+    And the dish "Salade de tomates" with items
+      | Tomates |
     And the following items are disabled
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
     When "www.dummy-store.com" is imported again
     Then the following items should be enabled
+      | Category | Sub category | Item    |
+      | Marché   | Légumes      | Tomates |
+
+  Scenario: Unused and sold out items are deleted
+
+    If some items are not available from the remote store any more and
+    no dish uses them anymore. They are shown deleted.
+
+    Given the imported store "www.dummy-store.com" with items
+      | Category | Sub category | Item    |
+      | Marché   | Légumes      | Tomates |
+    When the following items are removed from "www.dummy-store.com"
+      | Category | Sub category | Item    |
+      | Marché   | Légumes      | Tomates |
+    Then the following items should have been deleted
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
 

@@ -113,6 +113,15 @@ Then /^the following items should be disabled$/ do |table|
   end
 end
 
+Then /^the following items should have been deleted$/ do |table|
+  table.each_item do |category, sub_category, item|
+    visit item_categories_path
+    click_link(category)
+    click_link(sub_category)
+    page.should_not contain_a(item_with_name(item))
+  end
+end
+
 Then /^the following items should be enabled$/ do |table|
   table.each_item do |category, sub_category, item|
     visit item_categories_path

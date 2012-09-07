@@ -23,6 +23,7 @@ module MesCourses
         def finishing_import
           handle_broken_dishes()
           @store.disable_sold_out_items
+          @store.delete_unused_items
           @store.delete_visited_urls
         end
 

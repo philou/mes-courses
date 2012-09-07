@@ -95,11 +95,21 @@ class Store < ActiveRecord::Base
 
   def disable_sold_out_items
     Item.transaction do
-      connection.execute("DELETE FROM item_categories_items WHERE item_category_id = #{ItemCategory.disabled.id}")
-      connection.execute <<-END_OF_SQL
-                            INSERT INTO item_categories_items(item_id,item_category_id)
-                            SELECT item_id, #{ItemCategory.disabled.id} FROM import_sold_out_items
-                            END_OF_SQL
+      connection.execute %{DELETE FROM item_categories_items WHERE item_category_id = #{ItemCategory.disabled.id}}
+      connection.execute %{INSERT INTO item_categories_items(item_id,item_category_id)
+                           SELECT item_id, #{ItemCategory.disabled.id} FROM import_sold_out_items}
+    end
+  end
+
+  def delete_unused_items
+    Item.transaction do
+      connection.execute %{CREATE TEMPORARY TABLE unused_items ON COMMIT DROP AS
+                           SELECT item_id
+                           FROM item_categories_items
+                           WHERE item_category_id = #{ItemCategory.disabled.id}
+                           AND item_id NOT IN (SELECT item_id FROM dishes_items) }
+      connection.execute %{DELETE FROM item_categories_items WHERE item_id IN (SELECT item_id FROM unused_items) }
+      connection.execute %{DELETE FROM items WHERE id IN (SELECT item_id FROM unused_items) }
     end
   end
 

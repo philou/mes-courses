@@ -36,8 +36,9 @@ module MesCourses
             @i_store.finishing_import
           end
 
-          it "should disable sold out items" do
-            @store.should_receive(:disable_sold_out_items)
+          it "should clean up sold out items" do
+            @store.should_receive(:disable_sold_out_items).ordered
+            @store.should_receive(:delete_unused_items).ordered
           end
 
           it "should delete visited urls" do
