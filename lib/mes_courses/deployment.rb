@@ -1,5 +1,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
+require "uri"
+require "net/http"
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
 
@@ -59,6 +61,7 @@ module MesCourses
     def end_deploy(repo)
       push repo
       migrate repo
+      ping repo
     end
 
     def y_or_n?(text)
@@ -139,6 +142,11 @@ module MesCourses
     end
 
     private
+
+    def ping(repo)
+      response = Net::HTTP.get_response(URI("http://#{heroku_app(repo).heroku.com/dishes}"))
+      raise RuntimeError.new("The deployed site returned an http error") unless response.is_a? Net::HTTPSuccess
+    end
 
     def print_help(name, description)
       puts description
