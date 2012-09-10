@@ -168,10 +168,10 @@ module MesCourses
       end
     end
     def current_stores_imports(repo)
-      `heroku ps --app #{heroku_app(repo)} | grep "rake stores:import" | sed "s/:.*//"`.split("\n")
+      `heroku ps --app #{heroku_app(repo)} | grep "rake scheduled:stores:import" | sed "s/:.*//"`.split("\n")
     end
     def do_launch_stores_import(repo)
-      heroku "run:detached rake stores:import", :repo => repo
+      heroku "run:detached rake scheduled:stores:import", :repo => repo
     end
   end
 end
