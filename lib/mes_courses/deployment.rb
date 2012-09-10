@@ -56,9 +56,6 @@ module MesCourses
 
     def deploy(repo)
       puts "Deploying to #{heroku_app(repo)}"
-      end_deploy(repo)
-    end
-    def end_deploy(repo)
       push repo
       migrate repo
       ping repo
@@ -123,7 +120,9 @@ module MesCourses
       push "main"
 
       puts "\nDeploying to test and integration environments"
-      parallel_deploy(test_and_integration_repos)
+      test_and_integration_repos.each do |repo|
+        deploy(repo)
+      end
 
       puts "\nLaunching stores import in integration environment"
       launch_stores_import("integ")
@@ -153,48 +152,6 @@ module MesCourses
       puts
       puts "  ruby script/#{name}"
       puts
-    end
-
-    def parallel_deploy(repos)
-      repos.each {|repo| puts "Deploying to #{heroku_app(repo)}" }
-      errors = run_deployment_processes(repos)
-      print_deployment_logs(repos)
-      forward_failure(errors)
-    end
-
-    def run_deployment_processes(repos)
-      errors = []
-      threads = repos.map do |repo|
-        Thread.new do
-          begin
-            end_deploy_script = File.join(File.dirname(__FILE__), "deployment", "end_deploy.rb")
-            shell "ruby #{end_deploy_script} #{repo} 2> #{deploy_temp_log(repo)}"
-          rescue
-            errors << "Deployment to #{repo} failed"
-          end
-        end
-      end
-      threads.each {|thread| thread.join }
-      return errors
-    end
-
-    def print_deployment_logs(repos)
-      repos.each do |repo|
-        log_file = deploy_temp_log(repo)
-        IO.foreach(log_file) {|line| puts line} if File.exist?(log_file)
-      end
-    end
-
-    def forward_failure(errors)
-      success = errors.empty?
-      unless success
-        message = ["Deployment failed :-("] + errors.map {|t| "   #{t}"}
-        raise RuntimeError.new(message.join("\n"))
-      end
-    end
-
-    def deploy_temp_log(repo)
-      "/tmp/deployment_to_#{heroku_app(repo)}.log"
     end
 
     def notify(summary, status)
