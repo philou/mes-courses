@@ -107,7 +107,8 @@ class Store < ActiveRecord::Base
                            SELECT item_id
                            FROM item_categories_items
                            WHERE item_category_id = #{ItemCategory.disabled.id}
-                           AND item_id NOT IN (SELECT item_id FROM dishes_items) }
+                           AND item_id NOT IN (SELECT item_id FROM dishes_items)
+                           AND item_id NOT IN (SELECT item_id FROM cart_lines) }
       connection.execute %{DELETE FROM item_categories_items WHERE item_id IN (SELECT item_id FROM unused_items) }
       connection.execute %{DELETE FROM items WHERE id IN (SELECT item_id FROM unused_items) }
     end

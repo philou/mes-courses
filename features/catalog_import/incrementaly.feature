@@ -36,16 +36,27 @@ Feature: Incremental catalog import
     They are shown disabled.
 
     Given the imported store "www.dummy-store.com" with items
-      | Category | Sub category | Item    |
-      | Marché   | Légumes      | Tomates |
+      | Category | Sub category | Item       |
+      | Marché   | Légumes      | Tomates    |
+      | Marché   | Légumes      | Concombres |
+      | Marché   | Légumes      | Radis      |
     And the dish "Salade de tomates" with items
       | Tomates |
+    And an old order on "www.dummy-store.com" with
+      | Item       | Quantity |
+      | Concombres |        1 |
     When the following items are removed from "www.dummy-store.com"
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
+      | Marché   | Légumes      | Concombres |
+      | Marché   | Légumes      | Radis      |
     Then the following items should be disabled
+      | Category | Sub category | Item       |
+      | Marché   | Légumes      | Tomates    |
+      | Marché   | Légumes      | Concombres |
+    And the following items should have been deleted
       | Category | Sub category | Item    |
-      | Marché   | Légumes      | Tomates |
+      | Marché   | Légumes      | Radis |
 
   Scenario: Second import with items that are available again
 
@@ -61,21 +72,6 @@ Feature: Incremental catalog import
       | Marché   | Légumes      | Tomates |
     When "www.dummy-store.com" is imported again
     Then the following items should be enabled
-      | Category | Sub category | Item    |
-      | Marché   | Légumes      | Tomates |
-
-  Scenario: Unused and sold out items are deleted
-
-    If some items are not available from the remote store any more and
-    no dish uses them anymore. They are shown deleted.
-
-    Given the imported store "www.dummy-store.com" with items
-      | Category | Sub category | Item    |
-      | Marché   | Légumes      | Tomates |
-    When the following items are removed from "www.dummy-store.com"
-      | Category | Sub category | Item    |
-      | Marché   | Légumes      | Tomates |
-    Then the following items should have been deleted
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
 
