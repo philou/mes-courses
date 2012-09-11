@@ -150,7 +150,7 @@ module MesCourses
     private
 
     def ping(repo)
-      response = Net::HTTP.get_response(URI("http://#{heroku_app(repo).heroku.com/dishes}"))
+      response = Net::HTTP.get_response(URI("http://#{heroku_app(repo)}.heroku.com/dishes"))
       raise RuntimeError.new("The deployed site returned an http error") unless response.is_a? Net::HTTPSuccess
     end
 
