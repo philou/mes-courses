@@ -13,9 +13,10 @@ module MesCourses
     HEROKU_STACK = "bamboo-ree-1.9.2"
 
     def shell(command, env = {})
-      env_prefix = env.map {|var,val| "#{var}=#{val}"}.join(" ")
-      unless system "#{env_prefix} #{command}"
-        raise RuntimeError.new("Command \"#{command}\" failed.")
+      pid = Process.spawn(env, command)
+      _,status = Process.wait2(pid)
+      unless status == 0
+        raise RuntimeError.new("Command \"#{command}\" failed with status #{status}.")
       end
     end
 
@@ -116,10 +117,10 @@ module MesCourses
 
       puts "\nUpdating database"
       bundled_rake "db:migrate", "RAILS_ENV" => "ci"
-      bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => 0
+      bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => "0"
       bundled_rake "db:migrate:reset", "RAILS_ENV" => "ci"
 
-      puts "\nRunning integration script"
+      puts "\nRunning tests"
       bundled_rake "behaviours", "RAILS_ENV" => "ci"
 
       puts "\nPushing to main source repository"
