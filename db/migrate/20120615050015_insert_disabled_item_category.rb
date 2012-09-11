@@ -15,6 +15,7 @@ class InsertDisabledItemCategory < ActiveRecord::Migration
   def self.down
     execute "DROP RULE prevent_delete_of_disabled_item_category ON item_categories;"
 
-    ItemCategory.find_by_name(Constants::DISABLED_ITEM_CATEGORY_NAME).delete
+    disabled_item_category = ItemCategory.find_by_name(Constants::DISABLED_ITEM_CATEGORY_NAME)
+    disabled_item_category.delete unless disabled_item_category.nil?
   end
 end

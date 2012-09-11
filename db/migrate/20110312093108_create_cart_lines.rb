@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 class CreateCartLines < ActiveRecord::Migration
   def self.up
@@ -16,9 +16,6 @@ class CreateCartLines < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :cart_lines, "cart_lines_cart_id_index"
-    remove_index :cart_lines, "cart_lines_cart_id_item_id_index"
-
     drop_table :cart_lines
   end
 end

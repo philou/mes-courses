@@ -10,15 +10,16 @@ class ChangeAdminEmail < ActiveRecord::Migration
   MES_COURSES_EMAIL = "philippe.bourgau@mes-courses.fr"
 
   def self.up
-    update_email!(GOOGLE_EMAIL, MES_COURSES_EMAIL)
+    update_email(GOOGLE_EMAIL, MES_COURSES_EMAIL)
   end
 
   def self.down
-    update_email!(MES_COURSES_EMAIL, GOOGLE_EMAIL)
+    update_email(MES_COURSES_EMAIL, GOOGLE_EMAIL)
   end
 
   private
-  def self.update_email!(old_email, new_email)
-    User.find_by_email!(old_email).update_attributes!(:email => new_email)
+  def self.update_email(old_email, new_email)
+    admin = User.find_by_email(old_email)
+    admin.update_attributes!(:email => new_email) unless admin.nil?
   end
 end

@@ -2,13 +2,8 @@
 
 unless Rails.env == "production"
 
-  desc "Checks all specs, then drops, creates, and migrates the db, finaly runs all scenarios"
-  task :behaviours => [:spec, :ci, 'db:migrate:reset', :cucumber]
-
-  desc "Sets rails in ci mode"
-  task :ci do
-    ENV['RAILS_ENV'] = Rails.env = 'ci'
-  end
+  desc "Runs all specs, and scenarios"
+  task :behaviours => [:spec, :cucumber]
 
   desc "Tasks that launches the remote specs and emails a result"
   task :watchdog => [:environment, :remote_spec] do
