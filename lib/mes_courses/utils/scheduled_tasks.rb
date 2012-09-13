@@ -27,7 +27,7 @@ module MesCourses
       private
 
       def self.should_run_today(name)
-        day_of_week(name).nil? or Time.now.wday == day_of_week(name).to_i
+        day_of_week(name).nil? or Time.now.getutc.wday == day_of_week(name).to_i
       end
 
       def self.day_of_week(name)
