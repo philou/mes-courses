@@ -3,6 +3,6 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_repo_argument("create_heroku_app", "create an heroku app with the corresponding git remote") do |repo|
-  create_heroku_app(repo)
+with_arguments("create_heroku_app", ["REPO", "HEROKU_PASSWORD"], "create an heroku app with the corresponding git remote") do |repo, heroku_password|
+  create_heroku_app(repo, heroku_password)
 end

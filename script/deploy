@@ -3,7 +3,7 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_repo_argument("deploy", "Deploys master branch to the specified remote heroku repo") do |repo|
+with_arguments("deploy", ["REPO"], "Deploys master branch to the specified remote heroku repo") do |repo|
   with_confirmation("deploy master branch to the \"#{repo}\" heroku git repo") do
     deploy(repo)
   end

@@ -99,11 +99,11 @@ module MesCourses
       end
     end
 
-    def with_repo_argument(name, description)
-      if ARGV.count == 0 or ["help", "-h","--help"].include?(ARGV[0])
-        print_help("#{name} REPO", description)
+    def with_arguments(name, argument_names, description)
+      if ARGV.count != argument_names.count or ["help", "-h","--help"].include?(ARGV[0])
+        print_help("#{name} #{argument_names.join(" ")}", description)
       else
-        yield ARGV[0]
+        yield *ARGV
       end
     end
 
@@ -137,14 +137,14 @@ module MesCourses
       puts "\nIntegration successful :-)"
     end
 
-    def create_heroku_app(repo)
+    def create_heroku_app(repo, heroku_password)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
       heroku "addons:add cron:daily", repo: repo
       heroku "addons:upgrade logging:expanded", repo: repo
       heroku "addons:add sendgrid:starter", repo: repo
 
-      heroku "config:add HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", repo: repo
+      heroku "config:add HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=#{heroku_password}", repo: repo
     end
 
     private
