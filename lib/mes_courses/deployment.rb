@@ -199,7 +199,7 @@ module MesCourses
 
     def get_heroku_time_var(repo, var_name)
       result_s = `bundle exec heroku ps --app #{heroku_app(repo)} | grep "#{var_name}" | sed "s/^[^:]*: *//"`.strip
-      if result_s.blank?
+      if result_s.empty?
         Time.new(0)
       else
         result_s.to_time.getlocal
