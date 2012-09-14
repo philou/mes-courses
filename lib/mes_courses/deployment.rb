@@ -169,7 +169,7 @@ module MesCourses
     end
 
     def launch_stores_import(repo)
-      current_imports = current_stores_imports(repo)
+      processes = current_stores_imports(repo)
       kill_current_stores_imports(processes)
 
       limit_to_save_billing(repo, processes) do
