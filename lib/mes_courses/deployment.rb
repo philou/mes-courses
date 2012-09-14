@@ -52,7 +52,7 @@ module MesCourses
     end
 
     def migrate(repo)
-      heroku "run rake db:migrate --trace", :repo => repo
+      heroku "run rake db:migrate --trace", repo: repo
     end
 
     def deploy(repo)
@@ -139,11 +139,11 @@ module MesCourses
     def create_heroku_app(repo)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
-      heroku "addons:add cron:daily", :repo => repo
-      heroku "addons:upgrade logging:expanded", :repo => repo
-      heroku "addons:add sendgrid:starter", :repo => repo
+      heroku "addons:add cron:daily", repo: repo
+      heroku "addons:upgrade logging:expanded", repo: repo
+      heroku "addons:add sendgrid:starter", repo: repo
 
-      heroku "config:add HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", :repo => repo
+      heroku "config:add HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=J\\'ai\\ 2\\ nikes\\ air\\ au\\ cou\\!", repo: repo
     end
 
     private
@@ -165,19 +165,47 @@ module MesCourses
     end
 
     def launch_stores_import(repo)
-      kill_current_stores_imports(repo)
-      do_launch_stores_import(repo)
-    end
-    def kill_current_stores_imports(repo)
-      current_stores_imports(repo).each do |process|
-        heroku "ps:stop #{process}", :repo => repo
+      current_imports = current_stores_imports(repo)
+      kill_current_stores_imports(processes)
+
+      limit_to_save_billing(repo, processes) do
+        do_launch_stores_import(repo)
       end
     end
     def current_stores_imports(repo)
-      `heroku ps --app #{heroku_app(repo)} | grep "rake scheduled:stores:import" | sed "s/:.*//"`.split("\n")
+      `bundle exec heroku ps --app #{heroku_app(repo)} | grep "rake scheduled:stores:import" | sed "s/:.*//"`.split("\n")
+    end
+    def kill_current_stores_imports(processes)
+      processes.each do |process|
+        heroku "ps:stop #{process}", repo: repo
+      end
+    end
+    def limit_to_save_billing(repo, processes)
+      one_week = 7 * 24 * 60 * 60
+      last_import_date_var = "LAST_IMPORT_DATE"
+
+      last_import = get_heroku_time_var(repo, last_import_date_var)
+
+      if !processes.empty? or last_import < Time.now - one_week
+
+        set_heroku_time_var(repo, last_import_date_var, Time.now)
+        yield
+      end
+    end
+
+    def get_heroku_time_var(repo, var_name)
+      result_s = `bundle exec heroku ps --app #{heroku_app(repo)} | grep "#{var_name}" | sed "s/^[^:]*: *//"`.strip
+      if result_s.blank?
+        Time.new(0)
+      else
+        result_s.to_time.getlocal
+      end
+    end
+    def set_heroku_time_var(repo, var_name, time)
+      heroku "config:add #{var_name}=#{time.get_utc.to_s}", repo: repo
     end
     def do_launch_stores_import(repo)
-      heroku "run:detached rake scheduled:stores:import", :repo => repo
+      heroku "run:detached rake scheduled:stores:import", repo: repo
     end
   end
 end
