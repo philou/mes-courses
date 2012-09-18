@@ -76,9 +76,9 @@ module MesCourses
       if y_or_n?(answer)
         begin
           yield
-          notify(task_summary, :success)
-        rescue
-          notify(task_summary, :failure)
+          notify(task_summary, :success, "On the track to success !")
+        rescue Exception => e
+          notify(task_summary, :failure, "Failure : #{e.message}")
           raise
         end
       end
@@ -179,8 +179,8 @@ module MesCourses
       puts
     end
 
-    def notify(summary, status)
-      shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} 'mes-courses' '#{summary} #{status}'"
+    def notify(summary, status, details)
+      shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} '#{summary}' '#{details}'"
     end
 
     def launch_stores_import(repo)
