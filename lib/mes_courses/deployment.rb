@@ -1,7 +1,9 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
+require_relative "../../config/boot"
 require "uri"
 require "net/http"
+require 'trollop'
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
 
@@ -11,6 +13,7 @@ module MesCourses
     include Utils
 
     HEROKU_STACK = "bamboo-ree-1.9.2"
+    TRACE_KEY = "MES_COURSES_DEPLOYMENT_TRACE"
 
     def shell(command, env = {})
       pid = Process.spawn(env, command)
@@ -29,7 +32,7 @@ module MesCourses
     end
 
     def bundled_rake(task, env = {})
-      bundle_exec "rake #{task}", env
+      bundle_exec "rake #{trace_option} #{task}", env
     end
 
     def pull(repo)
@@ -91,19 +94,23 @@ module MesCourses
       end
     end
 
-    def with_help_support(name, description)
-      if ARGV.count != 0 and ["help", "-h","--help"].include?(ARGV[0])
-        print_help(name, description)
-      else
-        yield
+    def with_trace_argument(description, init_proc = nil)
+      options = Trollop::options do
+        banner description
+        opt :trace, "print detailed backtrace on failure"
+        instance_eval &init_proc unless init_proc.nil?
       end
-    end
 
-    def with_arguments(name, argument_names, description)
-      if ARGV.count != argument_names.count or ["help", "-h","--help"].include?(ARGV[0])
-        print_help("#{name} #{argument_names.join(" ")}", description)
-      else
-        yield *ARGV
+      if options[:trace]
+        ENV[TRACE_KEY] ||= "true"
+      end
+
+      begin
+        yield options
+      rescue Exception => e
+        STDERR.puts "Error : #{e.message}"
+        STDERR.puts "Backtrace :\n\t#{e.backtrace.join("\n\t")}" if ENV[TRACE_KEY]
+        exit 1
       end
     end
 
@@ -148,6 +155,14 @@ module MesCourses
     end
 
     private
+
+    def trace_option
+      if ENV[TRACE_KEY]
+        "--trace"
+      else
+        ""
+      end
+    end
 
     def ping(repo)
       url = "http://#{heroku_app(repo)}.heroku.com/dishes"

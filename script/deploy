@@ -3,8 +3,11 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_arguments("deploy", ["REPO"], "Deploys master branch to the specified remote heroku repo") do |repo|
+with_trace_argument "Deploys master branch to the specified remote heroku repo", (proc do
+  opt :repo, "name of the remote git repo, the corresponding app should be named mes-courses-<repo> by convention", required: true, type: :string
+end) do |options|
+
   with_confirmation("deploy master branch to the \"#{repo}\" heroku git repo") do
-    deploy(repo)
+    deploy(options[:repo])
   end
 end

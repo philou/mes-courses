@@ -3,7 +3,7 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_help_support("print_test_and_integration_apps", "prints the names of all test and integration apps") do
+with_trace_argument "print_test_and_integration_apps", "prints the names of all test and integration apps" do
   test_and_integration_repos.each do |repo|
     puts heroku_app(repo)
   end

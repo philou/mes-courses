@@ -3,4 +3,6 @@
 require_relative '../deployment'
 include MesCourses::Deployment
 
-integrate
+with_trace_argument "INTERNAL USE : finishes integration" do
+  integrate
+end

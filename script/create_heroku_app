@@ -3,6 +3,10 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_arguments("create_heroku_app", ["REPO", "HEROKU_PASSWORD"], "create an heroku app with the corresponding git remote") do |repo, heroku_password|
-  create_heroku_app(repo, heroku_password)
+with_trace_argument "create an heroku app with the corresponding git remote", (proc do
+  opt :repo, "name of the remote git repo, the corresponding app should be named mes-courses-<repo> by convention", required: true, type: :string
+  opt :password, "heroku account password", required: true, type: :string
+end) do |options|
+
+  create_heroku_app options[:repo], options[:password]
 end

@@ -3,7 +3,7 @@
 require_relative '../lib/mes_courses/deployment'
 include MesCourses::Deployment
 
-with_help_support("integrate", "Integrates the latest developments to the main repository, deploys to test and integration heroku applications") do
+with_trace_argument "Integrates the latest developments to the main repository, deploys to test and integration heroku applications" do
   with_confirmation("integrate the latest developments") do
     with_timing do
 
