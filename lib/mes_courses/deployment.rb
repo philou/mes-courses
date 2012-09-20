@@ -221,7 +221,7 @@ module MesCourses
       end
     end
     def set_heroku_time_var(repo, var_name, time)
-      heroku "config:add #{var_name}=#{time.get_utc.to_s}", repo: repo
+      heroku "config:add #{var_name}=#{time.getutc.to_s}", repo: repo
     end
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
