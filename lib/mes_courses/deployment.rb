@@ -128,7 +128,7 @@ module MesCourses
       bundled_rake "db:migrate:reset", "RAILS_ENV" => "ci"
 
       puts "\nRunning tests"
-      bundled_rake "behaviours", "RAILS_ENV" => "ci"
+      bundled_rake "behaviours", "BEHAVIOURS_ENV" => "ci"
 
       puts "\nPushing to main source repository"
       push "main"
