@@ -151,7 +151,7 @@ module MesCourses
       heroku "addons:upgrade logging:expanded", repo: repo
       heroku "addons:add sendgrid:starter", repo: repo
 
-      heroku "config:add HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=#{heroku_password}", repo: repo
+      heroku "config:set HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=#{heroku_password}", repo: repo
     end
 
     private
@@ -221,7 +221,7 @@ module MesCourses
       end
     end
     def set_heroku_time_var(repo, var_name, time)
-      heroku "config:add #{var_name}=#{time.getutc.to_s}", repo: repo
+      heroku "config:set #{var_name}=#{time.getutc.to_s}", repo: repo
     end
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
