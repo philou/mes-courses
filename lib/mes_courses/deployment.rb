@@ -134,9 +134,7 @@ module MesCourses
       push "main"
 
       puts "\nDeploying to test and integration environments"
-      test_and_integration_repos.each do |repo|
-        deploy(repo)
-      end
+      test_and_integration_repos.each { |repo| deploy(repo) }
 
       puts "\nLaunching stores import in integration environment"
       launch_stores_import("integ")

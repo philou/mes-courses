@@ -12,6 +12,5 @@ require_relative '../../spec/support/have_body_id_matcher'
 require_relative '../../spec/support/contain_a_matcher'
 require_relative '../../spec/support/page_part'
 require_relative '../../spec/support/knows_page_parts'
-require_relative '../../spec/support/item'
 
 World(KnowsPageParts)

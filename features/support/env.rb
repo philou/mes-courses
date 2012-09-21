@@ -125,4 +125,8 @@ Spork.each_run do
     print "Paused, press any key to continue"
     STDIN.getc
   end
+
+  # rails dependent extensions
+  require_relative '../../spec/support/item'
+
 end
