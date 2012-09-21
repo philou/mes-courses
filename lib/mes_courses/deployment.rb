@@ -4,6 +4,7 @@ require_relative "../../config/boot"
 require "uri"
 require "net/http"
 require 'trollop'
+require 'date'
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
 
@@ -200,14 +201,14 @@ module MesCourses
       end
     end
     def limit_to_save_billing(repo, processes)
-      one_week = 7 * 24 * 60 * 60
+      one_week = 7
       last_import_date_var = "LAST_IMPORT_DATE"
 
       last_import = get_heroku_time_var(repo, last_import_date_var)
 
-      if !processes.empty? or last_import < Time.now - one_week
+      if !processes.empty? or last_import < DateTime.now - one_week
 
-        set_heroku_time_var(repo, last_import_date_var, Time.now)
+        set_heroku_time_var(repo, last_import_date_var, DateTime.now)
         yield
       end
     end
@@ -215,13 +216,13 @@ module MesCourses
     def get_heroku_time_var(repo, var_name)
       result_s = `bundle exec heroku ps --app #{heroku_app(repo)} | grep "#{var_name}" | sed "s/^[^:]*: *//"`.strip
       if result_s.empty?
-        Time.new(0)
+        DateTime.new(0)
       else
-        result_s.to_time.getlocal
+        DateTime.parse(result_s)
       end
     end
-    def set_heroku_time_var(repo, var_name, time)
-      heroku "config:set #{var_name}=#{time.getutc.to_s}", repo: repo
+    def set_heroku_time_var(repo, var_name, dateTime)
+      heroku "config:set #{var_name}=\"#{time.iso8601}\"", repo: repo
     end
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
