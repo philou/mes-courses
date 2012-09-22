@@ -7,7 +7,7 @@ with_trace_argument "Deploys master branch to the specified remote heroku repo",
   opt :repo, "name of the remote git repo, the corresponding app should be named mes-courses-<repo> by convention", required: true, type: :string
 end) do |options|
 
-  with_confirmation("deploy master branch to the \"#{repo}\" heroku git repo") do
+  with_confirmation("deploy master branch to the \"#{options[:repo]}\" heroku git repo") do
     deploy(options[:repo])
   end
 end
