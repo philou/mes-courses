@@ -220,7 +220,7 @@ module MesCourses
       end
     end
     def set_heroku_time_var(repo, var_name, dateTime)
-      heroku "config:set #{var_name}=\"#{time.iso8601}\"", repo: repo
+      heroku "config:set #{var_name}=\"#{dateTime.iso8601}\"", repo: repo
     end
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
