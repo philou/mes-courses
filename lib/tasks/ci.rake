@@ -4,7 +4,7 @@ unless Rails.env == "production"
 
   desc "Runs all specs, and scenarios"
 
-  task :behaviours => [:spec, :cucumber, "db:fixtures:load", "cucumber:dry_run"]
+  task :behaviours => [:spec, :cucumber, :csslint, "db:fixtures:load", "cucumber:dry_run"]
 
   desc "Sets RAILS_ENV to BEHAVIOURS_ENV"
   task :behaviours_env do
@@ -13,9 +13,17 @@ unless Rails.env == "production"
     end
   end
 
-  desc "Tasks that launches the remote specs and emails a result"
+  desc "Launches the remote specs and emails a result"
   task :watchdog => [:environment, :remote_spec] do
     WatchdogNotifier.success_email.deliver
+  end
+
+  desc "Runs csslint and prints errors"
+  task :csslint => [:environment] do
+    command = "csslint public/stylesheets/"
+    if not system command
+      raise RuntimeError.new("Command \"#{command}\" failed.")
+    end
   end
 
 end

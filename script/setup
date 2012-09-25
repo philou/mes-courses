@@ -1,8 +1,9 @@
 #!/bin/sh
 
 ## packages dependencies
-# TODO insert these packeges in the Gemfile somewhere (comments or special function) and get them later on
+# TODO insert these packages in the Gemfile somewhere (comments or special function) and get them later on
 sudo apt-get install libxml2-dev libxslt1-dev postgresql libpq-dev sqlite3 libsqlite3-dev
+sudo npm install -g csslint
 
 ## installing gems
 bundle install
