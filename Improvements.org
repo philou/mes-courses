@@ -1,0 +1,133 @@
+* [PROJECT] assign values to the tasks to help good priorization
+** How could we priorize between tasks and improvements ?
+* [DEVENV] Migrer vers blogit
+** forker blogit
+** intégrer le monkey patch des urls_helpers dans blogit
+** Faire un helper pour une archive
+** ajouter un nom aux users
+** Installer blogit
+** Migrer les colonnes string en text de blogit
+** Migrer le layout de blog
+** Migrer la page d'accueil
+** Mettre en place textile
+** Migrer les articles
+** Migrer les commentaires sur disqus
+** Migrer les rss
+** Faire des redirections pour les anciennes urls
+* [DESIGN] make css better
+** try cactus css automated testing
+** Read a book about good css design
+** Fix csslint issues
+* [DESIGN] ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
+* [DEVENV] voir comment installer les rdoc avec les gem via bundle
+* [DEVENV] améliorer la recherche dans les ebooks
+** trouver un bon indexeur de fichier pour ubuntu
+** setuper calibre
+* [DEVENV] improve devenv ergonomy
+** change emacs color theme and font size (ubuntu mono),
+** package emacs-goodies-el (http://techlogbook.wordpress.com/2008/04/03/changing-emacs-color-theme/)
+** change default size of terminal text
+** see if it is possible to start emacs and terminal with predefined window size
+** fixer "pas de serveur" edit-in-emacs, faire un launcher plus rapide dans unity
+** ajouter un header par defaut aux fichiers créés avec emacs (encoding)
+** essayer d'améliorer emacs pour ruby
+        http://nsaunders.wordpress.com/2009/11/18/turn-emacs-into-an-ide/
+        http://stackoverflow.com/questions/7989090/emacs-ruby-autocomplete-almost-working
+        http://stackoverflow.com/questions/4277788/ruby-navigation-in-emacs
+        http://ozmm.org/posts/textmate_minor_mode.html
+        http://ecb.sourceforge.net/
+** commande emacs pour fermer tous les buffers dans un sous repertoire
+* [DESIGN] améliorer les tests cucumber d'imports
+** Passer les tests cucumber sur RealDummyStore
+** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
+** Supprimer complétement DummyStoreItemsAPI
+* [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
+* [HEROKU] migrate to heroku cedar stack
+* [DEVENV] Speed up integration script
+** Improve hardware
+** parallelize some things
+*** Check for // rspec
+*** Check for // cucumber
+*** see how to organise the outputs
+**** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
+**** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
+* [DEVENV] import db from beta to integ to test migrations with real data
+* [DEVENV] migrate to watchr (tutorial http://www.rubyinside.com/how-to-rails-3-and-rspec-2-4336.html, see also continuous testing book)
+* [HEROKU] utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
+* [HEROKU] configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
+* [DEVENV] initialize a real dummy store from fixture files
+* [DEVENV] create a rake task to use fixtures to create a real dummy store and then to create dishes with the imported items
+* [DEVENV] Custom shell that preloads store generators
+* [DESIGN] spliter du code dans des gems
+** ContainA matcher et PagePart
+** store apis
+** store generator
+** association factories pour FactoryGirl
+** remplacer rails autoload par autoload
+** Heroku logs
+*** HerokuReportErrorMailer
+** Scheduled tasks
+*** HerokuWeeklyScheduledTask
+*** il faut prendre le mail d'erreur avec
+* [DESIGN] put controllers and models in MesCourses namespace module
+** prefix table names
+** try to keep the same routes
+* [DESIGN] Introduce view presenters (see draper gem)
+** commencer avec la vue des item_categories (on pourrait implémenter 2 présenteurs != à la place de faire tous ces assign)
+* [DEVENV] Mettre en place des rcov, heckle et autres dans le script d'intégration continue
+* [DEVENV] completely disable stock test::unit stack from rails
+* [DESIGN] clean up and homogenize usage FactoryGirl and stub_model
+** use the standard FactoryGirl synthax
+** understand how to use FactoryGirl and stub_model together
+** try to use real model instances with stub_model ?
+** use mock_model and mock_model.as_new_record instead of raw mocks
+** decide wether and when to use mock_model and mock or stub_models and FactoryGirl
+** avoid mixing real records and stubs
+* [DEVENV] merger script/setup et script/setup-ci tant qu'il n'y a qu'un seul pc de dev sur le projet
+* [DESIGN] faire un matcher pour les path bar
+** les should have_selector(...), failure message imbriqués permettent de faire exactement ce qu'on veut, il nous faudrait juste les packagés comme des un matcher, si c'est simple, on devrait pouvoir simplifier des matchers existants aussi
+** peut être deux : un path_bar_element(index, text, url)
+** un autre pour path_bar avec une liste d'elements
+* [DESIGN] faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
+* [DESIGN] make cucumber steps more high level
+* [DEVENV] fix recuring ubuntu crashes
+** try Xubuntu
+** try gnome session
+** try XFCE session
+** try unity 2D
+* [DEVENV] regarder orgmod vs github tasks vs google doc, kanban avec orgmode
+* [HEROKU] replicate db from beta to others (heroku and development) to find data errors (while migrating or importing)
+* [DESIGN] enlever l'affreux monkey patch de httputils escape(uri) dans real_dummy_store_items_api.rb
+* [DESIGN] Would it be possible to classify features with tags instead of directories, ex user & dishes for dish modifications
+** passer sur github
+* [DEVENV] Put everything in the repo : thirdparties source code, dev tools, follow up, marketing … maybe I'll need to have a main git repo with submodules
+** faire du ménage dans les trucs qui ne sert en fait à rien
+** voir si il n'y a pas des mode emacs pour remplacer certains tableurs par des modes emacs
+* [DEVENV] Install windows and all browsers with VirtuaBox
+* [DEVENV] Make a web site where one can check logs of heroku apps
+* [DEVENV] build something to scrap analytics to an email :
+** revenue
+** expenditures
+** conversion rates
+* [DESIGN] reduce test maintenance
+** add an essentiel cucumber tag in include these scenarios in autotest suite
+** remove "plumbing" unit tests by essential cucumber scenarios
+** refactor the code to more clear responsibilities
+* [DESIGN] Spike how to control accessibility in models
+* [DESIGN] Spike rspec-spies + .ordered, try to add it (wait for rspec 2)
+* [DESIGN] Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys
+* [DEVENV] Spike launching ci on heroku (might be a problem with db drop ...)
+* [DESIGN] Spike how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
+* [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
+* [RADIANT] faire un script 'setup' pour le cms
+* [RADIANT] redesign cms pull and push
+** utiliser des subtree plutot que des subtree-merge (c'est un wrapper par dessus, cf : http://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)
+** copier coller
+** rest api sur le cms (plus de lien git du tout)
+** mettre les snippets, layouts et styles dans le git du cms (comme au début)
+*** split entre design / écriture
+***  marchera peut être mieux qu'au début parce que:
+**** le design est stabilisé
+**** j'ai un modem 3G
+* [RADIANT] upgrade radiant to the latest version using bundler !
+* [RADIANT] merge latest design modifications

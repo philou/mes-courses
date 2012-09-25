@@ -184,7 +184,7 @@ module MesCourses
 
     def launch_stores_import(repo)
       processes = current_stores_imports(repo)
-      kill_current_stores_imports(processes)
+      kill_current_stores_imports(repo, processes)
 
       limit_to_save_billing(repo, processes) do
         do_launch_stores_import(repo)
@@ -193,7 +193,7 @@ module MesCourses
     def current_stores_imports(repo)
       `bundle exec heroku ps --app #{heroku_app(repo)} | grep "rake scheduled:stores:import" | sed "s/:.*//"`.split("\n")
     end
-    def kill_current_stores_imports(processes)
+    def kill_current_stores_imports(repo, processes)
       processes.each do |process|
         heroku "ps:stop #{process}", repo: repo
       end
