@@ -76,7 +76,6 @@ module MesCourses
       answer = STDIN.readline
       if y_or_n?(answer)
         begin
-          provision_su_rights
           yield
           notify(task_summary, :success, "On the track to success !")
         rescue Exception => e
@@ -155,10 +154,6 @@ module MesCourses
     end
 
     private
-
-    def provision_su_rights
-      shell "sudo echo password ok"
-    end
 
     def trace_option
       if ENV[TRACE_KEY]
