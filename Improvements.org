@@ -1,19 +1,3 @@
-* [PROJECT] assign values to the tasks to help good priorization
-** How could we priorize between tasks and improvements ?
-* [DEVENV] Migrer vers blogit
-** forker blogit
-** intégrer le monkey patch des urls_helpers dans blogit
-** Faire un helper pour une archive
-** ajouter un nom aux users
-** Installer blogit
-** Migrer les colonnes string en text de blogit
-** Migrer le layout de blog
-** Migrer la page d'accueil
-** Mettre en place textile
-** Migrer les articles
-** Migrer les commentaires sur disqus
-** Migrer les rss
-** Faire des redirections pour les anciennes urls
 * [DESIGN] make css better
 ** try cactus css automated testing
 ** Read a book about good css design
@@ -36,6 +20,8 @@
         http://stackoverflow.com/questions/4277788/ruby-navigation-in-emacs
         http://ozmm.org/posts/textmate_minor_mode.html
         http://ecb.sourceforge.net/
+        https://github.com/remvee/emacs-rails
+        http://www.emacswiki.org/RspecMode + http://stackoverflow.com/questions/10288785/rspec-request-specs-failing-when-run-from-emacs-using-rspec-mode
 ** commande emacs pour fermer tous les buffers dans un sous repertoire
 * [DESIGN] améliorer les tests cucumber d'imports
 ** Passer les tests cucumber sur RealDummyStore
