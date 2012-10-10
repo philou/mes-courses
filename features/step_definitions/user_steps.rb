@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2012 by Philippe Bourgau
 
 def log_in
-  @user = User.create!(:email => "email@email.com",
-                       :password => "password",
-                       :password_confirmation => "password")
+  @user = FactoryGirl.create(:user, email: "email@email.com", password: "password")
+
   visit path_to("the login page")
   fill_in("user_email", :with => @user.email)
   fill_in("user_password", :with => "password")

@@ -2,7 +2,7 @@
 ** try cactus css automated testing
 ** Read a book about good css design
 ** Fix csslint issues
-* [DESIGN] ajouter attr_accessible nil par defaut : https://gist.github.com/1978249
+* [DEVENV] install spork-guard ou quelque chose comme ça
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu
