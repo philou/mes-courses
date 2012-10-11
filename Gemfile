@@ -9,7 +9,6 @@ gem "heroku"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
-gem 'trollop'
 
 # databases
 gem "pg", :group => [:production, :ci, :cucumber, :develpment]

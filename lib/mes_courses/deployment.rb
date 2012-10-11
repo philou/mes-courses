@@ -1,10 +1,9 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
-require_relative "../../config/boot"
 require "uri"
 require "net/http"
-require 'trollop'
 require 'date'
+require_relative 'deployment/trollop'
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
 
