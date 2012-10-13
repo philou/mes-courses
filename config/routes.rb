@@ -79,4 +79,5 @@ MesCourses::Application.routes.draw do
   resources :orders
 
   match '/features' => "features#index"
+  match '/cgu' => "cgu#index"
 end

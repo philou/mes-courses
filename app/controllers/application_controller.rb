@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   before_filter :assign_session_place
 
   attr_reader :path_bar, :body_id
+  attr_accessor :app_part
 
   def path_bar=(path_bar)
     @path_bar = path_bar
