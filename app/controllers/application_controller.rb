@@ -5,6 +5,16 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
 
+  MAIN_APP_PART = "app"
+  BLOG_APP_PART = "blog"
+
+  NO_BODY_ID = ''
+  PRESENTATION_BODY_ID = 'presentation'
+  CART_BODY_ID = 'cart'
+  DISHES_BODY_ID = 'dish'
+  ITEMS_BODY_ID = 'items'
+  SESSION_BODY_ID = 'session'
+
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -14,25 +24,39 @@ class ApplicationController < ActionController::Base
 
   def path_bar=(path_bar)
     @path_bar = path_bar
-    @body_id = extract_body_id(path_bar)
+    self.body_id= extract_body_id(path_bar)
+  end
+
+  def body_id=(body_id)
+    @body_id = body_id
+    @app_part = extract_app_part(body_id)
   end
 
   private
 
+  def extract_app_part(body_id)
+    case body_id
+    when PRESENTATION_BODY_ID
+      BLOG_APP_PART
+    else
+      MAIN_APP_PART
+    end
+  end
+
   def extract_body_id(path_bar)
     path_bar_root = path_bar[0]
 
-    return '' if path_bar_element_with_no_link?(path_bar_root)
+    return NO_BODY_ID if path_bar_element_with_no_link?(path_bar_root)
 
     case path_bar_root
     when path_bar_cart_lines_root
-      'cart'
+      CART_BODY_ID
     when path_bar_dishes_root
-      'dish'
+      DISHES_BODY_ID
     when path_bar_items_root
-      'items'
+      ITEMS_BODY_ID
     when path_bar_session_root
-      'session'
+      SESSION_BODY_ID
     else
       raise ArgumentError.new("Unhandled path bar root : #{path_bar_root.inspect}")
     end

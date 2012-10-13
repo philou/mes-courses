@@ -1,5 +1,5 @@
 <%= render(:partial => "shared/html_body_header_1") %>
-        <a href="http://www.mes-courses.fr/" id="place-presentation" onclick="_gaq.push(['_link', 'http://www.mes-courses.fr']); return false;">A propos</a>
+        <%= link_to "A propos", root_path, :id => 'place-presentation' %>
         <span class="separator"> | </span>
         <a href="http://www.mes-courses.fr/blog" id="place-blog" onclick="_gaq.push(['_link', 'http://www.mes-courses.fr/blog']); return false;">Blog</a>
         <span class="separator"> | </span>

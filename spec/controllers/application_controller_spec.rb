@@ -23,7 +23,7 @@ describe ApplicationController do
 
   ignore_user_authentication
 
-  context "body_id from path_bar" do
+  context "body_id and app_part from path_bar" do
 
     context "starting with no link" do
       controller do
@@ -38,7 +38,8 @@ describe ApplicationController do
       it "should be ''" do
         get :index
 
-        assigns[:body_id].should == ''
+        assigns[:body_id].should == ApplicationController::NO_BODY_ID
+        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -54,7 +55,8 @@ describe ApplicationController do
       it "should be cart" do
         get :index
 
-        assigns(:body_id).should == 'cart'
+        assigns(:body_id).should == ApplicationController::CART_BODY_ID
+        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -70,7 +72,8 @@ describe ApplicationController do
       it "should be dish" do
         get :index
 
-        assigns(:body_id).should == 'dish'
+        assigns(:body_id).should == ApplicationController::DISHES_BODY_ID
+        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -86,7 +89,8 @@ describe ApplicationController do
       it "should be item" do
         get :index
 
-        assigns(:body_id).should == 'items'
+        assigns(:body_id).should == ApplicationController::ITEMS_BODY_ID
+        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -102,7 +106,8 @@ describe ApplicationController do
       it "should be session" do
         get :index
 
-        assigns(:body_id).should == 'session'
+        assigns(:body_id).should == ApplicationController::SESSION_BODY_ID
+        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -133,6 +138,24 @@ describe ApplicationController do
         get :index
 
         assigns(:body_id).should be_nil
+        assigns(:app_part).should be_nil
+      end
+    end
+  end
+
+  context "without a path_bar" do
+    context "with presentation body id" do
+      controller do
+        def index
+          self.body_id = ApplicationController::PRESENTATION_BODY_ID
+          redirect_to '/'
+        end
+      end
+      it "assigns body id and app part" do
+        get :index
+
+        assigns(:body_id).should == ApplicationController::PRESENTATION_BODY_ID
+        assigns(:app_part).should == ApplicationController::BLOG_APP_PART
       end
     end
   end

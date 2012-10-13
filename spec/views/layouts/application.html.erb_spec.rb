@@ -23,6 +23,7 @@ describe "layouts/application" do
     assign :path_bar, []
     assign :session_place_text, "Connection"
     assign :session_place_url, "/sessions"
+    assign :app_part, "whatever"
   end
 
   it "should render flash[:notice]" do
@@ -94,6 +95,14 @@ describe "layouts/application" do
     render text: content, layout: "layouts/application.html"
 
     rendered.occurences_of(content).should == 1
+  end
+
+  it "should include the css of the corresponding app part" do
+    assign :app_part, app_part = "best"
+
+    render
+
+    rendered.should include stylesheet_link_tag(app_part, :media => "all", :name => "#{app_part} stylesheet")
   end
 
 end

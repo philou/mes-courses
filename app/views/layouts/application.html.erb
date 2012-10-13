@@ -10,7 +10,7 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
     <%= render(:partial => "shared/html_head_content") %>
-    <%= stylesheet_link_tag "app", :media => "all", :name => "app stylesheet" %>
+    <%= stylesheet_link_tag @app_part, :media => "all", :name => "#{@app_part} stylesheet" %>
 
     <% if google_analytics_enabled? %>
       <script type="text/javascript">

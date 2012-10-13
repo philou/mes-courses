@@ -1,0 +1,137 @@
+/* Presentation */
+.problem {
+    font-size: 1.8em;
+    padding: 1em 0 0 0;
+    font-weight: bold;
+    color: #a0db54;
+}
+
+p.status {
+    color: #00AA00;
+    font-weight: bold;
+}
+
+#subscription * {
+    margin: 0 auto;
+    text-align: center;
+}
+#subscription input.email-field {
+    width: 20em;
+    text-align: left;
+}
+
+#tour {
+  margin: 3em 0;
+  background-color: #EEFFE0;
+  border: 1px #A0DB54 solid;
+}
+#tour td {
+  text-align: center;
+}
+
+.big-button div {
+  text-align: center;
+  margin: 2em;
+}
+.big-button input {
+  font-size: 3em;
+  padding: 1em;
+}
+
+/* Blog */
+#blog-posts {
+    width: 60em;
+    float: left;
+    padding-right: 2em;
+    border-right: 1px solid #a0db54;
+}
+#blog-sidebar {
+    width: 36em;
+    float: right;
+}
+div.sidebar-section {
+    padding: 5em 0 0 0;
+}
+/* with tag expansion, tag cloud can get wider that expected */
+#tags {
+    width: 30em;
+}
+li.nested-1 {
+    margin-left: 1em;
+}
+li.nested-2 {
+    margin-left: 2em;
+}
+.blog-post {
+    margin-bottom: 2.4em;
+    overflow: hidden;
+}
+.blog-post h2 {
+    border-bottom: 1px solid;
+    margin-bottom: 1em;
+}
+
+.blog-post p, .blog-post li {
+    text-align: justify;
+    line-height: 1.6em;
+}
+/* copied from common.css otherwise, it would be overriden by the previous rule */
+p.centered-image {
+    text-align: center;
+    font-height: 1em;
+    font-weight: bold;
+}
+#blog #subscription *{
+    text-align: left;
+}
+
+.blog-post a.link-with-image {
+    float: right;
+    margin-left: 2em;
+}
+
+.blog-post img {
+    border-style: none;
+}
+
+.blog-post ul, .blog-post ol {
+    margin-left: 3em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    list-style-position: outside;
+}
+.blog-post table {
+    width: auto;
+    margin: 1em auto;
+}
+
+p.author {
+    font-size: 1.2em;
+    font-style: italic;
+    margin: 1em 0;
+}
+#social-toolbar li {
+    display: inline;
+}
+iframe.twitter-share-button {
+    position: relative;
+    top: 2px;
+}
+#email-button-link {
+    background: url(../images/email.png) no-repeat scroll 2px 50% transparent;
+    padding-left: 25px;
+    position: relative;
+    top: -2px;
+}
+div.avatar {
+    float: left;
+    padding: 1px;
+    border: solid 1px;
+    margin-right: 1em;
+}
+#comments {
+    margin: 1em;
+}
+.comment {
+  overflow: hidden;
+}
