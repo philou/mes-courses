@@ -1,6 +1,8 @@
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 MesCourses::Application.routes.draw do
+  get "cgu/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -58,9 +60,9 @@ MesCourses::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  root :to => 'welcome#index'
+  root to: 'welcome#index'
 
-  devise_for :users, :controllers => { :sessions => "sessions" }
+  devise_for :users, controllers: { sessions: "sessions" }
 
   resources :item_categories
 
@@ -68,10 +70,11 @@ MesCourses::Application.routes.draw do
     resources :item_categories
     resources :items
   end
+  match '/dishes' => 'dishes#index', as: :user_root, via: :get
 
   resources :cart_lines
-  match '/cart_lines' => 'cart_lines#destroy_all', :as => :destroy_all_cart_lines, :via => :delete
-  match '/cart_lines/add_dish/:id' => 'cart_lines#add_dish', :as => :add_dish_to_cart_lines, :via => :post
+  match '/cart_lines' => 'cart_lines#destroy_all', as: :destroy_all_cart_lines, via: :delete
+  match '/cart_lines/add_dish/:id' => 'cart_lines#add_dish', as: :add_dish_to_cart_lines, via: :post
 
   resources :orders
 
