@@ -9,6 +9,7 @@ gem "heroku"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
+gem 'blogit', :git => 'git://github.com/philou/blogit.git'
 
 # databases
 gem "pg", :group => [:production, :ci, :cucumber, :develpment]

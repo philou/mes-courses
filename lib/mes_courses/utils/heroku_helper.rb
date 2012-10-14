@@ -44,7 +44,6 @@ module MesCourses
         HerokuHelper.safe_heroku_logs
       end
 
-
       private
 
       def HerokuHelper.heroku_logs

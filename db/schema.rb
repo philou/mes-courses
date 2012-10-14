@@ -11,15 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121010064221) do
+ActiveRecord::Schema.define(:version => 20121014061239) do
 
   create_table "blog_comments", :force => true do |t|
-    t.string   "name",       :null => false
-    t.string   "email",      :null => false
-    t.string   "website"
+    t.text     "name",       :null => false
+    t.text     "email",      :null => false
+    t.text     "website"
     t.text     "body",       :null => false
     t.integer  "post_id",    :null => false
-    t.string   "state"
+    t.text     "state"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20121010064221) do
   add_index "blog_comments", ["post_id"], :name => "index_blog_comments_on_post_id"
 
   create_table "blog_posts", :force => true do |t|
-    t.string   "title",                         :null => false
+    t.text     "title",                         :null => false
     t.text     "body",                          :null => false
     t.integer  "blogger_id"
     t.string   "blogger_type"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(:version => 20121010064221) do
     t.datetime "updated_at", :null => false
   end
 
-  add_index "cart_lines", ["cart_id", "item_id"], :name => "cart_lines_cart_id_item_id_index", :unique => true
   add_index "cart_lines", ["cart_id"], :name => "cart_lines_cart_id_index"
 
   create_table "carts", :force => true do |t|
@@ -129,7 +128,7 @@ ActiveRecord::Schema.define(:version => 20121010064221) do
   create_table "orders", :force => true do |t|
     t.integer  "cart_id",                                              :null => false
     t.integer  "store_id",                                             :null => false
-    t.string   "warning_notices_text",       :default => "",           :null => false
+    t.text     "warning_notices_text",       :default => "",           :null => false
     t.text     "error_notice",               :default => "",           :null => false
     t.integer  "forwarded_cart_lines_count", :default => 0,            :null => false
     t.datetime "created_at",                                           :null => false
@@ -153,7 +152,7 @@ ActiveRecord::Schema.define(:version => 20121010064221) do
     t.string   "taggable_type"
     t.integer  "tagger_id"
     t.string   "tagger_type"
-    t.string   "context"
+    t.text     "context"
     t.datetime "created_at"
   end
 
@@ -161,7 +160,7 @@ ActiveRecord::Schema.define(:version => 20121010064221) do
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.text "name"
   end
 
   create_table "users", :force => true do |t|

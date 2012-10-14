@@ -62,6 +62,8 @@ MesCourses::Application.routes.draw do
 
   root to: 'welcome#index'
 
+  mount Blogit::Engine => "/blog"
+
   devise_for :users, controllers: { sessions: "sessions" }
 
   resources :item_categories
