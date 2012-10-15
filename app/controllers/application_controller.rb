@@ -66,10 +66,10 @@ class ApplicationController < ActionController::Base
   def assign_session_place
     unless user_signed_in?
       @session_place_text = 'Connection'
-      @session_place_url = new_user_session_path
+      @session_place_url = main_app.new_user_session_path
     else
       @session_place_text = "Deconnection (#{current_user.email})"
-      @session_place_url = destroy_user_session_path
+      @session_place_url = main_app.destroy_user_session_path
     end
   end
 

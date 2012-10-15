@@ -3,10 +3,6 @@
 
 module PathBarHelper
 
-  def self.included(base)
-    base.send :include, Rails.application.routes.url_helpers
-  end
-
   # Path bar element with no link
   def path_bar_element_with_no_link(text)
     text
