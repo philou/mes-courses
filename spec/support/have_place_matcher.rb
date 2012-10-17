@@ -48,7 +48,7 @@ class HavePlace
     "#{places_xpath}[text()='#{@text}']"
   end
   def place_xpath
-    "#{place_name_xpath}[contains(@href,'#{@url}')]"
+    "#{place_name_xpath}[@href='#{@url}']"
   end
 
 end

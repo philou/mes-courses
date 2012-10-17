@@ -1,4 +1,5 @@
-* [DESIGN] make css better
+* [DESIGN] Improve style testing
+** try to test design and style through cucumber
 ** try cactus css automated testing
 ** Read a book about good css design
 ** Fix csslint issues

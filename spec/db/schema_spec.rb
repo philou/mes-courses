@@ -6,9 +6,13 @@ require "spec_helper"
 describe "Schema" do
 
   it "uses infinite text columns instead of bounded string columns" do
-    schema_def = IO.read(File.join(Rails.root, 'db', 'schema.rb'))
+    File.open(File.join(Rails.root, 'db', 'schema.rb'), "r") do |schema_file|
 
-    schema_def.should_not include(':string')
+      lines = schema_file.lines
+      lines = lines.find_all {|line| line =~ /[^a-zA-Z0-9_]string[^a-zA-Z0-9_]/ } # get all lines with the word "string"
+      lines = lines.find_all {|line| !(line =~ /t\.string\s+\"[^\"]*_type\"/)} # ignore polymorphic xxx_type columns
+
+      lines.should be_empty
+    end
   end
-
 end

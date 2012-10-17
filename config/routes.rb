@@ -60,9 +60,9 @@ MesCourses::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  mount Blogit::Engine => "/blog", as: 'blog'
-
   root to: 'welcome#index'
+
+  mount Blogit::Engine => "/blog", as: 'blog'
 
   devise_for :users, controllers: { sessions: "sessions" }
 

@@ -13,30 +13,43 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+
     when /the login page/
-      new_user_session_path
+      '/users/sign_in'
+
     when /logout/
-      destroy_user_session_path
+      '/users/sign_out'
+
     when /the cart page/
-      cart_lines_path
+      '/cart_lines'
+
     when /the full dish catalog page/
-      dishes_path
+      '/dishes'
+
     when /the dish creation page/
-      new_dish_path
+      '/dishes/new'
+
     when /the "([^"]*)" dish page/
-      dish_path(Dish.find_by_name($1))
+      "/dishes/#{Dish.find_by_name($1).id}"
+
     when /the "([^"]*)" dish item categories page/
-      dish_item_categories_path(Dish.find_by_name($1))
+      "/dishes/#{Dish.find_by_name($1).id}/item_categories"
+
     when /the "([^"]*)" dish "([^"]*)" item category page/
-      dish_item_category_path(Dish.find_by_name($1), ItemCategory.find_by_name($2))
+      "/dishes/#{Dish.find_by_name($1).id}/item_categories/#{ItemCategory.find_by_name($2).id}"
+
     when /the item categories page/
-      item_categories_path
+      "/item_categories"
+
     when /the "([^"]*)" item category page/
-      item_category_path(ItemCategory.find_by_name_and_parent_id($1, ItemCategory.root.id))
+      "/item_categories/#{ItemCategory.find_by_name_and_parent_id($1, ItemCategory.root.id).id}"
+
     when /the "([^"]*)" item sub category page/
-      item_category_path(ItemCategory.find_by_name($1))
-    when /the "([^"]*)" item page/
-      item_category_path(Item.find_by_name($1))
+      "/item_categories/#{ItemCategory.find_by_name($1).id}"
+
+    when /the blog page/
+      '/blog'
+
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

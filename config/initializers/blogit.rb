@@ -31,7 +31,7 @@ Blogit.configure do |config|
   # config.posts_per_page = 5
 
   # The name of the before filter we'll call to authenticate the current user.
-  # config.authentication_method = :login_required
+  config.authentication_method = :authenticate_user!
 
   # If set to true, the comments form will POST and DELETE to the comments
   # controller using AJAX calls.
