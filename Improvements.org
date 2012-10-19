@@ -4,6 +4,12 @@
 ** Read a book about good css design
 ** Fix csslint issues
 * [DEVENV] install spork-guard ou quelque chose comme ça
+* [DEVENV] écrire un guide de debugging complet
+** debugger rails (dans emacs)
+** débugger rspec (dans emacs)
+** débugger cucumber (dans emacs)
+** si besoin écrire du emacs script
+** voir comment faire un break on exception
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu
