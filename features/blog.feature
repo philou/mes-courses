@@ -22,4 +22,17 @@ Feature: Blog
       """
     Then there should be a blog article "My first great article"
 
+  Scenario: Going to the blog
+
+    This simple test validates that the blogit_config and blogit_authenticate NoMethodErrors
+    do not occur again.
+
+    Given there is an article "Comment faire ses courses facilement" with content
+       """
+       Utilisez mes-courses.fr
+       """
+    And I am on the home page
+    When I go to the blog page
+    Then there should be a blog article "Comment faire ses courses facilement"
+
 # TODO blog place

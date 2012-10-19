@@ -1,6 +1,13 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
+Given /^there is an article "(.*?)" with content$/ do |title, content|
+  user = FactoryGirl.create(:user, email: "email@email.com", password: "password")
+  post = Blogit::Post.new(title: title, body: content)
+  post.blogger = user
+  post.save!
+end
+
 Then /^there should be a link to the write a new article$/ do
   page.should have_xpath("//a[@href='/blog/posts/new'][contains(.,'Nouvel article')]")
 end
