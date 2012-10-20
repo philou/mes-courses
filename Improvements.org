@@ -3,6 +3,9 @@
 ** try cactus css automated testing
 ** Read a book about good css design
 ** Fix csslint issues
+* [HEROKU] migrate to heroku toolbelt
+** manage logs with papertrail of logentry instead of using the heroku gem
+** replace hirefire gem with hirefireapp.com (10$/m)
 * [DEVENV] install spork-guard ou quelque chose comme ça
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)

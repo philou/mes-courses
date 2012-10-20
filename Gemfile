@@ -9,7 +9,7 @@ gem "heroku"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
-gem 'blogit', :git => 'git://github.com/philou/blogit.git'
+gem 'blogit'
 
 # databases
 gem "pg", :group => [:production, :ci, :cucumber, :develpment]
@@ -27,4 +27,4 @@ gem "database_cleaner", :group => [:cucumber, :ci]
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git', :group => [:test, :ci]
 
 # developpment tools
-gem "debugger", group: [:development, :test, :cucumber]
+# gem "debugger", group: [:development, :test, :cucumber]
