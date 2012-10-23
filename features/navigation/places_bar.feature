@@ -4,6 +4,14 @@ Feature: Places bar
   A customer
   Wants the current section at the top of the page to be styled
 
+  Scenario: Main place
+    When I go to the home page
+    Then the place "A propos" should be highlighted
+
+  Scenario: Blog place
+    When I go to the blog page
+    Then the place "Blog" should be highlighted
+
   Scenario: Dish place
     When I go to the full dish catalog page
     Then the place "Recettes" should be highlighted

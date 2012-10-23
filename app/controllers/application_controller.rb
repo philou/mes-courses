@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   NO_BODY_ID = ''
   PRESENTATION_BODY_ID = 'presentation'
+  BLOG_BODY_ID = 'blog'
   CART_BODY_ID = 'cart'
   DISHES_BODY_ID = 'dish'
   ITEMS_BODY_ID = 'items'
@@ -38,6 +39,8 @@ class ApplicationController < ActionController::Base
   def extract_app_part(body_id)
     case body_id
     when PRESENTATION_BODY_ID
+      BLOG_APP_PART
+    when BLOG_BODY_ID
       BLOG_APP_PART
     else
       MAIN_APP_PART

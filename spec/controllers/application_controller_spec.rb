@@ -158,6 +158,21 @@ describe ApplicationController do
         assigns(:app_part).should == ApplicationController::BLOG_APP_PART
       end
     end
+
+    context "with blog body id" do
+      controller do
+        def index
+          self.body_id = ApplicationController::BLOG_BODY_ID
+          redirect_to '/'
+        end
+      end
+      it "assigns body id and app part" do
+        get :index
+
+        assigns(:body_id).should == ApplicationController::BLOG_BODY_ID
+        assigns(:app_part).should == ApplicationController::BLOG_APP_PART
+      end
+    end
   end
 
   context "session place" do
