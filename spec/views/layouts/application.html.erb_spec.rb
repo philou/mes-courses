@@ -102,7 +102,7 @@ describe "layouts/application" do
 
     render
 
-    rendered.should include stylesheet_link_tag(app_part, :media => "all", :name => "#{app_part} stylesheet")
+    rendered.should include "best.css"
   end
 
 end

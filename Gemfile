@@ -9,11 +9,20 @@ gem "heroku"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
-gem 'blogit'
+gem 'blogit', git: 'git://github.com/KatanaCode/blogit.git'
+gem 'jquery-rails'
 
 # databases
 gem "pg", :group => [:production, :ci, :cucumber, :develpment]
 gem "sqlite3", :require => "sqlite3", :group => [:test]
+
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
+end
 
 # testing tools
 gem "spork", :group => [:development, :test, :cucumber, :ci]

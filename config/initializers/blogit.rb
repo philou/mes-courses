@@ -28,7 +28,7 @@ Blogit.configure do |config|
   config.blogger_display_name_method = :name
 
   # Which DateTime::FORMATS format do we use to display blog and comment publish time
-  # config.datetime_format = :short
+  config.datetime_format = :long
 
   # Should the controllers cache the blog pages as HTML?
   # config.cache_pages = false

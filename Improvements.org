@@ -113,6 +113,7 @@
 * [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
 * [HEROKU] migrate to heroku toolbelt if not working anymore
 ** add apt-get install heroku toolbelt to dev-setup
+** or gem install heroku foreman to rb-setup (seems better)
 ** manage logs with papertrail of logentry instead of using the heroku gem
 ** replace hirefire gem with hirefireapp.com (10$/m)
 ** update deployment.rb to run heroku instead of bundle exec heroku
