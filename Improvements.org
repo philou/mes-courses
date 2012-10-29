@@ -3,6 +3,8 @@
 ** try cactus css automated testing
 ** Read a book about good css design
 ** Fix csslint issues
+*** TODO utiliser un h3 pour les titres dans la sidebar
+*** TODO mettre la sidebar en 1° et utilisé un float right dessus
 * [DEVENV] install spork-guard ou quelque chose comme ça
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)

@@ -75,6 +75,9 @@ module MesCourses
     # Change the path that assets are served from
     # config.assets.prefix = "/assets
 
+    # Precompile blog.css and app.css
+    config.assets.precompile += [/blog.css/, /app.css/]
+
     # Suggested by devise : on heroku, do not access the DB or load models when
     # precompiling your assets
     if on_heroku?

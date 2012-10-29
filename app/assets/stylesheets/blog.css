@@ -1,4 +1,6 @@
-//= require common
+/*
+*= require common
+*/
 
 /* Presentation */
 .problem {
@@ -8,7 +10,7 @@
     color: #a0db54;
 }
 
-p.status {
+.status {
     color: #00AA00;
     font-weight: bold;
 }
@@ -17,7 +19,7 @@ p.status {
     margin: 0 auto;
     text-align: center;
 }
-#subscription input.email-field {
+#subscription .email-field {
     width: 20em;
     text-align: left;
 }
@@ -51,17 +53,17 @@ p.status {
     width: 36em;
     float: right;
 }
-div.sidebar-section {
+.sidebar-section {
     padding: 5em 0 0 0;
 }
 /* with tag expansion, tag cloud can get wider that expected */
 #tags {
     width: 30em;
 }
-li.nested-1 {
+.nested-1 {
     margin-left: 1em;
 }
-li.nested-2 {
+.nested-2 {
     margin-left: 2em;
 }
 .blog-post {
@@ -78,16 +80,15 @@ li.nested-2 {
     line-height: 1.6em;
 }
 /* copied from common.css otherwise, it would be overriden by the previous rule */
-p.centered-image {
+.centered-image {
     text-align: center;
-    font-height: 1em;
     font-weight: bold;
 }
 #blog #subscription *{
     text-align: left;
 }
 
-.blog-post a.link-with-image {
+.blog-post .link-with-image {
     float: right;
     margin-left: 2em;
 }
@@ -107,7 +108,7 @@ p.centered-image {
     margin: 1em auto;
 }
 
-p.author {
+.author {
     font-size: 1.2em;
     font-style: italic;
     margin: 1em 0;
@@ -115,7 +116,7 @@ p.author {
 #social-toolbar li {
     display: inline;
 }
-iframe.twitter-share-button {
+.twitter-share-button {
     position: relative;
     top: 2px;
 }
@@ -125,7 +126,7 @@ iframe.twitter-share-button {
     position: relative;
     top: -2px;
 }
-div.avatar {
+.avatar {
     float: left;
     padding: 1px;
     border: solid 1px;

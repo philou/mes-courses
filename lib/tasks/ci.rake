@@ -20,7 +20,7 @@ unless Rails.env == "production"
 
   desc "Runs csslint and prints errors"
   task :csslint => [:environment] do
-    command = "csslint public/stylesheets/"
+    command = "csslint app/assets/stylesheets/"
     if not system command
       raise RuntimeError.new("Command \"#{command}\" failed.")
     end
