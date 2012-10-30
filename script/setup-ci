@@ -4,9 +4,10 @@
 echo "You should already have a dev env on this machine"
 
 ## installing gems
-bundle install
-rbenv rehash
+echo "Check if bunde install rehash is needed"
+# bundle install
+# rbenv rehash
 
 ## post requirements
-echo "create a terminal shortcut to this directory with a different background color"
+echo "create a terminal shortcut to this directory with a different background color (ex: xterm -geometry 160x50 -bg DarkSalmon)"
 

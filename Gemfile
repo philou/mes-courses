@@ -5,7 +5,7 @@ gem "mechanize"
 gem "exception_notification", :require => 'exception_notifier'
 gem "delayed_job_active_record"
 gem "hirefire", :group => [:development, :production]
-gem "heroku"
+gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'

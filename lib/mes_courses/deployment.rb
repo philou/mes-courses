@@ -49,9 +49,9 @@ module MesCourses
 
     def heroku(command, options = {})
       if options.include?(:repo)
-        bundle_exec "heroku #{command} --app #{heroku_app(options[:repo])}"
+        shell "heroku #{command} --app #{heroku_app(options[:repo])}"
       else
-        bundle_exec "heroku #{command}"
+        shell "heroku #{command}"
       end
     end
 
@@ -119,6 +119,9 @@ module MesCourses
     end
 
     def integrate
+      puts "\nUnlocking ssh keys"
+      shell "ssh-add"
+
       puts "\nInstalling dependencies"
       bundle "install"
 
