@@ -1,3 +1,4 @@
+* [HEROKU] migrate to heroku cedar stack
 * [DESIGN] Improve style testing
 ** try to test design and style through cucumber
 ** try cactus css automated testing
@@ -37,7 +38,6 @@
 ** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
 ** Supprimer complétement DummyStoreItemsAPI
 * [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
-* [HEROKU] migrate to heroku cedar stack
 * [DEVENV] Speed up integration script
 ** Improve hardware
 ** parallelize some things
