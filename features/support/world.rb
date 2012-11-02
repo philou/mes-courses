@@ -14,3 +14,11 @@ require_relative '../../spec/support/page_part'
 require_relative '../../spec/support/knows_page_parts'
 
 World(KnowsPageParts)
+
+module KnowsUsers
+  def user
+    @user ||= FactoryGirl.create(:user, email: "email@email.com", password: "password")
+  end
+end
+
+World(KnowsUsers)

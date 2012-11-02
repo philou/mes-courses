@@ -7,6 +7,8 @@
 *** TODO utiliser un h3 pour les titres dans la sidebar
 *** TODO mettre la sidebar en 1° et utilisé un float right dessus
 * [DEVENV] install spork-guard ou quelque chose comme ça
+** regarder guard
+** regarder aussi Zeus, un remplacant de spork
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)
 ** débugger rspec (dans emacs)

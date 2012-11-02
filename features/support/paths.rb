@@ -50,6 +50,9 @@ module NavigationHelpers
     when /the blog page/
       '/blog'
 
+    when /the blog article "([^"]*)" page/
+      post = Blogit::Post.find_by_title($1)
+      "/blog/posts/#{post.id}-#{post.title.gsub(' ','-')}"
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -2,10 +2,8 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 def log_in
-  @user = FactoryGirl.create(:user, email: "email@email.com", password: "password")
-
   visit path_to("the login page")
-  fill_in("user_email", :with => @user.email)
+  fill_in("user_email", :with => user.email)
   fill_in("user_password", :with => "password")
   click_button("Connection")
 end
@@ -23,5 +21,5 @@ When /^I log in$/ do
 end
 
 When /^I log out$/ do
-  click_link "Deconnection (#{@user.email})"
+  click_link "Deconnection (#{user.email})"
 end
