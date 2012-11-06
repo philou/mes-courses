@@ -33,6 +33,7 @@ Feature: Blog layout
     When I go to the blog page
     Then I should see the whole blog sidebar
 
+  @ignore
   Scenario: An article layout
 
     There should be custom navigation widgets for each article
