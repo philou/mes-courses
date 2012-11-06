@@ -59,7 +59,20 @@
 /* with tag expansion, tag cloud can get wider that expected */
 #tags {
     width: 30em;
+    text-align: center;
 }
+#tags .size1 { font-size: 1em; }
+#tags .size2 { font-size: 1.3em; }
+#tags .size3 { font-size: 1.6em; }
+#tags .size4 { font-size: 1.9em; }
+#tags .size5 { font-size: 2.2em; }
+#tags .size6 { font-size: 2.5em; }
+
+/* archive default display */
+.archive-month, .archive-post {
+    display: none;
+}
+
 .nested-1 {
     margin-left: 1em;
 }

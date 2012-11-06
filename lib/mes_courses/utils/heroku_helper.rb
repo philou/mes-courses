@@ -19,7 +19,7 @@ module MesCourses
       end
       def HerokuHelper.safe_heroku_logs
         if on_heroku?
-          heroku_logs
+          heroku_logs(heroku_login, heroku_password)
         else
           "Not on heroku, no logs available."
         end
@@ -46,10 +46,10 @@ module MesCourses
 
       private
 
-      def HerokuHelper.heroku_logs
+      def HerokuHelper.heroku_logs(login, password)
         logs = []
 
-        Heroku::Client.new(heroku_login, heroku_password).read_logs(app_name) do |chunk|
+        Heroku::Client.new(login, password).read_logs(app_name) do |chunk|
           logs.push(chunk)
         end
 

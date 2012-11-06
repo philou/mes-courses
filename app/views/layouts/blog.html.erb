@@ -1,0 +1,39 @@
+<% content_for :nested_layout do %>
+  <div id="blog-posts">
+  <%= yield %>
+  </div>
+  <div id="blog-sidebar">
+
+    <div id="about" class="sidebar-section">
+      <h2>A propos de ce blog</h2>
+      <p>Notre blog est régulièrement mis à jour avec des recettes, des techniques et des astuces de cuisine qui vous feront gagner du temps. N'hésitez pas à venir partager les vôtres avec nous !</p>
+    </div>
+
+    <div id="tags" class="sidebar-section">
+      <% tag_cloud(@tags, (1..6).map {|i| "size#{i}" }) do |tag, css_class| %>
+        <%= link_to tag.name, blog.tagged_blog_posts_path(tag.name), :class => css_class %>
+      <% end %>
+    </div>
+
+    <div id="subscription" class="sidebar-section">
+      <h2>Souscrivez à notre blog</h2>
+      <form id="blog-email-subscription" action="http://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('http://feedburner.google.com/fb/a/mailverify?uri=mes-courses-fr', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+      <p>Par <a href="http://feeds.feedburner.com/mes-courses-fr">RSS</a> ou par email (via <a href="http://feedburner.google.com" target="_blank">FeedBurner</a> ) :</p>
+      <p>
+        <input type="text" name="email" class="email-field"/>
+        <input type="submit" value="Souscrire" />
+        <input type="hidden" value="mes-courses-fr" name="uri"/>
+        <input type="hidden" name="loc" value="fr_FR"/>
+      </p>
+     </form>
+    </div>
+
+    <div id="archive" class="sidebar-section">
+      <h2>Anciens articles</h2>
+      <%= blog_posts_archive_tag('archive-year', 'archive-month', 'archive-post') {|post| link_to(post.title, blog.post_path(post)) } %>
+    </div>
+
+  </div>
+<% end %>
+
+<%= render template: "layouts/application" %>

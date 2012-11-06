@@ -1,3 +1,7 @@
+* [HEROKU] migrate to heroku toolbelt if not working anymore
+** fork hire_fire and depend on heroku-api instead of heroku
+** manage logs with papertrail of logentry instead of using the heroku gem
+** replace hirefire gem with hirefireapp.com (10$/m)
 * [HEROKU] migrate to heroku cedar stack
 * [DESIGN] Improve style testing
 ** try to test design and style through cucumber
@@ -115,10 +119,6 @@
 * [DEVENV] Spike launching ci on heroku (might be a problem with db drop ...)
 * [DESIGN] Spike how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
 * [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
-* [HEROKU] migrate to heroku toolbelt if not working anymore
-** fork hire_fire and depend on heroku-api instead of heroku
-** manage logs with papertrail of logentry instead of using the heroku gem
-** replace hirefire gem with hirefireapp.com (10$/m)
 * [RADIANT] faire un script 'setup' pour le cms
 * [RADIANT] redesign cms pull and push
 ** utiliser des subtree plutot que des subtree-merge (c'est un wrapper par dessus, cf : http://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)

@@ -31,4 +31,24 @@ module KnowsPageParts
     dish_with_name(name).that("is enabled", "[//input[@type='submit' and not(@disabled)]]")
   end
 
+  def blog_body
+    PagePart.new("a blog body", "//body[@id='blog']")
+  end
+
+  def blog_sidebar
+    blog_body.with("a blog sidebar", "//div[@id='blog-sidebar']")
+  end
+
+  def blog_sidebar_section(id)
+    blog_sidebar.with("a blog #{id} section", "/div[@id='#{id}' and @class='sidebar-section']")
+  end
+
+  def link_to_posts_with_tag(name)
+    PagePart.new("a link to blog posts with tag '#{name}'", "//a[@href='#{blog.tagged_blog_posts_path(name)}']")
+  end
+
+  def link_to_post(name)
+    PagePart.new("a link to blog post '#{name}'", "//a[text()='#{name}' and matches(@href,'/blog/posts/.*#{name})]")
+  end
+
 end

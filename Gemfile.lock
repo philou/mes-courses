@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/KatanaCode/blogit.git
-  revision: 7ca7fed30c18deb0d0cea5f51ef1bdfbf297420c
+  revision: 02a2b1c6d7b6f3f0054b58d684a3678ca6310905
   specs:
     blogit (0.5.1)
       RedCloth (>= 4.2.9)

@@ -38,3 +38,16 @@ Then /^there should not be a blog article "(.*?)"$/ do |title|
   page.should_not have_content(title)
 end
 
+Then /^I should see the whole blog sidebar$/ do
+  page.should contain_a(blog_sidebar_section("about"))
+  page.should contain_a(blog_sidebar_section("tags"))
+  page.should contain_a(blog_sidebar_section("subscription"))
+  page.should contain_a(blog_sidebar_section("archive"))
+end
+
+Then /^I should see the social and navigation article footer$/ do
+  # tag links
+  # social bar
+  # disqus comments
+  pending # express the regexp above with the code you wish you had
+end
