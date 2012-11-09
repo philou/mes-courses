@@ -46,8 +46,7 @@ Then /^I should see the whole blog sidebar$/ do
 end
 
 Then /^I should see the social and navigation article footer$/ do
-  # tag links
-  # social bar
-  # disqus comments
-  pending # express the regexp above with the code you wish you had
+  page.should contain_a(blog_post_social_bar)
+  page.should contain_a(blog_post_related_posts)
+  page.should contain_a(blog_post_disqus_comments)
 end

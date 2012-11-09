@@ -51,4 +51,17 @@ module KnowsPageParts
     PagePart.new("a link to blog post '#{name}'", "//a[text()='#{name}' and matches(@href,'/blog/posts/.*#{name})]")
   end
 
+  def blog_post
+    blog_body.with("a blog post", "//div[@id='blog-posts']")
+  end
+
+  def blog_post_social_bar
+    blog_post.with("a social bar", "/div[@id='blog_share_bar']")
+  end
+  def blog_post_related_posts
+    blog_post.with("related posts", "/div[@id='related_posts']")
+  end
+  def blog_post_disqus_comments
+    blog_post.with("disqus comments", "/div[@id='disqus_thread']")
+  end
 end
