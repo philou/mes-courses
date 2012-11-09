@@ -4,7 +4,7 @@ unless Rails.env == "production"
 
   desc "Runs all specs, and scenarios"
 
-  task :behaviours => [:spec, :cucumber, :csslint, "db:fixtures:load", "cucumber:dry_run", "assets:precompile"]
+  task :behaviours => [:spec, :behaviours_env, "assets:precompile", :cucumber, :csslint, "db:fixtures:load", "cucumber:dry_run"]
 
   desc "Sets RAILS_ENV to BEHAVIOURS_ENV"
   task :behaviours_env do

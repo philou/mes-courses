@@ -126,12 +126,13 @@ module MesCourses
       bundle "install"
 
       puts "\nUpdating database"
-      bundled_rake "db:migrate", "RAILS_ENV" => "ci"
-      bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => "0"
       bundled_rake "db:migrate:reset", "RAILS_ENV" => "ci"
 
       puts "\nRunning tests"
       bundled_rake "behaviours", "BEHAVIOURS_ENV" => "ci"
+
+      puts "\nChecking database rollback"
+      bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => "0"
 
       puts "\nPushing to main source repository"
       push "main"
