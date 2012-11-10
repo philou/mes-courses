@@ -134,6 +134,9 @@ module MesCourses
       puts "\nChecking database rollback"
       bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => "0"
 
+      puts "\nPrecompiling assets"
+      precompile_assets
+
       puts "\nPushing to main source repository"
       push "main"
 
@@ -144,6 +147,14 @@ module MesCourses
       launch_stores_import("integ")
 
       puts "\nIntegration successful :-)"
+    end
+
+    def precompile_assets
+      shell "rm -r public/assets"
+      shell "git rm -r public/assets"
+      bundled_rake "assets:precompile", "RAILS_ENV" => "production"
+      shell "git add public/assets"
+      shell 'git commit -m "Precompile assets for heroku"'
     end
 
     def create_heroku_app(repo, heroku_password)
