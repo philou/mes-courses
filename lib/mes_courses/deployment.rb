@@ -178,10 +178,13 @@ module MesCourses
     end
 
     def ping(repo)
-      url = "http://#{heroku_app(repo)}.heroku.com/dishes"
-      response = Net::HTTP.get_response(URI(url))
-      unless response.is_a? Net::HTTPSuccess or response.is_a? Net::HTTPRedirection
-        raise RuntimeError.new("The site deployed at \"#{url}\" returned an http error (code #{response.code})")
+      require_relative "../../config/boot"
+      require "net/ping"
+
+      url = "http://#{heroku_app(repo)}.heroku.com"
+      pinger = Net::Ping::HTTP.new(url)
+      unless pinger.ping?
+        raise RuntimeError.new("The site deployed at \"#{url}\" does not respond to http (warning: #{pinger.warning}, exception: #{pinger.exception})")
       end
     end
 
