@@ -3,6 +3,8 @@
 ** manage logs with papertrail of logentry instead of using the heroku gem
 ** replace hirefire gem with hirefireapp.com (10$/m)
 * [HEROKU] migrate to heroku cedar stack
+** remove rubyracer from the Gemfile
+** remove assets precompiling with heroku assets precompiling
 * [DESIGN] Improve style testing
 ** try to test design and style through cucumber
 ** try cactus css automated testing
