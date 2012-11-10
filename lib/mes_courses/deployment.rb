@@ -150,8 +150,8 @@ module MesCourses
     end
 
     def precompile_assets
-      shell "rm -r public/assets"
-      shell "git rm -r public/assets"
+      shell "rm -rf public/assets"
+      shell "git rm -rf --ignore-unmatch public/assets"
       bundled_rake "assets:precompile", "RAILS_ENV" => "production"
       shell "git add public/assets"
       shell 'git commit -m "Precompile assets for heroku"'
