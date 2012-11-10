@@ -182,7 +182,7 @@ module MesCourses
       require "net/ping"
 
       url = "http://#{heroku_app(repo)}.heroku.com"
-      pinger = Net::Ping::HTTP.new(url)
+      pinger = Net::Ping::HTTP.new(url, nil, 30)
       unless pinger.ping?
         raise RuntimeError.new("The site deployed at \"#{url}\" does not respond to http (warning: #{pinger.warning}, exception: #{pinger.exception})")
       end
