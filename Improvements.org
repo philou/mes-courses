@@ -5,6 +5,7 @@
 * [HEROKU] migrate to heroku cedar stack
 ** remove rubyracer from the Gemfile
 ** remove assets precompiling with heroku assets precompiling
+** change the assets line at the top of application.rb
 * [DESIGN] Improve style testing
 ** try to test design and style through cucumber
 ** try cactus css automated testing
