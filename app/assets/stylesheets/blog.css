@@ -139,6 +139,9 @@
     position: relative;
     top: -2px;
 }
+#blog_tags li {
+    display: inline;
+}
 .avatar {
     float: left;
     padding: 1px;
