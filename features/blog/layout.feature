@@ -33,11 +33,11 @@ Feature: Blog layout
     When I go to the blog page
     Then I should see the whole blog sidebar
 
-#  Scenario: An article layout
-#
-#    There should be custom navigation widgets for each article
-#
-#    Given there is a blog article "Comment cuisiner des champignons"
-#    When I go to the blog article "Comment cuisiner des champignons" page
-#    Then I should see the whole blog sidebar
-#    And I should see the social and navigation article footer
+  Scenario: An article layout
+
+    There should be custom navigation widgets for each article
+
+    Given there is a blog article "Comment cuisiner des champignons"
+    When I go to the blog article "Comment cuisiner des champignons" page
+    Then I should see the whole blog sidebar
+    And I should see the social and navigation article footer

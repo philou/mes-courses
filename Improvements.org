@@ -42,6 +42,7 @@
         https://github.com/remvee/emacs-rails
         http://www.emacswiki.org/RspecMode + http://stackoverflow.com/questions/10288785/rspec-request-specs-failing-when-run-from-emacs-using-rspec-mode
 ** commande emacs pour fermer tous les buffers dans un sous repertoire
+** emacs ctags https://github.com/tpope/gem-ctags
 * [DESIGN] améliorer les tests cucumber d'imports
 ** Passer les tests cucumber sur RealDummyStore
 ** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb

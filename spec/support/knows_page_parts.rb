@@ -59,7 +59,7 @@ module KnowsPageParts
     blog_post.with("a social bar", "/div[@id='blog_share_bar']")
   end
   def blog_post_related_posts
-    blog_post.with("related posts", "/div[@id='related_posts']")
+    blog_post.with("a related posts section", "/div[@id='blog_related']")
   end
   def blog_post_disqus_comments
     blog_post.with("disqus comments", "/div[@id='disqus_thread']")
