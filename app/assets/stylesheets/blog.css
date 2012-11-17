@@ -68,6 +68,10 @@
 #tags .size5 { font-size: 2.2em; }
 #tags .size6 { font-size: 2.5em; }
 
+/* email subscription */
+#blog #subscription *{
+    text-align: left;
+}
 /* archive default display */
 .archive-month, .archive-post {
     display: none;
@@ -79,78 +83,109 @@
 .nested-2 {
     margin-left: 2em;
 }
-.blog-post {
-    margin-bottom: 2.4em;
-    overflow: hidden;
+/* space between articles */
+.blog_post_spacer {
+    border: none;
+    border-bottom: 1px solid #a0db54;
+    margin: 2.4em 0;
 }
-.blog-post h2 {
-    border-bottom: 1px solid;
+/* the post title */
+.blog_post h1 {
     margin-bottom: 1em;
 }
 
-.blog-post p, .blog-post li {
+/* text layout */
+.blog_post p, .blog_post li {
     text-align: justify;
     line-height: 1.6em;
 }
 /* copied from common.css otherwise, it would be overriden by the previous rule */
-.centered-image {
+.blog_post p.centered-image {
     text-align: center;
     font-weight: bold;
-}
-#blog #subscription *{
-    text-align: left;
+    font-style: italic;
 }
 
-.blog-post .link-with-image {
+.blog_post .link-with-image {
     float: right;
     margin-left: 2em;
 }
 
-.blog-post img {
+.blog_post img {
     border-style: none;
 }
 
-.blog-post ul, .blog-post ol {
+.blog_post ul, .blog_post ol {
     margin-left: 3em;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     list-style-position: outside;
 }
-.blog-post table {
+.blog_post table {
     width: auto;
     margin: 1em auto;
 }
 
-.author {
+.blog_post_footer {
     font-size: 1.2em;
     font-style: italic;
     margin: 1em 0;
 }
-#social-toolbar li {
-    display: inline;
+
+#blog_share_bar, #blog_related, #disqus_thread {
+    margin-top: 2em;
 }
-.twitter-share-button {
-    position: relative;
-    top: 2px;
+#blog_related_posts {
+    margin-top: 0.5em;
 }
-#email-button-link {
-    background: url(../images/email.png) no-repeat scroll 2px 50% transparent;
-    padding-left: 25px;
-    position: relative;
-    top: -2px;
+
+/* share bar */
+#blog_share_bar {
+    text-align: center;
 }
+#blog_share_bar .social_button {
+    display: inline-block;
+}
+
+/* tags */
 #blog_tags li {
     display: inline;
 }
-.avatar {
-    float: left;
-    padding: 1px;
-    border: solid 1px;
-    margin-right: 1em;
+#blog_related h2 {
+    display: none;
 }
+#blog_tags a {
+    font-weight: bold;
+}
+/* comments : should be adapted or removed to disqus */
 #comments {
     margin: 1em;
 }
 .comment {
   overflow: hidden;
+}
+
+/* new blog post */
+#post_title, #post_body{
+  width: 100%;
+}
+.new_blog_post fieldset{
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.new_blog_post .blog_post_tip{
+  margin: 0;
+  float: right;
+  width: 55%;
+  text-align: right;
+  color: #333;
+  font-style: italic;
+}
+#new_blog_post_tag_field{
+  float: left;
+  width: 40%;
+}
+.new_blog_post .actions{
+  margin: 1em 0;
 }
