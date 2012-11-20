@@ -11,6 +11,8 @@ class Store < ActiveRecord::Base
   Items = MesCourses::Stores::Items
   Imports = MesCourses::Stores::Imports
 
+  attr_accessible :url, :sponsored_url, :expected_items
+
   validates_presence_of :url
   validates_uniqueness_of :url
 

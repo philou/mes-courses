@@ -16,6 +16,8 @@ class Order < ActiveRecord::Base
     "Désolé, nous n'avons pas pu vous connecter à '#{store.name}'. Vérifiez vos identifiant et mot de passe."
   end
 
+  attr_accessible :cart, :store, :status
+
   belongs_to :cart
   belongs_to :store
 

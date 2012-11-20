@@ -12,7 +12,9 @@ namespace :mes_courses do
     raise ArgumentError.new("An email must be specified") unless !email.nil?
 
     password = MesCourses::Utils::Password.generate
-    User.create(name: name, email: email, password: password)
+    user = User.new(name: name, email: email)
+    user.password = password
+    user.save
 
     puts "Created user with"
     puts " name : #{name}"

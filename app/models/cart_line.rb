@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Objects representing a quantity of a bought item in the cart
 class CartLine < ActiveRecord::Base
+
+  attr_accessible :quantity, :item, :cart
 
   belongs_to :cart
   belongs_to :item

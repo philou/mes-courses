@@ -5,6 +5,8 @@
 class ItemCategory < ActiveRecord::Base
   include MesCourses::RailsUtils::SingletonBuilder
 
+  attr_accessible :parent, :name
+
   has_and_belongs_to_many :items
   acts_as_tree :order => "name"
 

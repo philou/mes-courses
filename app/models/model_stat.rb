@@ -4,6 +4,8 @@
 # Stats about instances saved in the database
 class ModelStat < ActiveRecord::Base
 
+  attr_accessible :count, :name
+
   validates_presence_of :name, :count
   validates_uniqueness_of :name
 
