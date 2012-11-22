@@ -4,6 +4,7 @@
 class InsertDisabledItemCategory < ActiveRecord::Migration
 
   class ItemCategory < ActiveRecord::Base
+    attr_protected nil
   end
 
   def self.up

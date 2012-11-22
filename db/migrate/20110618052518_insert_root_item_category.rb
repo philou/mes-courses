@@ -5,6 +5,7 @@ class InsertRootItemCategory < ActiveRecord::Migration
 
   class ItemCategory < ActiveRecord::Base
     acts_as_tree :order => "name"
+    attr_protected nil
   end
 
   def self.up
