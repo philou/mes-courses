@@ -10,6 +10,7 @@ with_trace_argument "Integrates the latest developments to the main repository, 
       # pull first, and then start a new process to integrate with latest scripts
 
       puts "\nPulling latest developments"
+      shell "git checkout ."
       pull "dev"
 
       shell "ruby #{File.join(File.dirname(__FILE__), '..', 'lib', 'mes_courses', 'deployment', 'end_integrate.rb')}"
