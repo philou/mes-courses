@@ -18,13 +18,13 @@ Feature: Blog layout
     Then the places bar should contain a link "Recettes" to the full dish catalog page
     And there should be a link to the write a new article
 
-  Scenario: Place link to the blog
-
-    The blog should be accessible from the main app
-
-    When I go to the dishes page
-    Then the places bar should contain a link "Blog" to the blog page
-
+#  Scenario: Place link to the blog
+#
+#    The blog should be accessible from the main app
+#
+#    When I go to the dishes page
+#    Then the places bar should contain a link "Blog" to the blog page
+#
   Scenario: Main blog layout
 
     The blog layout should include a sidebar for navigation and
