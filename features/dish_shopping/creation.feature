@@ -47,7 +47,7 @@ Feature: Dish creation
     Given there is a dish "Agneau aux flageolets"
     And   I am logged in
     And   I am on the "Agneau aux flageolets" dish page
-    When  I press "Enlever de la recette"
+    When  I remove "Agneau" from the dish
     Then  I am on the "Agneau aux flageolets" dish page
     And   I should see "1 ingrédient"
     And   I should not see an "Agneau" item
