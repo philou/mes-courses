@@ -53,7 +53,7 @@ end
 Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  page.should have_selector("img", :src => attribute_text)
+  page.should have_xpath(".//img[@src='#{attribute_text}']")
 end
 
 Then /^new items should have been inserted$/ do
@@ -88,10 +88,8 @@ Then /^item organization should not have changed$/ do
   ItemCategory.current_metrics.should == ItemCategory.past_metrics
 end
 
-def i_should_see_an_item(name)
-  page.should have_selector("div", :id => "items-panel") do |div|
-    div.should have_content(item_name)
-  end
+def i_should_see_an_item(item_name)
+  page.find('#items-panel').should have_content(item_name)
 end
 
 Then /^I should see an? "([^"]*)" item"?$/ do |item_name|
@@ -99,9 +97,7 @@ Then /^I should see an? "([^"]*)" item"?$/ do |item_name|
 end
 
 Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
-  page.should have_selector("div", :id => "items-panel") do |div|
-    div.should_not have_content(item_name)
-  end
+  page.find('#items-panel').should_not have_content(item_name)
 end
 
 Then /^the following items should be disabled$/ do |table|

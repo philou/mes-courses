@@ -33,6 +33,10 @@ When /^I set the dish name to "([^"]*)"?"$/ do |name|
   click_button("Créer")
 end
 
+When /^I remove "([^"]*)"?" from the dish$/ do |name|
+  page.find(:xpath, item_with_name(name).xpath).find_button("Enlever de la recette").click
+end
+
 Then /^the dish "(.*?)" should still have items$/ do |dish_name, item_table|
   visit dish_path(Dish.find_by_name(dish_name))
 
