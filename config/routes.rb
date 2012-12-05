@@ -126,5 +126,6 @@ MesCourses::Application.routes.draw do
   get "/blog/2012/10/31/recycler-un-vieil-ordinateur-pour-vos-enfants", to: redirect("/blog/posts/35-recycler-un-vieil-ordinateur-pour-vos-enfants")
   get "/blog/2012/11/08/comment-ouvrir-les-huitres", to: redirect("/blog/posts/10-comment-ouvrir-les-huitres")
   get "/blog/2012/11/22/auchan-hyper-ou-cyber-qui-est-le-moins-cher", to: redirect("/blog/posts/3-auchan-hyper-ou-cyber-qui-est-le-moins-cher")
+  get "/blog/2012/12/05/gagnez-du-temps-et-de-l-argent-avec-les-abonnements-amazon", to: redirect("/blog/posts/43-gagnez-du-temps-et-de-l-argent-avec-les-abonnements-amazon")
 
 end
