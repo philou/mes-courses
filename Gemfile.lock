@@ -1,6 +1,14 @@
 GIT
-  remote: git://github.com/KatanaCode/blogit.git
-  revision: 1bf6e94ccfb9353bdb922ab7bc01aead1bac8712
+  remote: git://github.com/djberg96/net-ping.git
+  revision: 92520769a3e39a166b1833bf328f0c1533624458
+  specs:
+    net-ping (1.5.3)
+      ffi (>= 1.0.0)
+      net-ldap (~> 0.2.2)
+
+GIT
+  remote: git://github.com/philou/blogit.git
+  revision: 8f48c333a496271b0eb0fd4f250c99bb86d889a1
   specs:
     blogit (0.5.1)
       RedCloth (>= 4.2.9)
@@ -10,14 +18,6 @@ GIT
       kaminari (>= 0.13.0)
       nokogiri (>= 1.5.0)
       redcarpet (>= 2.0.1)
-
-GIT
-  remote: git://github.com/djberg96/net-ping.git
-  revision: 92520769a3e39a166b1833bf328f0c1533624458
-  specs:
-    net-ping (1.5.3)
-      ffi (>= 1.0.0)
-      net-ldap (~> 0.2.2)
 
 GEM
   remote: https://rubygems.org/

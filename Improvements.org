@@ -1,7 +1,6 @@
 * [HEROKU] migrate to heroku toolbelt if not working anymore
-** fork hire_fire and depend on heroku-api instead of heroku
+** replace hire_fire by workless
 ** manage logs with papertrail of logentry instead of using the heroku gem
-** replace hirefire gem with hirefireapp.com (10$/m)
 * [HEROKU] migrate to heroku cedar stack
 ** remove rubyracer from the Gemfile
 ** remove assets precompiling with heroku assets precompiling
