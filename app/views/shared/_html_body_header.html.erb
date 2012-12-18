@@ -1,13 +1,24 @@
-<%= render(:partial => "shared/html_body_header_1") %>
-        <%= link_to "A propos", '/', :id => 'place-presentation' %>
-        <span class="separator"> | </span>
-        <%= link_to "Blog", blog_path, :id => 'place-blog' %>
-        <span class="separator"> | </span>
-        <%= link_to 'Recettes', dishes_path, :id => 'place-dish' %>
-        <span class="separator"> | </span>
-        <%= link_to 'Ingrédients', item_categories_path, :id => 'place-items' %>
-        <span class="separator"> | </span>
-        <%= link_to 'Panier', cart_lines_path, :id => 'place-cart' %>
-        <span class="separator"> | </span>
-        <%= link_to @session_place_text, @session_place_url, id: 'place-session' %>
-<%= render(:partial => "shared/html_body_header_2") %>
+<div id="header">
+  <div class="top0">
+    <div id="logo">
+      <h1><span class="logo-as-m">M</span>es-courses.fr</h1>
+      <p id="subtitle">Les courses en 3 clics, pour gens pressés et parents débordés.</p>
+      <p id="subtitle">Gagnez du temps pour vous.</p>
+    </div>
+    <div id="places">
+      <%= link_to "A propos", '/', :id => 'place-presentation' %>
+      <span class="separator"> | </span>
+      <%= link_to "Blog", blog_path, :id => 'place-blog' %>
+      <span class="separator"> | </span>
+      <%= link_to 'Recettes', dishes_path, :id => 'place-dish' %>
+      <span class="separator"> | </span>
+      <%= link_to 'Ingrédients', item_categories_path, :id => 'place-items' %>
+      <span class="separator"> | </span>
+      <%= link_to 'Panier', cart_lines_path, :id => 'place-cart' %>
+      <span class="separator"> | </span>
+      <%= link_to @session_place_text, @session_place_url, id: 'place-session' %>
+    </div>
+  </div>
+  <div class="top1"></div>
+  <div class="top2"></div>
+</div>

@@ -4,17 +4,21 @@
   <head>
     <title>www.mes-courses.fr/store - Boutique</title>
     <meta name="description" content="Boutique d'alimentation en ligne intelligente" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="liste de, courses, en ligne, automatiques, faciles, rapides, recettes, plats, guide de cuisine, partage, idée repas" />
+    <meta name="Revisit-After" content="30 Days" />
+    <meta name="robots" content="all,index" />
+    <meta name="author" content="Philippe Bourgau for www.Mes-Courses.fr" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
     <% if !!@auto_refresh %>
       <meta http-equiv="refresh" content="3" />
     <% end %>
     <%= javascript_include_tag "application", "blogit" %>
     <%= csrf_meta_tags %>
-    <%= render(:partial => "shared/html_head_content") %>
     <% if @app_part %>
       <%= stylesheet_link_tag @app_part, :media => "all", :name => "#{@app_part} stylesheet" %>
     <% end %>
     <link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds.feedburner.com/mes-courses-fr" />
-
 
     <% if google_analytics_enabled? %>
       <script type="text/javascript">
@@ -36,30 +40,36 @@
   </head>
 
   <body id="<%= @body_id %>">
-    <%= render(:partial => "shared/html_body_header") %>
+    <div id="header-n-body">
 
-    <% if @path_bar %>
-      <div id="path-bar">
-        <% @path_bar.each do |path_element| %>
-          <% if !path_element.instance_of? Array %>
-            <a><%=h path_element %></a>
-          <% else %>
-            <%= link_to h(path_element[0]), *path_element.slice(1..-1) %>
-          <% end %>
-          <span>&gt;</span>
+      <%= render(:partial => "shared/html_body_header") %>
+
+      <div id="content-wrapper">
+        <% if @path_bar %>
+          <div id="path-bar">
+            <% @path_bar.each do |path_element| %>
+              <% if !path_element.instance_of? Array %>
+                <a><%=h path_element %></a>
+              <% else %>
+                <%= link_to h(path_element[0]), *path_element.slice(1..-1) %>
+              <% end %>
+              <span>&gt;</span>
+            <% end %>
+          </div>
         <% end %>
+
+        <% if flash[:notice] %>
+          <div class="notice" ><p><%= flash[:notice] %></p></div>
+        <% end %>
+        <% if flash[:alert] %>
+          <div class="alert" ><p><%= flash[:alert] %></p></div>
+        <% end %>
+
+        <%= content_for?(:nested_layout) ? yield(:nested_layout) : yield %>
+
       </div>
-    <% end %>
-
-    <% if flash[:notice] %>
-      <div class="notice" ><p><%= flash[:notice] %></p></div>
-    <% end %>
-    <% if flash[:alert] %>
-      <div class="alert" ><p><%= flash[:alert] %></p></div>
-    <% end %>
-
-    <%= content_for?(:nested_layout) ? yield(:nested_layout) : yield %>
 
     <%= render(:partial => "shared/html_body_footer") %>
+
   </body>
 </html>
