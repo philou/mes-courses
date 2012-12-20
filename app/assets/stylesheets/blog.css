@@ -89,6 +89,12 @@
     border-bottom: 1px solid #a0db54;
     margin: 2.4em 0;
 }
+/* new article link */
+#new_blog_post_link {
+    font-style: italic;
+    font-size: 1.4em;
+}
+
 /* the post title */
 .blog_post h1 {
     margin-bottom: 1em;
