@@ -113,7 +113,7 @@ Then /^an empty cart should be created in the store account of the user$/ do
 end
 
 Then  /^a non empty cart should be created in the store account of the user$/ do
-  @cart_api.log.should include(:set_item_quantity_in_cart)
+  @cart_api.log.should include(:add_to_cart)
 end
 
 Then /^all items from the store should have been imported$/ do
