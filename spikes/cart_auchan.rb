@@ -1,107 +1,84 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 require 'rubygems'
 require 'mechanize'
+require 'net/http'
+require 'json'
 
 attempt = 1
 
 #begin
 
-  agent = Mechanize.new
-  login_page = agent.get("http://www.auchandirect.fr/frontoffice")
+agent = Mechanize.new
 
-  # 1° on se log
-  login_form = Mechanize::Form.new(login_page.search('#formIdentification').first, login_page.mech, login_page)
-  login_form.Username = "philippe.bourgau@free.fr_invalid"
-  login_form.Password = "invalid"
-  res = login_form.submit()
+# 1° on se log
+agent.get("http://www.auchandirect.fr")
+login_form_json = agent.post("http://www.refonte.auchandirect.fr/boutiques.paniervolant.customerinfos:showsigninpopup",
+                            {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'},
+                            {'X-Requested-With' => 'XMLHttpRequest'})
+json = JSON.parse(login_form_json.body)
+html = json["zones"]["secondPopupZone"]
 
-  # 2° on vide le panier courant
-  logged_page = agent.get("http://www.auchandirect.fr/frontoffice")
-  scripts = logged_page.search('script')
+doc = Nokogiri::HTML("<html><body>#{html}</body></html>")
+formdata = doc.xpath("//input[@name='t:formdata']/@value").first.content
+login = "mes.courses.fr.test@gmail.com"
+password = "mescourses"
+agent.post("http://www.refonte.auchandirect.fr/boutiques.blockzones.popuphandler.authenticatepopup.authenticateform",
+           { 't:ac' => "Accueil",
+             't:cp' => 'gabarit/generated',
+             't:formdata' => formdata,
+             'inputLogin' => login,
+             'inputPwd' => password,
+           },
+           {'X-Requested-With' => 'XMLHttpRequest'}
+           )
 
-  js = scripts.map {|script| script.inner_text }.join
-
-  clientId = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
-  panierId = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
-
-
-  agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
-             # INDISPENSABLES
-             { 'Action' => 'panier_del',
-               'ClientId' => clientId, # DOM: oClient.id
-               'ListeId' => panierId}, # DOM: oPanier.id
-             # DISPENSABLES
-             #'ListeType' => 'P'},
-             #'ListeNom' => 'AuchanDirect_Panier_785619',
-             # 'ClientType' => '0',
-             # "Articles" => '%5B%5D',
-             # 'Eval' => '',
-             # 'IdProdUpd' => '',
-             {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-
-  #3° on ajoute tout ce qu'on veut acheter
-  res = agent.post("http://www.auchandirect.fr/frontoffice/index/ajax_liste",
-             { 'Action' => 'liste_ins',
-               # indispensables
-               'ClientId' => clientId,
-               'ListeId' => panierId,
-               'ListeType' => 'P',
-               'Articles' => '[{'+
-               # indispensables
-               '"maxcde":10,'+ # ça marche aussi avec 100 ...
-               '"type":"p",'+
-               '"id":4436,'+ # on le trouve dans l'url du produit
-               '"qte":1,'+
-               '"prix_total":2.5'+ # on l'a pour chaque produit, quoi qu'on mette, il met le prix du magasin !
-
-               # dispensables"
-               #                             '"type_id":"p_59713",'+
-               #                             '"statut":"d",'+
-               #                             '"pondereux":0,'+
-               #                             '"marque":"TSARINE",'+
-               #                             '"libticket":"TSARINE Champagne Premium brut sous pochon fourré, 75 cl",'+
-               #                             '"libweb":"Champagne cuvée Premium brut sous pochon fourré",'+
-               #                             '"accroche":"Brut",'+
-               #                             '"condlib":"75 cl",'+
-               #                             '"prix":24.79,'+
-               #                             '"unite":"33.05€ / l",'+
-               #                             '"url":"http://www.auchandirect.fr/frontoffice/index/produit/famille/15169/rayon/15180/ssrayon/15819/article/59713",'+
-               #                             '"upd":false,'+
-               '}]'},
-             #                            Ruby array of hash does not work
-             #                            [{ 'maxcde' => 10, 'type' => 'p', 'id' => 59713, 'qte' => 1, 'prix_total' => 24.79 }]},
-
-             # dispensables
-             #             'ClientType' => '0',
-             #             'Eval' => '',
-             #             'IdProdUpd' => '59713',
-             #             'ListeNom' => 'AuchanDirect_Panier_785619'},
-             {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-
-  # 4° récupérer le prix du panier
-
-  logged_page = agent.get("http://www.auchandirect.fr/frontoffice")
-  scripts = logged_page.search('script')
-
-  script = scripts.find {|script| !script.inner_text.empty? }
-  js = script.inner_text
-
-  articles = js.scan(/oPanier\s*\.\s*_insArticle\s*\(\s*"p_(\d+)"\s*,\s*(\d+)/)
-  cart_amount = 0.0
-  articles.each do |id, quantity|
-    price = Regexp.compile('oCatalogue._insArticle\(.*,\s*'+id+'\s*,.*,\s*(\d+.\d\d)\s*,').match(js)[1]
-    cart_amount += quantity.to_i * price.to_f
-  end
-  puts "cart amount is : #{cart_amount}"
+# just a check
+login_response = agent.get("http://www.auchandirect.fr")
+loggedin = !login_response.body.include?("Identifiez-vous")
+puts "Login success : #{loggedin}"
 
 
+# 2° récupérer le prix du panier
+cart_page = agent.get("http://www.refonte.auchandirect.fr/monpanier")
+cart_amount = cart_page.search("span.prix-total").first.content.gsub(/€$/,"").to_f
+puts "Total cart amount : #{cart_amount}"
 
-  # 5° on se délog
-  main_page = agent.get("http://www.auchandirect.fr/frontoffice")
-  main_page.link_with(:text => "cliquez ici").click
+# 3° on ajoute tout ce qu'on veut acheter
+3.times do
+  res = agent.post("http://www.refonte.auchandirect.fr/boutiques.mozaique.thumbnailproduct.addproducttobasket/2005",
+                   {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'},
+                   {'X-Requested-With' => 'XMLHttpRequest'}
+                   )
+end
 
-  puts "Attempt ##{attempt} succeeded"
+# just a check
+cart_page = agent.get("http://www.refonte.auchandirect.fr/monpanier")
+cart_amount = cart_page.search("span.prix-total").first.content.gsub(/€$/,"").to_f
+puts "Add to cart success : #{cart_amount != 0}, total amount : #{cart_amount}"
+
+# # 4° on vide le panier courant
+# agent.post("http://www.refonte.auchandirect.fr/boutiques.blockzones.popuphandler.cleanbasketpopup.cleanbasket",
+#            {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'},
+#            {'X-Requested-With' => 'XMLHttpRequest'}
+#            )
+
+# # just a check
+# cart_page = agent.get("http://www.refonte.auchandirect.fr/monpanier")
+# cart_amount = cart_page.search("span.prix-total").first.content.gsub(/€$/,"").to_f
+# puts "Empty cart success : #{cart_amount == 0}, total amount : #{cart_amount}"
+
+# 5° on se délog
+agent.post("http://www.refonte.auchandirect.fr/boutiques.paniervolant.customerinfos:totallogout",
+           {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'},
+           {'X-Requested-With' => 'XMLHttpRequest'}
+           )
+
+# just a check
+logout_response = agent.get("http://www.auchandirect.fr")
+loggedout = logout_response.body.include?("Identifiez-vous")
+puts "Logout success : #{loggedout}"
 
 # rescue Exception => e
 #   puts "Attempt  ##{attempt} failed because #{e}, retrying."

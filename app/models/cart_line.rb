@@ -24,7 +24,7 @@ class CartLine < ActiveRecord::Base
   end
 
   def forward_to(store_api)
-    store_api.set_item_quantity_in_cart(quantity, item)
+    store_api.add_to_cart(quantity, item)
   end
 
 end

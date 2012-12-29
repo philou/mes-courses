@@ -11,7 +11,7 @@ module MesCourses
 
         before :each do
           @store_api = stub(Api).as_null_object
-          @store_api.stub(:value_of_the_cart).and_return(2.0)
+          @store_api.stub(:cart_value).and_return(2.0)
 
           @store_session = Session.new(@store_api)
 
@@ -28,44 +28,44 @@ module MesCourses
         end
 
         it "should delegate value of the cart to the store api" do
-          ensure_delegates_read :value_of_the_cart, 3.1
+          ensure_delegates_read :cart_value, 3.1
         end
 
         it "should delegate adding items to the cart to the store api" do
-          @store_api.stub(:value_of_the_cart).and_return(0.0, 5.0)
+          @store_api.stub(:cart_value).and_return(0.0, 5.0)
 
-          @store_api.should_receive(:set_item_quantity_in_cart).once.with(1, @bavette.remote_id)
+          @store_api.should_receive(:add_to_cart).once.with(1, @bavette.remote_id)
 
-          @store_session.set_item_quantity_in_cart(1, @bavette)
+          @store_session.add_to_cart(1, @bavette)
         end
 
         it "should not ask the value if it already knows it" do
-          @store_api.should_receive(:value_of_the_cart).exactly(1).times
+          @store_api.should_receive(:cart_value).exactly(1).times
           2.times do
-            @store_session.value_of_the_cart
+            @store_session.cart_value
           end
         end
 
         it "should change the value after adding items" do
-          @store_api.stub(:value_of_the_cart).and_return(3.0, 5.0)
+          @store_api.stub(:cart_value).and_return(3.0, 5.0)
 
-          old_value = @store_session.value_of_the_cart
-          @store_session.set_item_quantity_in_cart(3, @pdt)
-          @store_session.value_of_the_cart.should_not == old_value
+          old_value = @store_session.cart_value
+          @store_session.add_to_cart(3, @pdt)
+          @store_session.cart_value.should_not == old_value
         end
 
 
         it "should throw when value of the cart does not change after adding items" do
           lambda {
-            @store_session.set_item_quantity_in_cart(4, @pdt)
+            @store_session.add_to_cart(4, @pdt)
           }.should raise_error(UnavailableItemError)
         end
 
-        it "should not throw if setting the quantity to 0.0" do
-          @store_session.set_item_quantity_in_cart(0, @bavette)
+        it "should not throw if adding 0 items" do
+          @store_session.add_to_cart(0, @bavette)
 
           lambda {
-            @store_session.set_item_quantity_in_cart(0, @pdt)
+            @store_session.add_to_cart(0, @pdt)
           }.should_not raise_error
         end
 

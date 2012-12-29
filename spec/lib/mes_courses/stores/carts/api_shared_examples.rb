@@ -29,31 +29,31 @@ module MesCourses
           end
 
           it "should set the cart value to 0 when emptying the cart" do
-            @api.set_item_quantity_in_cart(1, sample_item_id)
+            @api.add_to_cart(1, sample_item_id)
 
             @api.empty_the_cart
-            @api.value_of_the_cart.should == 0
+            @api.cart_value.should == 0
           end
 
           it "should set the cart value to something greater than 0 when adding items to the cart" do
             @api.empty_the_cart
 
-            @api.set_item_quantity_in_cart(1, sample_item_id)
-            @api.value_of_the_cart.should >  0
+            @api.add_to_cart(1, sample_item_id)
+            @api.cart_value.should >  0
           end
 
-          it "should set the cart value to 3 times that of one item when adding 3 items" do
+          it "should set the cart value to 2 times that of one item when adding 2 items" do
             @api.empty_the_cart
 
-            @api.set_item_quantity_in_cart(1, sample_item_id)
-            item_price = @api.value_of_the_cart
+            @api.add_to_cart(1, sample_item_id)
+            item_price = @api.cart_value
 
-            @api.set_item_quantity_in_cart(3, sample_item_id)
-            @api.value_of_the_cart.should == 3*item_price
+            @api.add_to_cart(1, sample_item_id)
+            @api.cart_value.should == 2*item_price
           end
 
           it "should synchronize different sessions with logout login" do
-            @api.set_item_quantity_in_cart(1, sample_item_id)
+            @api.add_to_cart(1, sample_item_id)
 
             @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api2|
               api2.empty_the_cart
@@ -62,7 +62,7 @@ module MesCourses
             @api.logout
             @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
 
-            @api.value_of_the_cart.should == 0
+            @api.cart_value.should == 0
           end
 
           attr_reader :sample_item_id, :store_cart_api
@@ -75,39 +75,52 @@ module MesCourses
           private
 
           def extract_sample_item
-            produits_laitiers = milk_subcat(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
-            produits_laitiers.should_not be_nil
+            extract_sample_item_from(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
+          end
 
-            laits = milk_subcat(produits_laitiers)
-            laits.should_not be_nil
+          def extract_sample_item_from(category)
+            item = find_available_item(category)
+            return item if not item.nil?
 
-            laits.items.each do |item|
+            non_local_first(category.categories).each do |sub_category|
+              item = extract_sample_item_from(sub_category)
+              return item if not item.nil?
+            end
+
+            nil
+          end
+
+          def find_available_item(category)
+            non_local_first(category.items).each do |item|
               item_id = item.attributes[:remote_id]
               if item_available?(item_id)
                 return item_id
               end
             end
 
-            return nil
+            nil
           end
 
           def item_available?(item_id)
             @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api|
-              api.set_item_quantity_in_cart(1, item_id)
-              return 0 < api.value_of_the_cart
+              api.add_to_cart(1, item_id)
+              return 0 < api.cart_value
             end
           end
 
-          def milk_subcat(parent)
-            parent.categories.each do |cat|
-              return cat if cat.title.downcase.include?("lait")
-            end
-
-            return nil
+          def non_local_first(elements)
+            # Sometimes the tests used to fail because the sample item was not available
+            # in the geographical region of the test user.
+            milks, others = elements.partition { |element| is_milk(element) }
+            milks + others
           end
 
+          def is_milk(element)
+            ["lait", "crème"].any? do |word|
+              element.title.downcase.include?(word)
+            end
+          end
         end
-
       end
     end
   end

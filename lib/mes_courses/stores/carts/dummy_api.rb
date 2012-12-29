@@ -27,7 +27,7 @@ module MesCourses
           @login = ""
           @password = ""
           @unavailable_items = {}
-          @content = {}
+          @content = Hash.new(0)
 
           if !login.nil? || !password.nil?
             relog(login, password)
@@ -50,14 +50,14 @@ module MesCourses
 
         def empty_the_cart
           @log.push(:empty_the_cart)
-          @content = { }
+          @content.clear
         end
 
-        def set_item_quantity_in_cart(quantity, item_remote_id)
+        def add_to_cart(quantity, item_remote_id)
           if available?(item_remote_id)
-            @log.push(:set_item_quantity_in_cart)
+            @log.push(:add_to_cart)
             # everything is at 1€ in this store (I would have needed the price as argument otherwise)
-            @content[item_remote_id] = quantity
+            @content[item_remote_id] += quantity
           end
         end
 
@@ -65,7 +65,7 @@ module MesCourses
           url+"/logout"
         end
 
-        def value_of_the_cart
+        def cart_value
           @content.values.inject(0.0) {|x,y| x+y}
         end
 

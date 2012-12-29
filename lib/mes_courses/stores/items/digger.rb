@@ -11,7 +11,9 @@ module MesCourses
         end
 
         def sub_walkers(page, father)
-          page.search_links(@selector).each_with_index.map { |link, i| @factory.new(link, father, i) }
+          page.search_links(@selector).each_with_index.map do |link, i|
+            @factory.new(link, father, i)
+          end
         end
       end
     end

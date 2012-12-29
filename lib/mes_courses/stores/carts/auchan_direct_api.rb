@@ -2,6 +2,7 @@
 # Copyright (C) 2011, 2012 by Philippe Bourgau
 
 require_relative 'api'
+require 'json'
 
 module MesCourses
   module Stores
@@ -18,78 +19,104 @@ module MesCourses
         # Logins to auchan direct store
         def initialize(login, password)
           @agent = Mechanize.new
-          page = @agent.get(AuchanDirectApi.url)
-
-          login_form = Mechanize::Form.new(page.search('#formIdentification').first,
-                                           page.mech,
-                                           page)
-          login_form.Username = login
-          login_form.Password = password
-          login_form.submit()
-
-          @client_id, @panier_id = extract_ids
-          raise InvalidAccountError unless @client_id.to_i != 0
-
+          do_login(login, password)
+          raise InvalidAccountError unless loged_in?
         end
 
         # logs out from the store
         def logout
-          @agent.get(self.class.logout_url)
+          get(self.class.logout_path)
         end
 
         # url at which a client browser can logout
         def self.logout_url
-          url+"/frontoffice/index/deconnexion/"
+          impl_url + logout_path
         end
 
         # total value of the remote cart
-        def value_of_the_cart
-          js = get_embedded_js
-
-          result = 0.0
-          js.scan(/oPanier\s*\.\s*_insArticle\s*\(\s*"p_(\d+)"\s*,\s*(\d+)/).each do |id, quantity|
-            price = Regexp.compile('oCatalogue._insArticle\(.*,\s*'+id+'\s*,.*,\s*(\d+.\d\d)\s*,').match(js)[1]
-            result += quantity.to_i * price.to_f
-          end
-          result
+        def cart_value
+          cart_page = get("/monpanier")
+          cart_page.search("span.prix-total").first.content.gsub(/€$/,"").to_f
         end
 
         # empties the cart of the current user
         def empty_the_cart
-          @agent.post(url+"/frontoffice/index/ajax_liste",
-                      {'Action' => 'panier_del', 'ClientId' => @client_id, 'ListeId' => @panier_id},
-                      {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
+          post("/boutiques.blockzones.popuphandler.cleanbasketpopup.cleanbasket")
         end
 
         # adds items to the cart of the current user
-        def set_item_quantity_in_cart(quantity, item_remote_id)
-          @agent.post(url+"/frontoffice/index/ajax_liste",
-                      { 'Action' => 'liste_ins', 'ClientId' => @client_id, 'ListeId' => @panier_id, 'ListeType' => 'P',
-                        'Articles' => '[{"maxcde":10, "type":"p"'+
-                        ',"id":' + item_remote_id.to_s +
-                        ',"qte":' + quantity.to_s +
-                        ',"prix_total" : 1.0' +
-                        '}]'},
-                      {'Content-type' => 'application/x-www-form-urlencoded; charset=UTF-8'})
-
+        def add_to_cart(quantity, item_remote_id)
+          quantity.times do
+            post("/boutiques.mozaique.thumbnailproduct.addproducttobasket/#{item_remote_id}")
+          end
         end
 
         private
-        def extract_ids
-          js = get_embedded_js
 
-          client_id = /oClient.id\s*=\s*([0-9]+)/.match(js)[1]
-          panier_id = /oPanier.id\s*=\s*([0-9]+)/.match(js)[1]
+        def do_login(login,password)
+          @agent.get(AuchanDirectApi.url)
 
-          [client_id, panier_id]
+          login_form_json = post("/boutiques.paniervolant.customerinfos:showsigninpopup")
+
+          html_body = JSON.parse(login_form_json.body)["zones"]["secondPopupZone"]
+          doc = Nokogiri::HTML("<html><body>#{html_body}</body></html>")
+          formdata = doc.xpath("//input[@name='t:formdata']/@value").first.content
+
+          post("/boutiques.blockzones.popuphandler.authenticatepopup.authenticateform",
+               't:formdata' => formdata,'inputLogin' => login,'inputPwd' => password)
         end
 
-        def get_embedded_js
-          page = @agent.get(url)
-          scripts = page.search('script')
-          return scripts.map {|script| script.inner_text }.join
+        def loged_in?
+          main_page = get("/Accueil")
+          !main_page.body.include?("Identifiez-vous")
         end
 
+        def get(path)
+          @agent.get(impl_url + path)
+        end
+
+        def post(path, parameters = {})
+          @agent.post(impl_url + path, self.class.post_parameters.merge(parameters), fast_header)
+        end
+
+        def fast_header
+          {'X-Requested-With' => 'XMLHttpRequest'}
+        end
+
+        def self.logout_path
+          parametrized_path("/boutiques.paniervolant.customerinfos:totallogout", post_parameters)
+        end
+
+        def self.parametrized_path(path, parameters)
+          string_parameters = parameters.map do |key,value|
+            "#{key}=#{value}"
+          end
+          "#{path}?#{string_parameters.join('&')}"
+        end
+
+        def self.impl_url
+          "http://www.refonte.auchandirect.fr"
+        end
+
+        def self.post_parameters
+          {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'}
+        end
+
+        def method_missing(method_sym, *arguments, &block)
+          if delegate_to_class?(method_sym)
+            self.class.send(method_sym, *arguments, &block)
+          else
+            super
+          end
+        end
+
+        def respond_to?(method_sym)
+          super or delegate_to_class?(method_sym)
+        end
+        def delegate_to_class?(method_sym)
+          self.class.respond_to?(method_sym) and
+            ['path','url'].any? { |suffix| method_sym.to_s.end_with?("_#{suffix}") }
+        end
       end
     end
   end

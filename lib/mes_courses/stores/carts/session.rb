@@ -19,8 +19,8 @@ module MesCourses
         end
 
         # total value of the remote cart
-        def value_of_the_cart
-          @cart_value ||= @store_api.value_of_the_cart
+        def cart_value
+          @cart_value ||= @store_api.cart_value
         end
 
         # empties the cart of the current user
@@ -31,12 +31,12 @@ module MesCourses
 
         # adds items to the cart of the current user
         # Throws UnavailableItemError if the value of the cart did not change
-        def set_item_quantity_in_cart(quantity, item)
+        def add_to_cart(quantity, item)
           return if (quantity == 0)
 
-          old_cart_value = value_of_the_cart
-          @store_api.set_item_quantity_in_cart(quantity, item.remote_id)
-          new_cart_value = @store_api.value_of_the_cart
+          old_cart_value = cart_value
+          @store_api.add_to_cart(quantity, item.remote_id)
+          new_cart_value = @store_api.cart_value
 
           raise UnavailableItemError.new("Item '#{item.name}' is not available") unless new_cart_value != old_cart_value
 

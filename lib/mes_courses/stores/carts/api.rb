@@ -40,13 +40,13 @@ module MesCourses
         # def self.logout_url
 
         # total value of the remote cart
-        # def value_of_the_cart
+        # def cart_value
 
         # empties the cart of the current user
         # def empty_the_cart
 
         # adds items to the cart of the current user
-        # def set_item_quantity_in_cart(quantity, item_remote_id)
+        # def add_to_cart_cart(quantity, item_remote_id)
 
       end
     end
