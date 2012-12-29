@@ -25,10 +25,6 @@ module MesCourses
               @store.categories.should have_at_least(3).items
             end
 
-            it "should have many item sub categories" do
-              sample_sub_categories.should have_at_least(3).items
-            end
-
             it "should have many items" do
               sample_items.should have_at_least(3).items
             end
@@ -38,8 +34,8 @@ module MesCourses
               categories_attributes.should mostly have_unique(:name)
             end
 
-            it "should have items with different names" do
-              sample_items_attributes.should mostly have_unique(:name)
+            it "should have items with different summaries" do
+              sample_items_attributes.should mostly have_unique(:summary)
             end
 
             it "should have parseable item category attributes" do
@@ -86,11 +82,8 @@ module MesCourses
         def sample_categories
           @store.categories[@range]
         end
-        def sample_sub_categories
-          collect_all(sample_categories, :categories)
-        end
         def sample_items
-          collect_all(sample_sub_categories, :items)
+          collect_all(sample_categories, :items)
         end
         def valid_sample_items
           valid_items(sample_items)
@@ -113,7 +106,7 @@ module MesCourses
         end
 
         def parseable_categories_attributes
-          (sample_categories + sample_sub_categories).map do |category|
+          sample_categories.map do |category|
             category.attributes rescue {}
           end
         end
