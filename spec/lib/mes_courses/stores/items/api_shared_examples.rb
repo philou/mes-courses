@@ -82,8 +82,14 @@ module MesCourses
         def sample_categories
           @store.categories[@range]
         end
+        def sample_sub_categories
+          collect_all(sample_categories, :categories)
+        end
+        def all_sample_categories
+          sample_categories + sample_sub_categories
+        end
         def sample_items
-          collect_all(sample_categories, :items)
+          collect_all(all_sample_categories, :items)
         end
         def valid_sample_items
           valid_items(sample_items)
@@ -106,7 +112,7 @@ module MesCourses
         end
 
         def parseable_categories_attributes
-          sample_categories.map do |category|
+          all_sample_categories.map do |category|
             category.attributes rescue {}
           end
         end
