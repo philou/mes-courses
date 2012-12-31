@@ -82,7 +82,7 @@ module MesCourses
             item = find_available_item(category)
             return item if not item.nil?
 
-            non_local_first(category.categories).each do |sub_category|
+            nationaly_available_first(category.categories).each do |sub_category|
               item = extract_sample_item_from(sub_category)
               return item if not item.nil?
             end
@@ -91,7 +91,7 @@ module MesCourses
           end
 
           def find_available_item(category)
-            non_local_first(category.items).each do |item|
+            nationaly_available_first(category.items).each do |item|
               item_id = item.attributes[:remote_id]
               if item_available?(item_id)
                 return item_id
@@ -108,7 +108,7 @@ module MesCourses
             end
           end
 
-          def non_local_first(elements)
+          def nationaly_available_first(elements)
             # Sometimes the tests used to fail because the sample item was not available
             # in the geographical region of the test user.
             milks, others = elements.partition { |element| is_milk(element) }
