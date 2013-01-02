@@ -43,29 +43,6 @@ div.section p {
     font-size: 1.4em;
 }
 
-/* Store error notices to users */
-div.notice, div.alert, div.warning{
-    border: 2px solid;
-    padding: 1em;
-    margin: 2em 0;
-    font-weight: bold;
-}
-div.alert{
-    border-color: red;
-    background-color: #FFA0A0;
-    color: white;
-}
-div.warning{
-    border-color: orange;
-    background-color: #F5E6D7;
-    color: orange;
-}
-div.notice {
-    border-color: green;
-    background-color: #A0FFA0;
-    color: green;
-}
-
 /* search panel */
 #search {
     width: 70em;
