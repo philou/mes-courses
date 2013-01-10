@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Utils
@@ -19,6 +19,9 @@ module MesCourses
       def wrap_result(method_sym, result)
         if !@options[:wrap_result].include?(method_sym) || result.nil?
           return result
+
+        elsif result.instance_of?(Enumerator)
+          return result.mapping { |item| wrap(item) }
 
         elsif result.instance_of?(Array)
           return result.map { |item| wrap(item) }

@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -62,6 +62,23 @@ module MesCourses
           Retrier.stub(:new).with(:c, @options).and_return(:wrapped_c)
 
           @retrier.properties.should == [:wrapped_a, :wrapped_b, :wrapped_c]
+        end
+
+        it "should wrap content of enumerators" do
+          integers = Enumerator.new do |yielder|
+            i = 0
+            loop do
+              yielder << i
+              i += 1
+            end
+          end
+
+          @wrapped.stub(:properties).and_return(integers)
+
+          actual = @retrier.properties
+          first = [actual.next, actual.next, actual.next]
+          first.should all_do be_an_instance_of(Retrier)
+          (first.map &:to_i).should == [0,1,2]
         end
       end
 

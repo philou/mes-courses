@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -76,11 +76,11 @@ module MesCourses
 
 
         def collect_all(categories, message)
-          categories.map { |cat| cat.send(message)[@range] }.flatten
+          categories.map { |cat| cat.send(message).to_a[@range] }.flatten
         end
 
         def sample_categories
-          @store.categories[@range]
+          @store.categories.to_a[@range]
         end
         def sample_sub_categories
           collect_all(sample_categories, :categories)

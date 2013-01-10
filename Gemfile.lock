@@ -153,6 +153,7 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.1.2)
       addressable (~> 2.3)
+    lazing (0.1.1)
     libv8 (3.3.10.4)
     libwebsocket (0.1.7.1)
       addressable
@@ -302,6 +303,7 @@ DEPENDENCIES
   heroku-api
   hirefire
   jquery-rails
+  lazing
   mechanize
   net-ping!
   pg
