@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "spec_helper"
 
@@ -20,7 +20,7 @@ module MesCourses
             @factory.should_receive(:new).with(link, anything, anything)
           end
 
-          @digger.sub_walkers(@page, nil)
+          @digger.sub_walkers(@page, nil).to_a
         end
 
         it "for debugging purpose, provides father walker and link index to sub walkers" do
@@ -30,7 +30,7 @@ module MesCourses
             @factory.should_receive(:new).with(link, father, index)
           end
 
-          @digger.sub_walkers(@page, father)
+          @digger.sub_walkers(@page, father).to_a
         end
 
       end
