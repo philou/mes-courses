@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Utils
@@ -11,15 +11,9 @@ module MesCourses
       def HerokuHelper.app_name
         ENV['APP_NAME'] || "<Not_an_Heroku_app>"
       end
-      def HerokuHelper.heroku_login
-        ENV['HIREFIRE_EMAIL']
-      end
-      def HerokuHelper.heroku_password
-        ENV['HIREFIRE_PASSWORD']
-      end
       def HerokuHelper.safe_heroku_logs
         if on_heroku?
-          heroku_logs(heroku_login, heroku_password)
+          heroku_logs
         else
           "Not on heroku, no logs available."
         end
@@ -34,26 +28,14 @@ module MesCourses
       def app_name
         HerokuHelper.app_name
       end
-      def heroku_login
-        HerokuHelper.heroku_login
-      end
-      def heroku_password
-        HerokuHelper.heroku_password
-      end
       def safe_heroku_logs
         HerokuHelper.safe_heroku_logs
       end
 
       private
 
-      def HerokuHelper.heroku_logs(login, password)
-        logs = []
-
-        Heroku::Client.new(login, password).read_logs(app_name) do |chunk|
-          logs.push(chunk)
-        end
-
-        logs.join("\n")
+      def HerokuHelper.heroku_logs
+        "https://api.heroku.com/myapps/#{app name}/addons/papertrail:choklad"
       end
     end
   end

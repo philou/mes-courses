@@ -1,4 +1,4 @@
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require "uri"
 require "net/http"
@@ -160,9 +160,10 @@ module MesCourses
     def create_heroku_app(repo, heroku_password)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
-      heroku "addons:add cron:daily", repo: repo
+      heroku "addons:add scheduler:standard", repo: repo
       heroku "addons:upgrade logging:expanded", repo: repo
       heroku "addons:add sendgrid:starter", repo: repo
+      heroku "addons:add papertrail:choklad", repo: repo
 
       heroku "config:set HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=#{heroku_password}", repo: repo
     end

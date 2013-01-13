@@ -1,6 +1,6 @@
+* [HEROKU] create branches to track the versions deployed to heroku
 * [HEROKU] migrate to heroku toolbelt if not working anymore
 ** replace hire_fire by workless
-** manage logs with papertrail of logentry instead of using the heroku gem
 * [HEROKU] migrate to heroku cedar stack
 ** remove rubyracer from the Gemfile
 ** remove assets precompiling with heroku assets precompiling
@@ -31,9 +31,16 @@
 ** essayer de migrer dès que possible, et utiliser les tests pour vérifier si c'est bon
 ** faire une branche pour la migration
 ** travailler dans une VM pour éviter de peter l'environement courant
+*** se débrancher de dropbox (trop compliqué dans chef)
+**** google docs
+**** github
+**** un hosteur d'images (y'avait une startup qui permettait les redimentionnements)
 *** avoir un pc qui fonctionne bien avec des VMs
 **** rapide
 **** gros SSD
+**** grande résolution
+**** léger
+*** ou bien changer le ssd pour avoir plusieurs installations d'ubuntu, mais sans vm
 ** utiliser Chef, Puppet ou autre pour setuper les VMs de devs
 ** avoir le script pour setuper la vms dans le code
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
