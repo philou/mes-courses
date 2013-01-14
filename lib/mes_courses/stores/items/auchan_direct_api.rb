@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require_relative 'api_builder'
 
@@ -7,7 +7,7 @@ module MesCourses
   module Stores
     module Items
 
-      define_api "www.auchandirect.fr" do
+      define_api "auchandirect.fr" do
 
         categories '#footer-menu a' do
           attributes do
@@ -21,7 +21,7 @@ module MesCourses
                 :summary => page.get_one('#produit-infos .titre-annexe').content,
                 :price => page.get_one('#produit-infos .prix-actuel > span').content.to_f,
                 :image => page.get_one('#produit-infos img.produit')['src'],
-                :remote_id => /\/(\d+)$/.match(uri.to_s)[1].to_i
+                :remote_id => /\/(\d+)[^\/]*$/.match(uri.to_s)[1].to_i
               }
             end
           end

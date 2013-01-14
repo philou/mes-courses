@@ -18,7 +18,7 @@ module MesCourses
           def it_should_behave_like_any_store_items_api
 
             before :all do
-              @range = 0..1
+              @range = 0..3
             end
 
             it "should have many item categories" do
