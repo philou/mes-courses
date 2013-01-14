@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -7,7 +7,7 @@ describe Store do
 
   # setting static constants up
   before(:each) do
-    @valid_attributes = { :url => AUCHAN_DIRECT_OFFLINE, :expected_items => 10, :sponsored_url => AUCHAN_DIRECT_OFFLINE }
+    @valid_attributes = { :url => MesCourses::Stores::Items::AUCHAN_DIRECT_OFFLINE, :expected_items => 10, :sponsored_url => MesCourses::Stores::Items::AUCHAN_DIRECT_OFFLINE }
 
     @importer = mock(MesCourses::Stores::Imports::Base).as_null_object
     MesCourses::Stores::Imports::Base.stub(:new).and_return(@importer)

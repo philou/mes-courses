@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -20,6 +20,12 @@ module MesCourses
           "in" + valid_password
         end
       end
+    end
+
+    module Items
+
+      AUCHAN_DIRECT_OFFLINE = "file://"+File.join(Rails.root,'offline_sites','www.refonte.auchandirect.fr', 'index.html')
+
     end
   end
 end
