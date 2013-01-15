@@ -20,7 +20,7 @@ module MesCourses
                 :name => page.get_one('#produit-infos .titre-principal').content,
                 :summary => page.get_one('#produit-infos .titre-annexe').content,
                 :price => page.get_one('#produit-infos .prix-actuel > span').content.to_f,
-                :image => page.get_one('#produit-infos img.produit')['src'],
+                :image => page.get_image('#produit-infos img.produit').url.to_s,
                 :remote_id => /\/(\d+)[^\/]*$/.match(uri.to_s)[1].to_i
               }
             end

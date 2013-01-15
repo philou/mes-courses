@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'mechanize'
 
@@ -14,6 +14,18 @@ module WEBrick::HTTPUtils
   def self.escape(s)
     URI.escape(s)
   end
+end
+
+class Mechanize
+  module Searcher
+    def search_links(selector)
+      search(selector).map {|node| Page::Link.new(node, @mech, self)}
+    end
+    def search_images(selector)
+      search(selector).map {|node| Page::Image.new(node, self)}
+    end
+  end
+  Page.send(:include, Searcher)
 end
 
 module MesCourses
@@ -39,11 +51,11 @@ module MesCourses
         end
 
         def get_one(selector)
-          elements = @mechanize_page.search(selector)
-          if elements.empty?
-            raise WalkerPageError.new("Page \"#{uri}\" does not contain any elements like \"#{selector}\"")
-          end
-          elements.first
+          first_or_throw(@mechanize_page.search(selector), "elements", selector)
+        end
+
+        def get_image(selector)
+          first_or_throw(@mechanize_page.search_images(selector), "images", selector)
         end
 
         private
@@ -57,9 +69,14 @@ module MesCourses
         end
 
         def search_all_links(selector)
-          @mechanize_page.search(selector).map do |xmlA|
-            Link.new(Mechanize::Page::Link.new(xmlA, @mechanize_page.mech, @mechanize_page))
+          @mechanize_page.search_links(selector).map { |link| Link.new(link) }
+        end
+
+        def first_or_throw(elements, name, selector)
+          if elements.empty?
+            raise WalkerPageError.new("Page \"#{uri}\" does not contain any #{name} like \"#{selector}\"")
           end
+          elements.first
         end
 
         class Getter

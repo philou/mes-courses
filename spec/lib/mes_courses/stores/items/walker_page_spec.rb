@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -60,7 +60,7 @@ module MesCourses
             uris.should == ["a.html", "b.html"]
           end
 
-          it "does not find links to other domains" do
+          it "ignores links to other domains" do
             @page.search_links("#outbound").should be_empty
           end
 
@@ -78,8 +78,16 @@ module MesCourses
             end
           end
 
-        end
+          it "finds an image by selector" do
+            image = @page.get_image(".image")
+            image.should be_instance_of(Mechanize::Page::Image)
+            image.dom_class.should == "image"
+          end
 
+          it "throws if it cannot find the image by selector" do
+            lambda { @page.get_image("#invalid_id") }.should raise_error(WalkerPageError)
+          end
+        end
       end
     end
   end
