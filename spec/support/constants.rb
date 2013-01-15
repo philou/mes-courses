@@ -21,11 +21,5 @@ module MesCourses
         end
       end
     end
-
-    module Items
-
-      AUCHAN_DIRECT_OFFLINE = "file://"+File.join(Rails.root,'offline_sites','www.refonte.auchandirect.fr', 'index.html')
-
-    end
   end
 end
