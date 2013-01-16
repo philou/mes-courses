@@ -50,8 +50,9 @@ module MesCourses
           uri2links.values.sort_by {|link| link.uri.to_s }
         end
 
-        def get_one(selector)
-          first_or_throw(@mechanize_page.search(selector), "elements", selector)
+        def get_one(*selectors)
+          elements = selectors.map {|selector| @mechanize_page.search(selector)}.flatten
+          first_or_throw(elements, "elements", selectors)
         end
 
         def get_image(selector)

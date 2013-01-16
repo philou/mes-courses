@@ -22,6 +22,7 @@ when_online "AuchanDirectStoreItemsAPI remote spec" do
           it "should have absolute urls for images" do
             sample_items_attributes.map {|attr| attr[:image]}.should all_do include("auchandirect.fr")
           end
+
         end
       end
     end

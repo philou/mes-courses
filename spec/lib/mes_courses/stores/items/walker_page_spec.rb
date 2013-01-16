@@ -53,6 +53,10 @@ module MesCourses
             lambda { @page.get_one("#invalid_id") }.should raise_error(WalkerPageError)
           end
 
+          it "finds the first element from a list of css" do
+            @page.get_one(".absent", "#unique").should be @page.get_one("#unique")
+          end
+
           it "finds relative links sorted by uri" do
             links = @page.search_links("a.letter")
 
