@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014061239) do
+ActiveRecord::Schema.define(:version => 20130116201313) do
 
   create_table "blog_comments", :force => true do |t|
     t.text     "name",       :null => false
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(:version => 20121014061239) do
     t.decimal  "price"
     t.text     "image"
     t.text     "summary"
-    t.integer  "remote_id"
+    t.text     "remote_id"
     t.text     "tokens",     :null => false
   end
 

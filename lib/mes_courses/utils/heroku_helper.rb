@@ -21,7 +21,6 @@ module MesCourses
         "Failed to collect logs : #{e}\n#{e.backtrace}"
       end
 
-
       def on_heroku?
         HerokuHelper.on_heroku?
       end
