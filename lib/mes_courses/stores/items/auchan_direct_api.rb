@@ -16,7 +16,6 @@ module MesCourses
 
           items '.infos-produit-2 > a' do
             attributes do
-              puts "uri : #{uri}"
               {
                 :name => page.get_one('#produit-infos .titre-principal').content,
                 :summary => page.get_one('#produit-infos .titre-annexe').content,
