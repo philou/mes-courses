@@ -34,7 +34,7 @@ module MesCourses
       private
 
       def HerokuHelper.heroku_logs
-        "https://api.heroku.com/myapps/#{app name}/addons/papertrail:choklad"
+        "https://api.heroku.com/myapps/#{app_name}/addons/papertrail:choklad"
       end
     end
   end
