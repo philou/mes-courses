@@ -6,6 +6,6 @@ class ChangeItemsRemoteIdsToText < ActiveRecord::Migration
   end
 
   def down
-    change_column :items, :remote_id, :integer
+    execute %{ALTER TABLE items ALTER remote_id TYPE integer USING remote_id::int}
   end
 end
