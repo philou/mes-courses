@@ -19,8 +19,7 @@ module MesCourses
               {
                 :name => page.get_one('#produit-infos .titre-principal').content,
                 :summary => page.get_one('#produit-infos .titre-annexe').content,
-                :price => page.get_one('#produit-infos .prix-actuel > span',
-                                       '#produit-infos .bloc-prix-promo > span.prix-promo').content.to_f,
+                :price => page.get_one('#produit-infos .prix-actuel > span, #produit-infos .bloc-prix-promo > span.prix-promo').content.to_f,
                 :image => page.get_image('#produit-infos img.produit').url.to_s,
                 :remote_id => /\/([^\/\.]*)[^\/]*$/.match(uri.to_s)[1]
               }

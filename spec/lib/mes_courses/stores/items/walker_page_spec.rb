@@ -54,7 +54,7 @@ module MesCourses
           end
 
           it "finds the first element from a list of css" do
-            @page.get_one(".absent", "#unique").should be @page.get_one("#unique")
+            @page.get_one(".absent, #unique").should be @page.get_one("#unique")
           end
 
           it "finds relative links sorted by uri" do
