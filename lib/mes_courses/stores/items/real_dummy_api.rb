@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "uri"
 require_relative 'api_builder'
@@ -27,7 +27,7 @@ module MesCourses
                   :summary => page.get_one('#summary').content,
                   :price => page.get_one('#price').content.to_f,
                   :image => page.get_one('#image').content,
-                  :remote_id => page.get_one('#remote_id').content.to_i
+                  :remote_id => page.get_one('#remote_id').content
                 }
               end
             end

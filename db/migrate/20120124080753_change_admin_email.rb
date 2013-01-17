@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 class ChangeAdminEmail < ActiveRecord::Migration
 
@@ -20,6 +20,9 @@ class ChangeAdminEmail < ActiveRecord::Migration
   private
   def self.update_email(old_email, new_email)
     admin = User.find_by_email(old_email)
-    admin.update_attributes!(:email => new_email) unless admin.nil?
+    unless admin.nil?
+      admin.email = new_email
+      admin.save!
+    end
   end
 end

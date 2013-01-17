@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'cucumber/rspec/doubles'
 
@@ -70,7 +70,7 @@ Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
                                                                    :summary => "#{name} #{summary}",
                                                                    :image => "http://www.dummy-store.com/images/#{remote_id}",
                                                                    :price => 1.2,
-                                                                   :remote_id => remote_id }})
+                                                                   :remote_id => remote_id.to_s }})
   end
   configure_dummy_store(@items_config)
 end

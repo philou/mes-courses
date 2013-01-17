@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 FactoryGirl.define do
 
@@ -7,7 +7,7 @@ FactoryGirl.define do
     "Item-#{n}"
   end
   sequence :remote_id do |n|
-    n
+    n.to_s
   end
 
   factory :item do

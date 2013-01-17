@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -128,7 +128,7 @@ module MesCourses
         def self.completed_config(config)
           config = { :uri => Carts::DummyApi.url }.merge(config)
           remote_id = 0
-          completed_config_ex(config, config[:uri], false) { remote_id += 1 }
+          completed_config_ex(config, config[:uri], false) { (remote_id += 1).to_s }
         end
         def self.completed_config_ex(config, base_uri, is_item, &new_remote_id)
           remote_id = new_remote_id.call
