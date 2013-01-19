@@ -1,11 +1,19 @@
-* [HEROKU] create branches to track the versions deployed to heroku
 * [HEROKU] migrate to heroku toolbelt if not working anymore
 ** replace hire_fire by workless
 * [HEROKU] migrate to heroku cedar stack
 ** remove rubyracer from the Gemfile
 ** remove assets precompiling with heroku assets precompiling
 ** change the assets line at the top of application.rb
-* [DEVENV] migrate to github if it handles continuous integration
+* [DEVENV] speed up integration
+** diminish the stores items api tests @range
+** change my computer
+** run things in parrallel
+*** parrallel perl scripts replaces xargs and can dump outputs in block
+*** use an integration server
+*** migrate to github if it handles continuous integration
+*** try the ruby "pty" library
+*** beware of specs and scenarios both using custom real_dummy_stores
+* [HEROKU] create branches to track the versions deployed to heroku
 * [DESIGN] Improve css style testing
 ** try to test design and style through cucumber
 ** try cactus css automated testing
