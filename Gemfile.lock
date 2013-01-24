@@ -19,6 +19,12 @@ GIT
       ffi (>= 1.0.0)
       net-ldap (~> 0.2.2)
 
+GIT
+  remote: git://github.com/philou/lazing.git
+  revision: 22f1377aae67bcc4ab37fcb55a738e1dd1e8cdfc
+  specs:
+    lazing (0.1.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -153,7 +159,6 @@ GEM
       activesupport (>= 3.0.0)
     launchy (2.1.2)
       addressable (~> 2.3)
-    lazing (0.1.1)
     libv8 (3.3.10.4)
     libwebsocket (0.1.7.1)
       addressable
@@ -303,7 +308,7 @@ DEPENDENCIES
   heroku-api
   hirefire
   jquery-rails
-  lazing
+  lazing!
   mechanize
   net-ping!
   pg

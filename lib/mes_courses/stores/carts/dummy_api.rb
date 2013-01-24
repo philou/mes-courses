@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require_relative "api"
 
@@ -56,8 +56,7 @@ module MesCourses
         def add_to_cart(quantity, item_remote_id)
           if available?(item_remote_id)
             @log.push(:add_to_cart)
-            # everything is at 1€ in this store (I would have needed the price as argument otherwise)
-            @content[item_remote_id] += quantity
+            @content[item_remote_id] += (item_remote_id.hash.abs.to_f/1e7)
           end
         end
 

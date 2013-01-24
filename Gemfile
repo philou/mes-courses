@@ -11,7 +11,7 @@ gem 'acts_as_tree'
 gem 'devise'
 gem 'blogit', :git => 'git://github.com/KatanaCode/blogit.git'
 gem 'jquery-rails'
-gem 'lazing'
+gem 'lazing', :git => 'git://github.com/philou/lazing.git'
 
 # required on heroku
 gem 'therubyracer', :require => 'v8'

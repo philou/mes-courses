@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -52,6 +52,16 @@ module MesCourses
             @api.cart_value.should == 2*item_price
           end
 
+          it "should set different cart values with different items" do
+            another_item_id = extract_another_item_id
+
+            sample_item_cart_value = cart_value_with_item(sample_item_id)
+            another_item_cart_value = cart_value_with_item(another_item_id)
+
+            sample_item_cart_value.should_not == another_item_cart_value
+
+          end
+
           it "should synchronize different sessions with logout login" do
             @api.add_to_cart(1, sample_item_id)
 
@@ -68,37 +78,38 @@ module MesCourses
           attr_reader :sample_item_id, :store_cart_api
 
           before(:all) do
-            @sample_item_id = extract_sample_item
-            @sample_item_id.should_not be_nil
+            @sample_items = extract_sample_items
+            @sample_item = @sample_items.next
+            @sample_item_id = @sample_item.attributes[:remote_id]
           end
 
           private
 
-          def extract_sample_item
-            extract_sample_item_from(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
+          def extract_another_item_id
+            another_item = @sample_item
+            while @sample_item.attributes[:price] == another_item.attributes[:price]
+              another_item = @sample_items.next
+            end
+            another_item.attributes[:remote_id]
           end
 
-          def extract_sample_item_from(category)
-            item = find_available_item(category)
-            return item if not item.nil?
-
-            nationaly_available_first(category.categories).each do |sub_category|
-              item = extract_sample_item_from(sub_category)
-              return item if not item.nil?
-            end
-
-            nil
+          def extract_sample_items
+            extract_sample_items_from(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
           end
 
-          def find_available_item(category)
-            nationaly_available_first(category.items).each do |item|
-              item_id = item.attributes[:remote_id]
-              if item_available?(item_id)
-                return item_id
-              end
+          def extract_sample_items_from(category)
+            items = find_available_items(category)
+
+            sub_items = nationaly_available_first(category.categories).mapping do |sub_category|
+              extract_sample_items_from(sub_category)
             end
 
-            nil
+            items.concatenating(sub_items.flattening)
+          end
+
+          def find_available_items(category)
+            nationaly_available_first(category.items)
+              .finding_all {|item| item_available?(item.attributes[:remote_id]) }
           end
 
           def item_available?(item_id)
@@ -119,6 +130,12 @@ module MesCourses
             ["lait", "crème"].any? do |word|
               element.title.downcase.include?(word)
             end
+          end
+
+          def cart_value_with_item(item_id)
+            @api.empty_the_cart
+            @api.add_to_cart(1, item_id)
+            @api.cart_value
           end
         end
       end
