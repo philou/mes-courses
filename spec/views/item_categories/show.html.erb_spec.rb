@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -78,7 +78,7 @@ describe "item_categories/show" do
       render
 
       @items.each do |item|
-        rendered.should have_selector("img", :src => item.image)
+        rendered.should have_selector("img", :src => https_url(item.image))
       end
     end
 

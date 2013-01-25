@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
   @item = categorized_item(category_name, sub_category_name, :name => item_name)
@@ -53,7 +53,7 @@ end
 Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  page.should have_xpath(".//img[@src='#{attribute_text}']")
+  page.should have_xpath(".//img[@src='#{https_url(attribute_text)}']")
 end
 
 Then /^new items should have been inserted$/ do

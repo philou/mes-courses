@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
 
 <p>Votre panier a été transféré à '<%=h @order.store.name %>'</p>
 <% unless @order.warning_notices.empty? %>
@@ -11,5 +11,5 @@
 
 <p><%= link_to h("Aller vous connecter sur #{@order.store.name} pour payer"), @order.store.sponsored_url, :id => "go-to-payment", :target => "_blank" %></p>
 
-<iframe id="remote-store-iframe" src=<%= @order.store.logout_url %> >
+<iframe id="remote-store-iframe" src=<%= https_url(@order.store.logout_url) %> >
 

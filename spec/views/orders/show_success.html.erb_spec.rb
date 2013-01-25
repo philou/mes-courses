@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe "orders/show_success" do
+  include MesCourses::Utils::UrlHelper
 
   before(:each) do
     assign :order, @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr",
@@ -27,7 +28,7 @@ describe "orders/show_success" do
 
   it "renders an iframe to unlog the client from the remote store" do
 
-    rendered.should have_xpath("//iframe[@id='remote-store-iframe'][@src='#{@order.store.logout_url}']")
+    rendered.should have_xpath("//iframe[@id='remote-store-iframe'][@src='#{https_url(@order.store.logout_url)}']")
 
   end
 
