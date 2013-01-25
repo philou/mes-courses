@@ -37,7 +37,7 @@ Feature: Cart Forwarding
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
     And   I wait for the transfer to end
-    Then  there should be an iframe with id "remote-store-iframe" and url "http://www.dummy-store.com/logout"
+    Then  there should be an iframe with id "remote-store-iframe" and url "https://www.dummy-store.com/logout"
 
   Scenario: Failure due to invalid login-password
     Given the "www.dummy-store.com" store
