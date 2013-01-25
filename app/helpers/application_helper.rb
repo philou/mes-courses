@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   include MesCourses::Utils::HerokuHelper
+  include MesCourses::Utils::UrlHelper
 
   def self.included(base)
     base.send :include, PathBarHelper

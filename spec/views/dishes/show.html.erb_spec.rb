@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe "dishes/show" do
+  include ApplicationHelper
 
   before :each do
     @dish = stub_model(Dish)
@@ -17,7 +18,7 @@ describe "dishes/show" do
     render
 
     @dish.items.each do |item|
-      rendered.should have_selector('img', :src => item.image)
+      rendered.should have_selector('img', :src => https_url(item.image))
       rendered.should contain(item.name)
       rendered.should contain(item.summary)
     end
