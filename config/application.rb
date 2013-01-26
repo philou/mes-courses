@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require File.expand_path('../boot', __FILE__)
 
@@ -50,7 +50,7 @@ module MesCourses
     config.encoding = "utf-8"
 
     # Force ssl for the whole app on heroku
-    config.force_ssl = on_heroku?
+    # config.force_ssl = true
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
@@ -107,6 +107,12 @@ module MesCourses
         :email_prefix => "[#{app_name}] ERROR ",
         :sender_address => sender,
         :exception_recipients => recipients
+    end
+
+    # ssl everywhere appart from orders, where store logout through an
+    # http iframe might be insecure
+    if on_heroku?
+      config.middleware.use Rack::SslEnforcer, except: "/orders", strict: true
     end
   end
 end
