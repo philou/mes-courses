@@ -53,13 +53,10 @@ module MesCourses
           end
 
           it "should set different cart values with different items" do
-            another_item_id = extract_another_item_id
-
             sample_item_cart_value = cart_value_with_item(sample_item_id)
             another_item_cart_value = cart_value_with_item(another_item_id)
 
             sample_item_cart_value.should_not == another_item_cart_value
-
           end
 
           it "should synchronize different sessions with logout login" do
@@ -75,20 +72,32 @@ module MesCourses
             @api.cart_value.should == 0
           end
 
-          attr_reader :sample_item_id, :store_cart_api
+          it "should logout with HTTP GET" do
+            unless http_agent.nil?
+              @api.add_to_cart(1, sample_item_id)
+              @api.cart_value.should_not == 0
+
+              http_agent.get(@api.logout_url)
+
+              @api.cart_value.should == 0
+            end
+          end
+
+          attr_reader :sample_item_id, :another_item_id, :store_cart_api
 
           before(:all) do
-            @sample_items = extract_sample_items
-            @sample_item = @sample_items.next
-            @sample_item_id = @sample_item.attributes[:remote_id]
+            sample_items = extract_sample_items
+            sample_item = sample_items.next
+            @sample_item_id = sample_item.attributes[:remote_id]
+            @another_item_id = extract_another_item_id(sample_items, sample_item)
           end
 
           private
 
-          def extract_another_item_id
-            another_item = @sample_item
-            while @sample_item.attributes[:price] == another_item.attributes[:price]
-              another_item = @sample_items.next
+          def extract_another_item_id(sample_items, sample_item)
+            another_item = sample_item
+            while sample_item.attributes[:price] == another_item.attributes[:price]
+              another_item = sample_items.next
             end
             another_item.attributes[:remote_id]
           end
@@ -104,7 +113,7 @@ module MesCourses
               extract_sample_items_from(sub_category)
             end
 
-            items.concatenating(sub_items.flattening)
+            items.concating(sub_items.flattening)
           end
 
           def find_available_items(category)
@@ -129,6 +138,12 @@ module MesCourses
           def is_milk(element)
             ["lait", "crème"].any? do |word|
               element.title.downcase.include?(word)
+            end
+          end
+
+          def http_agent
+            @api.instance_eval do
+              @agent
             end
           end
 

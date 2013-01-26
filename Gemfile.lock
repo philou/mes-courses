@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/philou/lazing.git
-  revision: 22f1377aae67bcc4ab37fcb55a738e1dd1e8cdfc
+  revision: b8d48cc83e936d86ed6bc5c131967b26d6c2c66d
   specs:
     lazing (0.1.1)
 

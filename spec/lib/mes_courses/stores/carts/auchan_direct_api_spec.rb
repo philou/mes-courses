@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 require_relative 'api_shared_examples'
@@ -28,6 +28,7 @@ when_online("AuchanDirectApi remote spec") do
           before(:all) do
             @store_cart_api = AuchanDirectApi
           end
+
         end
       end
     end
