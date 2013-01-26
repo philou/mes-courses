@@ -313,6 +313,7 @@ DEPENDENCIES
   mechanize
   net-ping!
   pg
+  rack-cache
   rack-ssl-enforcer
   rails
   rspec-rails
