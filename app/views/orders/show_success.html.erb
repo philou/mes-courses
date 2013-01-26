@@ -11,5 +11,5 @@
 
 <p><%= link_to h("Aller vous connecter sur #{@order.store.name} pour payer"), @order.store.sponsored_url, :id => "go-to-payment", :target => "_blank" %></p>
 
-<iframe id="remote-store-iframe" src=<%= https_url(@order.store.logout_url) %> >
+<iframe id="remote-store-iframe" src=<%= @order.store.logout_url %> >
 
