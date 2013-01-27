@@ -193,7 +193,6 @@ GEM
       rack (>= 0.4)
     rack-ssl (1.3.2)
       rack
-    rack-ssl-enforcer (0.2.5)
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (3.2.11)
@@ -314,7 +313,6 @@ DEPENDENCIES
   net-ping!
   pg
   rack-cache
-  rack-ssl-enforcer
   rails
   rspec-rails
   sass-rails
