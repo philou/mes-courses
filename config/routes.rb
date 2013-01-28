@@ -1,7 +1,6 @@
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 MesCourses::Application.routes.draw do
-  get "cgu/index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
