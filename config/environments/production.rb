@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 MesCourses::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
@@ -74,4 +74,8 @@ MesCourses::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+
+  # ssl everywhere appart from orders, where store logout through an
+  # http iframe might be insecure
+  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true
 end
