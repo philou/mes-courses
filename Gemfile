@@ -12,6 +12,8 @@ gem 'devise'
 gem 'blogit', :git => 'git://github.com/KatanaCode/blogit.git'
 gem 'jquery-rails'
 gem 'lazing', :git => 'git://github.com/philou/lazing.git'
+gem 'rack-ssl-enforcer'
+gem 'rack-cache', :require => 'rack/cache'
 
 # required on heroku
 gem 'therubyracer', :require => 'v8'
