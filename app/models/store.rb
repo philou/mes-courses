@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'uri'
 
@@ -113,6 +113,14 @@ class Store < ActiveRecord::Base
                            AND item_id NOT IN (SELECT item_id FROM cart_lines) }
       connection.execute %{DELETE FROM item_categories_items WHERE item_id IN (SELECT item_id FROM unused_items) }
       connection.execute %{DELETE FROM items WHERE id IN (SELECT item_id FROM unused_items) }
+    end
+  end
+
+  def delete_unused_item_categories
+    while 0 != execute_delete(%{DELETE FROM item_categories
+                                WHERE id NOT IN (SELECT item_category_id FROM item_categories_items WHERE item_category_id IS NOT NULL)
+                                AND id NOT IN (SELECT parent_id FROM item_categories WHERE parent_id IS NOT NULL)
+                                AND parent_id IS NOT NULL })
     end
   end
 

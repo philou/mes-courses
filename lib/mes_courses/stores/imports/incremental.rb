@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'mes_courses/rails_utils/attributes_comparison'
 
@@ -24,6 +24,7 @@ module MesCourses
           handle_broken_dishes()
           @store.disable_sold_out_items
           @store.delete_unused_items
+          @store.delete_unused_item_categories
           @store.delete_visited_urls
         end
 

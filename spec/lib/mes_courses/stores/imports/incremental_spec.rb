@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -39,6 +39,7 @@ module MesCourses
           it "should clean up sold out items" do
             @store.should_receive(:disable_sold_out_items).ordered
             @store.should_receive(:delete_unused_items).ordered
+            @store.should_receive(:delete_unused_item_categories).ordered
           end
 
           it "should delete visited urls" do
