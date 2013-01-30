@@ -23,11 +23,6 @@ module MesCourses
           fat_liver.attributes[:price].should be_instance_of(Float)
         end
 
-        # it "should not truncate item names" do
-        #   body_category = @store.categories.find {|cat| cat.title == "Corps"}
-        #   soap = body_category.items.find {|item| item.title =~ /LE PETIT MARSEIL/}
-        #   soap.attributes[:name].should == "LE PETIT MARSEILLAIS"
-        # end
       end
     end
   end

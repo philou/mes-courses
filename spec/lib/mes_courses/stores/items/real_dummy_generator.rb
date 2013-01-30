@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "fileutils"
 require "mes_courses/stores/items/real_dummy_constants"
@@ -75,21 +75,25 @@ module MesCourses
         attr_reader :name
 
         def category(category_name)
-          add([category_name], [], {})
-          RealDummy.new("#{absolute_category_dir(category_name)}/index.html", category_name)
+          short_category_name = short_name(category_name)
+          add([short_category_name], [], {})
+          RealDummy.new("#{absolute_category_dir(short_category_name)}/index.html", category_name)
         end
         def remove_category(category_name)
-          remove([category_name], [], [])
-          FileUtils.rm_rf(absolute_category_dir(category_name))
+          short_category_name = short_name(category_name)
+          remove([short_category_name], [], [])
+          FileUtils.rm_rf(absolute_category_dir(short_category_name))
         end
 
         def item(item_name)
-          add([], [item_name], {})
-          RealDummy.new(absolute_item_file(item_name), item_name)
+          short_item_name = short_name(item_name)
+          add([], [short_item_name], {})
+          RealDummy.new(absolute_item_file(short_item_name), item_name)
         end
         def remove_item(item_name)
-          remove([], [item_name], [])
-          FileUtils.rm_rf(absolute_item_file(item_name))
+          short_item_name = short_name(item_name)
+          remove([], [short_item_name], [])
+          FileUtils.rm_rf(absolute_item_file(short_item_name))
         end
 
         def attributes(values)
@@ -118,6 +122,10 @@ module MesCourses
           if !File.exists?(path)
             write(name, [], [], {})
           end
+        end
+
+        def short_name(full_name)
+          full_name[0..20]
         end
 
         def absolute_category_dir(category_name)

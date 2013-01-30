@@ -21,8 +21,25 @@ module MesCourses
 
         def generate_store(item_count = 3)
           RealDummy.wipe_out
-          RealDummy.open(store_name = "www.spec-store.com").generate(3).categories.and(3).categories.and(item_count).items
+          @store_generator = RealDummy.open(store_name = "www.spec-store.com")
+          @store_generator.generate(3).categories.and(3).categories.and(item_count).items
           @store = Api.browse(RealDummy.uri(store_name))
+        end
+
+        it "should not truncate long item names" do
+          @store_generator.
+            category(cat_name = "extra long category name").
+            category(sub_cat_name = "extra long sub category name").
+            item(item_name = "super extra long item name").generate().attributes
+
+          category = @store.categories.find {|cat| cat_name.start_with?(cat.title)}
+          category.attributes[:name].should == cat_name
+
+          sub_category = category.categories.find {|sub_cat| sub_cat_name.start_with?(sub_cat.title)}
+          sub_category.attributes[:name].should == sub_cat_name
+
+          item = sub_category.items.find {|it| item_name.start_with?(it.title)}
+          item.attributes[:name].should == item_name
         end
 
         it "should use constant memory" do
