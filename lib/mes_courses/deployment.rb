@@ -217,12 +217,12 @@ module MesCourses
       end
     end
     def limit_to_save_billing(repo, processes)
-      one_week = 7
+      one_day = 1
       last_import_date_var = "LAST_IMPORT_DATE"
 
       last_import = get_heroku_time_var(repo, last_import_date_var)
 
-      if !processes.empty? or last_import < DateTime.now - one_week
+      if !processes.empty? or last_import < DateTime.now - one_day
 
         set_heroku_time_var(repo, last_import_date_var, DateTime.now)
         yield
