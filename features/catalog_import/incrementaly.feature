@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 Feature: Incremental catalog import
 
@@ -11,24 +11,31 @@ Feature: Incremental catalog import
   dishes using them are kept correct.
 
   Scenario: Existing items are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  items from the store are re-imported
-    Then  no new item should have been inserted
-    And   no item should have been modified
-    And   no item should have been deleted
+    Given the imported store "www.dummy-store.com"
+    When "www.dummy-store.com" is imported again
+    Then no new item should have been inserted
+    And no item should have been modified
+    And no item should have been deleted
+
+  Scenario: Existing item categories and sub categories are re-imported from the store
+    Given the imported store "www.dummy-store.com"
+    When "www.dummy-store.com" is imported again
+    Then  item organization should not have changed
 
   Scenario: New items are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  more items from the store are re-imported
-    Then  new items should have been inserted
+    Given the imported store "www.dummy-store.com"
+    When the following items are added to "www.dummy-store.com"
+      | Category | Sub category | Item       |
+      | Marché   | Légumes      | Tomates    |
+      | Marché   | Légumes      | Concombres |
+    Then new items should have been inserted
 
+  @deprecated
   Scenario: Modified items are re-imported from the store
     Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  modified items from the store are re-imported
-    Then  some items should have been modified
+    And items from the store were already imported
+    When modified items from the store are re-imported
+    Then some items should have been modified
 
   Scenario: Second import with sold out items
 
@@ -75,9 +82,4 @@ Feature: Incremental catalog import
       | Category | Sub category | Item    |
       | Marché   | Légumes      | Tomates |
 
-  Scenario: Existing item categories and sub categories are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And   items from the store were already imported
-    When  items from the store are re-imported
-    Then  item organization should not have changed
 

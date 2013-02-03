@@ -4,6 +4,7 @@ Feature: Catalog import
   A webmaster
   Wants an automatic import report email
 
+  @deprecated
   Scenario: An import report email is sent after the import
     Given the "www.dummy-store.com" store
     When  items from the store are imported

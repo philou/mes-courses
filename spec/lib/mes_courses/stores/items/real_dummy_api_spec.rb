@@ -43,7 +43,7 @@ module MesCourses
         end
 
         it "should use constant memory" do
-          heat_up_measure = memory_usage_for_items(1)
+          warm_up_measure = memory_usage_for_items(1)
 
           small_inputs_memory = memory_usage_for_items(1)
           large_inputs_memory = memory_usage_for_items(200)

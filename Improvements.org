@@ -1,17 +1,14 @@
-* [HEROKU] migrate to heroku toolbelt if not working anymore
-** replace hire_fire by workless
-* [HEROKU] migrate to heroku cedar stack
-** remove rubyracer from the Gemfile
-** remove assets precompiling with heroku assets precompiling
-** change the assets line at the top of application.rb
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
 ** change my computer
 ** run things in parrallel
+*** try running the (fast?) specs in // (try parallel_test gem)
+*** try running cucumber scenarios in //
 *** parrallel perl scripts replaces xargs and can dump outputs in block
 *** use an integration server
 *** migrate to github if it handles continuous integration
 *** try the ruby "pty" library
+*** try the parallel ruby gem
 *** beware of specs and scenarios both using custom real_dummy_stores
 * [HEROKU] create branches to track the versions deployed to heroku
 * [HEROKU] replace exception_notifier by papertrail alerts
@@ -31,6 +28,7 @@
 ** débugger cucumber (dans emacs)
 ** si besoin écrire du emacs script
 ** voir comment faire un break on exception
+** try pry
 * [DEVENV] réduire la maintenance due aux updates de stack et OS
 ** le faire le plus souvent possible
 ** OS

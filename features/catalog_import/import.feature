@@ -5,11 +5,13 @@ Feature: Catalog import
   Wants an automatic command to update the catalog from
    a remote online store
 
+  @deprecated
   Scenario: Importing items sold on a store
     Given the "www.dummy-store.com" store
     When  items from the store are imported
     Then  all items from the store should have been imported
 
+  @deprecated
   Scenario: Importing items with the same name
     Given the "www.dummy-store.com" store
     And   there are 2 items with the name "Petits pois" in the store

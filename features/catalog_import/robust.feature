@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
 Feature: Robust catalog import
 
@@ -6,6 +6,7 @@ Feature: Robust catalog import
   A webmaster
   Wants the import to resumed where it was stopped
 
+  @deprecated
   Scenario: Items are reimported after an interrupted import
     Given the "www.dummy-store.com" store
     And   last store import was unexpectedly interrupted
@@ -13,6 +14,7 @@ Feature: Robust catalog import
     Then  new items should have been inserted
     And   existing items should not have been modified
 
+  @deprecated
   Scenario: Import retries on network error
     Given the "www.dummy-store.com" store
     And   the network connection is unstable

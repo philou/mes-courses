@@ -7,6 +7,7 @@ Feature: Catalog import organization
   Wants the import mechanism to organize items into types and
    sub categories.
 
+  @deprecated
   Scenario: Items import organizes the items by category
     Given the "www.dummy-store.com" store
     When  items from the store are imported
