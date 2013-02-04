@@ -31,14 +31,6 @@ def remove_items_from_generated_store(store_name, item_table)
   end
 end
 
-Given /^the "(.*?)" store with items$/ do |store_name, item_table|
-  generate_store(store_name, item_table)
-end
-
-Given /^"(.*?)" store was already imported$/ do |store_name|
-  import_real_dummy_store(store_name)
-end
-
 Given /^the imported store "(.*?)"$/ do |store_name|
   generate_store(store_name)
   import_real_dummy_store(store_name)
@@ -47,10 +39,6 @@ end
 Given /^the imported store "(.*?)" with items$/ do |store_name, item_table|
   generate_store(store_name, item_table)
   import_real_dummy_store(store_name)
-end
-
-Given /^the following items were removed from "(.*?)"$/ do |store_name, item_table|
-  remove_items_from_generated_store(store_name, item_table)
 end
 
 When /^"(.*?)" is imported again$/ do |store_name|

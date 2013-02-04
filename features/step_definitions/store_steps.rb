@@ -75,29 +75,8 @@ Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
   configure_dummy_store(@items_config)
 end
 
-Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
-  item = Item.find_by_name(item_name)
-  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
-
-  @cart_api.add_unavailable_item(item.remote_id)
-end
-
-Given /^"([^"]*)" was removed from the store"?$/ do |item_name|
-  remove_item_from(@items_config, item_name)
-  configure_dummy_store(@items_config)
-end
-
 When /^items from the store are imported$/ do
   Store.import
-end
-
-When /^items from the store are re-imported$/ do
-  reimport(@store)
-end
-
-When /^more items from the store are re-imported$/ do
-  configure_dummy_store(MesCourses::Stores::Items::DummyApi.full_config)
-  reimport(@store)
 end
 
 When /^modified items from the store are re-imported$/ do
@@ -108,6 +87,19 @@ When /^modified items from the store are re-imported$/ do
   reimport(@store)
 end
 
+Then /^all items from the store should have been imported$/ do
+  Item.all_but_lost.should have(MesCourses::Stores::Items::DummyApi.new_default_store.total_items_count).records
+end
+
+
+# store cart steps
+Given /^"([^"]*)" are unavailable in the store"?$/ do |item_name|
+  item = Item.find_by_name(item_name)
+  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
+
+  @cart_api.add_unavailable_item(item.remote_id)
+end
+
 Then /^an empty cart should be created in the store account of the user$/ do
   @cart_api.log.should include(:empty_the_cart)
 end
@@ -116,7 +108,4 @@ Then  /^a non empty cart should be created in the store account of the user$/ do
   @cart_api.log.should include(:add_to_cart)
 end
 
-Then /^all items from the store should have been imported$/ do
-  Item.all_but_lost.should have(MesCourses::Stores::Items::DummyApi.new_default_store.total_items_count).records
-end
 
