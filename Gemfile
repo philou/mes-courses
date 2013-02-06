@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
+ruby '1.9.3'
 
+gem 'thin'
 gem 'rails'
 gem "mechanize"
 gem "exception_notification", :require => 'exception_notifier'
 gem "delayed_job_active_record"
-gem "workless"
+gem "workless", :group => [:production, :development]
 gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
@@ -19,7 +21,7 @@ gem 'rack-cache', :require => 'rack/cache'
 gem 'therubyracer', :require => 'v8'
 
 # databases
-gem "pg", :group => [:production, :ci, :cucumber, :develpment]
+gem "pg", :group => [:production, :ci, :cucumber, :development]
 gem "sqlite3", :require => "sqlite3", :group => [:test]
 
 # Gems used only for assets and not required
