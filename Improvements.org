@@ -10,6 +10,9 @@
 *** try the ruby "pty" library
 *** try the parallel ruby gem
 *** beware of specs and scenarios both using custom real_dummy_stores
+*** see how to organise the outputs
+**** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
+**** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
 * [HEROKU] create branches to track the versions deployed to heroku
 * [HEROKU] replace exception_notifier by papertrail alerts
 * [DESIGN] Improve css style testing
@@ -76,15 +79,11 @@
 ** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
 ** Supprimer complétement DummyStoreItemsAPI
 * [DESIGN] remove if on_heroku? from application.rb by providing special envs or the like
+** prod : heroku
+** integ : ci
+** dev : local
+** watchdog ???
 * [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
-* [DEVENV] Speed up integration script
-** Improve hardware
-** parallelize some things
-*** Check for // rspec
-*** Check for // cucumber
-*** see how to organise the outputs
-**** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
-**** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
 * [DEVENV] import db from beta to integ to test migrations with real data
 * [HEROKU] utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
 * [HEROKU] configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue

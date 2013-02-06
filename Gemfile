@@ -4,7 +4,7 @@ gem 'rails'
 gem "mechanize"
 gem "exception_notification", :require => 'exception_notifier'
 gem "delayed_job_active_record"
-gem "workless", :group => [:development, :production]
+gem "workless"
 gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
