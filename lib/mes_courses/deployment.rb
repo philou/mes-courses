@@ -12,7 +12,7 @@ module MesCourses
   module Deployment
     include Utils
 
-    HEROKU_STACK = "bamboo-ree-1.9.2"
+    HEROKU_STACK = "cedar"
     TRACE_KEY = "MES_COURSES_DEPLOYMENT_TRACE"
 
     def shell(command, env = {})
@@ -157,15 +157,19 @@ module MesCourses
       shell 'git commit -m "Precompile assets for heroku"'
     end
 
-    def create_heroku_app(repo, heroku_password)
+    def create_heroku_app(repo, heroku_api_key, pgsql_plan, ssl)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
+      heroku "addons:add heroku-postgresql:#{pgsql_plan}", repo: repo
+      heroku "addons:add pgbackups:auto-month", repo: repo
       heroku "addons:add scheduler:standard", repo: repo
-      heroku "addons:upgrade logging:expanded", repo: repo
       heroku "addons:add sendgrid:starter", repo: repo
       heroku "addons:add papertrail:choklad", repo: repo
+      heroku "addons:add ssl:endpoint", repo: repo if ssl
 
-      heroku "config:set HIREFIRE_EMAIL=philippe.bourgau@gmail.com HIREFIRE_PASSWORD=#{heroku_password}", repo: repo
+      heroku "config:set HEROKU_API_KEY=#{heroku_api_key}", repo: repo
+      heroku "config:set APP_NAME=#{heroku_app(repo)}", repo: repo
+      heroku "config:set RACK_ENV=production", repo: repo
     end
 
     private

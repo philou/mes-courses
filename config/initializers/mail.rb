@@ -5,7 +5,7 @@ if on_heroku?
     :authentication => :plain,
     :user_name      => ENV['SENDGRID_USERNAME'],
     :password       => ENV['SENDGRID_PASSWORD'],
-    :domain         => ENV['SENDGRID_DOMAIN']
+    :domain         => 'heroku.com'
   }
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.default_url_options = { :host => "#{app_name}.heroku.com" }
