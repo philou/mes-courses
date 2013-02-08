@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
 
 # Configuration for continuous integration, mostly like production, but
 #  - with rspec and cucumber
@@ -47,7 +47,7 @@ MesCourses::Application.configure do
   # config.log_level = :debug
 
   # Prepend all log lines with the following tags
-  config.log_tags = [ :subdomain, :uuid, :remote_ip, :session_id ]
+  # config.log_tags = [ :subdomain, :uuid ]
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
