@@ -77,5 +77,5 @@ MesCourses::Application.configure do
 
   # ssl everywhere appart from orders, where store logout through an
   # http iframe might be insecure
-  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true
+  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer #, except: %r{^/orders/}, strict: true
 end
