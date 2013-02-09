@@ -41,7 +41,7 @@ MesCourses::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  config.log_level = :debug
+  # config.log_level = :debug
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -76,6 +76,7 @@ MesCourses::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # ssl everywhere appart from orders, where store logout through an
-  # http iframe might be insecure
+  # http iframe might be insecure. cookies are not secured otherwise the cart would be lost
+  # after going through http to pass the order
   config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true, force_secure_cookies: false
 end
