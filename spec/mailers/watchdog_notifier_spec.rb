@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
-require 'lib/mes_courses/rails_utils/monitoring_mailer_shared_examples'
+require 'lib/mes_courses/rails_utils/monitoring_mailer_base_shared_examples'
 
 describe WatchdogNotifier do
-  include MesCourses::RailsUtils::MonitoringMailerSpecMacros
+  include MesCourses::RailsUtils::MonitoringMailerBaseSpecMacros
 
   before(:each) do
     @mailer_class = WatchdogNotifier

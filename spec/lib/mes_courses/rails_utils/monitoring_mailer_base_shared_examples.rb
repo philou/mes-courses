@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 module MesCourses
   module RailsUtils
 
-    module MonitoringMailerSpecMacros
+    module MonitoringMailerBaseSpecMacros
 
       def self.included(base)
         base.send :extend, ClassMethods
