@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
+ruby '1.9.3'
 
+gem 'thin'
 gem 'rails'
 gem "mechanize"
 gem "exception_notification", :require => 'exception_notifier'

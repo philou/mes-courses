@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 # class responsible to alert of dishes broken by deleted items during import
-class BrokenDishesReporter < MesCourses::RailsUtils::MonitoringMailer
+class BrokenDishesReporter < MesCourses::RailsUtils::MonitoringMailerBase
 
   SUBJECT = "There are broken dishes"
 

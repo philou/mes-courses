@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'action_view/helpers/number_helper'
 
 # Object responsible for mailing an import report
-class ImportReporter < MesCourses::RailsUtils::MonitoringMailer
+class ImportReporter < MesCourses::RailsUtils::MonitoringMailerBase
   include ActionView::Helpers::NumberHelper
   include MesCourses::Utils::HerokuHelper
 

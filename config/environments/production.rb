@@ -76,6 +76,7 @@ MesCourses::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # ssl everywhere appart from orders, where store logout through an
-  # http iframe might be insecure
-  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true
+  # http iframe might be insecure. cookies are not secured otherwise the cart would be lost
+  # after going through http to pass the order
+  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true, force_secure_cookies: false
 end

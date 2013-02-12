@@ -24,3 +24,5 @@ memory
 *.dump
 *.out
 /local_stores
+.env
+

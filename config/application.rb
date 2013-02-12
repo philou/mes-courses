@@ -84,23 +84,6 @@ module MesCourses
       config.assets.initialize_on_precompile = false
     end
 
-    # Send emails from heroku
-    if !on_heroku?
-      config.action_mailer.delivery_method = :test
-      config.action_mailer.default_url_options = { :host => 'localhost' }
-
-    else
-      config.action_mailer.delivery_method = :smtp
-      config.action_mailer.default_url_options = { :host => "#{app_name}.heroku.com" }
-      ActionMailer::Base.smtp_settings = {
-        :address        => 'smtp.sendgrid.net',
-        :port           => '25',
-        :authentication => :plain,
-        :user_name      => ENV['SENDGRID_USERNAME'],
-        :password       => ENV['SENDGRID_PASSWORD'],
-        :domain         => ENV['SENDGRID_DOMAIN']}
-    end
-
     # setup exception notifier on heroku
     if on_heroku?
       config.middleware.use ExceptionNotifier,

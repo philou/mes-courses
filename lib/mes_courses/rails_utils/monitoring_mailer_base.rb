@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module RailsUtils
 
     # base mailer class for online maintainer monitoring
-    class MonitoringMailer < ActionMailer::Base
+    class MonitoringMailerBase < ActionMailer::Base
       include MesCourses::Utils::HerokuHelper
       extend MesCourses::Utils::EmailConstants
 

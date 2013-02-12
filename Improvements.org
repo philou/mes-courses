@@ -1,3 +1,4 @@
+* [DEVENV] migrate to ruby 2.0
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
 ** change my computer
