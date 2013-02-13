@@ -41,7 +41,7 @@ gem "autotest-rails"#, :group => [:development]
 gem "autotest-notification"#, :group => [:development]
 gem "cucumber-rails"#, :group => [:test]
 gem "database_cleaner"#, :group => [:cucumber, :ci]
-gem 'net-ping'#, :git => 'git://github.com/djberg96/net-ping.git', :group => [:test, :ci]
+gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'#, :group => [:test, :ci]
 
 # developpment tools
 # gem "debugger", :group => [:development, :test, :cucumber]
