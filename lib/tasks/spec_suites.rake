@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
-unless Rails.env == "production"
+#unless Rails.env == "production"
 
   desc "Run specs depending on online thirdparty"
   RSpec::Core::RakeTask.new :remote_spec do |t|
@@ -18,4 +18,4 @@ unless Rails.env == "production"
     t.spec_opts = %{--tag ~@slow}
   end
 
-end
+#end
