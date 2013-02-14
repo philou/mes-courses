@@ -6,7 +6,7 @@ gem 'rails'
 gem "mechanize"
 gem "exception_notification", :require => 'exception_notifier'
 gem "delayed_job_active_record"
-gem "workless", :group => [:production, :development]
+gem "workless", :group => [:production, :development] # we don't want workless poluting our tests
 gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
@@ -39,9 +39,9 @@ gem "webrat"
 gem "cucumber-rails"
 gem "database_cleaner"
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
-
-# developpment tools
 gem "spork"
+
+# developpment only tools
 gem "autotest-rails", :group => [:development]
 gem "autotest-notification", :group => [:development]
 # gem "debugger", :group => [:development, :test, :cucumber]
