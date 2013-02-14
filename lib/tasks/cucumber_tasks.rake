@@ -1,11 +1,8 @@
+# Copyright (C) 2013 by Philippe Bourgau
 
-unless Rails.env == "production"
+require 'cucumber'
+require 'cucumber/rake/task'
 
-  require 'cucumber'
-  require 'cucumber/rake/task'
-
-  Cucumber::Rake::Task.new("cucumber:dry_run") do |t|
-    t.cucumber_opts = "features --dry-run"
-  end
-
+Cucumber::Rake::Task.new("cucumber:dry_run") do |t|
+  t.cucumber_opts = "features --dry-run"
 end

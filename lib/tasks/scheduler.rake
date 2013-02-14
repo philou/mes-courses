@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require "mes_courses/utils/scheduled_tasks"
 
@@ -8,11 +8,8 @@ namespace :scheduled do
 
   scheduled_task("stores:import")
 
-  unless Rails.env == "production"
-    scheduled_task("watchdog")
-  end
+  scheduled_task("watchdog")
 
   scheduled_task("failing")
 
 end
-
