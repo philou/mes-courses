@@ -1,6 +1,8 @@
 * [DEVENV] migrate to ruby 2.0
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
+** do less login-logout during cart testing
+*** refactor the availble and 2 items prices tests (they are already tested in the before :all clause
 ** change my computer
 ** run things in parrallel
 *** try running the (fast?) specs in // (try parallel_test gem)

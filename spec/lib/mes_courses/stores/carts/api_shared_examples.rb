@@ -124,7 +124,11 @@ module MesCourses
           def item_available?(item_id)
             @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api|
               api.add_to_cart(1, item_id)
-              return 0 < api.cart_value
+              item_price = api.cart_value
+              return false if 0 == item_price
+
+              api.add_to_cart(1, item_id)
+              return api.cart_value == item_price * 2
             end
           end
 
