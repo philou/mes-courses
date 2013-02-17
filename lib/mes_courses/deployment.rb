@@ -166,10 +166,6 @@ module MesCourses
 
     private
 
-    def files_mtimes(directory)
-      `find '#{directory}' -type f`.split("\n").map {|f| File.mtime(f)}
-    end
-
     def precompile_assets
       bundled_rake "assets:precompile", "RAILS_ENV" => "production"
     end
