@@ -78,11 +78,9 @@ module MesCourses
     # Precompile blog.css and app.css
     config.assets.precompile += [/blog.css/, /app.css/]
 
-    # Suggested by devise : on heroku, do not access the DB or load models when
-    # precompiling your assets
-    if on_heroku?
-      config.assets.initialize_on_precompile = false
-    end
+    # Suggested by devise (& heroku) : do not access the DB or load models to
+    # speed up precompiling your assets
+    config.assets.initialize_on_precompile = false
 
     # setup exception notifier on heroku
     if on_heroku?

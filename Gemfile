@@ -17,9 +17,6 @@ gem 'lazing', :git => 'git://github.com/philou/lazing.git'
 gem 'rack-ssl-enforcer'
 gem 'rack-cache', :require => 'rack/cache'
 
-# required on heroku
-gem 'therubyracer', :require => 'v8'
-
 # databases
 gem "pg"
 gem "sqlite3", :require => "sqlite3", :group => [:test] # it does not install on heroku
