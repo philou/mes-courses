@@ -26,3 +26,5 @@ memory
 /local_stores
 .env
 
+# Ignore compiled assets
+/public/assets

@@ -149,14 +149,6 @@ module MesCourses
       puts "\nIntegration successful :-)"
     end
 
-    def precompile_assets
-      shell "rm -rf public/assets"
-      shell "git rm -rf --ignore-unmatch public/assets"
-      bundled_rake "assets:precompile", "RAILS_ENV" => "production"
-      shell "git add public/assets"
-      shell 'git commit -m "Precompile assets for heroku"'
-    end
-
     def create_heroku_app(repo, heroku_api_key, pgsql_plan, ssl)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
@@ -173,6 +165,14 @@ module MesCourses
     end
 
     private
+
+    def files_mtimes(directory)
+      `find '#{directory}' -type f`.split("\n").map {|f| File.mtime(f)}
+    end
+
+    def precompile_assets
+      bundled_rake "assets:precompile", "RAILS_ENV" => "production"
+    end
 
     def trace_option
       if ENV[TRACE_KEY]
