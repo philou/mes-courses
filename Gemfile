@@ -11,7 +11,7 @@ gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
-gem 'blogit', :git => 'git://github.com/KatanaCode/blogit.git'
+gem 'blogit'
 gem 'jquery-rails'
 gem 'lazing', :git => 'git://github.com/philou/lazing.git'
 gem 'rack-ssl-enforcer'
@@ -30,7 +30,7 @@ group :assets do
 end
 
 # testing tools
-gem "rspec-rails"
+gem "rspec-rails", ">= 2.12.0"
 gem "factory_girl_rails", :require => false # lazy require factories at each spork run
 gem "webrat"
 gem "cucumber-rails"
