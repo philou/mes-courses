@@ -59,7 +59,8 @@ class ImportReporter < MesCourses::RailsUtils::MonitoringMailerBase
     end
 
     lines.push("Import took : #{import_duration_seconds.to_pretty_duration}")
-    lines.push("Logs : #{safe_heroku_logs}}")
+    lines.push("")
+    lines.push(safe_heroku_logs)
 
     lines.join("\n")
   end
