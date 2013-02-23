@@ -8,7 +8,7 @@ if on_heroku?
     :domain         => 'heroku.com'
   }
   ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.default_url_options = { :host => "#{app_name}.heroku.com" }
+  ActionMailer::Base.default_url_options = { :host => "#{app_name}.herokuapp.com" }
 
 else
   ActionMailer::Base.delivery_method = :test
