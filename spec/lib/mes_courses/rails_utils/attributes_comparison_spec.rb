@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 require 'mes_courses/rails_utils/attributes_comparison'
@@ -23,8 +23,8 @@ describe "ActiveRecord attributes comparison" do
     @item.should_not be_equal_to_attributes(@item_attributes)
   end
 
-  it "does not equal attributes with another summary" do
-    @item_attributes[:summary] = @item_attributes[:summary] + " poids net 250g"
+  it "does not equal attributes with another brand" do
+    @item_attributes[:brand] = @item_attributes[:brand] + " poids net 250g"
     @item.should_not be_equal_to_attributes(@item_attributes)
   end
 

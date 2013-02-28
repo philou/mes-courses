@@ -61,13 +61,13 @@ Given /^the network connection is unstable$/ do
 end
 
 Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
-  [["extra", 10001], ["extra fins", 1002]].each do |summary, remote_id|
+  [["ACME", 10001], ["MegaCorp", 1002]].each do |brand, remote_id|
     @items_config[:categories][0][:categories][0][:items].push({ :uri => URI.parse("http://www.dummy-store.com/article/#{remote_id}"),
                                                                  :items => [],
                                                                  :categories => [],
                                                                  :attributes => {
                                                                    :name => name,
-                                                                   :summary => "#{name} #{summary}",
+                                                                   :brand => brand,
                                                                    :image => "http://www.dummy-store.com/images/#{remote_id}",
                                                                    :price => 1.2,
                                                                    :remote_id => remote_id.to_s }})

@@ -1,4 +1,9 @@
 * [DEVENV] migrate to ruby 2.0
+** pass specs
+** pass scenarios
+** pass integration script
+** deploy on heroku
+** replace lazing by enumerable#lazy
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
 ** do less login-logout during cart testing

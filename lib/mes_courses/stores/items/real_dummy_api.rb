@@ -24,7 +24,7 @@ module MesCourses
               attributes do
                 {
                   :name => page.get_one('h1').content,
-                  :summary => page.get_one('#summary').content,
+                  :brand => page.get_one('#brand').content,
                   :price => page.get_one('#price').content.to_f,
                   :image => page.get_one('#image').content,
                   :remote_id => page.get_one('#remote_id').content

@@ -17,7 +17,7 @@ Feature: Catalog import attributes
     Then  most items should have an image
 
   @deprecated
-  Scenario: Most items are imported with a summary
+  Scenario: Most items are imported with a brand
     Given the "www.dummy-store.com" store
     When  items from the store are imported
-    Then  most items should have a summary
+    Then  most items should have a brand

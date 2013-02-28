@@ -14,13 +14,13 @@ describe "dishes/show" do
   end
 
 
-  it "should display image, name and summary of the items of the dish" do
+  it "should display brand, image and name of the items of the dish" do
     render
 
     @dish.items.each do |item|
       rendered.should have_selector('img', :src => https_url(item.image))
       rendered.should contain(item.name)
-      rendered.should contain(item.summary)
+      rendered.should contain(item.brand)
     end
   end
 
