@@ -22,7 +22,8 @@ module MesCourses
             end
 
             it "should have many item categories" do
-              @store.categories.should have_at_least(3).items
+              # TODO remove .first(3) once rspec handles lazy enums
+              @store.categories.first(3).should have_exactly(3).items
             end
 
             it "should have many items" do
