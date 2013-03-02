@@ -1,6 +1,6 @@
 <tr>
   <td><img src="<%= https_url(item.image) %>" /></td>
+  <td><%=h item.brand %></td>
   <td><%=h item.name %></td>
-  <td><%=h item.summary %></td>
   <% extra_columns_proc.call(item) %>
 </tr>

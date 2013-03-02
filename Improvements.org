@@ -1,4 +1,9 @@
 * [DEVENV] migrate to ruby 2.0
+** pass specs
+** pass scenarios
+** pass integration script
+** deploy on heroku
+** replace lazing by enumerable#lazy
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
 ** do less login-logout during cart testing
@@ -56,6 +61,7 @@
 *** ou bien changer le ssd pour avoir plusieurs installations d'ubuntu, mais sans vm
 ** utiliser Chef, Puppet ou autre pour setuper les VMs de devs
 ** avoir le script pour setuper la vms dans le code
+* [DESIGN] replace the place matches by an extension to capybara/wetrat #within that associates a name to a selector
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu

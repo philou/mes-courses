@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -31,8 +31,8 @@ describe Order do
     @order.add_missing_cart_line(@cart_line_1 = stub_model(CartLine, :name => "Tomates"))
     @order.add_missing_cart_line(@cart_line_2 = stub_model(CartLine, :name => "Steak"))
 
-    @order.warning_notices.should == [Order.missing_cart_line_notice(@cart_line_1, @store),
-                                      Order.missing_cart_line_notice(@cart_line_2, @store)]
+    @order.warning_notices.should == [Order.missing_cart_line_notice(@cart_line_1.name, @store.name),
+                                      Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
   it "should increase the forwarded cart lines count when notified" do
@@ -121,7 +121,7 @@ describe Order do
       it "should have an error notice" do
         pass_order
 
-        @order.error_notice.should == Order.invalid_store_login_notice(@store)
+        @order.error_notice.should == Order.invalid_store_login_notice(@store.name)
       end
     end
 

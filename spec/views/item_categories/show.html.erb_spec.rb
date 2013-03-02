@@ -52,11 +52,11 @@ describe "item_categories/show" do
       assign :items, @items = ["Bavette", "Entrecôte"].map {|item| stub_model(Item,
                                                               :name => item,
                                                               :price => item.length/100.0,
-                                                              :summary => "#{item} extra",
+                                                              :brand => "#{item} INC",
                                                               :image => "http://www.photofabric.com/#{item}")}
     end
 
-    [:name, :price, :summary].each do |attribute|
+    [:name, :price, :brand].each do |attribute|
       it "displays the #{attribute} of its items" do
         render
 

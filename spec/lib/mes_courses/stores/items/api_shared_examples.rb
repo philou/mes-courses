@@ -35,8 +35,8 @@ module MesCourses
               categories_attributes.should mostly have_unique(:name)
             end
 
-            it "should have items with different summaries" do
-              sample_items_attributes.should mostly have_unique(:summary)
+            it "should have items with different names" do
+              sample_items_attributes.should mostly have_unique(:name)
             end
 
             it "should have parseable item category attributes" do
@@ -61,8 +61,8 @@ module MesCourses
               sample_items_attributes.should mostly have_key(:image)
             end
 
-            it "should mostly have items with a summary" do
-              sample_items_attributes.should mostly have_key(:summary)
+            it "should mostly have items with a brand" do
+              sample_items_attributes.should mostly have_key(:brand)
             end
 
             it "should have items with unique remote id" do

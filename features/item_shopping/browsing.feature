@@ -13,5 +13,5 @@ Feature: Item browsing
     Given there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
     When  I go to the "Pommes de terre" item sub category page
     Then  I should see the "price" of "PdT Charlottes"
-    And   I should see the "summary" of "PdT Charlottes"
+    And   I should see the "brand" of "PdT Charlottes"
     And   I should see the "image" of "PdT Charlottes" as img

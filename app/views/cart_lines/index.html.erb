@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2010, 2011, 2012 by Philippe Bourgau -->
+<!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
 
 <div class="section">
   <span class="section-title">Produits</span>
@@ -12,7 +12,7 @@
       </tr>
     <% end %>
     <tr>
-      <td></td><td>Total</td><td><%= @cart.total_price %>€</td>
+      <td>Total</td><td></td><td><%= @cart.total_price %>€</td>
     </tr>
   </table>
   <%= button_to 'Vider le panier', destroy_all_cart_lines_path, method: 'delete', data: { confirm: "Tout le contenu de votre panier sera perdu." } %>

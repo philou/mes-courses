@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 # An item for sale
 class Item < ActiveRecord::Base
@@ -37,17 +37,21 @@ class Item < ActiveRecord::Base
     end
   end
 
+  def brand=(brand)
+    write_attribute("brand", brand)
+    index
+  end
   def name=(name)
     write_attribute("name", name)
     index
   end
-  def summary=(summary)
-    write_attribute("summary", summary)
-    index
+
+  def long_name
+    "#{brand} #{name}"
   end
 
   def index
-    self.tokens = MesCourses::Utils::Tokenizer.run("#{name} #{summary}").join(" ")
+    self.tokens = MesCourses::Utils::Tokenizer.run(long_name).join(" ")
   end
 
   def self.search_string_is_valid?(search_string)

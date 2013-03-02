@@ -13,7 +13,7 @@ FactoryGirl.define do
   factory :item do
     name { FactoryGirl.generate(:item_name) }
     price { |a| (a.name.length.to_f / 100.0 + 1.0).to_f }
-    summary { |a| "Fabuleux #{a.name}" }
+    brand { |a| "#{a.name} Inc." }
     image { |a| "http://www.photofabric.com/#{a.name}" }
     remote_id { FactoryGirl.generate(:remote_id) }
 

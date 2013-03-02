@@ -17,66 +17,67 @@ module MesCourses
         end
 
         def self.full_config(uri = Carts::DummyApi.url)
+          # :brand was not very well migrated (qualitatively), but as this class is deprecated ...
           completed_config( :uri => uri,
                             :categories => [{ :name => "Produits frais",
                                               :categories => [{ :name => "Légumes",
-                                                                :items => [{ :name => "Tomates", :summary => "Rondes", :price => 2.04 },
-                                                                           { :name => "Concombres", :summary => "Espagne", :price => 0.99 },
-                                                                           { :name => "Radis", :summary => "Botte de 30", :price => 1.99 }
+                                                                :items => [{ :name => "Tomates", :brand => "Rondes", :price => 2.04 },
+                                                                           { :name => "Concombres", :brand => "Espagne", :price => 0.99 },
+                                                                           { :name => "Radis", :brand => "Botte de 30", :price => 1.99 }
                                                                           ]
                                                               },
                                                               { :name => "Fruits",
-                                                                :items => [{ :name => "Pommes", :summary => "Golden", :price => 1.99 },
-                                                                           { :name => "Bananes", :summary => "Martinique", :price => 2.3 },
-                                                                           { :name => "Poires", :summary => "Conference", :price => 3.9 }
+                                                                :items => [{ :name => "Pommes", :brand => "Golden", :price => 1.99 },
+                                                                           { :name => "Bananes", :brand => "Martinique", :price => 2.3 },
+                                                                           { :name => "Poires", :brand => "Conference", :price => 3.9 }
                                                                           ]
                                                               },
                                                               { :name => "Poissons",
-                                                                :items => [{ :name => "Sardines", :summary => "Atlantique", :price => 2.4 },
-                                                                           { :name => "Filets de saumon", :summary => "400g", :price => 5.2 },
-                                                                           { :name => "Dos de cabillaud", :summary => "Atlantique x2", :price => 9.99 }
+                                                                :items => [{ :name => "Sardines", :brand => "Atlantique", :price => 2.4 },
+                                                                           { :name => "Filets de saumon", :brand => "400g", :price => 5.2 },
+                                                                           { :name => "Dos de cabillaud", :brand => "Atlantique x2", :price => 9.99 }
                                                                           ]
                                                               }
                                                              ]
                                             },
                                             { :name => "Produits laitiers",
                                               :categories => [{ :name => "Lait",
-                                                                :items => [{ :name => "Lait entier", :summary => "Lait entier", :price => 0.67 },
-                                                                           { :name => "Lait demi écrémé", :summary => "UHT", :price => 0.53 },
-                                                                           { :name => "Lait écrémé", :summary => "UHT", :price => 0.79 }
+                                                                :items => [{ :name => "Lait entier", :brand => "Lait entier", :price => 0.67 },
+                                                                           { :name => "Lait demi écrémé", :brand => "UHT", :price => 0.53 },
+                                                                           { :name => "Lait écrémé", :brand => "UHT", :price => 0.79 }
                                                                           ]
                                                               },
                                                               { :name => "Fromages",
-                                                                :items => [{ :name => "Camembert", :summary => "De Normandie", :price => 3.2 },
-                                                                           { :name => "Feta", :summary => "De Grèce", :price => 2.6 },
-                                                                           { :name => "Saveur du Maquis", :summary => "Fromage de brebis Corse", :price => 5.3 }
+                                                                :items => [{ :name => "Camembert", :brand => "De Normandie", :price => 3.2 },
+                                                                           { :name => "Feta", :brand => "De Grèce", :price => 2.6 },
+                                                                           { :name => "Saveur du Maquis", :brand => "Fromage de brebis Corse", :price => 5.3 }
                                                                           ]
                                                               },
                                                               { :name => "Yaourts et desserts",
-                                                                :items => [{ :name => "Fromage blanc", :summary => "Bio", :price => 2.5 },
-                                                                           { :name => "Petit suisse", :summary => "x6", :price => 1.2 },
-                                                                           { :name => "Yaourt fruité", :summary => "x8", :price => 3.1 }
+                                                                :items => [{ :name => "Fromage blanc", :brand => "Bio", :price => 2.5 },
+                                                                           { :name => "Petit suisse", :brand => "x6", :price => 1.2 },
+                                                                           { :name => "Yaourt fruité", :brand => "x8", :price => 3.1 }
                                                                           ]
                                                               }
                                                              ]
                                             },
                                             { :name => "Surgelés",
                                               :categories => [{ :name => "Plats préparés",
-                                                                :items => [{ :name => "Pizzas royale", :summary => "Prête en 5 minutes", :price => 4.5 },
-                                                                           { :name => "Tomates farcies", :summary => "Viande francaise", :price => 3 },
-                                                                           { :name => "Coquilles St Jacques", :summary => "Préparation à la Bretonne", :price => 5.7 }
+                                                                :items => [{ :name => "Pizzas royale", :brand => "Prête en 5 minutes", :price => 4.5 },
+                                                                           { :name => "Tomates farcies", :brand => "Viande francaise", :price => 3 },
+                                                                           { :name => "Coquilles St Jacques", :brand => "Préparation à la Bretonne", :price => 5.7 }
                                                                           ]
                                                               },
                                                               { :name => "Légumes",
-                                                                :items => [{ :name => "haricots verts", :summary => "extra fins", :price => 2.09 },
-                                                                           { :name => "carottes", :summary => "en rondelles", :price => 3.2 },
-                                                                           { :name => "Purée de pomme de terre", :summary => "1kg", :price => 1.9 }
+                                                                :items => [{ :name => "haricots verts", :brand => "extra fins", :price => 2.09 },
+                                                                           { :name => "carottes", :brand => "en rondelles", :price => 3.2 },
+                                                                           { :name => "Purée de pomme de terre", :brand => "1kg", :price => 1.9 }
                                                                           ]
                                                               },
                                                               { :name => "Desserts",
-                                                                :items => [{ :name => "Glaces à la vanille", :summary => "en pot", :price => 1.5 },
-                                                                           { :name => "Esquimaux", :summary => "Vanille-chocolat", :price => 2.6 },
-                                                                           { :name => "Napolitain glacé", :summary => "Plat familliale pour 6 personnes", :price => 3.2 }
+                                                                :items => [{ :name => "Glaces à la vanille", :brand => "en pot", :price => 1.5 },
+                                                                           { :name => "Esquimaux", :brand => "Vanille-chocolat", :price => 2.6 },
+                                                                           { :name => "Napolitain glacé", :brand => "Plat familliale pour 6 personnes", :price => 3.2 }
                                                                           ]
                                                               }
                                                              ]

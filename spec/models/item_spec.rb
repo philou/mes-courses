@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 require 'lib/mes_courses/rails_utils/singleton_builder_spec_macros'
@@ -33,15 +33,20 @@ describe Item do
     Item.new(image: 'muchy_peas.png').that_is_disabled.image.should == "/images/disabled.png"
   end
 
+  it "presents a long name from its brand and name" do
+    item = FactoryGirl.build(:item)
+    item.long_name.should == "#{item.brand} #{item.name}"
+  end
+
   context "indexing" do
 
     before :each do
-      @item = Item.new(:name => "Petits pois", :summary => "extra fins, produits en france")
+      @item = Item.new(:name => "Petits pois", :brand => "Légumes frais")
     end
 
     it "should run tokenizer when indexing" do
       tokens = %w(token1 token2)
-      MesCourses::Utils::Tokenizer.should_receive(:run).with("#{@item.name} #{@item.summary}").and_return(tokens)
+      MesCourses::Utils::Tokenizer.should_receive(:run).with(@item.long_name).and_return(tokens)
 
       @item.index
 
@@ -54,8 +59,8 @@ describe Item do
       should_be_indexed(@item)
     end
 
-    it "should index when the summary is set" do
-      @item.summary = "fins"
+    it "should index when the brand is set" do
+      @item.brand = "JunkFood.inc"
 
       should_be_indexed(@item)
     end
@@ -65,7 +70,7 @@ describe Item do
     end
 
     def should_be_indexed(item)
-      item.tokens.should == MesCourses::Utils::Tokenizer.run("#{item.name} #{item.summary}").join(" ")
+      item.tokens.should == MesCourses::Utils::Tokenizer.run(item.long_name).join(" ")
     end
   end
 
