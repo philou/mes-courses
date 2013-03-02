@@ -33,6 +33,11 @@ describe Item do
     Item.new(image: 'muchy_peas.png').that_is_disabled.image.should == "/images/disabled.png"
   end
 
+  it "presents a long name from its brand and name" do
+    item = FactoryGirl.build(:item)
+    item.long_name.should == "#{item.brand} #{item.name}"
+  end
+
   context "indexing" do
 
     before :each do
@@ -41,7 +46,7 @@ describe Item do
 
     it "should run tokenizer when indexing" do
       tokens = %w(token1 token2)
-      MesCourses::Utils::Tokenizer.should_receive(:run).with("#{@item.brand} #{@item.name}").and_return(tokens)
+      MesCourses::Utils::Tokenizer.should_receive(:run).with(@item.long_name).and_return(tokens)
 
       @item.index
 
@@ -65,7 +70,7 @@ describe Item do
     end
 
     def should_be_indexed(item)
-      item.tokens.should == MesCourses::Utils::Tokenizer.run("#{item.brand} #{item.name}").join(" ")
+      item.tokens.should == MesCourses::Utils::Tokenizer.run(item.long_name).join(" ")
     end
   end
 

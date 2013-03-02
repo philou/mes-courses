@@ -46,8 +46,12 @@ class Item < ActiveRecord::Base
     index
   end
 
+  def long_name
+    "#{brand} #{name}"
+  end
+
   def index
-    self.tokens = MesCourses::Utils::Tokenizer.run("#{brand} #{name}").join(" ")
+    self.tokens = MesCourses::Utils::Tokenizer.run(long_name).join(" ")
   end
 
   def self.search_string_is_valid?(search_string)

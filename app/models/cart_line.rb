@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 # Objects representing a quantity of a bought item in the cart
 class CartLine < ActiveRecord::Base
@@ -12,7 +12,7 @@ class CartLine < ActiveRecord::Base
   validates_presence_of :quantity, :item
 
   def name
-    item.name
+    item.long_name
   end
 
   def price

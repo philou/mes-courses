@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 class Order < ActiveRecord::Base
 
@@ -8,12 +8,12 @@ class Order < ActiveRecord::Base
   SUCCEEDED = "succeeded"
   FAILED = "failed"
 
-  def self.missing_cart_line_notice(cart_line, store)
-    "Nous n'avons pas pu ajouter '#{cart_line.name}' à votre panier sur '#{store.name}' parce que cela n'y est plus disponible"
+  def self.missing_cart_line_notice(cart_line_name, store_name)
+    "Nous n'avons pas pu ajouter '#{cart_line_name}' à votre panier sur '#{store_name}' parce que cela n'y est plus disponible"
   end
 
-  def self.invalid_store_login_notice(store)
-    "Désolé, nous n'avons pas pu vous connecter à '#{store.name}'. Vérifiez vos identifiant et mot de passe."
+  def self.invalid_store_login_notice(store_name)
+    "Désolé, nous n'avons pas pu vous connecter à '#{store_name}'. Vérifiez vos identifiant et mot de passe."
   end
 
   attr_accessible :cart, :store, :status
@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
   after_initialize :assign_default_values
 
   def add_missing_cart_line(cart_line)
-    self.warning_notices_text = self.warning_notices_text + Order.missing_cart_line_notice(cart_line, self.store) + Order::WARNING_NOTICE_SEPARATOR
+    self.warning_notices_text = self.warning_notices_text + Order.missing_cart_line_notice(cart_line.name, self.store.name) + Order::WARNING_NOTICE_SEPARATOR
   end
 
   def warning_notices
@@ -47,7 +47,7 @@ class Order < ActiveRecord::Base
 
     rescue MesCourses::Stores::Carts::InvalidAccountError
       self.status = Order::FAILED
-      self.error_notice = Order.invalid_store_login_notice(self.store)
+      self.error_notice = Order.invalid_store_login_notice(self.store.name)
 
     rescue
       self.status = Order::FAILED

@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe CartLine do
 
   before(:each) do
-    @item = stub_model(Item, :name => "Bavette", :price => 4.5)
+    @item = stub_model(Item, :long_name => "Bavette", :price => 4.5)
     @cart_line = CartLine.new(:quantity => 1, :item => @item)
   end
 
@@ -15,8 +15,8 @@ describe CartLine do
       @cart_line.price.should == @item.price
     end
 
-    it "should have the name of its item" do
-      @cart_line.name.should == @item.name
+    it "should have its item's long name" do
+      @cart_line.name.should == @item.long_name
     end
   end
 

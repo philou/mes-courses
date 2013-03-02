@@ -57,7 +57,7 @@ Feature: Cart Forwarding
     And   I entered valid store account identifiers
     When  I press "Transférer le panier"
     And   I wait for the transfer to end
-    Then  I should see "Nous n'avons pas pu ajouter 'PdT Charlottes' à votre panier sur 'www.dummy-store.com' parce que cela n'y est plus disponible"
+    Then  there should be a warning about the unavailability of "PdT Charlottes" in "www.dummy-store.com"
 
   Scenario: The customer sees a work in progress page during the cart transfer
     Given the "www.dummy-store.com" store
