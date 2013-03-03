@@ -1,9 +1,3 @@
-* [DEVENV] migrate to ruby 2.0
-** pass specs
-** pass scenarios
-** pass integration script
-** deploy on heroku
-** replace lazing by enumerable#lazy
 * [DEVENV] speed up integration
 ** diminish the stores items api tests @range
 ** do less login-logout during cart testing
@@ -21,7 +15,9 @@
 *** see how to organise the outputs
 **** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
 **** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
-* [HEROKU] create branches to track the versions deployed to heroku
+* [HEROKU] use vagrant or chef to completly setup virtual dev envs
+** wait until I have a good laptop
+** use it to track heroku stack changes
 * [HEROKU] replace exception_notifier by papertrail alerts
 * [DESIGN] Improve css style testing
 ** try to test design and style through cucumber
