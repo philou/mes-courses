@@ -21,12 +21,26 @@ module MesCourses
 
         context "with a valid account" do
 
-          before(:each) do
+          attr_reader :sample_item_id, :another_item_id, :store_cart_api
+
+          before(:all) do
             @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
+
+            sample_items = extract_sample_items
+            sample_item = sample_items.next
+            @sample_item_id = sample_item.attributes[:remote_id]
+            @another_item_id = extract_another_item_id(sample_items, sample_item)
           end
-          after(:each) do
+          before(:each) do
+            @api.empty_the_cart
+          end
+
+          after(:all) do
             @api.logout
           end
+
+          # Some tests are redudant with what is item extractions, but the followings
+          # are clearer about what is expected from the cart
 
           it "should set the cart value to 0 when emptying the cart" do
             @api.add_to_cart(1, sample_item_id)
@@ -83,14 +97,6 @@ module MesCourses
             end
           end
 
-          attr_reader :sample_item_id, :another_item_id, :store_cart_api
-
-          before(:all) do
-            sample_items = extract_sample_items
-            sample_item = sample_items.next
-            @sample_item_id = sample_item.attributes[:remote_id]
-            @another_item_id = extract_another_item_id(sample_items, sample_item)
-          end
 
           private
 
@@ -122,14 +128,13 @@ module MesCourses
           end
 
           def item_available?(item_id)
-            @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api|
-              api.add_to_cart(1, item_id)
-              item_price = api.cart_value
-              return false if 0 == item_price
+            @api.empty_the_cart
+            @api.add_to_cart(1, item_id)
+            item_price = @api.cart_value
+            return false if 0 == item_price
 
-              api.add_to_cart(1, item_id)
-              return api.cart_value == item_price * 2
-            end
+            @api.add_to_cart(1, item_id)
+            return @api.cart_value == item_price * 2
           end
 
           def nationaly_available_first(elements)
