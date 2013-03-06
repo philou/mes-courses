@@ -1,20 +1,3 @@
-* [DEVENV] speed up integration
-** diminish the stores items api tests @range
-** do less login-logout during cart testing
-*** refactor the availble and 2 items prices tests (they are already tested in the before :all clause
-** change my computer
-** run things in parrallel
-*** try running the (fast?) specs in // (try parallel_test gem)
-*** try running cucumber scenarios in //
-*** parrallel perl scripts replaces xargs and can dump outputs in block
-*** use an integration server
-*** migrate to github if it handles continuous integration
-*** try the ruby "pty" library
-*** try the parallel ruby gem
-*** beware of specs and scenarios both using custom real_dummy_stores
-*** see how to organise the outputs
-**** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
-**** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
 * [HEROKU] use vagrant or chef to completly setup virtual dev envs
 ** wait until I have a good laptop
 ** use it to track heroku stack changes
@@ -29,6 +12,7 @@
 * [DEVENV] install spork-guard ou quelque chose comme ça
 ** regarder guard
 ** regarder aussi Zeus, un remplacant de spork
+* [DESIGN] use rspec-fire to match mocks and classes
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)
 ** débugger rspec (dans emacs)

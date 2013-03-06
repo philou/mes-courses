@@ -3,6 +3,7 @@
 require "uri"
 require "net/http"
 require 'date'
+require 'pty'
 require_relative 'deployment/trollop'
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
@@ -141,7 +142,7 @@ module MesCourses
       push "main"
 
       puts "\nDeploying to test and integration environments"
-      test_and_integration_repos.each { |repo| deploy(repo) }
+      deploy_test_and_integration_apps
 
       puts "\nLaunching stores import in integration environment"
       launch_stores_import("integ")
@@ -200,6 +201,16 @@ module MesCourses
       shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} '#{summary}' '#{details}'"
     end
 
+    def deploy_test_and_integration_apps
+      deployment_failures = parallel_exec(test_and_integration_repos) do |repo|
+        "ruby #{File.join(File.dirname(__FILE__), 'deployment', 'do_deploy.rb')} --repo #{repo}"
+      end
+
+      unless deployment_failures.empty?
+        raise RuntimeError.new("Deployment to heroku repos [#{deployment_failures.join(", ")}] failed.")
+      end
+    end
+
     def launch_stores_import(repo)
       processes = current_stores_imports(repo)
       kill_current_stores_imports(repo, processes)
@@ -243,5 +254,33 @@ module MesCourses
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
     end
+
+    def parallel_exec(items)
+      failures = []
+      threads = items.map do |item|
+        Thread.new do
+          all_output, status = exec_non_interactive (yield item)
+          puts all_output
+          failures << item unless status == 0
+        end
+      end
+      threads.each {|thread| thread.join }
+      failures
+    end
+
+    def exec_non_interactive(command)
+      PTY.spawn command do |r,w,pid|
+        all_output_lines = []
+        begin
+          while (true)
+            all_output_lines.push(r.readline)
+          end
+        rescue Errno::EIO => e
+          # reached the end of output
+        end
+        return [all_output_lines.join, PTY.check(pid)]
+      end
+    end
+
   end
 end
