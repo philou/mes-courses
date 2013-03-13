@@ -123,6 +123,9 @@ module MesCourses
       puts "\nUnlocking ssh keys"
       shell "ssh-add"
 
+      puts "\nLaunching stores import in integration environment"
+      deployments = start_deploying_test_and_integration_apps
+
       puts "\nInstalling dependencies"
       bundle "install"
 
@@ -142,9 +145,9 @@ module MesCourses
       push "main"
 
       puts "\nDeploying to test and integration environments"
-      deploy_test_and_integration_apps
+      end_deploying_test_and_integration_apps(deployments)
 
-      puts "\nLaunching stores import in integration environment"
+      puts "\nFinishing stores import in integration environment"
       launch_stores_import("integ")
 
       puts "\nIntegration successful :-)"
@@ -198,13 +201,18 @@ module MesCourses
     end
 
     def notify(summary, status, details)
-      shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} '#{summary}' '#{details}'"
+      image_path = private_file_path("task-#{status}.png")
+      shell "notify-send --icon=#{image_path} '#{summary}' '#{details}'"
     end
 
-    def deploy_test_and_integration_apps
-      deployment_failures = parallel_exec(test_and_integration_repos) do |repo|
-        "ruby #{File.join(File.dirname(__FILE__), 'deployment', 'do_deploy.rb')} --repo #{repo}"
-      end
+    def start_deploying_test_and_integration_apps
+      start_parallel_exec(test_and_integration_repos.map do |repo|
+        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo}"]
+                          end)
+    end
+
+    def end_deploying_test_and_integration_apps(deployments)
+      deployment_failures = end_parallel_exec(deployments)
 
       unless deployment_failures.empty?
         raise RuntimeError.new("Deployment to heroku repos [#{deployment_failures.join(", ")}] failed.")
@@ -255,17 +263,24 @@ module MesCourses
       heroku "run:detached rake scheduled:stores:import", repo: repo
     end
 
-    def parallel_exec(items)
+    def start_parallel_exec(commands)
       failures = []
-      threads = items.map do |item|
+      outputs = []
+      threads = commands.map do |item, command|
         Thread.new do
-          all_output, status = exec_non_interactive (yield item)
-          puts all_output
+          output, status = exec_non_interactive command
+          outputs << output
           failures << item unless status == 0
         end
       end
-      threads.each {|thread| thread.join }
-      failures
+      return lambda do
+        threads.each {|thread| thread.join }
+        puts outputs.join("\n")
+        failures
+      end
+    end
+    def end_parallel_exec(callback)
+      callback.call
     end
 
     def exec_non_interactive(command)
@@ -280,6 +295,14 @@ module MesCourses
         end
         return [all_output_lines.join, PTY.check(pid)]
       end
+    end
+
+    def private_ruby_command(script_name)
+      "ruby #{private_file_path(script_name)}.rb"
+    end
+
+    def private_file_path(file_name)
+      File.join(File.dirname(__FILE__),"deployment",file_name)
     end
 
   end
