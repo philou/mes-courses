@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'rubygems'
 require 'mechanize'
@@ -14,9 +14,24 @@ agent = Mechanize.new
 
 # 1° on se log
 agent.get("http://www.auchandirect.fr")
-login_form_json = agent.post("http://www.refonte.auchandirect.fr/boutiques.paniervolant.customerinfos:showsigninpopup",
+login_form_json = agent.post("http://www.auchandirect.fr/boutiques.paniervolant.customerinfos:showsigninpopup",
                             {'t:ac' => "Accueil", 't:cp' => 'gabarit/generated'},
-                            {'X-Requested-With' => 'XMLHttpRequest'})
+                             {'X-Requested-With' => 'XMLHttpRequest',
+#                               'Accept'=>'text/javascript, text/html, application/xml, text/xml, */*',
+#                               'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+#                               'Accept-Encoding'=>'gzip,deflate,sdch',
+#                               'Accept-Language'=>'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4',
+#                               'Connection'=>'keep-alive',
+#                               'Content-Length'=>'0',
+#                               'Content-type'=>'application/x-www-form-urlencoded; charset=UTF-8',
+#                              'Cookie'=>'c_cj_v2=_rn_lh%5BfyfcheZZZ222H%28%20.G%7D*0-.%20.H%21-ZZZKMPJSSRSRKORJZZZ%5Dfc%5De777_rn_lh%5BfyfcheZZZ222H-%20%21*%29/%20H%7B0%7D%23%7B%29%7E%24-%20%7D/H%21-ZZZKMPJSSSJLKJPLZZZ%5Dfc%5De777%5Ecl_%5Dny%5B%5D%5D_mmZZZZZZKMPKPJNRNPMRLZZZ%5Dfc%5De; JSESSIONID=C52BC02C08B7A33C2EB698A839286D05.485B4D5B58421C1F4F; tc_sdauid=1; __utma=135595873.1520176981.1327556606.1349843186.1363329164.28; __utmb=135595873.1.10.1363329164; __utmc=135595873; __utmz=135595873.1345660365.26.13.utmcsr=affilinet|utmccn=affilinet_clicparis|utmcmd=cpa',
+#                               'Host'=>'www.auchandirect.fr',
+#                               'Origin'=>'http://www.auchandirect.fr',
+#                               'Referer'=>'http://www.auchandirect.fr/Accueil;jsessionid=C52BC02C08B7A33C2EB698A839286D05.485B4D5B58421C1F4F',
+#                               'User-Agent'=>'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.56 Safari/537.17',
+#                               'X-Prototype-Version'=>'1.6.0.3'
+                             })
+puts "login form json : #{login_form_json.body}"
 json = JSON.parse(login_form_json.body)
 html = json["zones"]["secondPopupZone"]
 

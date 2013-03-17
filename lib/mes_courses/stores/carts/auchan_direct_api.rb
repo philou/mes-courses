@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require_relative 'api'
 require 'json'
@@ -30,7 +30,7 @@ module MesCourses
 
         # url at which a client browser can logout
         def self.logout_url
-          impl_url + logout_path
+          url + logout_path
         end
 
         # total value of the remote cart
@@ -72,11 +72,11 @@ module MesCourses
         end
 
         def get(path)
-          @agent.get(impl_url + path)
+          @agent.get(url + path)
         end
 
         def post(path, parameters = {})
-          @agent.post(impl_url + path, self.class.post_parameters.merge(parameters), fast_header)
+          @agent.post(url + path, self.class.post_parameters.merge(parameters), fast_header)
         end
 
         def fast_header
@@ -92,10 +92,6 @@ module MesCourses
             "#{key}=#{value}"
           end
           "#{path}?#{string_parameters.join('&')}"
-        end
-
-        def self.impl_url
-          "http://www.refonte.auchandirect.fr"
         end
 
         def self.post_parameters
