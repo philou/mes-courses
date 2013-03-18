@@ -11,7 +11,7 @@ gem "heroku-api"
 gem "foreigner"
 gem 'acts_as_tree'
 gem 'devise'
-gem 'blogit', :git => 'git://github.com/philou/blogit.git'
+gem 'blogit', :git => 'git://github.com/KatanaCode/blogit.git'
 gem 'jquery-rails'
 gem 'lazing', :git => 'git://github.com/philou/lazing.git'
 gem 'rack-ssl-enforcer'
