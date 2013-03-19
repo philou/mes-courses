@@ -1,27 +1,6 @@
-* [DEVENV] migrate to ruby 2.0
-** pass specs
-** pass scenarios
-** pass integration script
-** deploy on heroku
-** replace lazing by enumerable#lazy
-* [DEVENV] speed up integration
-** diminish the stores items api tests @range
-** do less login-logout during cart testing
-*** refactor the availble and 2 items prices tests (they are already tested in the before :all clause
-** change my computer
-** run things in parrallel
-*** try running the (fast?) specs in // (try parallel_test gem)
-*** try running cucumber scenarios in //
-*** parrallel perl scripts replaces xargs and can dump outputs in block
-*** use an integration server
-*** migrate to github if it handles continuous integration
-*** try the ruby "pty" library
-*** try the parallel ruby gem
-*** beware of specs and scenarios both using custom real_dummy_stores
-*** see how to organise the outputs
-**** Check for an integration scheduler that does all this already (// rake or Jenkins or another)
-**** Check GNU screen + subprocesses (see http://stackoverflow.com/questions/12189904/fork-child-process-with-timeout-and-capture-output for capturing outputs, error is before out ...)
-* [HEROKU] create branches to track the versions deployed to heroku
+* [HEROKU] use vagrant or chef to completly setup virtual dev envs
+** wait until I have a good laptop
+** use it to track heroku stack changes
 * [HEROKU] replace exception_notifier by papertrail alerts
 * [DESIGN] Improve css style testing
 ** try to test design and style through cucumber
@@ -33,6 +12,7 @@
 * [DEVENV] install spork-guard ou quelque chose comme ça
 ** regarder guard
 ** regarder aussi Zeus, un remplacant de spork
+* [DESIGN] use rspec-fire to match mocks and classes
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)
 ** débugger rspec (dans emacs)
@@ -88,10 +68,13 @@
 ** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
 ** Supprimer complétement DummyStoreItemsAPI
 * [DESIGN] remove if on_heroku? from application.rb by providing special envs or the like
+** TODO fix the cucumber env warning message
+** TODO make sqlite in memory db an env var option instead of a test env enforcement http://pivotallabs.com/parallelize-your-rspec-suite/
 ** prod : heroku
 ** integ : ci
 ** dev : local
 ** watchdog ???
+** use different virtual machines and the same env to simplify set up
 * [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 * [DEVENV] import db from beta to integ to test migrations with real data
 * [HEROKU] utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application

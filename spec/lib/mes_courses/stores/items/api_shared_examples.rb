@@ -18,12 +18,12 @@ module MesCourses
           def it_should_behave_like_any_store_items_api
 
             before :all do
-              @range = 0..3
+              @range = 0..2
             end
 
             it "should have many item categories" do
               # TODO remove .first(3) once rspec handles lazy enums
-              @store.categories.first(3).should have_exactly(3).items
+              @store.categories.first(3).should have_at_least(3).items
             end
 
             it "should have many items" do

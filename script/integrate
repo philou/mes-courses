@@ -13,7 +13,7 @@ with_trace_argument "Integrates the latest developments to the main repository, 
       shell "git checkout ."
       pull "dev"
 
-      shell "ruby #{File.join(File.dirname(__FILE__), '..', 'lib', 'mes_courses', 'deployment', 'end_integrate.rb')}"
+      shell "ruby #{File.join(File.dirname(__FILE__), '..', 'lib', 'mes_courses', 'deployment', 'do_integrate.rb')}"
     end
   end
 end

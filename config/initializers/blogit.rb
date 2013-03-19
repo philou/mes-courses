@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require_relative "../../lib/mes_courses/utils/heroku_helper"
 
@@ -65,9 +65,6 @@ Blogit.configure do |config|
 
   # RSS Feed description content
   config.rss_feed_description = "Les courses en 3 clics, pour gens pressés et parents débordés. Gagnez du temps pour vous."
-
-  # RSS Feed language
-  config.rss_feed_language = "fr"
 
   # When using redcarpet as content parser, pass these options as defaults.
   # @see here for more options: https://github.com/tanoku/redcarpet

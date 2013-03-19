@@ -3,6 +3,7 @@
 require "uri"
 require "net/http"
 require 'date'
+require 'pty'
 require_relative 'deployment/trollop'
 require_relative 'utils/timing'
 require_relative 'initializers/numeric_extras'
@@ -122,6 +123,9 @@ module MesCourses
       puts "\nUnlocking ssh keys"
       shell "ssh-add"
 
+      puts "\nLaunching stores import in integration environment"
+      deployments = start_deploying_test_and_integration_apps
+
       puts "\nInstalling dependencies"
       bundle "install"
 
@@ -141,9 +145,9 @@ module MesCourses
       push "main"
 
       puts "\nDeploying to test and integration environments"
-      test_and_integration_repos.each { |repo| deploy(repo) }
+      end_deploying_test_and_integration_apps(deployments)
 
-      puts "\nLaunching stores import in integration environment"
+      puts "\nFinishing stores import in integration environment"
       launch_stores_import("integ")
 
       puts "\nIntegration successful :-)"
@@ -197,7 +201,22 @@ module MesCourses
     end
 
     def notify(summary, status, details)
-      shell "notify-send --icon=#{File.join(File.dirname(__FILE__),"deployment","task-#{status}.png")} '#{summary}' '#{details}'"
+      image_path = private_file_path("task-#{status}.png")
+      shell "notify-send --icon=#{image_path} '#{summary}' '#{details}'"
+    end
+
+    def start_deploying_test_and_integration_apps
+      start_parallel_exec(test_and_integration_repos.map do |repo|
+        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo}"]
+                          end)
+    end
+
+    def end_deploying_test_and_integration_apps(deployments)
+      deployment_failures = end_parallel_exec(deployments)
+
+      unless deployment_failures.empty?
+        raise RuntimeError.new("Deployment to heroku repos [#{deployment_failures.join(", ")}] failed.")
+      end
     end
 
     def launch_stores_import(repo)
@@ -243,5 +262,48 @@ module MesCourses
     def do_launch_stores_import(repo)
       heroku "run:detached rake scheduled:stores:import", repo: repo
     end
+
+    def start_parallel_exec(commands)
+      failures = []
+      outputs = []
+      threads = commands.map do |item, command|
+        Thread.new do
+          output, status = exec_non_interactive command
+          outputs << output
+          failures << item unless status == 0
+        end
+      end
+      return lambda do
+        threads.each {|thread| thread.join }
+        puts outputs.join("\n")
+        failures
+      end
+    end
+    def end_parallel_exec(callback)
+      callback.call
+    end
+
+    def exec_non_interactive(command)
+      PTY.spawn command do |r,w,pid|
+        all_output_lines = []
+        begin
+          while (true)
+            all_output_lines.push(r.readline)
+          end
+        rescue Errno::EIO => e
+          # reached the end of output
+        end
+        return [all_output_lines.join, PTY.check(pid)]
+      end
+    end
+
+    def private_ruby_command(script_name)
+      "ruby #{private_file_path(script_name)}.rb"
+    end
+
+    def private_file_path(file_name)
+      File.join(File.dirname(__FILE__),"deployment",file_name)
+    end
+
   end
 end
