@@ -15,15 +15,17 @@ module MesCourses
 
         it_should_behave_like_any_store_items_api
 
-        before :each do
-          generate_store
+        DEFAULT_STORE_NAME = "www.spec-store.com"
+
+        def generate_store(store_name = DEFAULT_STORE_NAME, item_count = 3)
+          RealDummy.wipe_out_store(store_name)
+          @store_generator = RealDummy.open(store_name)
+          @store_generator.generate(3).categories.and(3).categories.and(item_count).items
+          @store = new_store(store_name)
         end
 
-        def generate_store(item_count = 3)
-          RealDummy.wipe_out
-          @store_generator = RealDummy.open(store_name = "www.spec-store.com")
-          @store_generator.generate(3).categories.and(3).categories.and(item_count).items
-          @store = Api.browse(RealDummy.uri(store_name))
+        def new_store(store_name = DEFAULT_STORE_NAME)
+          Api.browse(RealDummy.uri(store_name))
         end
 
         it "should not truncate long item names" do
@@ -32,7 +34,7 @@ module MesCourses
             category(sub_cat_name = "extra long sub category name").
             item(item_name = "super extra long item name").generate().attributes
 
-          category = @store.categories.find {|cat| cat_name.start_with?(cat.title)}
+          category = new_store.categories.find {|cat| cat_name.start_with?(cat.title)}
           category.attributes[:name].should == cat_name
 
           sub_category = category.categories.find {|sub_cat| sub_cat_name.start_with?(sub_cat.title)}
@@ -52,9 +54,9 @@ module MesCourses
         end
 
         def memory_usage_for_items(item_count)
-          generate_store(item_count)
+          generate_store(store_name = "www.spec-perf-store.com", item_count)
           memory_peak_of do
-            walk_store
+            walk_store(store_name)
           end
         end
 
@@ -84,8 +86,8 @@ module MesCourses
           object_counts[:TOTAL] - object_counts[:FREE]
         end
 
-        def walk_store
-          @store.categories.each do |category|
+        def walk_store(store_name)
+          new_store(store_name).categories.each do |category|
             @title = category.title
             @attributes = category.attributes
             category.categories.each do |sub_category|

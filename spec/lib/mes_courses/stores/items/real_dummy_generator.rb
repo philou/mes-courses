@@ -67,6 +67,9 @@ module MesCourses
         def self.wipe_out
           FileUtils.rm_rf(root_dir)
         end
+        def self.wipe_out_store(store_name)
+          FileUtils.rm_rf(root_path(store_name))
+        end
 
         def uri
           "file://#{@path}"

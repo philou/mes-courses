@@ -9,20 +9,32 @@ module MesCourses
 
       define_api "auchandirect.fr" do
 
-        categories '#footer-menu a' do
+        categories '#footer-menu h2 a' do
           attributes do
-            { :name => page.get_one("#wrap-liste-produits-nav .titre-principal").content }
+            { name: page.get_one('#content .titre-principal').content }
           end
 
-          items '.infos-produit-2 > a' do
+          categories '#content .menu-listes h2 a' do
             attributes do
-              {
-                :brand => page.get_one('#produit-infos .titre-principal').content,
-                :name => page.get_one('#produit-infos .titre-annexe').content,
-                :price => page.get_one('#produit-infos .prix-actuel > span, #produit-infos .bloc-prix-promo > span.prix-promo').content.to_f,
-                :image => page.get_image('#produit-infos img.produit').url.to_s,
-                :remote_id => /\/([^\/\.]*)[^\/]*$/.match(uri.to_s)[1]
-              }
+              { name: page.get_one('#content .titre-principal').content }
+            end
+
+            categories '#content .bloc_prd > a' do
+              attributes do
+                { :name => page.get_one("#wrap-liste-produits-nav .titre-principal").content }
+              end
+
+              items '.infos-produit-2 > a' do
+                attributes do
+                  {
+                    :brand => page.get_one('#produit-infos .titre-principal').content,
+                    :name => page.get_one('#produit-infos .titre-annexe').content,
+                    :price => page.get_one('#produit-infos .prix-actuel > span, #produit-infos .bloc-prix-promo > span.prix-promo').content.to_f,
+                    :image => page.get_image('#produit-infos img.produit').url.to_s,
+                    :remote_id => /\/([^\/\.]*)[^\/]*$/.match(uri.to_s)[1]
+                  }
+                end
+              end
             end
           end
         end

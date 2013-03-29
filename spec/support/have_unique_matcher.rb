@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -31,7 +31,7 @@ class HaveUnique
   end
 
   def description
-    "expected an hash or object with a unique #{key} in #{@collection}"
+    "expected an hash or object with a unique #{@key} in #{@collection}"
   end
 
   private
