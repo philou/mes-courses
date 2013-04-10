@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -234,13 +234,14 @@ module MesCourses
             exception_should_climb_up_the_stack(SocketError)
           end
 
+          it "should continue on server error" do
+            @item.stub(:attributes).and_raise(Mechanize::ResponseCodeError.new(stub("Page", code: 500)))
+
+            no_exception_should_climb_up_the_stack
+          end
+
           it "should continue on unimportable store pages" do
-            new_page = Mechanize::Page.method(:new)
-            Mechanize::Page.stub!(:new).and_return do |*args|
-              result = new_page.call(*args)
-              result.stub!(:search).and_return([])
-              result
-            end
+            @item.stub(:attributes).and_raise(::MesCourses::Stores::Items::BrowsingError.new())
 
             no_exception_should_climb_up_the_stack
           end
