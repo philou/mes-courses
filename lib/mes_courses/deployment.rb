@@ -15,6 +15,8 @@ module MesCourses
 
     HEROKU_STACK = "cedar"
     TRACE_KEY = "MES_COURSES_DEPLOYMENT_TRACE"
+    INTEG = "integ"
+    BETA = "beta"
 
     def shell(command, env = {})
       pid = Process.spawn(env, command)
@@ -58,6 +60,10 @@ module MesCourses
 
     def migrate(repo)
       heroku "run rake db:migrate #{trace_option}", repo: repo
+    end
+
+    def refresh_db(repo)
+      heroku "pgbackups:restore DATABASE `heroku pgbackups:url --app #{heroku_app(BETA)}` --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
     end
 
     def deploy(repo)
@@ -207,8 +213,8 @@ module MesCourses
 
     def start_deploying_test_and_integration_apps
       start_parallel_exec(test_and_integration_repos.map do |repo|
-        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo}"]
-                          end)
+        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo} #{repo == INTEG ? '--refresh-db' : ''}"]
+      end)
     end
 
     def end_deploying_test_and_integration_apps(deployments)
