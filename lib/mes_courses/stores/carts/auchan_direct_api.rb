@@ -54,9 +54,9 @@ module MesCourses
         private
 
         def do_login(login,password)
-          @agent.get(AuchanDirectApi.url)
+          home_page = @agent.get(AuchanDirectApi.url)
 
-          login_form_json = post("/boutiques.paniervolant.customerinfos:showsigninpopup")
+          login_form_json = post("/boutiques.paniervolant.customerinfos:showsigninpopup", {}, {'Referer' => home_page.uri})
 
           html_body = JSON.parse(login_form_json.body)["zones"]["secondPopupZone"]
           doc = Nokogiri::HTML("<html><body>#{html_body}</body></html>")
@@ -75,8 +75,8 @@ module MesCourses
           @agent.get(url + path)
         end
 
-        def post(path, parameters = {})
-          @agent.post(url + path, self.class.post_parameters.merge(parameters), fast_header)
+        def post(path, parameters = {}, headers = {})
+          @agent.post(url + path, self.class.post_parameters.merge(parameters), fast_header.merge(headers))
         end
 
         def fast_header
