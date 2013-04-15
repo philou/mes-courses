@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 class OrdersController < ApplicationController
   include PathBarHelper
 
+  # not sure this is required anymore
   protect_from_forgery :except => :create
 
   def show

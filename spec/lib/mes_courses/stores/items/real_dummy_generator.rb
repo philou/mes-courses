@@ -41,6 +41,14 @@ class Hash
       result
     end
   end
+
+  def internalize_keys
+    result = {}
+    self.each do |key, value|
+      result[key.intern] = value
+    end
+    result
+  end
 end
 
 module MesCourses
@@ -77,6 +85,12 @@ module MesCourses
 
         attr_reader :name
 
+        def categories
+          _name, categories, _items, _attributes = read
+          categories.map do |category_name|
+            RealDummy.new("#{absolute_category_dir(category_name)}/index.html", category_name)
+          end
+        end
         def category(category_name)
           short_category_name = short_name(category_name)
           add([short_category_name], [], {})
@@ -88,6 +102,12 @@ module MesCourses
           FileUtils.rm_rf(absolute_category_dir(short_category_name))
         end
 
+        def items
+          _name, _categories, items, _attributes = read
+          items.map do |item_name|
+            RealDummy.new(absolute_item_file(item_name), item_name)
+          end
+        end
         def item(item_name)
           short_item_name = short_name(item_name)
           add([], [short_item_name], {})
@@ -99,7 +119,13 @@ module MesCourses
           FileUtils.rm_rf(absolute_item_file(short_item_name))
         end
 
-        def attributes(values)
+        def attributes(*args)
+          return add_attributes(args[0]) if args.size == 1
+
+          _name, _categories, _items, attributes = read
+          attributes.internalize_keys
+        end
+        def add_attributes(values)
           add([], [], values.stringify_keys)
         end
         def remove_attributes(*attribute_names)

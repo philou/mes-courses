@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 def given_in_cart(quantity, item_name)
   # maybe would be better find out how not to use side effects of functions
@@ -39,4 +39,34 @@ end
 Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
   visit path_to("the cart page")
   page.should have_content(item_name)
+end
+
+Given(/^I am transfering my cart to a store$/) do
+  pending # express the regexp above with the code you wish you had
+
+    # Given the "www.dummy-store.com" store
+    # And   I am on the cart page
+    # And   I entered valid store account identifiers
+    # When  I press "Transférer le panier"
+
+
+end
+
+When(/^items are being transfered$/) do
+end
+
+Then(/^I should see that the transfer is ongoing$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+When(/^all items have been transfered$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I should see that it is logging out from the store$/) do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then(/^I should see a button to log into the store$/) do
+  pending # express the regexp above with the code you wish you had
 end

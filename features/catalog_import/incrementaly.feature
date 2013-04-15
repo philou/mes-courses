@@ -4,7 +4,7 @@ Feature: Incremental catalog import
 
   In order not to build its order by hand
   A customer
-  Wants available items to be automatically and regularly
+  Wantshis available items to be automatically and regularly
     updated from the online store.
 
   Items needs to be tracked from one import to the next, so that
@@ -30,11 +30,9 @@ Feature: Incremental catalog import
       | Marché   | Légumes      | Concombres |
     Then new items should have been inserted
 
-  @deprecated
   Scenario: Modified items are re-imported from the store
-    Given the "www.dummy-store.com" store
-    And items from the store were already imported
-    When modified items from the store are re-imported
+    Given the imported store "www.dummy-store.com"
+    When "www.dummy-store.com" raises its prices
     Then some items should have been modified
 
   Scenario: Second import with sold out items
