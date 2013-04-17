@@ -14,10 +14,9 @@ Feature: Robust catalog import
     Then  new items should have been inserted
     And   existing items should not have been modified
 
-  @deprecated
   Scenario: Import retries on network error
-    Given the "www.dummy-store.com" store
-    And   the network connection is unstable
-    When  items from the store are imported
-    Then  all items from the store should have been imported
+    Given the unimported store "www.dummy-store.com"
+    And   an unstable network interface
+    When  "www.dummy-store.com" is imported
+    Then  all items from "www.dummy-store.com" should have been imported
 

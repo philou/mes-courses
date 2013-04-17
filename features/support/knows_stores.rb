@@ -46,5 +46,16 @@ module KnowsStores
     end
   end
 
+  def items_count_in_generated_store(store_name)
+    items_count(MesCourses::Stores::Items::RealDummy.open(store_name))
+  end
+
+  private
+
+  def items_count(category)
+    category.categories.map {|cat| items_count(cat)}.inject(0) {|a,b| a+b } +
+      category.items.count
+  end
+
 end
 World(KnowsStores)
