@@ -18,14 +18,20 @@ Given /^the imported store "(.*?)" with items$/ do |store_name, item_table|
 end
 
 Given /an unstable network interface/ do
-  i = 0
+  simulate_network_issues {|i| i%3 == 0}
+end
 
-  original_open = MesCourses::Stores::Items::WalkerPage.method(:open)
-  MesCourses::Stores::Items::WalkerPage.stub(:open).with(anything()) do |*args|
-    i = i+1
-    raise RuntimeError.new("network down") if i%3 == 0
-    original_open.call(*args)
-  end
+Given /^last store import of "(.*?)" was unexpectedly interrupted$/ do |store_name|
+  simulate_network_issues {|i| 5 < i}
+
+  lambda { import_real_dummy_store(store_name) }.should raise_error(RuntimeError)
+  note_past_metrics
+
+  fix_network_issues
+end
+
+Given(/^"(.*?)" raised its prices$/) do |store_name|
+  raise_prices_in_generated_store(store_name)
 end
 
 When /^"(.*?)" is imported$/ do |store_name|

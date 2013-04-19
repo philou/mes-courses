@@ -39,27 +39,6 @@ Given /^items from the store were already imported$/ do
   Store.import
 end
 
-Given /^last store import was unexpectedly interrupted$/ do
-  item = given_a_sample_item
-  item.stub(:attributes).and_raise(RuntimeError)
-
-  begin
-    Store.import
-  rescue RuntimeError
-    # fake network error
-  ensure
-    item.unstub(:attributes)
-  end
-end
-
-Given /^the network connection is unstable$/ do
-  item = given_a_sample_item
-  item.stub(:attributes) do
-    item.unstub(:attributes)
-    raise RuntimeError.new("network down")
-  end
-end
-
 Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
   [["ACME", 10001], ["MegaCorp", 1002]].each do |brand, remote_id|
     @items_config[:categories][0][:categories][0][:items].push({ :uri => URI.parse("http://www.dummy-store.com/article/#{remote_id}"),

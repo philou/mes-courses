@@ -6,11 +6,11 @@ Feature: Robust catalog import
   A webmaster
   Wants the import to resumed where it was stopped
 
-  @deprecated
   Scenario: Items are reimported after an interrupted import
-    Given the "www.dummy-store.com" store
-    And   last store import was unexpectedly interrupted
-    When  modified items from the store are re-imported
+    Given the unimported store "www.dummy-store.com"
+    And   last store import of "www.dummy-store.com" was unexpectedly interrupted
+    And   "www.dummy-store.com" raised its prices
+    When  "www.dummy-store.com" is imported again
     Then  new items should have been inserted
     And   existing items should not have been modified
 

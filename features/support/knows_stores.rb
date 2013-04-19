@@ -50,6 +50,20 @@ module KnowsStores
     items_count(MesCourses::Stores::Items::RealDummy.open(store_name))
   end
 
+  def simulate_network_issues
+    i = 0
+    original_new = Mechanize::Page.method(:new)
+    Mechanize::Page.stub(:new) do |*args, &block|
+      i = i+1
+      raise RuntimeError.new("network down") if yield(i)
+      original_new.call(*args, &block)
+    end
+  end
+
+  def fix_network_issues
+    Mechanize::Page.unstub(:new)
+  end
+
   private
 
   def items_count(category)
