@@ -9,7 +9,7 @@ module MesCourses
       include MesCourses::Utils::HerokuHelper
       extend MesCourses::Utils::EmailConstants
 
-      default :from => sender, :to => recipients
+      default :from => watchdog_email, :to => maintainers_emails
 
       def setup_mail(subject)
         mail :subject => "[#{app_name}] " + subject, :date => Time.now

@@ -4,10 +4,10 @@
 module MesCourses
   module Utils
     module EmailConstants
-      def recipients
+      def maintainers_emails
         ["philippe.bourgau@gmail.com"]
       end
-      def sender
+      def watchdog_email
         "watchdog@mes-courses.fr"
       end
     end

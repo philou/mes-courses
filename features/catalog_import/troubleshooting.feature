@@ -4,8 +4,11 @@ Feature: Catalog import
   A webmaster
   Wants an automatic import report email
 
-  @deprecated
   Scenario: An import report email is sent after the import
-    Given the "www.dummy-store.com" store
-    When  items from the store are imported
-    Then  an email ~"Import" should be sent to the maintainer
+
+    Imports are automaticaly and regularly ran in production.
+    Each time, we want to be notified about the outcome of it.
+
+    Given the store "www.dummy-store.com"
+    When  the scheduled automatic imports are ran
+    Then  an import report email should be sent to the maintainer

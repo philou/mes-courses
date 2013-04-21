@@ -4,7 +4,7 @@ Feature: Incremental catalog import
 
   In order not to build its order by hand
   A customer
-  Wantshis available items to be automatically and regularly
+  Wants his available items to be automatically and regularly
     updated from the online store.
 
   Items needs to be tracked from one import to the next, so that

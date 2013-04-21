@@ -1,6 +1,9 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
+Given /the store "(.*?)"$/ do |store_name|
+  generate_store(store_name)
+end
 Given /the unimported store "(.*?)"$/ do |store_name|
   generate_store(store_name)
 end
@@ -40,6 +43,10 @@ end
 
 When /^"(.*?)" is imported again$/ do |store_name|
   import_real_dummy_store(store_name)
+end
+
+When /^the scheduled automatic imports are ran$/ do
+  Store.import
 end
 
 When /^the following items are added to "(.*?)"$/ do |store_name, item_table|

@@ -13,9 +13,11 @@ require_relative '../../spec/support/contain_a_matcher'
 require_relative '../../spec/support/page_part'
 require_relative '../../spec/support/knows_page_parts'
 require_relative '../../lib/mes_courses/utils/url_helper'
+require_relative '../../lib/mes_courses/utils/email_constants'
 
 World(KnowsPageParts)
 World(MesCourses::Utils::UrlHelper)
+World(MesCourses::Utils::EmailConstants)
 
 module KnowsUsers
   def user
