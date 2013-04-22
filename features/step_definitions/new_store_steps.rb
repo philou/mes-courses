@@ -7,6 +7,9 @@ end
 Given /the unimported store "(.*?)"$/ do |store_name|
   generate_store(store_name)
 end
+Given /the unimported store "(.*?)" with items$/ do |store_name, item_table|
+  generate_store(store_name, item_table)
+end
 
 Given /^the imported store "(.*?)"$/ do |store_name|
   generate_store(store_name)

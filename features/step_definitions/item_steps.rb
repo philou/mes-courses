@@ -22,7 +22,7 @@ Given /^the following items are disabled$/ do |item_table|
   end
 end
 
-Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name|
+Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|
   Item.count(:conditions => {:name => name}).should == count.to_i
 end
 
