@@ -24,7 +24,7 @@ Given /^the imported store "(.*?)" with items$/ do |store_name, item_table|
 end
 
 Given /an unstable network interface/ do
-  simulate_network_issues {|i| i%3 == 0}
+  simulate_network_issues {|i| i%10 == 0}
 end
 
 Given /^last store import of "(.*?)" was unexpectedly interrupted$/ do |store_name|

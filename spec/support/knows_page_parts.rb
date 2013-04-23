@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 module KnowsPageParts
 
@@ -9,6 +9,18 @@ module KnowsPageParts
 
   def item_with_name(name)
     items_panel.with("an item named '#{name}'", "//tr[td[contains(.,'#{name}')]]")
+  end
+
+  def item_with_price(name, price)
+    item_with_name(name).that("has a price of #{price}€", "/td[contains(.,'#{price}€')]")
+  end
+
+  def item_with_brand(name, brand)
+    item_with_name(name).that("comes from #{brand}", "/td[contains(.,'#{brand}')]")
+  end
+
+  def item_with_image(name, image)
+    item_with_name(name).that("has image #{image}", "/td/img[@src='#{image}']")
   end
 
   def disabled_item_with_name(name)

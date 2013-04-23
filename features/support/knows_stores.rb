@@ -21,8 +21,8 @@ module KnowsStores
   def add_items_to_generated_store(store_name, item_table)
     store = MesCourses::Stores::Items::RealDummy.open(store_name)
 
-    item_table.each_item do |category, sub_category, item|
-      store.category(category).category(sub_category).item(item).generate().attributes
+    item_table.each_item do |category, sub_category, item, explicit_attributes|
+      store.category(category).category(sub_category).item(item).generate().attributes(explicit_attributes)
     end
   end
 

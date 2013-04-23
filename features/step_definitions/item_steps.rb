@@ -100,26 +100,22 @@ Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
   page.find('#items-panel').should_not have_content(item_name)
 end
 
+Then(/^there should be the following items$/) do |table|
+  there_should_be_the_following_items(table)
+end
+
 Then /^the following items should be in categories$/ do |table|
-  visit_every_item_in(table) do |page, item|
-    page.should contain_an(item_with_name(item))
-  end
+  the_following_items_should_be_in_categories(table)
 end
 
 Then /^the following items should be disabled$/ do |table|
-  visit_every_item_in(table) do |page, item|
-    page.should contain_a(disabled_item_with_name(item))
-  end
+  the_following_items_should_be_disabled(table)
 end
 
 Then /^the following items should have been deleted$/ do |table|
-  visit_every_item_in(table) do |page, item|
-    page.should_not contain_a(item_with_name(item))
-  end
+  the_following_items_should_have_been_deleted(table)
 end
 
 Then /^the following items should be enabled$/ do |table|
-  visit_every_item_in(table) do |page, item|
-    page.should contain_an(enabled_item_with_name(item))
-  end
+  the_following_items_should_be_enabled(table)
 end
