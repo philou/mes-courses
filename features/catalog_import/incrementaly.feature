@@ -60,7 +60,7 @@ Feature: Incremental catalog import
       | Marché   | Légumes      | Tomates    |
       | Marché   | Légumes      | Concombres |
     And the following items should have been deleted
-      | Category | Sub category | Item    |
+      | Category | Sub category | Item  |
       | Marché   | Légumes      | Radis |
 
   Scenario: Second import with items that are available again

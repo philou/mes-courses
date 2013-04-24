@@ -51,6 +51,9 @@ module KnowsStores
   end
 
   def simulate_network_issues
+    new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
+    Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
+
     i = 0
     original_new = Mechanize::Page.method(:new)
     Mechanize::Page.stub(:new) do |*args, &block|

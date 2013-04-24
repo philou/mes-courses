@@ -3,29 +3,7 @@
 
 require 'cucumber/rspec/doubles'
 
-def configure_dummy_store(items_config)
-  # Using stubs with item api makes sure the static modifications are rolledback after each scenario
-  MesCourses::Stores::Items::DummyApi.stub(:new_default_store).and_return(MesCourses::Stores::Items::DummyApi.new(items_config))
-end
-
-def given_a_sample_item
-  MesCourses::Stores::Items::DummyApi.new_default_store.categories[1].categories[0].items[0]
-end
-
-def remove_item_from(category_config, item_name)
-  category_config[:items] = category_config[:items].reject{ |item| item[:attributes][:name] == item_name }
-  category_config[:categories].each do |sub_category_config|
-    remove_item_from(sub_category_config, item_name)
-  end
-end
-
 Given /^the "([^"]*)" store"?$/ do |web_store|
-  new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
-  Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
-
-  @items_config = MesCourses::Stores::Items::DummyApi.shrinked_config(2)
-  configure_dummy_store(@items_config)
-
   @cart_api = MesCourses::Stores::Carts::DummyApi.new
   MesCourses::Stores::Carts::DummyApi.stub(:login) do |login,password|
     @cart_api.relog(login, password)
@@ -33,41 +11,6 @@ Given /^the "([^"]*)" store"?$/ do |web_store|
   end
 
   @store = Store.find_or_create_by_url("http://"+web_store) { |store| store.sponsored_url = "http://#{web_store}/sponsored" }
-end
-
-Given /^items from the store were already imported$/ do
-  Store.import
-end
-
-Given /^there are 2 items with the name "([^"]*)""? in the store$/ do |name|
-  [["ACME", 10001], ["MegaCorp", 1002]].each do |brand, remote_id|
-    @items_config[:categories][0][:categories][0][:items].push({ :uri => URI.parse("http://www.dummy-store.com/article/#{remote_id}"),
-                                                                 :items => [],
-                                                                 :categories => [],
-                                                                 :attributes => {
-                                                                   :name => name,
-                                                                   :brand => brand,
-                                                                   :image => "http://www.dummy-store.com/images/#{remote_id}",
-                                                                   :price => 1.2,
-                                                                   :remote_id => remote_id.to_s }})
-  end
-  configure_dummy_store(@items_config)
-end
-
-When /^items from the store are imported$/ do
-  Store.import
-end
-
-When /^modified items from the store are re-imported$/ do
-  item = given_a_sample_item
-  attributes = item.attributes
-  item.stub(:attributes).and_return(attributes.merge(:price => attributes[:price] + 1.1))
-
-  reimport(@store)
-end
-
-Then /^all items from the store should have been imported$/ do
-  Item.all_but_lost.should have(MesCourses::Stores::Items::DummyApi.new_default_store.total_items_count).records
 end
 
 
