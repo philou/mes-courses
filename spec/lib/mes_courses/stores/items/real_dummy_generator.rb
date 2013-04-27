@@ -2,7 +2,7 @@
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "fileutils"
-require "mes_courses/stores/items/real_dummy_constants"
+require "mes_courses/stores/dummy_constants"
 
 class Array
 
@@ -139,7 +139,7 @@ module MesCourses
         private
 
         def self.root_dir
-          File.join(Rails.root, host_dir_name, RealDummyConstants::ROOT_DIR_NAME)
+          File.join(Rails.root, host_dir_name, DummyConstants::ROOT_DIR_NAME)
         end
         def self.root_path(store_name)
           "#{root_dir}/#{store_name}/index.html"

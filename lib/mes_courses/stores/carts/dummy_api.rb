@@ -11,7 +11,7 @@ module MesCourses
       class DummyApi < Api
 
         def self.url
-          "http://www.dummy-store.com"
+          "http://www.#{DummyConstants::ROOT_DIR_NAME}.com"
         end
         def self.valid_login
           "valid-login"

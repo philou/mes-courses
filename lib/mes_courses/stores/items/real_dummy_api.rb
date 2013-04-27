@@ -8,7 +8,7 @@ module MesCourses
   module Stores
     module Items
 
-      define_api RealDummyConstants::ROOT_DIR_NAME do
+      define_api DummyConstants::ROOT_DIR_NAME do
 
         categories 'a.category' do
           attributes do

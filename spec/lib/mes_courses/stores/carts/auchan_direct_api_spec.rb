@@ -27,6 +27,7 @@ when_online("AuchanDirectApi remote spec") do
 
           before(:all) do
             @store_cart_api = AuchanDirectApi
+            @store_items_url = AuchanDirectApi.url
           end
 
         end

@@ -16,13 +16,36 @@ module MesCourses
           @store.stub(:already_visited_url?).and_return(false)
         end
 
+        def given_a_store_with_root_categories
+          bind(stub_api(categories: Array.new(2) {stub_category}))
+        end
+
+        def given_a_store_with_sub_categories
+          bind(stub_api(
+                        categories: [stub_category(
+                                                   categories: Array.new(2) {stub_category})]))
+        end
+
+        def given_a_store_with_items
+          bind(stub_api(
+                        categories: [stub_category(
+                                                   categories: [stub_category(
+                                                                              items: Array.new(2) {stub_item})])]))
+        end
+
+        def given_a_store_with_one_item
+          bind(stub_api(
+                        categories: [stub_category(
+                                                   categories: [stub_category(
+                                                                              items: [stub_item])])]))
+        end
+
         def import
           @importer.import(@store_api, @store)
         end
 
-        def given_a_store_with(root_categories)
-          @store_api = MesCourses::Stores::Items::DummyApi.new_custom_store(root_categories)
-
+        def bind(store_api)
+          @store_api = store_api
           @root_categories = @store_api.categories
           unless @root_categories.empty?
             @root_category = @root_categories.first
@@ -39,24 +62,25 @@ module MesCourses
           end
         end
 
-        def given_a_store_with_root_categories
-          given_a_store_with [{:name => "category1"}, {:name => "category2"}]
+        def stub_api(options = {})
+          stub_walker("", options)
         end
 
-        def given_a_store_with_sub_categories
-          given_a_store_with [{ :name => "Root category",
-                                :categories => [{:name => "sub_category1"},
-                                                {:name => "sub_category2"}]}]
+        def stub_category(options = {})
+          stub_walker(FactoryGirl.generate(:category_name), options)
         end
 
-        def given_a_store_with_items(items_attributes = [{ :name => "Item1", :price => 3.1}, { :name => "Item2", :price => 34.5}])
-          given_a_store_with [{ :name => "Root category",
-                                :categories => [{ :name => "sub_category",
-                                                  :items => items_attributes}]}]
+        def stub_item(options = {})
+          stub_walker(FactoryGirl.generate(:item_name), FactoryGirl.attributes_for(:item))
         end
 
-        def given_a_store_with_one_item
-          given_a_store_with_items([{ :name => "Item1", :price => 2.5}])
+        def stub_walker(name, options = {})
+          uri = "http://www.story.com/#{name}"
+          items = options.delete(:items) || []
+          categories = options.delete(:categories) || []
+          attributes = options.merge(name: name)
+
+          stub("Walker #{uri}", {attributes: attributes, uri: URI.parse(uri), categories: categories, items: items})
         end
 
         context "when starting from scratch" do

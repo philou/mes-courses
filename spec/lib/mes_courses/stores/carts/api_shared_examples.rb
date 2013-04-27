@@ -109,7 +109,7 @@ module MesCourses
           end
 
           def extract_sample_items
-            extract_sample_items_from(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
+            extract_sample_items_from(MesCourses::Stores::Items::Api.browse(@store_items_url))
           end
 
           def extract_sample_items_from(category)
