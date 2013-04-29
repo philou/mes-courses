@@ -63,10 +63,6 @@
         http://www.emacswiki.org/RspecMode + http://stackoverflow.com/questions/10288785/rspec-request-specs-failing-when-run-from-emacs-using-rspec-mode
 ** commande emacs pour fermer tous les buffers dans un sous repertoire
 ** emacs ctags https://github.com/tpope/gem-ctags
-* [DESIGN] améliorer les tests cucumber d'imports
-** Passer les tests cucumber sur RealDummyStore
-** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
-** Supprimer complétement DummyStoreItemsAPI
 * [DESIGN] remove if on_heroku? from application.rb by providing special envs or the like
 ** TODO fix the cucumber env warning message
 ** TODO make sqlite in memory db an env var option instead of a test env enforcement http://pivotallabs.com/parallelize-your-rspec-suite/
@@ -75,7 +71,6 @@
 ** dev : local
 ** watchdog ???
 ** use different virtual machines and the same env to simplify set up
-* [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 * [DEVENV] import db from beta to integ to test migrations with real data
 * [HEROKU] utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
 * [HEROKU] configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
@@ -113,7 +108,6 @@
 ** peut être deux : un path_bar_element(index, text, url)
 ** un autre pour path_bar avec une liste d'elements
 * [DESIGN] faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
-* [DESIGN] make cucumber steps more high level
 * [DEVENV] fix recuring ubuntu crashes
 ** try Xubuntu
 ** try gnome session
