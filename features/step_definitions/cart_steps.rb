@@ -1,72 +1,50 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
-def given_in_cart(quantity, item_name)
-  # maybe would be better find out how not to use side effects of functions
-  item = Item.find_by_name(item_name)
-  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
-
-  # this won't work if I have many items with the same item category
-  quantity.times do
-    visit item_category_path(item.item_categories.first)
-    click_button("Ajouter au panier")
-  end
-end
-
 Given /^there (are|is) "([^"]*)" in the cart"?$/ do |_, item_name|
-  given_in_cart(1, item_name)
+  put_in_the_cart(1, item_name)
 end
 
 Given /^there are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
-  given_in_cart(quantity.to_i, item_name)
+  put_in_the_cart(quantity.to_i, item_name)
 end
 
-Given /^I entered valid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_login)
-  fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.valid_password)
+When /^I transfer my cart to the store$/ do
+  enter_valid_store_account_identifiers
+  start_transfering_the_cart
+  wait_for_the_transfer_to_end
 end
 
-Given /^I entered invalid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_login)
-  fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.invalid_password)
+When /^I try to transfer my cart to the store with wrong identifiers$/ do
+  enter_invalid_store_account_identifiers
+  start_transfering_the_cart
+  wait_for_the_transfer_to_end
 end
 
-When /^I wait for the transfer to end$/ do
-  Delayed::Worker.new().work_off()
-  visit current_path
-end
-
-Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
-  visit path_to("the cart page")
-  page.should have_content(item_name)
-end
-
-Given(/^I am transfering my cart to a store$/) do
-  pending # express the regexp above with the code you wish you had
-
-    # Given the "www.dummy-store.com" store
-    # And   I am on the cart page
-    # And   I entered valid store account identifiers
-    # When  I press "Transférer le panier"
-
-
+When /^I start to transfer my cart to the store$/ do
+  enter_valid_store_account_identifiers
+  start_transfering_the_cart
 end
 
 When(/^items are being transfered$/) do
 end
 
-Then(/^I should see that the transfer is ongoing$/) do
-  pending # express the regexp above with the code you wish you had
-end
-
 When(/^all items have been transfered$/) do
-  pending # express the regexp above with the code you wish you had
+  wait_for_the_transfer_to_end
 end
 
-Then(/^I should see that it is logging out from the store$/) do
-  pending # express the regexp above with the code you wish you had
+Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
+  the_cart_should_contain(item_name)
 end
 
-Then(/^I should see a button to log into the store$/) do
-  pending # express the regexp above with the code you wish you had
+Then(/^the transfer to "([^"]*)" should be ongoing$/) do |store_name|
+  the_transfer_should_be_ongoing_to(store_name)
+end
+
+Then(/^the client should be automaticaly logged out from "([^"]*)"$/) do |store_name|
+  the_client_should_be_automaticaly_logged_out_from(store_name)
+end
+
+Then(/^there should be a button to log into "([^"]*)"$/) do |store_name|
+  there_should_be_a_button_to_log_into(store_name)
 end

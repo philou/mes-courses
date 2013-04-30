@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2012, 2013 by Philippe Bourgau
 
 require 'uri'
 require 'cgi'
@@ -41,12 +41,4 @@ end
 
 Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)""?$/ do |field, form, value|
   page.should have_xpath("//form[@id='#{form}']/input[@name='#{form}[#{field}]'][@value='#{value}']")
-end
-
-Then /^the page should auto refresh$/ do
-  page.should have_xpath("//meta[@http-equiv='refresh']")
-end
-
-Then /^there should be an iframe with id "([^"]*)" and url "([^"]*)"$/ do |id, url|
-  page.should have_xpath("//iframe[@id='#{id}'][@src='#{url}']")
 end

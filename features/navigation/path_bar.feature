@@ -62,9 +62,7 @@ Feature: Path bar
 
   Scenario: Path bar when forwarding the cart
     Given the "www.dummy-store.fr" store
-    And   I am on the cart page
-    And   I entered valid store account identifiers
-    When  I press "Transférer le panier"
+    When I start to transfer my cart to the store
     Then  The path bar should be
       """
       a link "Panier" to the cart page
