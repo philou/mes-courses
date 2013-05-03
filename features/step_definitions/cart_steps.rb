@@ -12,13 +12,13 @@ end
 When /^I transfer my cart to the store$/ do
   enter_valid_store_account_identifiers
   start_transfering_the_cart
-  wait_for_the_transfer_to_end
+  run_the_transfer_to_the_end
 end
 
 When /^I try to transfer my cart to the store with wrong identifiers$/ do
   enter_invalid_store_account_identifiers
   start_transfering_the_cart
-  wait_for_the_transfer_to_end
+  run_the_transfer_to_the_end
 end
 
 When /^I start to transfer my cart to the store$/ do
@@ -26,19 +26,24 @@ When /^I start to transfer my cart to the store$/ do
   start_transfering_the_cart
 end
 
+When(/^no items have yet been transfered$/) do
+  sleep(1)
+end
+
 When(/^items are being transfered$/) do
+  start_the_transfer_thread
 end
 
 When(/^all items have been transfered$/) do
-  wait_for_the_transfer_to_end
+  join_the_transfer_thread
 end
 
 Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
   the_cart_should_contain(item_name)
 end
 
-Then(/^the transfer to "([^"]*)" should be ongoing$/) do |store_name|
-  the_transfer_should_be_ongoing_to(store_name)
+Then(/^between (#{CAPTURE_PERCENTAGE}) and (#{CAPTURE_PERCENTAGE}) of the cart should have been transfered to "([^"]*)"$/) do |min_progress, max_progress, store_name|
+  the_transfer_should_be_ongoing(to: store_name, min_progress: min_progress, max_progress: max_progress)
 end
 
 Then(/^the client should be automaticaly logged out from "([^"]*)"$/) do |store_name|

@@ -4,7 +4,6 @@ Feature: Cart Forwarding
   A customer
   Wants to the forward operation to be explicit and straightforward
 
-  @wip
   Scenario: A customer is accompanied through a transfer
 
     The transfer remains a long, tricky and unfamiliar process.
@@ -14,11 +13,11 @@ Feature: Cart Forwarding
     Given the "www.dummy-store.com" store
     When I start to transfer my cart to the store
 
-    # When no items have yet been transfered
-    # Then I should see that the transfer is starting
+    When no items have yet been transfered
+    Then between 1% and 10% of the cart should have been transfered to "www.dummy-store.com"
 
     When items are being transfered
-    Then the transfer to "www.dummy-store.com" should be ongoing
+    Then between 10% and 90% of the cart should have been transfered to "www.dummy-store.com"
 
     When all items have been transfered
     Then the client should be automaticaly logged out from "www.dummy-store.com"

@@ -31,8 +31,27 @@ module KnowsCart
     click_button("Transférer le panier")
   end
 
-  def wait_for_the_transfer_to_end
+  def run_the_transfer_to_the_end
     Delayed::Worker.new().work_off()
+    visit current_path
+  end
+
+  def start_the_transfer_thread
+    @finish_cart_transfer = false
+    @finish_cart_transfer.extend(MonitorMixin)
+    finish_asked = @finish_cart_transfer.new_cond
+    cart_api.stub(:logout) do
+      finish_asked.wait_while { !@finish_cart_transfer }
+    end
+
+    @cart_transfer_thread = Thread.new do
+      Delayed::Worker.new().work_off()
+    end
+  end
+
+  def join_the_transfer_thread
+    @finish_cart_transfer = true
+    @cart_transfer_thread.join
     visit current_path
   end
 
@@ -41,8 +60,12 @@ module KnowsCart
     page.should have_content(item_name)
   end
 
-  def the_transfer_should_be_ongoing_to(store_name)
-    page.should have_content("Votre panier est en cours de transfert vers '#{store_name}'")
+  def the_transfer_should_be_ongoing(options)
+    page.should have_content("Votre panier est en cours de transfert vers '#{options[:to]}'")
+    match = /Votre panier est en cours de transfert [^<]*([0-9]+)%/.match(page.body)
+    progress = match[1].to_f
+    progress.should be_between(options[:min_progress], options[:max_progress])
+
     page_should_auto_refresh
   end
 
