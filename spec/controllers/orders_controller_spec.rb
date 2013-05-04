@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -83,13 +83,12 @@ describe OrdersController do
         response.should render_template('orders/show_passing')
       end
 
-      it "should assign a forward_completion_ratio" do
-        @order.stub(:forwarded_cart_lines_count).and_return(4)
-        @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
+      it "should assign a forward_completion_percents" do
+        @order.stub(:passed_ratio).and_return(0.2543)
 
         get 'show', :id => @order.id
 
-        assigns(:forward_completion_percents).should == 100 * 4 / 7
+        assigns(:forward_completion_percents).should == 25
       end
 
       it "should ask to page to auto refresh" do

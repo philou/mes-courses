@@ -35,11 +35,35 @@ describe Order do
                                       Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
-  it "should increase the forwarded cart lines count when notified" do
-    [1,2].each do |i|
-      @order.notify_forwarded_cart_line
-      @order.forwarded_cart_lines_count.should == i
+  context "passed ratio" do
+
+    before :each do
+      @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
+      @order.stub(:created_at).and_return(@start_time = Time.now - 15)
     end
+
+    it "should be 100% if the order is empty" do
+      @cart.stub(:lines).and_return([])
+
+      @order.passed_ratio.should == 1.0
+    end
+
+    it "should depend on the start time before lines are transfered" do
+      @order.passed_ratio.should be_within(1e-2).of(0.15 * (Time.now - @start_time) / 60.0)
+    end
+
+    it "should be 0 if the order was not saved" do
+      @order.stub(:created_at).and_return(nil)
+
+      @order.passed_ratio.should == 0.0
+    end
+
+    it "should be computed from forwarded cart lines" do
+      4.times { @order.notify_forwarded_cart_line }
+
+      @order.passed_ratio.should == 0.15 + 0.85*(4.0 / 7.0)
+    end
+
   end
 
   context "when passing" do
@@ -63,7 +87,7 @@ describe Order do
     it "should logout from the store" do
       it_should_logout_from_the_store
     end
-
+!
     it "should have the SENDING status when it is beeing passed" do
       @cart.stub(:forward_to).with do |session, order|
         @order.status.should == Order::PASSING

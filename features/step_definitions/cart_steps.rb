@@ -27,7 +27,7 @@ When /^I start to transfer my cart to the store$/ do
 end
 
 When(/^no items have yet been transfered$/) do
-  sleep(1)
+  wait_while_no_items_are_transfered
 end
 
 When(/^items are being transfered$/) do

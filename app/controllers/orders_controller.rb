@@ -40,11 +40,7 @@ class OrdersController < ApplicationController
   private
 
   def forward_completion_percents
-    if @order.cart.lines.empty?
-      100
-    else
-      100 * @order.forwarded_cart_lines_count / @order.cart.lines.count
-    end
+    (@order.passed_ratio * 100).to_i
   end
 
 end

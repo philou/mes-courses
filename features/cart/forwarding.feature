@@ -11,13 +11,15 @@ Feature: Cart Forwarding
     to make sure it is as straightforward as possible.
 
     Given the "www.dummy-store.com" store
+    And there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item at 2.5€
+    And there are "PdT Charlottes" in the cart
     When I start to transfer my cart to the store
 
     When no items have yet been transfered
-    Then between 1% and 10% of the cart should have been transfered to "www.dummy-store.com"
+    Then between 1% and 15% of the cart should have been transfered to "www.dummy-store.com"
 
     When items are being transfered
-    Then between 10% and 90% of the cart should have been transfered to "www.dummy-store.com"
+    Then between 15% and 100% of the cart should have been transfered to "www.dummy-store.com"
 
     When all items have been transfered
     Then the client should be automaticaly logged out from "www.dummy-store.com"

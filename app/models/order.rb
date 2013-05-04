@@ -59,6 +59,18 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def passed_ratio
+    if created_at.nil?
+      0.0
+    elsif cart.lines.empty?
+      1.0
+    elsif forwarded_cart_lines_count == 0
+      0.15 * (Time.now - created_at) / 60.0
+    else
+      0.15 + 0.85 * forwarded_cart_lines_count.to_f / cart.lines.count
+    end
+  end
+
   private
 
   WARNING_NOTICE_SEPARATOR = "\n"
