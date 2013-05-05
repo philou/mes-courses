@@ -32,11 +32,7 @@ module KnowsCart
   end
 
   def wait_while_no_items_are_transfered
-    # TODO use timecop to do the same
-    original = Time.method(:now)
-    Time.stub(:now) do
-      original.call + 15
-    end
+    Timecop.travel(Time.now + 15)
   end
 
   def run_the_transfer_to_the_end
