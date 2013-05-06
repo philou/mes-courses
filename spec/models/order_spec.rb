@@ -39,7 +39,7 @@ describe Order do
 
     before :each do
       @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
-      @order.stub(:created_at).and_return(@start_time = Time.now - 15)
+      @order.stub(:created_at).and_return(@start_time = Time.now)
     end
 
     it "should be 100% if the order is empty" do
@@ -49,7 +49,9 @@ describe Order do
     end
 
     it "should depend on the start time before lines are transfered" do
-      @order.passed_ratio.should be_within(1e-2).of(0.15 * (Time.now - @start_time) / 60.0)
+      Timecop.freeze(@start_time + 15)
+
+      @order.passed_ratio.should be_within(1e-8).of(Order::PASSED_RATIO_BEFORE * 15.0 / 60.0)
     end
 
     it "should be 0 if the order was not saved" do
@@ -58,10 +60,16 @@ describe Order do
       @order.passed_ratio.should == 0.0
     end
 
+    it "should caped before cart lines are transfered" do
+      Timecop.freeze(@start_time + 75)
+
+      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE
+    end
+
     it "should be computed from forwarded cart lines" do
       4.times { @order.notify_forwarded_cart_line }
 
-      @order.passed_ratio.should == 0.15 + 0.85*(4.0 / 7.0)
+      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE + Order::PASSED_RATIO_DURING*(4.0 / 7.0)
     end
 
   end

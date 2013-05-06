@@ -59,15 +59,19 @@ class Order < ActiveRecord::Base
     end
   end
 
+  PASSED_RATIO_BEFORE = 0.15
+  PASSED_RATIO_DURING = 1.0 - PASSED_RATIO_BEFORE
+
   def passed_ratio
     if created_at.nil?
       0.0
     elsif cart.lines.empty?
       1.0
     elsif forwarded_cart_lines_count == 0
-      0.15 * (Time.now - created_at) / 60.0
+      PASSED_RATIO_BEFORE * [1.0, (Time.now - created_at) / 60.0].min
     else
-      0.15 + 0.85 * forwarded_cart_lines_count.to_f / cart.lines.count
+      PASSED_RATIO_BEFORE +
+        PASSED_RATIO_DURING * forwarded_cart_lines_count.to_f / cart.lines.count
     end
   end
 
