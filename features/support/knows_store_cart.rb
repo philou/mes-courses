@@ -9,13 +9,13 @@ module KnowsStoreCart
     @cart_api ||= MesCourses::Stores::Carts::DummyApi.new
   end
 
-  def given_the_store(store_site)
+  def given_the_store(store_name)
     MesCourses::Stores::Carts::DummyApi.stub(:login) do |login,password|
       cart_api.relog(login, password)
       cart_api
     end
 
-    create_new_store("http://"+store_site)
+    create_new_store("http://"+store_name)
   end
 
   def given_an_item_is_unavailable_in_the_store(item_name)
