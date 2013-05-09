@@ -13,7 +13,7 @@ module KnowsStores
   end
 
   def create_new_store(uri)
-    main_store_name = URI.parse(uri).host
+    self.main_store_name = URI.parse(uri).host
     Store.find_or_create_by_url(uri) { |store| store.sponsored_url = "#{uri}/sponsored" }
   end
 
