@@ -21,25 +21,48 @@ describe OrdersController do
       Order.stub(:find_by_id).with(@order.id).and_return(@order)
     end
 
-    it "should render template show_success when the order is passed" do
-      @order.stub(:status).and_return(Order::SUCCEEDED)
+    ['show', 'logout'].each do |action|
+      context "with action ##{action}" do
 
-      get 'show', :id => @order.id
+        it "should assign a @path_bar with two items" do
+          get action, :id => @order.id
 
-      response.should render_template('orders/show_success')
+          assigns(:path_bar).should == [path_bar_cart_lines_root,
+                                        path_bar_element_with_no_link("Transfert")]
+        end
+
+        it "should assign an order to the view" do
+          get action, :id => @order.id
+
+          assigns(:order).should == @order
+        end
+      end
     end
 
-    it "should assign a @path_bar with two items" do
-      get 'show', :id => @order.id
+    context "once the order was passed" do
+      it "show should redirect to logout" do
+        @order.stub(:status).and_return(Order::SUCCEEDED)
 
-      assigns(:path_bar).should == [path_bar_cart_lines_root,
-                                    path_bar_element_with_no_link("Transfert")]
+        get 'show', :id => @order.id
+
+        response.should redirect_to(action: 'logout')
+      end
+
+      it "logout should render" do
+        @order.stub(:status).and_return(Order::SUCCEEDED)
+
+        get 'logout', :id => @order.id
+
+        response.should render_template('orders/logout')
+      end
     end
 
-    it "should assign an order to the view" do
-      get 'show', :id => @order.id
+    it "logout should redirect to show when the order is not yet passed" do
+      @order.stub(:status).and_return(:whatever_but_succeeded)
 
-      assigns(:order).should == @order
+      get 'logout', :id => @order.id
+
+      response.should redirect_to(action: 'show')
     end
 
     context "using an invalid store account" do
@@ -63,12 +86,12 @@ describe OrdersController do
       end
     end
 
-    it "should render show_passing template when the order is not yet being passed" do
+    it "should render show template when the order is not yet being passed" do
       @order.stub(:status).and_return(Order::NOT_PASSED)
 
       get 'show', :id => @order.id
 
-      response.should render_template('orders/show_passing')
+      response.should render_template('orders/show')
     end
 
     context "when the order is being passed" do
@@ -77,10 +100,10 @@ describe OrdersController do
         @order.stub(:status).and_return(Order::PASSING)
       end
 
-      it "should render show_passing template" do
+      it "should render show template" do
         get 'show', :id => @order.id
 
-        response.should render_template('orders/show_passing')
+        response.should render_template('orders/show')
       end
 
       it "should assign a forward_completion_percents" do

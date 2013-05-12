@@ -78,6 +78,7 @@ MesCourses::Application.routes.draw do
   match '/cart_lines/add_dish/:id' => 'cart_lines#add_dish', as: :add_dish_to_cart_lines, via: :post
 
   resources :orders
+  match '/orders/:id/logout' => 'orders#logout'
 
   match '/features' => "features#index"
   match '/cgu' => "cgu#index"

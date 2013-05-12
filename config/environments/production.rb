@@ -78,5 +78,5 @@ MesCourses::Application.configure do
   # ssl everywhere appart from orders, where store logout through an
   # http iframe might be insecure. cookies are not secured otherwise the cart would be lost
   # after going through http to pass the order
-  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/}, strict: true, force_secure_cookies: false
+  config.middleware.insert_before Rack::Cache, Rack::SslEnforcer, except: %r{^/orders/\d*/logout}, strict: true, force_secure_cookies: false
 end

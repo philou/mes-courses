@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
-describe "orders/show_passing" do
+describe "orders/show" do
 
   before(:each) do
     assign :order, @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr"))

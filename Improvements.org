@@ -136,6 +136,15 @@
 * [DESIGN] Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys
 * [DEVENV] Spike launching ci on heroku (might be a problem with db drop ...)
 * [DESIGN] Spike how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
+** TODO regarder comment tester localement
+*** TODO créer un certificat ssl local : https://gist.github.com/trcarden/3295935
+*** TODO installer foreman
+*** TODO settuper SslEnforcer sur un port https custom : https://github.com/tobmatth/rack-ssl-enforcer
+*** TODO démarrer 2 process sur 2 ports différents dans foreman : http://www.railway.at/2013/02/12/using-ssl-in-your-local-rails-environment/
+** TODO regarder comment tester automatiquement
+*** TODO démarrer tout les 2 applies
+*** TODO faire des gets
+*** TODO vérifier les urls
 * [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
 * [RADIANT] faire un script 'setup' pour le cms
 * [RADIANT] redesign cms pull and push

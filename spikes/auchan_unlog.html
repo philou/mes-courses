@@ -1,0 +1,19 @@
+<html>
+<head>
+  <META HTTP-EQUIV=Refresh content="10; url=http://www.auchandirect.fr/Accueil">
+</head>
+
+<body>
+
+<script>
+  function onUnlogIframeLoaded() {
+    alert("redirecting");
+    window.top.location.href = "http://www.auchandirect.fr/Accueil";
+  }
+</script>
+
+<!--             http://www.auchandirect.fr/boutiques.paniervolant.customerinfos:totallogout?t:ac=Accueil&t:cp=gabarit/generated -->
+<iframe src="http://www.auchandirect.fr/boutiques.paniervolant.customerinfos:totallogout?t:ac=Accueil&t:cp=gabarit/generated" style="width: 100%; height: 100%" onload="onUnlogIframeLoaded"></iframe>
+</body>
+
+</html>

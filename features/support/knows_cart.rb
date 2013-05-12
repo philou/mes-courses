@@ -37,7 +37,7 @@ module KnowsCart
 
   def run_the_transfer_to_the_end
     Delayed::Worker.new().work_off()
-    visit current_path
+    refresh_page
   end
 
   def start_the_transfer_thread
@@ -60,7 +60,7 @@ module KnowsCart
     @finish_cart_transfer.set
     @cart_transfer_thread.join
 
-    visit current_path
+    refresh_page
   end
 
   def the_cart_should_contain(item_name)
@@ -69,15 +69,14 @@ module KnowsCart
   end
 
   def the_transfer_should_be_ongoing(options)
-    visit current_path
+    page_should_auto_refresh
+    refresh_page
 
     page.should have_content("Votre panier est en cours de transfert vers '#{options[:to]}'")
     match = /Votre panier est en cours de transfert [^\d]*(\d+)%/.match(page.body)
     progress = match.captures[0].to_f
     progress.should be >= options[:min_progress]
     progress.should be <= options[:max_progress]
-
-    page_should_auto_refresh
   end
 
   def the_client_should_be_automaticaly_logged_out_from(store_name)

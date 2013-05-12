@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 
-describe "orders/show_success" do
+describe "orders/logout" do
 
   before(:each) do
     assign :order, @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr",

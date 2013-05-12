@@ -4,27 +4,10 @@
 class OrdersController < ApplicationController
   include PathBarHelper
 
+  before_filter :setup_path_bar_and_order, only: [:show, :logout]
+
   # not sure this is required anymore
   protect_from_forgery :except => :create
-
-  def show
-    self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
-    @order = Order.find_by_id(params[:id].to_i)
-
-    case @order.status
-    when Order::FAILED
-      flash[:notice] = @order.error_notice
-      redirect_to :controller => 'cart_lines'
-
-    when Order::SUCCEEDED
-      render :template => 'orders/show_success'
-
-    else
-      @auto_refresh = true
-      @forward_completion_percents = forward_completion_percents
-      render :template => 'orders/show_passing'
-    end
-  end
 
   # Builds the session cart on an online store
   def create
@@ -37,7 +20,36 @@ class OrdersController < ApplicationController
     redirect_to order_path(order)
   end
 
+  def show
+    case @order.status
+    when Order::FAILED
+      flash[:notice] = @order.error_notice
+      redirect_to :controller => 'cart_lines'
+      return
+
+    when Order::SUCCEEDED
+      redirect_to action: 'logout'
+      return
+
+    end
+
+    @auto_refresh = true
+    @forward_completion_percents = forward_completion_percents
+  end
+
+  def logout
+    if @order.status != Order::SUCCEEDED
+      redirect_to action: 'show'
+      return
+    end
+  end
+
   private
+
+  def setup_path_bar_and_order
+    self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
+    @order = Order.find_by_id(params[:id].to_i)
+  end
 
   def forward_completion_percents
     (@order.passed_ratio * 100).to_i
