@@ -1,3 +1,69 @@
+* [DEVENV] speed up integration
+** DONE diminish the stores items api tests @range
+** DONE do less login-logout during cart testing
+*** refactor the availble and 2 items prices tests (they are already tested in the before :all clause
+** DONE start deploying to heroku in // with integration tests : 4" gain
+| process 1       | process 2          | process 3       |
+| deploy to integ | deploy to watchdog | migrate         |
+| restore prod db | migrate            | specs           |
+| migrate         | ping               | features        |
+| rollback        |                    | feature dry-run |
+| migrate         |                    | csslint         |
+| ping            |                    |                 |
+| trigger import  |                    |                 |
+| OK              | OK                 | OK              |
+*** DONE modify the parallel_exec to start_parallel_exec & end_parallel_exec
+**** TODO see if there is something like futures in ruby
+*** DONE start the deployments at the begining of the script
+** TODO write the time taken by each thread
+** TODO isolate auchan direct api into its gem : 4"30' to gain
+*** would the integ script be independent from this gem ? -> YES ! it would be faster
+*** special repo
+*** special deployment, must be compatible with heroku
+**** geminabox
+***** démarrer un serveur de gem local sur le poste de dev
+***** avoir une addresse ip fixe
+***** avoir un serveur en ligne en permanence
+**** gemfurry 9 to 14 $/month
+**** le publier dans un repo privé de github
+**** le mettre directement dans le repo
+***** il faudrait que le bundle install recopie la gem dans bundle/cache
+***** on pourrait faire un sur-script autour de bundle update (script/update)
+*** special ci
+**** pourrait-on lancer le watchdog directement sur le repo dans heorku ?
+*** TODO spikes
+**** TODO is there a way to keep the revision history ?
+**** TODO can we deploy a gem to heroku and just use scheduled rake tasks
+*** TODO create an empty repo "mes-courses-stores"
+*** TODO initialize an empty gem with Hoe
+*** TODO copy the code to it
+*** TODO make sure the specs pass
+*** TODO create a rake task or a script to deploy to the watchdog
+*** TODO create a version for the gem
+*** TODO deploy it on my machine
+*** TODO create a bundle_update script that wraps bundle update and
+**** TODO it should start the local machine's gem server
+**** TODO it should copy the latest store api gem version to vendor/cache
+**** TODO add this new gem to the gemfile with :path => "vendor/cache ..."
+** TODO fail the build if it takes more than 5/10 minutes ?
+** TODO run tests in parrallel
+*** DONE try the ruby "pty" library
+**** DONE deploy to both heroku apps in // -> 5m gain !
+***** DONE make pty work
+***** DONE return sub process error status
+***** DONE run pty in different threads
+***** DONE dump the outputs
+*** TODO try running the (fast?) specs in // with parallel_test gem : 2" to gain
+**** TODO setup parallel dbs
+***** les bases ne sont pas construites pour autre chose que RAILS_ENV=test ...
+***** TODO change my computer
+***** TODO avoir une vm pour l'environement d'integ, et merger tous les envs (test, cucumber et ci)
+**** TODO use an unique real_dummy_store dir per feature
+**** TODO add something to the env setup script to make sure all dbs are created
+**** TODO add something to the ci script to prepare the parallel dbs
+*** use an integration server
+*** migrate to github if it handles continuous integration
+
 * [HEROKU] use vagrant or chef to completly setup virtual dev envs
 ** wait until I have a good laptop
 ** use it to track heroku stack changes
@@ -146,15 +212,5 @@
 *** TODO faire des gets
 *** TODO vérifier les urls
 * [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
-* [RADIANT] faire un script 'setup' pour le cms
-* [RADIANT] redesign cms pull and push
-** utiliser des subtree plutot que des subtree-merge (c'est un wrapper par dessus, cf : http://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)
-** copier coller
-** rest api sur le cms (plus de lien git du tout)
-** mettre les snippets, layouts et styles dans le git du cms (comme au début)
-*** split entre design / écriture
-***  marchera peut être mieux qu'au début parce que:
-**** le design est stabilisé
-**** j'ai un modem 3G
-* [RADIANT] upgrade radiant to the latest version using bundler !
-* [RADIANT] merge latest design modifications
+* [DEVENV] spike vim :
+** try vim + all plugins, it seems to be the standard

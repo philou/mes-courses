@@ -60,7 +60,8 @@ class Order < ActiveRecord::Base
   end
 
   PASSED_RATIO_BEFORE = 0.15
-  PASSED_RATIO_DURING = 1.0 - PASSED_RATIO_BEFORE
+  PASSED_RATIO_AFTER = 0.1
+  PASSED_RATIO_DURING = 1.0 - PASSED_RATIO_BEFORE - PASSED_RATIO_AFTER
 
   def passed_ratio
     if created_at.nil?

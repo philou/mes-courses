@@ -18,12 +18,18 @@ When(/^I transfer my cart to the store$/) do
   enter_valid_store_account_identifiers
   start_transfering_the_cart
   run_the_transfer_to_the_end
+  refresh_page
+  current_route_should_be(:order_logout_path, /\d+/)
+  refresh_page
+  current_route_should_be(:order_login_path, /\d+/)
 end
 
 When(/^I try to transfer my cart to the store with wrong identifiers$/) do
   enter_invalid_store_account_identifiers
   start_transfering_the_cart
   run_the_transfer_to_the_end
+  refresh_page
+  current_route_should_be(:cart_lines_path)
 end
 
 When(/^I start to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
@@ -33,14 +39,26 @@ end
 
 When(/^no items have yet actually been transfered to #{CAPTURE_STORE_NAME}$/) do
   wait_while_no_items_are_transfered
+  refresh_page
+  current_route_should_be(:order_path, /\d+/)
 end
 
 When(/^items are actually being transfered to #{CAPTURE_STORE_NAME}$/) do
   start_the_transfer_thread
+  refresh_page
+  current_route_should_be(:order_path, /\d+/)
 end
+
 
 When(/^all items have actually been transfered to #{CAPTURE_STORE_NAME}$/) do
   join_the_transfer_thread
+  refresh_page
+  current_route_should_be(:order_logout_path, /\d+/)
+end
+
+When(/^the transfer is completely finished$/) do
+  refresh_page
+  current_route_should_be(:order_login_path, /\d+/)
 end
 
 Then(/^there should be "([^"]*)" in my cart"?$/) do |item_name|

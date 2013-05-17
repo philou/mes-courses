@@ -21,51 +21,30 @@ describe OrdersController do
       Order.stub(:find_by_id).with(@order.id).and_return(@order)
     end
 
-    ['show', 'logout'].each do |action|
-      context "with action ##{action}" do
+    context "redirections" do
 
-        it "should assign a @path_bar with two items" do
-          get action, :id => @order.id
+      ['logout', 'login'].each do |action|
+        it "#{action} should redirect to show when the order is not yet passed" do
+          get_with_status(action, :whatever_but_succeeded)
 
-          assigns(:path_bar).should == [path_bar_cart_lines_root,
-                                        path_bar_element_with_no_link("Transfert")]
-        end
-
-        it "should assign an order to the view" do
-          get action, :id => @order.id
-
-          assigns(:order).should == @order
+          response.should redirect_to(action: 'show')
         end
       end
-    end
+      it "should render show template when the order is not yet being passed" do
+        get_with_status('show', Order::NOT_PASSED)
 
-    context "once the order was passed" do
-      it "show should redirect to logout" do
-        @order.stub(:status).and_return(Order::SUCCEEDED)
+        response.should render_template('orders/show')
+      end
 
-        get 'show', :id => @order.id
+      it "show should redirect passed orders to logout" do
+        get_with_status('show', Order::SUCCEEDED)
 
         response.should redirect_to(action: 'logout')
       end
 
-      it "logout should render" do
-        @order.stub(:status).and_return(Order::SUCCEEDED)
-
-        get 'logout', :id => @order.id
-
-        response.should render_template('orders/logout')
-      end
     end
 
-    it "logout should redirect to show when the order is not yet passed" do
-      @order.stub(:status).and_return(:whatever_but_succeeded)
-
-      get 'logout', :id => @order.id
-
-      response.should redirect_to(action: 'show')
-    end
-
-    context "using an invalid store account" do
+    context "when an order transfer failed" do
 
       before :each do
         @error_notice = "Login failed"
@@ -86,39 +65,70 @@ describe OrdersController do
       end
     end
 
-    it "should render show template when the order is not yet being passed" do
-      @order.stub(:status).and_return(Order::NOT_PASSED)
+    def self.it_should_assign_a_path_bar_with_2_items(action, order_status)
+      it "#{action} should assign a @path_bar with two items" do
+        get_with_status(action, order_status)
 
-      get 'show', :id => @order.id
-
-      response.should render_template('orders/show')
+        assigns(:path_bar).should == [path_bar_cart_lines_root,
+                                        path_bar_element_with_no_link("Transfert")]
+      end
     end
 
-    context "when the order is being passed" do
+    def self.it_should_assign_an_order(action, order_status)
+      it "#{action} should assign an order" do
+        get_with_status(action, order_status)
 
-      before :each do
-        @order.stub(:status).and_return(Order::PASSING)
+        assigns(:order).should == @order
       end
+    end
 
-      it "should render show template" do
-        get 'show', :id => @order.id
+    def self.it_should_render_corresponding_template(action, order_status)
+      it "#{action} with #{order_status} order should render #{action} template" do
+        get_with_status(action, order_status)
 
-        response.should render_template('orders/show')
+        response.should render_template("orders/#{action}")
       end
-
-      it "should assign a forward_completion_percents" do
+    end
+    def self.it_should_assign_forward_completion_percents(action, order_status)
+      it "#{action} with #{order_status} order should assign a forward_completion_percents" do
         @order.stub(:passed_ratio).and_return(0.2543)
 
-        get 'show', :id => @order.id
+        get_with_status(action, order_status)
 
         assigns(:forward_completion_percents).should == 25
       end
+    end
 
-      it "should ask to page to auto refresh" do
-        get 'show', :id => @order.id
+    SHOW = ['show', Order::PASSING]
+    LOGOUT = ['logout', Order::SUCCEEDED]
+    LOGIN = ['login', Order::SUCCEEDED]
 
-        assigns(:auto_refresh).should be_true
-      end
+    [SHOW, LOGOUT, LOGIN].each do |action_and_status|
+      it_should_assign_a_path_bar_with_2_items(*action_and_status)
+      it_should_assign_an_order(*action_and_status)
+      it_should_render_corresponding_template(*action_and_status)
+    end
+
+    [SHOW, LOGOUT].each do |action_and_status|
+      it_should_assign_forward_completion_percents(*action_and_status)
+    end
+
+    it "show with passing order asks the page to auto refresh" do
+      get_with_status('show', Order::PASSING)
+
+      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new
+    end
+
+    it "login should automaticaly redirect to logout" do
+      get_with_status('logout', Order::SUCCEEDED)
+
+      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
+    end
+
+    def get_with_status(action, order_status)
+      @order.stub(:status).and_return(order_status)
+
+      get action, :id => @order.id
     end
   end
 

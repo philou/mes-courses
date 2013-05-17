@@ -2,22 +2,11 @@
 # Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
 require 'spec_helper'
+require_relative 'transfer_shared_examples'
 
 describe "orders/show" do
 
-  before(:each) do
-    assign :order, @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr"))
-    assign :forward_completion_percents, @forward_completion_percents = 47.23
-    render
-  end
-
-  it "should render the name of the store" do
-    rendered.should contain(@order.store.name)
-  end
-
-  it "should render the passing progress ratio" do
-    rendered.should contain('47%')
-  end
+  it_behaves_like "a view with order transfer"
 
 end
 

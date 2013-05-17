@@ -31,4 +31,13 @@ describe ApplicationHelper do
     actual.should_not == item_category_path(category)
   end
 
+  it "'s meta_http_equiv_refresh_tag calls @refresh_strategy.to_html" do
+    @refresh_strategy = MesCourses::HtmlUtils::PageRefreshStrategy.new
+    meta_http_equiv_refresh_tag.should == @refresh_strategy.to_html
+  end
+
+  it "'s meta_http_equiv_refresh_tag defaults to blanc" do
+    meta_http_equiv_refresh_tag.should == ""
+  end
+
 end

@@ -10,9 +10,7 @@
     <meta name="robots" content="all,index" />
     <meta name="author" content="Philippe Bourgau for www.Mes-Courses.fr" />
     <link rel="icon" href="/favicon.png" type="image/png" />
-    <% if !!@auto_refresh %>
-      <meta http-equiv="refresh" content="3" />
-    <% end %>
+    <%= meta_http_equiv_refresh_tag %>
     <%= javascript_include_tag "application", "blogit" %>
     <%= csrf_meta_tags %>
     <% if @app_part %>

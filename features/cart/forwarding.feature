@@ -23,10 +23,11 @@ Feature: Cart Forwarding
     Then I should see that between 1% and 15% of the cart have been transfered to the store
 
     When items are actually being transfered to the "www.dummy-store.com" store
-    Then I should see that between 15% and 100% of the cart have been transfered to the store
+    Then I should see that between 15% and 90% of the cart have been transfered to the store
 
     When all items have actually been transfered to the "www.dummy-store.com" store
-    Then the client should be automaticaly logged out from the "www.dummy-store.com" store
+    Then I should see that between 90% and 100% of the cart have been transfered to the store
+    And the client should be automaticaly logged out from the "www.dummy-store.com" store
 
-    # When the transfer is completely finished
+    When the transfer is completely finished
     Then there should be a button to log into the "www.dummy-store.com" store

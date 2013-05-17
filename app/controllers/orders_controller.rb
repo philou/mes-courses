@@ -4,7 +4,11 @@
 class OrdersController < ApplicationController
   include PathBarHelper
 
-  before_filter :setup_path_bar_and_order, only: [:show, :logout]
+  LOGOUT_ALLOWED_SECONDS = 10
+
+  before_filter :assign_path_bar, except: :create
+  before_filter :assign_order, except: :create
+  before_filter :assign_completion_percents, only: [:show, :logout]
 
   # not sure this is required anymore
   protect_from_forgery :except => :create
@@ -33,22 +37,39 @@ class OrdersController < ApplicationController
 
     end
 
-    @auto_refresh = true
-    @forward_completion_percents = forward_completion_percents
+    @refresh_strategy = MesCourses::HtmlUtils::PageRefreshStrategy.new
   end
 
   def logout
-    if @order.status != Order::SUCCEEDED
-      redirect_to action: 'show'
-      return
-    end
+    return if unsuccessful_order_redirected_to_show
+
+    @refresh_strategy = MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
+  end
+
+  def login
+    return if unsuccessful_order_redirected_to_show
   end
 
   private
 
-  def setup_path_bar_and_order
+  def assign_path_bar
     self.path_bar = [path_bar_cart_lines_root, path_bar_element_with_no_link("Transfert")]
+  end
+  def assign_order
     @order = Order.find_by_id(params[:id].to_i)
+  end
+
+  def assign_completion_percents
+    @forward_completion_percents = forward_completion_percents
+  end
+
+  def unsuccessful_order_redirected_to_show
+    if @order.status != Order::SUCCEEDED
+      redirect_to action: 'show'
+      true
+    else
+      false
+    end
   end
 
   def forward_completion_percents
