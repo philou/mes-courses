@@ -10,7 +10,15 @@ module MesCourses
       shared_examples_for "Any Api" do
 
         it "should know its logout url" do
-          @store_cart_api.logout_url.should_not be_empty
+          logout_url = @store_cart_api.logout_url
+          logout_url.should_not be_empty
+          logout_url.should(match(URI.regexp(['http'])), "#{logout_url} is not an http url !")
+        end
+
+        it "should be able to generate a login html form" do
+          login_form = @store_cart_api.login_form_html
+          login_form.should_not be_empty
+          login_form.should(match(/^<form.*<\/form>$/), "#{login_form} is not a valid html form")
         end
 
         it "should raise when login in with an invalid account" do
@@ -86,18 +94,6 @@ module MesCourses
             @api.cart_value.should == 0
           end
 
-          it "should logout with HTTP GET" do
-            unless http_agent.nil?
-              @api.add_to_cart(1, sample_item_id)
-              @api.cart_value.should_not == 0
-
-              http_agent.get(@api.logout_url)
-
-              @api.cart_value.should == 0
-            end
-          end
-
-
           private
 
           def extract_another_item_id(sample_items, sample_item)
@@ -147,12 +143,6 @@ module MesCourses
           def is_milk(element)
             ["lait", "crème"].any? do |word|
               element.title.downcase.include?(word)
-            end
-          end
-
-          def http_agent
-            @api.instance_eval do
-              @agent
             end
           end
 

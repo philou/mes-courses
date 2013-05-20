@@ -109,6 +109,7 @@
 ** avoir le script pour setuper la vms dans le code
 * [DESIGN] replace the place matches by an extension to capybara/wetrat #within that associates a name to a selector
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
+** bundle exec gem rdoc --all
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu
 ** setuper calibre

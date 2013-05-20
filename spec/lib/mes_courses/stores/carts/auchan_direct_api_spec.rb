@@ -3,6 +3,7 @@
 
 require 'spec_helper'
 require_relative 'api_shared_examples'
+require_relative 'client_api_shared_examples'
 
 when_online("AuchanDirectApi remote spec") do
 
@@ -24,6 +25,7 @@ when_online("AuchanDirectApi remote spec") do
 
         describe AuchanDirectApi, slow: true, remote: true do
           it_should_behave_like "Any Api"
+          it_should_behave_like "Any Client Api", "Identifiez-vous"
 
           before(:all) do
             @store_cart_api = AuchanDirectApi

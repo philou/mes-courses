@@ -20,6 +20,14 @@ module MesCourses
           "valid-password"
         end
 
+        def self.logout_url
+          url+"/logout"
+        end
+
+        def self.login_form_html
+          "<form>#{DummyConstants::ROOT_DIR_NAME} login form</form>"
+        end
+
         attr_reader :login, :password, :log
 
         def initialize(login = nil, password = nil)
@@ -58,10 +66,6 @@ module MesCourses
             @log.push(:add_to_cart)
             @content[item_remote_id] += (item_remote_id.hash.abs.to_f/1e7)
           end
-        end
-
-        def self.logout_url
-          url+"/logout"
         end
 
         def cart_value

@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -30,14 +30,17 @@ module MesCourses
           self.class.url
         end
 
+        # html form for a client browser to login
+        # def self.login_form_html
+
+        # url at which a client browser can logout
+        # def self.logout_url
+
         # logs in to the remote store
         # def initialize(login, password)
 
         # logs out from the store
         # def logout
-
-        # url at which a client browser can logout
-        # def self.logout_url
 
         # total value of the remote cart
         # def cart_value
