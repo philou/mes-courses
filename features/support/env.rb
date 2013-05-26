@@ -130,5 +130,6 @@ Spork.each_run do
 
   # rails dependent extensions
   require_relative '../../spec/support/item'
+  require_relative '../../spec/support/constants'
 
 end

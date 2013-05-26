@@ -2,7 +2,6 @@
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
 # custom matchers
-require_relative '../../spec/support/constants'
 require_relative '../../spec/support/mostly_matcher'
 require_relative '../../spec/support/all_do_matcher'
 require_relative '../../spec/support/have_non_nil_matcher'
