@@ -6,9 +6,9 @@ require 'spec_helper'
 describe Order do
 
   before :each do
-    @cart = Cart.new()
-    @store = Store.new(:url => "http://www.funny-store.com")
-    @order = Order.new(:cart => @cart, :store => @store)
+    @order = FactoryGirl.build(:order)
+    @store = @order.store
+    @cart = @order.cart
   end
 
   it "should not have any warning notice by default" do
@@ -28,22 +28,34 @@ describe Order do
   end
 
   it "should extend warning notices when missing cart lines are added" do
-    @order.add_missing_cart_line(@cart_line_1 = stub_model(CartLine, :name => "Tomates"))
-    @order.add_missing_cart_line(@cart_line_2 = stub_model(CartLine, :name => "Steak"))
+    @order.add_missing_cart_line(@cart_line_1 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Tomates")))
+    @order.add_missing_cart_line(@cart_line_2 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Steak")))
 
     @order.warning_notices.should == [Order.missing_cart_line_notice(@cart_line_1.name, @store.name),
                                       Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
+  it "forwards store name to the store" do
+    @order.store_name.should == @store.name
+  end
+
+  it "forwards logout url to the store" do
+    @order.store_logout_url.should == @store.logout_url
+  end
+
+  it "forwards login form html to the store" do
+    @order.store_login_form_html.should == @store.login_form_html
+  end
+
   context "passed ratio" do
 
     before :each do
-      @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
-      @order.stub(:created_at).and_return(@start_time = Time.now)
+      @order.created_at = (@start_time = Time.now)
+      @cart.lines = FactoryGirl.build_list(:cart_line, 7)
     end
 
     it "should be 100% if the order is empty" do
-      @cart.stub(:lines).and_return([])
+      @cart.lines = []
 
       @order.passed_ratio.should == 1.0
     end
@@ -55,7 +67,7 @@ describe Order do
     end
 
     it "should be 0 if the order was not saved" do
-      @order.stub(:created_at).and_return(nil)
+      @order.created_at = nil
 
       @order.passed_ratio.should == 0.0
     end
@@ -76,18 +88,14 @@ describe Order do
 
   context "when passing" do
 
+    DummyApi = MesCourses::Stores::Carts::DummyApi
+
     before :each do
-      @order.stub(:save!)
-      @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
-      MesCourses::Stores::Carts::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
-      store_cart.stub(:login).with(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password).and_return(@store_session)
-      class << @store_session
-        include MesCourses::Stores::Carts::WithLogoutMixin
-      end
+      DummyApi.on_result_from(:login) {|api| @api = api}
     end
 
     it "should forward the cart instance to the store" do
-      @cart.should_receive(:forward_to).with(@store_session, @order)
+      @cart.should_receive(:forward_to).with(instance_of(MesCourses::Stores::Carts::Session), @order)
 
       pass_order
     end
@@ -95,8 +103,8 @@ describe Order do
     it "should logout from the store" do
       it_should_logout_from_the_store
     end
-!
-    it "should have the SENDING status when it is beeing passed" do
+
+    it "should have the PASSING status when it is beeing passed" do
       @cart.stub(:forward_to).with do |session, order|
         @order.status.should == Order::PASSING
       end
@@ -158,21 +166,19 @@ describe Order do
     end
 
     def it_should_logout_from_the_store
-      @cart.should_receive(:forward_to).ordered
-      @store_session.should_receive(:logout).ordered
-
       pass_order rescue nil
+
+      @api.log.last.should == :logout
     end
 
     def it_should_eventually_save_the_order
-      @order.should_receive(:status=).twice.ordered
-      @order.should_receive(:save!).ordered
-
       pass_order rescue nil
+
+      @order.should_not be_new_record
     end
 
     def pass_order
-      @order.pass(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password)
+      @order.pass(DummyApi.valid_login, DummyApi.valid_password)
     end
   end
 end

@@ -5,6 +5,8 @@ module MesCourses
   module Stores
     module DummyConstants
       ROOT_DIR_NAME = "dummy-store"
+      STORE_URL = "http://www.#{ROOT_DIR_NAME}.com"
+      SPONSORED_URL = "#{STORE_URL}/sponsored"
     end
   end
 end

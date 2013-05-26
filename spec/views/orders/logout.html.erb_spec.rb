@@ -9,11 +9,11 @@ describe "orders/logout" do
   it_behaves_like "a view with order transfer"
 
   it "renders an iframe to unlog the client from the remote store" do
-    assign :order, @order = stub_model(Order, :store => stub_model(Store, :name => "www.megastore.fr", :logout_url => "http://www.megastore.fr/logout"))
+    assign :order, @order = FactoryGirl.build(:order)
 
     render
 
-    rendered.should have_xpath("//iframe[@id='remote-store-iframe'][@src='#{@order.store.logout_url}']")
+    rendered.should have_xpath("//iframe[@id='remote-store-iframe'][@src='#{@order.store_logout_url}']")
   end
 
 end

@@ -25,7 +25,9 @@ module MesCourses
         end
 
         def self.login_form_html
-          "<form>#{DummyConstants::ROOT_DIR_NAME} login form</form>"
+          ("<form action=\"#{url}/login\">" +
+            '<input value="Allez-y !" type="submit"/>'+
+            '</form>').html_safe
         end
 
         attr_reader :login, :password, :log

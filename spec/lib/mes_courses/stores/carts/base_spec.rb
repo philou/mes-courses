@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -10,21 +10,21 @@ module MesCourses
       describe Base do
 
         before :each do
-          url = "http://www.mega-store.fr"
-          Api.stub(:for_url).with(url).and_return(@store_api_class = stub("Api class"))
-          @store_api_class.stub(:login).and_return(@store_api = stub(Api))
-          @store_api_class.stub(:logout_url).and_return(url+"/logout")
-          Session.stub(:new).with(@store_api).and_return(@store_session = stub(Session))
-
-          @store_cart = Base.for_url(url)
+          @store_cart = Base.for_url(DummyConstants::STORE_URL)
+          DummyApi.on_result_from(:login) {|api| @dummy_api = api}
         end
 
         it "should create a session wrapper on a loged in cart api" do
-          @store_cart.login('valid_login', 'valid_password').should == @store_session
+          @store_cart.login(DummyApi.valid_login, DummyApi.valid_password).should be_instance_of(Session)
+          @dummy_api.should_not be_nil
         end
 
         it "should know the logout_url of the api" do
-          @store_cart.logout_url.should == @store_api_class.logout_url
+          @store_cart.logout_url.should == DummyApi.logout_url
+        end
+
+        it "should know the client login form of the api" do
+          @store_cart.login_form_html.should == DummyApi.login_form_html
         end
       end
     end

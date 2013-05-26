@@ -40,10 +40,10 @@ module MesCourses
           buffers << input_tag_html('text', LOGIN_PARAMETER)
           buffers << input_tag_html('password', PASSWORD_PARAMETER)
 
-          buffers << "<input id=\"authenticateFormSubmit\" type=\"submit\"/>"
+          buffers << "<input value=\"Allez-y !\" id=\"authenticateFormSubmit\" type=\"submit\"/>"
           buffers << "</form>"
 
-          buffers.join
+          buffers.join.html_safe
         end
         def self.input_tag_html(type, name, value = '')
            "<input value=\"#{value}\" name=\"#{name}\" type=\"#{type}\"/>"

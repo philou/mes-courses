@@ -6,20 +6,23 @@ module MesCourses
     module Carts
 
       # Testing constants added to the Api class
-      class Api
-        def self.valid_login
+      module TestingCredentials
+        def valid_login
           "valid-login"
         end
-        def self.valid_password
+        def valid_password
           "valid-password"
         end
-        def self.invalid_login
+        def invalid_login
           "in" + valid_login
         end
-        def self.invalid_password
+        def invalid_password
           "in" + valid_password
         end
       end
+
+      Api.send(:extend, TestingCredentials)
+
     end
   end
 end

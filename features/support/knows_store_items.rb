@@ -50,17 +50,9 @@ module KnowsStoreItems
     items_count(MesCourses::Stores::Items::RealDummy.open(store_name))
   end
 
-  def simulate_network_issues
-    new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
-    Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
-
-    i = 0
-    original_new = Mechanize::Page.method(:new)
-    Mechanize::Page.stub(:new) do |*args, &block|
-      i = i+1
-      raise RuntimeError.new("network down") if yield(i)
-      original_new.call(*args, &block)
-    end
+  def simulate_network_issues(&raise_predicate)
+    speed_up_store_import_retrier
+    raise_network_error_when &raise_predicate
   end
 
   def fix_network_issues
@@ -72,6 +64,19 @@ module KnowsStoreItems
   def items_count(category)
     category.categories.map {|cat| items_count(cat)}.inject(0) {|a,b| a+b } +
       category.items.count
+  end
+
+  def speed_up_store_import_retrier
+    new_import_retrier_options = Store.import_retrier_options.merge(:sleep_delay => 0)
+    Store.stub(:import_retrier_options).and_return(new_import_retrier_options)
+  end
+
+  def raise_network_error_when
+    i = 0
+    Mechanize::Page.on_call_to(:new) do
+      i = i+1
+      raise RuntimeError.new("network down") if yield(i)
+    end
   end
 
 end

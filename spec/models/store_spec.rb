@@ -40,14 +40,33 @@ describe Store do
     Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
   end
 
-  it "should know the logout url of the cart api" do
-    url = "http://www.megastore.com"
-    MesCourses::Stores::Carts::Base.stub(:for_url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
-    store_cart.stub(:logout_url).and_return(url+"/logout")
+  context "the cart api" do
+    DummyApi = MesCourses::Stores::Carts::DummyApi
 
-    store = Store.new(:url => url)
+    before :each do
+      @store = FactoryGirl.build(:store)
+    end
 
-    store.logout_url.should == store_cart.logout_url
+    it "should know the logout url of the cart api" do
+      @store.logout_url.should == DummyApi.logout_url
+    end
+
+    it "should know the login form of the cart api" do
+      @store.login_form_html.should == DummyApi.login_form_html
+    end
+
+    it "should yield the session to the cart api" do
+      DummyApi.on_result_from(:login) {|api| @dummy_api = api}
+
+      @store.with_session(DummyApi.valid_login, DummyApi.valid_password) do |session|
+        session.should_not be_nil
+        @dummy_api.log.should include(:login)
+      end
+
+      @dummy_api.should_not be_nil
+      @dummy_api.log.should include(:logout)
+    end
+
   end
 
   context "importing all stores" do

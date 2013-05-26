@@ -76,6 +76,18 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def store_name
+    self.store.name
+  end
+
+  def store_logout_url
+    self.store.logout_url
+  end
+
+  def store_login_form_html
+    self.store.login_form_html
+  end
+
   private
 
   WARNING_NOTICE_SEPARATOR = "\n"

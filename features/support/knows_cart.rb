@@ -81,7 +81,7 @@ module KnowsCart
 
   def there_should_be_a_button_to_log_into(store_name)
     page.should have_content("Votre panier a été transféré à '#{store_name}'")
-    page_should_have_a_link("Aller vous connecter sur #{store_name} pour payer", "http://#{store_name}/sponsored")
+    page.body.should include(MesCourses::Stores::Carts::DummyApi.login_form_html)
   end
 
 end
