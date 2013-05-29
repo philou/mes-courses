@@ -16,6 +16,7 @@ gem 'jquery-rails'
 gem 'lazing', :git => 'git://github.com/philou/lazing.git'
 gem 'rack-ssl-enforcer'
 gem 'rack-cache', :require => 'rack/cache'
+gem 'encryptor'
 
 # databases
 gem "pg"
