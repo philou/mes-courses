@@ -159,7 +159,7 @@ module MesCourses
       puts "\nIntegration successful :-)"
     end
 
-    def create_heroku_app(repo, heroku_api_key, pgsql_plan, ssl)
+    def create_heroku_app(repo, pgsql_plan, ssl)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
       heroku "addons:add heroku-postgresql:#{pgsql_plan}", repo: repo
@@ -169,9 +169,12 @@ module MesCourses
       heroku "addons:add papertrail:choklad", repo: repo
       heroku "addons:add ssl:endpoint", repo: repo if ssl
 
-      heroku "config:set HEROKU_API_KEY=#{heroku_api_key}", repo: repo
       heroku "config:set APP_NAME=#{heroku_app(repo)}", repo: repo
       heroku "config:set RACK_ENV=production", repo: repo
+
+      local_env.each do |name, value|
+        heroku "config:set #{name}=#{value}", repo: repo
+      end
     end
 
     private
@@ -311,5 +314,15 @@ module MesCourses
       File.join(File.dirname(__FILE__),"deployment",file_name)
     end
 
+    def local_env
+      local_env_file = File.join(File.dirname(__FILE__), "../../config/local_env.yml")
+      File.open(local_env_file).map do |line|
+        /^([^#:][^:]*):([^\n]*)$/.match(line)
+      end.find_all do |m|
+        !m.nil?
+      end.map do |m|
+        m.captures.map &:strip
+      end
+    end
   end
 end
