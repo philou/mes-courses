@@ -5,9 +5,10 @@ include MesCourses::Deployment
 
 with_trace_argument "Deploys master branch to the specified remote heroku repo", (proc do
   opt :repo, "name of the remote git repo, the corresponding app should be named mes-courses-<repo> by convention", required: true, type: :string
+  opt :branch, "name of the local git branch to be deployed to master on heroku", required: false, type: :string, default: 'master'
 end) do |options|
 
-  with_confirmation("deploy master branch to the \"#{options[:repo]}\" heroku git repo") do
-    deploy(options[:repo])
+  with_confirmation("deploy \"#{options[:branch]}\" branch to the \"#{options[:repo]}\" heroku git repo") do
+    deploy(options[:repo], options[:branch])
   end
 end

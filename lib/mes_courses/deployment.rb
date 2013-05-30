@@ -42,8 +42,8 @@ module MesCourses
       shell "git pull #{repo} master"
     end
 
-    def push(repo)
-      shell "git push #{repo} master"
+    def push(repo, branch = 'master')
+      shell "git push #{repo} #{branch}:master"
     end
 
     def heroku_app(repo)
@@ -66,9 +66,9 @@ module MesCourses
       heroku "pgbackups:restore DATABASE `heroku pgbackups:url --app #{heroku_app(BETA)}` --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
     end
 
-    def deploy(repo)
-      puts "Deploying to #{heroku_app(repo)}"
-      push repo
+    def deploy(repo, branch = 'master')
+      puts "Deploying local branch #{branch} to #{heroku_app(repo)}"
+      push repo, branch
       migrate repo
       ping repo
     end
