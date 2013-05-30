@@ -125,14 +125,12 @@ describe OrdersController do
       assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
     end
 
-    it "login should assign login and password" do
-      session[:login] = login = "a login"
-      session[:password] = password = "a password"
+    it "login should assign store credentials" do
+      session[:store_credentials] = credentials = MesCourses::Utils::Credentials.new("a login", "a password")
 
       get_with_status('login', Order::SUCCEEDED)
 
-      assigns[:login].should == login
-      assigns[:password].should == password
+      assigns[:store_credentials].should == credentials
     end
 
     def get_with_status(action, order_status)
@@ -180,8 +178,7 @@ describe OrdersController do
     it "should store the login and password to the session" do
       forward_to_valid_store_account
 
-      session[:login].should == @login
-      session[:password].should == @password
+      session[:store_credentials].should == MesCourses::Utils::Credentials.new(@login, @password)
     end
 
     def forward_to_valid_store_account

@@ -7,15 +7,14 @@ describe "orders/login" do
 
   before(:each) do
     assign :order, @order = FactoryGirl.build(:order)
-    assign :login, @login = "a login"
-    assign :password, @password = "a password"
+    assign :store_credentials, @credentials = MesCourses::Utils::Credentials.new("a login","a password")
   end
 
   it "renders the login form to the online store" do
     render
 
     rendered.should contain("Connectez-vous sur #{@order.store_name} pour payer")
-    rendered.should include(@order.store_login_form_html(@login,@password))
+    rendered.should include(@order.store_login_form_html(@credentials))
   end
 
   it "renders forward report warnings" do

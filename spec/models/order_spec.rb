@@ -44,8 +44,8 @@ describe Order do
   end
 
   it "forwards login form html to the store" do
-    login, password = "a login", "a password"
-    @order.store_login_form_html(login, password).should == @store.login_form_html(login,password)
+    credentials = MesCourses::Utils::Credentials.new("a login", "a password")
+    @order.store_login_form_html(credentials).should == @store.login_form_html(credentials)
   end
 
   context "passed ratio" do
@@ -89,10 +89,8 @@ describe Order do
 
   context "when passing" do
 
-    DummyApi = MesCourses::Stores::Carts::DummyApi
-
     before :each do
-      DummyApi.on_result_from(:login) {|api| @api = api}
+      MesCourses::Stores::Carts::DummyApi.on_result_from(:login) {|api| @api = api}
     end
 
     it "should forward the cart instance to the store" do
@@ -179,7 +177,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(DummyApi.valid_login, DummyApi.valid_password)
+      @order.pass(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password)
     end
   end
 end

@@ -41,25 +41,23 @@ describe Store do
   end
 
   context "the cart api" do
-    DummyApi = MesCourses::Stores::Carts::DummyApi
-
     before :each do
       @store = FactoryGirl.build(:store)
     end
 
     it "should know the logout url of the cart api" do
-      @store.logout_url.should == DummyApi.logout_url
+      @store.logout_url.should == MesCourses::Stores::Carts::DummyApi.logout_url
     end
 
     it "should know the login form of the cart api" do
-      login,password = "a login", "a password"
-      @store.login_form_html(login, password).should == DummyApi.login_form_html(login, password)
+      credentials = MesCourses::Utils::Credentials.new("a login", "a password")
+      @store.login_form_html(credentials).should == MesCourses::Stores::Carts::DummyApi.login_form_html(credentials.login, credentials.password)
     end
 
     it "should yield the session to the cart api" do
-      DummyApi.on_result_from(:login) {|api| @dummy_api = api}
+      MesCourses::Stores::Carts::DummyApi.on_result_from(:login) {|api| @dummy_api = api}
 
-      @store.with_session(DummyApi.valid_login, DummyApi.valid_password) do |session|
+      @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
         session.should_not be_nil
         @dummy_api.log.should include(:login)
       end

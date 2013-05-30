@@ -17,8 +17,10 @@ class OrdersController < ApplicationController
   def create
     cart = Cart.find_by_id(params[:cart_id].to_i)
     @store = Store.find_by_id(params[:store_id].to_i)
-    session[:login] = login = params[:store][:login]
-    session[:password] = password = params[:store][:password]
+
+    login = params[:store][:login]
+    password = params[:store][:password]
+    session[:store_credentials] = MesCourses::Utils::Credentials.new(login,password)
 
     order = Order.create!(:store => @store, :cart => cart)
     order.delay.pass(login,password)
@@ -51,8 +53,7 @@ class OrdersController < ApplicationController
   def login
     return if unsuccessful_order_redirected_to_show
 
-    @login = session[:login]
-    @password = session[:password]
+    @store_credentials = session[:store_credentials]
   end
 
   private

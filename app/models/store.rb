@@ -52,8 +52,8 @@ class Store < ActiveRecord::Base
     cart_api.logout_url
   end
 
-  def login_form_html(login, password)
-    cart_api.login_form_html(login, password)
+  def login_form_html(credentials)
+    cart_api.login_form_html(credentials.login, credentials.password)
   end
 
   # Opens a remote cart session to the remote store
