@@ -24,7 +24,7 @@ module MesCourses
         end
 
         it "should know the client login form of the api" do
-          @store_cart.login_form_html.should == DummyApi.login_form_html
+          @store_cart.login_form_html(DummyApi.valid_login, DummyApi.valid_password).should == DummyApi.login_form_html(DummyApi.valid_login, DummyApi.valid_password)
         end
       end
     end

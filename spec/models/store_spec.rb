@@ -52,7 +52,8 @@ describe Store do
     end
 
     it "should know the login form of the cart api" do
-      @store.login_form_html.should == DummyApi.login_form_html
+      login,password = "a login", "a password"
+      @store.login_form_html(login, password).should == DummyApi.login_form_html(login, password)
     end
 
     it "should yield the session to the cart api" do

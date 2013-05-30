@@ -125,6 +125,16 @@ describe OrdersController do
       assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
     end
 
+    it "login should assign login and password" do
+      session[:login] = login = "a login"
+      session[:password] = password = "a password"
+
+      get_with_status('login', Order::SUCCEEDED)
+
+      assigns[:login].should == login
+      assigns[:password].should == password
+    end
+
     def get_with_status(action, order_status)
       @order.stub(:status).and_return(order_status)
 
@@ -167,8 +177,15 @@ describe OrdersController do
       response.should redirect_to(order_path(@order))
     end
 
+    it "should store the login and password to the session" do
+      forward_to_valid_store_account
+
+      session[:login].should == @login
+      session[:password].should == @password
+    end
+
     def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => MesCourses::Stores::Carts::Api.valid_login, :password => MesCourses::Stores::Carts::Api.valid_password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @login = MesCourses::Stores::Carts::Api.valid_login, :password => @password = MesCourses::Stores::Carts::Api.valid_password}
     end
 
   end

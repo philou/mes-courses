@@ -24,8 +24,8 @@ module MesCourses
         end
 
         # html form for a client browser to login
-        def login_form_html
-          @api_factory.login_form_html
+        def login_form_html(login, password)
+          @api_factory.login_form_html(login, password)
         end
 
         private

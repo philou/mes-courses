@@ -10,5 +10,5 @@
 <% end %>
 
 <p>Connectez-vous sur <%= @order.store_name %> pour payer</p>
-<%= @order.store_login_form_html %>
+<%= @order.store_login_form_html(@login,@password) %>
 

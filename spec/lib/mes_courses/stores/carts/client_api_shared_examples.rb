@@ -37,15 +37,13 @@ module MesCourses
 HTTP/1.1 200 OK
 Content-Type: text/html; charset=ISO-8859-1
 
-<html><body>#{@store_cart_api.login_form_html}</body></html>
+<html><body>#{@store_cart_api.login_form_html(@store_cart_api.valid_login, @store_cart_api.valid_password)}</body></html>
 eos
           FakeWeb.register_uri(:get, uri, response: response)
 
           login_page = @client.get(uri)
 
           login_form = login_page.forms.first
-          login_form['inputLogin'] = @store_cart_api.valid_login
-          login_form['inputPwd'] = @store_cart_api.valid_password
           login_form.submit
         end
 

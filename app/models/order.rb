@@ -84,8 +84,8 @@ class Order < ActiveRecord::Base
     self.store.logout_url
   end
 
-  def store_login_form_html
-    self.store.login_form_html
+  def store_login_form_html(login,password)
+    self.store.login_form_html(login,password)
   end
 
   private

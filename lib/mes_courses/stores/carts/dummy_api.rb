@@ -24,7 +24,7 @@ module MesCourses
           url+"/logout"
         end
 
-        def self.login_form_html
+        def self.login_form_html(login, password)
           ("<form action=\"#{url}/login\">" +
             '<input value="Allez-y !" type="submit"/>'+
             '</form>').html_safe

@@ -16,7 +16,7 @@ module MesCourses
         end
 
         it "should be able to generate a login html form" do
-          login_form = @store_cart_api.login_form_html
+          login_form = @store_cart_api.login_form_html(@store_cart_api.valid_login, @store_cart_api.valid_password)
           login_form.should_not be_empty
           login_form.should(match(/^<form.*<\/form>$/), "#{login_form} is not a valid html form")
           login_form.should be_html_safe

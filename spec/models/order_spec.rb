@@ -44,7 +44,8 @@ describe Order do
   end
 
   it "forwards login form html to the store" do
-    @order.store_login_form_html.should == @store.login_form_html
+    login, password = "a login", "a password"
+    @order.store_login_form_html(login, password).should == @store.login_form_html(login,password)
   end
 
   context "passed ratio" do

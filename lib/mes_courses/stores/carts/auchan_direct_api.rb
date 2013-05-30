@@ -28,18 +28,16 @@ module MesCourses
         end
 
         # html form for a client browser to login
-        def self.login_form_html
+        def self.login_form_html(login, password)
+          parameters = post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new),
+                                             LOGIN_PARAMETER => login,
+                                             PASSWORD_PARAMETER => password)
+
           buffers = []
-
           buffers << "<form action=\"#{login_url}\" method=\"post\" id=\"authenticateForm\" name=\"authenticateForm\">"
-
-          post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new)).each do |name, value|
+          parameters.each do |name, value|
             buffers << input_tag_html('hidden', name, value)
           end
-
-          buffers << input_tag_html('text', LOGIN_PARAMETER)
-          buffers << input_tag_html('password', PASSWORD_PARAMETER)
-
           buffers << "<input value=\"Allez-y !\" id=\"authenticateFormSubmit\" type=\"submit\"/>"
           buffers << "</form>"
 
