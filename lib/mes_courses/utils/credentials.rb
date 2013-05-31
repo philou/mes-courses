@@ -24,6 +24,10 @@ module MesCourses
           password == other.password
       end
       alias :== :eql?
+
+      def to_s
+        "(#{login},#{password})"
+      end
     end
   end
 end

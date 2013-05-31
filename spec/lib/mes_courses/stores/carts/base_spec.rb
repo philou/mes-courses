@@ -10,13 +10,15 @@ module MesCourses
       describe Base do
 
         before :each do
+          capture_result_from(DummyApi, :login, into: :dummy_api)
           @store_cart = Base.for_url(DummyConstants::STORE_URL)
-          DummyApi.on_result_from(:login) {|api| @dummy_api = api}
         end
 
         it "should create a session wrapper on a loged in cart api" do
           @store_cart.login(DummyApi.valid_login, DummyApi.valid_password).should be_instance_of(Session)
-          @dummy_api.should_not be_nil
+
+          @dummy_api.login.should == DummyApi.valid_login
+          @dummy_api.password.should == DummyApi.valid_password
         end
 
         it "should know the logout_url of the api" do

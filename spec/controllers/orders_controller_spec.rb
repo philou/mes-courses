@@ -9,16 +9,14 @@ describe OrdersController do
   ignore_user_authentication
 
   before(:each) do
-    @cart = stub_model(Cart)
-
-    @store = stub_model(Store, :url => "http://www.mega-store.com")
+    @cart = FactoryGirl.create(:cart)
+    @store = FactoryGirl.create(:store)
   end
 
   context "displaying an order" do
 
     before :each do
-      @order = stub_model(Order, :cart => @cart, :store => @store)
-      Order.stub(:find_by_id).with(@order.id).and_return(@order)
+      @order = FactoryGirl.create(:order, :cart => @cart, :store => @store)
     end
 
     context "redirections" do
@@ -47,9 +45,8 @@ describe OrdersController do
     context "when an order transfer failed" do
 
       before :each do
-        @error_notice = "Login failed"
-        @order.stub(:error_notice).and_return(@error_notice)
-        @order.stub(:status).and_return(Order::FAILED)
+        @order.update_attribute(:error_notice, "Login failed")
+        @order.update_attribute(:status, Order::FAILED)
       end
 
       it "should redirect to cart" do
@@ -61,7 +58,7 @@ describe OrdersController do
       it "should set a flash message" do
         get 'show', :id => @order.id
 
-        flash[:notice].should == @error_notice
+        flash[:notice].should == @order.error_notice
       end
     end
 
@@ -70,7 +67,7 @@ describe OrdersController do
         get_with_status(action, order_status)
 
         assigns(:path_bar).should == [path_bar_cart_lines_root,
-                                        path_bar_element_with_no_link("Transfert")]
+                                      path_bar_element_with_no_link("Transfert")]
       end
     end
 
@@ -91,7 +88,7 @@ describe OrdersController do
     end
     def self.it_should_assign_forward_completion_percents(action, order_status)
       it "#{action} with #{order_status} order should assign a forward_completion_percents" do
-        @order.stub(:passed_ratio).and_return(0.2543)
+        Order.proxy_chain(:find_by_id, :passed_ratio) {|s| s.and_return(0.2543) }
 
         get_with_status(action, order_status)
 
@@ -126,7 +123,7 @@ describe OrdersController do
     end
 
     it "login should assign store credentials" do
-      session[:store_credentials] = credentials = MesCourses::Utils::Credentials.new("a login", "a password")
+      session[:store_credentials] = credentials = FactoryGirl.build(:credentials)
 
       get_with_status('login', Order::SUCCEEDED)
 
@@ -134,7 +131,7 @@ describe OrdersController do
     end
 
     def get_with_status(action, order_status)
-      @order.stub(:status).and_return(order_status)
+      @order.update_attribute(:status, order_status)
 
       get action, :id => @order.id
     end
@@ -143,33 +140,37 @@ describe OrdersController do
   context "forwarding to a store" do
 
     before(:each) do
-      @missing_items_notices = []
-      Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
-      Store.stub(:find_by_id).with(@store.id).and_return(@store)
-
-      @order = stub_model(Order)
-      Order.stub(:create!).and_return(@order)
-      @order.stub(:pass) do |login, password|
-        @order.forwarded_cart_lines_count = @cart.lines.size
-        @order.stub(:warning_notices).and_return(@missing_items_notices)
-      end
+      @credentials = FactoryGirl.build(:valid_credentials)
     end
 
     it "should create an order with cart and store" do
-      Order.should_receive(:create!).with({ :cart => @cart, :store => @store })
+      capture_result_from(Order, :create!, into: :order)
 
       forward_to_valid_store_account
+
+      @order.should_not be_nil
+      @order.cart.should == @cart
+      @order.store.should == @store
     end
 
-    it "should asynchronously pass the order" do
-      delayed_job = stub("Delayed_job")
-      @order.should_receive(:delay).and_return(delayed_job)
-      delayed_job.should_receive(:pass).with(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password)
+    it "should pass the order" do
+      Order.on_result_from(:create!) {|order| order.skip_delay}
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+
+      forward_to_valid_store_account
+
+      expect(@dummy_api).to have_received_order(@cart, @credentials)
+    end
+
+    it "should pass the order asynchronously, later" do
+      MesCourses::Stores::Carts::DummyApi.should_not_receive(:login)
 
       forward_to_valid_store_account
     end
 
     it "should redirect to the created order" do
+      capture_result_from(Order, :create!, into: :order)
+
       forward_to_valid_store_account
 
       response.should redirect_to(order_path(@order))
@@ -178,11 +179,11 @@ describe OrdersController do
     it "should store the login and password to the session" do
       forward_to_valid_store_account
 
-      session[:store_credentials].should == MesCourses::Utils::Credentials.new(@login, @password)
+      session[:store_credentials].should == @credentials
     end
 
     def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @login = MesCourses::Stores::Carts::Api.valid_login, :password => @password = MesCourses::Stores::Carts::Api.valid_password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.login, :password => @credentials.password}
     end
 
   end

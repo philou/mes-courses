@@ -74,12 +74,17 @@ module MesCourses
           @content.values.inject(0.0) {|x,y| x+y}
         end
 
+        def content
+          @content.keys
+        end
+
         def add_unavailable_item(item_remote_id)
           @unavailable_items[item_remote_id] = true
         end
         def available?(item_remote_id)
           !@unavailable_items[item_remote_id]
         end
+
       end
     end
   end

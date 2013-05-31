@@ -37,10 +37,10 @@ class Order < ActiveRecord::Base
     self.forwarded_cart_lines_count= self.forwarded_cart_lines_count + 1
   end
 
-  def pass(login, password)
+  def pass(credentials)
     begin
       self.status = Order::PASSING
-      store.with_session(login, password) do |session|
+      store.with_session(credentials.login, credentials.password) do |session|
         cart.forward_to(session, self)
       end
       self.status = Order::SUCCEEDED

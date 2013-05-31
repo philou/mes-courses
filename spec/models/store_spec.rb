@@ -50,12 +50,12 @@ describe Store do
     end
 
     it "should know the login form of the cart api" do
-      credentials = MesCourses::Utils::Credentials.new("a login", "a password")
+      credentials = FactoryGirl.build(:credentials)
       @store.login_form_html(credentials).should == MesCourses::Stores::Carts::DummyApi.login_form_html(credentials.login, credentials.password)
     end
 
     it "should yield the session to the cart api" do
-      MesCourses::Stores::Carts::DummyApi.on_result_from(:login) {|api| @dummy_api = api}
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
 
       @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
         session.should_not be_nil

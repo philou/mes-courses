@@ -15,15 +15,10 @@ class OrdersController < ApplicationController
 
   # Builds the session cart on an online store
   def create
-    cart = Cart.find_by_id(params[:cart_id].to_i)
-    @store = Store.find_by_id(params[:store_id].to_i)
+    order = Order.create!(:store => find_store, :cart => find_cart)
 
-    login = params[:store][:login]
-    password = params[:store][:password]
-    session[:store_credentials] = MesCourses::Utils::Credentials.new(login,password)
-
-    order = Order.create!(:store => @store, :cart => cart)
-    order.delay.pass(login,password)
+    session[:store_credentials] = credentials = find_credentials
+    order.delay.pass(credentials)
 
     redirect_to order_path(order)
   end
@@ -67,6 +62,16 @@ class OrdersController < ApplicationController
 
   def assign_completion_percents
     @forward_completion_percents = forward_completion_percents
+  end
+
+  def find_cart
+    Cart.find_by_id(params[:cart_id].to_i)
+  end
+  def find_store
+    Store.find_by_id(params[:store_id].to_i)
+  end
+  def find_credentials
+    MesCourses::Utils::Credentials.new(params[:store][:login],params[:store][:password])
   end
 
   def unsuccessful_order_redirected_to_show

@@ -44,7 +44,7 @@ describe Order do
   end
 
   it "forwards login form html to the store" do
-    credentials = MesCourses::Utils::Credentials.new("a login", "a password")
+    credentials = FactoryGirl.build(:credentials)
     @order.store_login_form_html(credentials).should == @store.login_form_html(credentials)
   end
 
@@ -90,7 +90,7 @@ describe Order do
   context "when passing" do
 
     before :each do
-      MesCourses::Stores::Carts::DummyApi.on_result_from(:login) {|api| @api = api}
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :api)
     end
 
     it "should forward the cart instance to the store" do
@@ -177,7 +177,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password)
+      @order.pass(FactoryGirl.build(:valid_credentials))
     end
   end
 end

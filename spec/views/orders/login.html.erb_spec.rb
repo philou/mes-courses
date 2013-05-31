@@ -7,7 +7,7 @@ describe "orders/login" do
 
   before(:each) do
     assign :order, @order = FactoryGirl.build(:order)
-    assign :store_credentials, @credentials = MesCourses::Utils::Credentials.new("a login","a password")
+    assign :store_credentials, @credentials = FactoryGirl.build(:credentials)
   end
 
   it "renders the login form to the online store" do
