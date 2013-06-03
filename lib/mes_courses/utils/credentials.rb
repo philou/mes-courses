@@ -6,7 +6,7 @@ module MesCourses
     class Credentials
       def initialize(login,password)
         @login = login
-        @password = password
+        @password = password.encrypt(key: encryption_key)
       end
 
       def login
@@ -14,7 +14,7 @@ module MesCourses
       end
 
       def password
-        @password
+        @password.decrypt(key: encryption_key)
       end
 
       def eql?(other)
@@ -27,6 +27,12 @@ module MesCourses
 
       def to_s
         "(#{login},#{password})"
+      end
+
+      private
+
+      def encryption_key
+        ENV['ENCRYPTION_KEY']
       end
     end
   end

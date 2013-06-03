@@ -9,17 +9,22 @@ module MesCourses
 
       before :each do
         @login,@password = "my login", "my secret password"
+        @credentials = Credentials.new(@login,@password)
       end
 
       it "should have the provided login and password" do
-        credentials = Credentials.new(@login,@password)
-
-        credentials.login.should == @login
-        credentials.password.should == @password
+        expect(@credentials.login).to eq(@login)
+        expect(@credentials.password).to eq(@password)
       end
 
       it "implements equality" do
-        Credentials.new(@login,@password).should == Credentials.new(@login,@password)
+        expect(@credentials).to eq(Credentials.new(@login,@password))
+      end
+
+      it "should not store the password in clear when serialized" do
+        @credentials.instance_variables.each do |name|
+          expect(@credentials.instance_variable_get(name)).not_to include(@password)
+        end
       end
 
     end
