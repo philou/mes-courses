@@ -318,7 +318,7 @@ module MesCourses
     def local_env
       local_env_file = File.join(File.dirname(__FILE__), "../../config/local_env.yml")
       File.open(local_env_file).map do |line|
-        /^([^#:][^:]*):([^\n]*)$/.match(line)
+        /^\s+([^#:][^:]*):([^\n]*)$/.match(line)
       end.find_all do |m|
         !m.nil?
       end.map do |m|
