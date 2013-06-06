@@ -49,9 +49,13 @@ describe Store do
       @store.logout_url.should == MesCourses::Stores::Carts::DummyApi.logout_url
     end
 
-    it "should know the login form of the cart api" do
+    it "should know the login url of the cart api" do
+      @store.login_url.should == MesCourses::Stores::Carts::DummyApi.login_url
+    end
+
+    it "should know the login parameters of the cart api" do
       credentials = FactoryGirl.build(:credentials)
-      @store.login_form_html(credentials).should == MesCourses::Stores::Carts::DummyApi.login_form_html(credentials.login, credentials.password)
+      @store.login_parameters(credentials).should == MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.login, credentials.password)
     end
 
     it "should yield the session to the cart api" do

@@ -40,12 +40,16 @@ describe Order do
   end
 
   it "forwards logout url to the store" do
-    @order.store_logout_url.should == @store.logout_url
+    expect(@order.store_logout_url).to eq(@store.logout_url)
   end
 
-  it "forwards login form html to the store" do
+  it "forwards login url to the store" do
+    expect(@order.store_login_url).to eq(@store.login_url)
+  end
+
+  it "forwards login parameters to the store" do
     credentials = FactoryGirl.build(:credentials)
-    @order.store_login_form_html(credentials).should == @store.login_form_html(credentials)
+    @order.store_login_parameters(credentials).should == @store.login_parameters(credentials)
   end
 
   context "passed ratio" do

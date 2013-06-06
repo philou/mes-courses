@@ -17,6 +17,7 @@ describe OrdersController do
 
     before :each do
       @order = FactoryGirl.create(:order, :cart => @cart, :store => @store)
+      session[:store_credentials] = @credentials = FactoryGirl.build(:credentials)
     end
 
     context "redirections" do
@@ -122,12 +123,11 @@ describe OrdersController do
       assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
     end
 
-    it "login should assign store credentials" do
-      session[:store_credentials] = credentials = FactoryGirl.build(:credentials)
+    it "login should assign store login parameters" do
 
       get_with_status('login', Order::SUCCEEDED)
 
-      assigns[:store_credentials].should == credentials
+      expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.login, @credentials.password))
     end
 
     def get_with_status(action, order_status)

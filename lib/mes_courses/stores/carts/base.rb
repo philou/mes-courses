@@ -23,9 +23,14 @@ module MesCourses
           @api_factory.logout_url
         end
 
-        # html form for a client browser to login
-        def login_form_html(login, password)
-          @api_factory.login_form_html(login, password)
+        # url at which a client browser can login
+        def login_url
+          @api_factory.login_url
+        end
+
+        # parameters for a client side login
+        def login_parameters(login, password)
+          @api_factory.login_parameters(login, password)
         end
 
         private

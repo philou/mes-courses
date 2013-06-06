@@ -48,7 +48,8 @@ class OrdersController < ApplicationController
   def login
     return if unsuccessful_order_redirected_to_show
 
-    @store_credentials = session[:store_credentials]
+    store_credentials = session[:store_credentials]
+    @store_login_parameters = @order.store_login_parameters(store_credentials)
   end
 
   private

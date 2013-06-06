@@ -76,12 +76,16 @@ module KnowsCart
   end
 
   def the_client_should_be_automaticaly_logged_out_from(store_name)
-    page_should_contain_an_iframe("remote-store-iframe", "http://#{store_name}/logout")
+    cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
+
+    page_should_contain_an_iframe("remote-store-iframe", cart_api.logout_url)
   end
 
   def there_should_be_a_button_to_log_into(store_name)
-    page.should have_content("Votre panier a été transféré à '#{store_name}'")
-    page.body.should include(MesCourses::Stores::Carts::DummyApi.login_form_html(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password))
+    cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
+
+    expect(page).to have_content("Votre panier a été transféré à '#{store_name}'")
+    expect(page).to have_xpath("//form[@action='#{cart_api.login_url}']")
   end
 
 end

@@ -11,15 +11,16 @@ module MesCourses
 
         it "should know its logout url" do
           logout_url = @store_cart_api.logout_url
-          logout_url.should_not be_empty
-          logout_url.should(match(URI.regexp(['http'])), "#{logout_url} is not an http url !")
+
+          expect(logout_url).to(match(URI.regexp(['http'])), "#{logout_url} is not an http url !")
         end
 
-        it "should be able to generate a login html form" do
-          login_form = @store_cart_api.login_form_html(@store_cart_api.valid_login, @store_cart_api.valid_password)
-          login_form.should_not be_empty
-          login_form.should(match(/^<form.*<\/form>$/), "#{login_form} is not a valid html form")
-          login_form.should be_html_safe
+        it "should know its login url" do
+          expect(@store_cart_api.login_url).not_to be_empty
+        end
+
+        it "should know its login parameters" do
+          expect(@store_cart_api.login_parameters(@store_cart_api.valid_login, @store_cart_api.valid_password)).not_to be_nil
         end
 
         it "should raise when login in with an invalid account" do

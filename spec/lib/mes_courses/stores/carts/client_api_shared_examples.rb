@@ -32,14 +32,7 @@ module MesCourses
         end
 
         def login
-          uri = "http://www.cartapispec.com/#{SecureRandom.hex(5)}.html"
-          response = <<-eos
-HTTP/1.1 200 OK
-Content-Type: text/html; charset=ISO-8859-1
-
-<html><body>#{@store_cart_api.login_form_html(@store_cart_api.valid_login, @store_cart_api.valid_password)}</body></html>
-eos
-          FakeWeb.register_uri(:get, uri, response: response)
+          uri = fake_login_page
 
           login_page = @client.get(uri)
 
@@ -49,6 +42,27 @@ eos
 
         def logout
           @client.get(@store_cart_api.logout_url)
+        end
+
+        def fake_login_page
+          uri = "http://www.cartapispec.com/#{SecureRandom.hex(5)}.html"
+          FakeWeb.register_uri(:get, uri, response: login_response_page)
+          uri
+        end
+
+        def login_response_page
+          response = <<-eos
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=ISO-8859-1
+
+<html><bod><form action=\"#{@store_cart_api.login_url}\" method=\"post\">
+eos
+          @store_cart_api.login_parameters(@store_cart_api.valid_login, @store_cart_api.valid_password).each do |name, value|
+            response << "<input value=\"#{value}\" name=\"#{name}\" type=\"hidden\"/>"
+          end
+          response << '<input value="Go log !" type="submit"/></form></body></html>'
+
+          response
         end
 
       end

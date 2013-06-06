@@ -9,6 +9,10 @@
   </div>
 <% end %>
 
-<p>Connectez-vous sur <%= @order.store_name %> pour payer</p>
-<%= @order.store_login_form_html(@store_credentials) %>
+<form action="<%= @order.store_login_url %>" method="post">
+  <% @store_login_parameters.each do |name, value| %>
+    <input name="<%= name %>" value="<%= value %>" type="hidden"/>
+  <% end %>
+  <input id="go-to-payment" value="Connectez-vous sur <%= @order.store_name %> pour payer" type="submit" />
+</form>
 

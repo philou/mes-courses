@@ -30,8 +30,11 @@ module MesCourses
           self.class.url
         end
 
-        # html form for a client browser to login
-        # def self.login_form_html
+        # url at which a client browser can login
+        # def self.login_url
+
+        # parameters for a client side login
+        # def self.login_parameters(login, password)
 
         # url at which a client browser can logout
         # def self.logout_url

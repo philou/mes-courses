@@ -27,25 +27,17 @@ module MesCourses
           raise InvalidAccountError unless logged_in?
         end
 
-        # html form for a client browser to login
-        def self.login_form_html(login, password)
-          parameters = post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new),
-                                             LOGIN_PARAMETER => login,
-                                             PASSWORD_PARAMETER => password)
-
-          buffers = []
-          buffers << "<form action=\"#{login_url}\" method=\"post\" id=\"authenticateForm\" name=\"authenticateForm\">"
-          parameters.each do |name, value|
-            buffers << input_tag_html('hidden', name, value)
-          end
-          buffers << "<input value=\"Allez-y !\" id=\"authenticateFormSubmit\" type=\"submit\"/>"
-          buffers << "</form>"
-
-          buffers.join.html_safe
+        # url at which a client browser can login
+        def self.login_url
+          url + login_path
         end
-        def self.input_tag_html(type, name, value = '')
-           "<input value=\"#{value}\" name=\"#{name}\" type=\"#{type}\"/>"
+        # parameters for a client side login
+        def self.login_parameters(login, password)
+          post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new),
+                                LOGIN_PARAMETER => login,
+                                PASSWORD_PARAMETER => password)
         end
+
 
         # url at which a client browser can logout
         def self.logout_url
@@ -88,10 +80,6 @@ module MesCourses
 
         def self.login_path
           "/boutiques.blockzones.popuphandler.authenticatepopup.authenticateform"
-        end
-
-        def self.login_url
-          url + login_path
         end
 
         def self.login_form_data(agent)
