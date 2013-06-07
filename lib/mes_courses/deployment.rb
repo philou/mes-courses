@@ -192,9 +192,8 @@ module MesCourses
       end
     end
 
+    MINUTE = 60
     def ping(repo)
-      MINUTE = 60
-
       require_relative "../../config/boot"
       require "net/ping"
 
