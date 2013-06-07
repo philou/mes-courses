@@ -193,11 +193,13 @@ module MesCourses
     end
 
     def ping(repo)
+      MINUTE = 60
+
       require_relative "../../config/boot"
       require "net/ping"
 
       url = "http://#{heroku_app(repo)}.herokuapp.com"
-      pinger = Net::Ping::HTTP.new(url, nil, 120)
+      pinger = Net::Ping::HTTP.new(url, nil, 3*MINUTE)
       unless pinger.ping?
         raise RuntimeError.new("The site deployed at \"#{url}\" does not respond to http (warning: #{pinger.warning}, exception: #{pinger.exception})")
       end
