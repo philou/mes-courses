@@ -15,5 +15,5 @@
 
 <%= render partial: 'transfer', locals: {order: @order, forward_completion_percents: @forward_completion_percents } %>
 
-<iframe id="remote-store-iframe" src=<%= @order.store.logout_url %> onload="refreshNow()" />
+<iframe id="remote-store-iframe" src="<%= @order.store.logout_url %>" onload="refreshNow()" ></iframe>
 
