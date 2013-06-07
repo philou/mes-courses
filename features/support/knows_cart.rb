@@ -69,10 +69,13 @@ module KnowsCart
     page_should_auto_refresh
 
     page.should have_content("Votre panier est en cours de transfert vers '#{options[:to]}'")
-    match = /Votre panier est en cours de transfert [^\d]*(\d+)%/.match(page.body)
-    progress = match.captures[0].to_f
-    progress.should be >= options[:min_progress]
-    progress.should be <= options[:max_progress]
+
+    ratio_element = page.find_by_id('transfer-ratio')
+    expect(ratio_element).not_to be_nil
+
+    progress = ratio_element.text.to_f
+    expect(progress).to be >= options[:min_progress]
+    expect(progress).to be <= options[:max_progress]
   end
 
   def the_client_should_be_automaticaly_logged_out_from(store_name)

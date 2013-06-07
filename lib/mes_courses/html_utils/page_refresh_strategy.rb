@@ -29,7 +29,11 @@ module MesCourses
       end
 
       def to_html
-        "<meta http-equiv=\"refresh\" content=\"#{html_meta_content}\" />".html_safe
+        result = <<-eos
+<meta http-equiv="refresh" content="#{html_meta_content}" />
+<script language="javascript">function refreshNow() { window.location.href = "#{@url}"; }</script>
+eos
+        result.html_safe
       end
 
       private

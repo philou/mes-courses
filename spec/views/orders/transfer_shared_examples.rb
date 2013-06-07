@@ -7,7 +7,7 @@ shared_examples "a view with order transfer" do |store_parameters = {}|
 
   before(:each) do
     assign :order, @order = FactoryGirl.build(:order)
-    assign :forward_completion_percents, @forward_completion_percents = 47.23
+    assign :forward_completion_percents, @forward_completion_percents = 47
     render
   end
 

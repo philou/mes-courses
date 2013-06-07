@@ -8,37 +8,59 @@ module MesCourses
     describe PageRefreshStrategy do
 
       it "default to refresh every 3 seconds" do
-        PageRefreshStrategy.new.to_html.should == '<meta http-equiv="refresh" content="3" />'
+        expect(PageRefreshStrategy.new.to_html).to include('<meta http-equiv="refresh" content="3" />')
       end
 
       it "can be nil and emits no html" do
-        PageRefreshStrategy.none.to_html.should == ''
+        expect(PageRefreshStrategy.none.to_html).to eq('')
       end
 
-      it "can have a different refresh interval" do
-        PageRefreshStrategy.new(interval: 5).to_html.should == '<meta http-equiv="refresh" content="5" />'
+      context "with a different interval" do
+
+        before :each do
+          @interval = 5
+          @refresh_strategy = PageRefreshStrategy.new(interval: @interval)
+        end
+
+        it "refreshes at different interval" do
+          expect(@refresh_strategy.to_html).to include("<meta http-equiv=\"refresh\" content=\"#{@interval}\" />")
+        end
+
+        it "generates a refreshNow() js function" do
+          expect(@refresh_strategy.to_html).to include('<script language="javascript">function refreshNow() { window.location.href = ""; }</script>')
+        end
       end
 
-      it "can be specified a different refresh url" do
-        refresh_url = "http://www.where-am-i.com/now"
+      context "with a different url" do
 
-        PageRefreshStrategy.new(url: refresh_url).to_html.should == "<meta http-equiv=\"refresh\" content=\"3; url=#{refresh_url}\" />"
+        before :each do
+          @refresh_url = "http://www.where-am-i.com/now"
+          @refresh_strategy = PageRefreshStrategy.new(url: @refresh_url)
+        end
+
+        it "redirects to another page" do
+          expect(@refresh_strategy.to_html).to include("<meta http-equiv=\"refresh\" content=\"3; url=#{@refresh_url}\" />")
+        end
+
+        it "generates a refreshNow() js function" do
+          expect(@refresh_strategy.to_html).to include("<script language=\"javascript\">function refreshNow() { window.location.href = \"#{@refresh_url}\"; }</script>")
+        end
       end
 
       [:new, :none].each do |kind|
         it "#{kind} should be html safe" do
-          PageRefreshStrategy.send(kind).to_html.should be_html_safe
+          expect(PageRefreshStrategy.send(kind).to_html).to be_html_safe
         end
       end
 
       it "handles ==" do
-        PageRefreshStrategy.new.should == PageRefreshStrategy.new
-        PageRefreshStrategy.new.should_not == PageRefreshStrategy.new(url: "http://www.google.com")
-        PageRefreshStrategy.new.should_not == PageRefreshStrategy.new(url: "http://www.google.com")
-        PageRefreshStrategy.new.should_not == PageRefreshStrategy.none
+        expect(PageRefreshStrategy.new).to eq(PageRefreshStrategy.new)
+        expect(PageRefreshStrategy.new).not_to eq(PageRefreshStrategy.new(url: "http://www.google.com"))
+        expect(PageRefreshStrategy.new).not_to eq(PageRefreshStrategy.new(url: "http://www.google.com"))
+        expect(PageRefreshStrategy.new).not_to eq(PageRefreshStrategy.none)
 
-        PageRefreshStrategy.none.should == PageRefreshStrategy.none
-        PageRefreshStrategy.none.should_not == PageRefreshStrategy.new
+        expect(PageRefreshStrategy.none).to eq(PageRefreshStrategy.none)
+        expect(PageRefreshStrategy.none).not_to eq(PageRefreshStrategy.new)
       end
     end
   end

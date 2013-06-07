@@ -1,6 +1,19 @@
 <!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
 
+<script language="javascript">
+  $(document).ready(function(){
+    setInterval(function(){
+      var ratioElement = $('#transfer-ratio');
+      var ratio = parseInt(ratioElement.text());
+      if (ratio < 100) {
+        ratio = ratio + 1;
+      }
+      ratioElement.text(ratio.toString())
+    }, 1000);
+  });
+</script>
+
 <%= render partial: 'transfer', locals: {order: @order, forward_completion_percents: @forward_completion_percents } %>
 
-<iframe id="remote-store-iframe" src=<%= @order.store.logout_url %> >
+<iframe id="remote-store-iframe" src=<%= @order.store.logout_url %> onload="refreshNow()" />
 
