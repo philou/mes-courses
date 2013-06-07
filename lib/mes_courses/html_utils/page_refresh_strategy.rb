@@ -11,7 +11,7 @@ module MesCourses
         end
 
         def to_html
-          ''.html_safe
+          '<script language="javascript">function refreshNow() {}</script>'.html_safe
         end
       end
 

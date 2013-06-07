@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -36,8 +36,8 @@ describe ApplicationHelper do
     meta_http_equiv_refresh_tag.should == @refresh_strategy.to_html
   end
 
-  it "'s meta_http_equiv_refresh_tag defaults to blanc" do
-    meta_http_equiv_refresh_tag.should == ""
+  it "'s meta_http_equiv_refresh_tag defaults to no refresh strategy" do
+    meta_http_equiv_refresh_tag.should == MesCourses::HtmlUtils::PageRefreshStrategy.none.to_html
   end
 
 end

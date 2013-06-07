@@ -11,8 +11,8 @@ module MesCourses
         expect(PageRefreshStrategy.new.to_html).to include('<meta http-equiv="refresh" content="3" />')
       end
 
-      it "can be nil and emits no html" do
-        expect(PageRefreshStrategy.none.to_html).to eq('')
+      it "can be nil and emits an empty refreshNow() js function" do
+        expect(PageRefreshStrategy.none.to_html).to eq('<script language="javascript">function refreshNow() {}</script>')
       end
 
       context "with a different interval" do
