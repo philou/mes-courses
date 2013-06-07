@@ -124,10 +124,18 @@ describe OrdersController do
     end
 
     it "login should assign store login parameters" do
-
       get_with_status('login', Order::SUCCEEDED)
 
       expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.login, @credentials.password))
+    end
+
+    it "redirects to the cart if the login fails" do
+      MesCourses::Stores::Carts::DummyApi.stub(:login_parameters).and_raise(SocketError.new)
+
+      get_with_status('login', Order::SUCCEEDED)
+
+      expect(response).to redirect_to(:controller => 'cart_lines')
+      expect(flash[:alert]).to eq(Order.invalid_store_login_notice(@order.store_name))
     end
 
     def get_with_status(action, order_status)
@@ -173,7 +181,7 @@ describe OrdersController do
 
       forward_to_valid_store_account
 
-      response.should redirect_to(order_path(@order))
+      expect(response).to redirect_to(order_path(@order))
     end
 
     it "should store the login and password to the session" do

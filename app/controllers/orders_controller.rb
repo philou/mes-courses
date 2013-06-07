@@ -27,7 +27,7 @@ class OrdersController < ApplicationController
     case @order.status
     when Order::FAILED
       flash[:alert] = @order.error_notice
-      redirect_to :controller => 'cart_lines'
+      redirect_to controller: 'cart_lines'
       return
 
     when Order::SUCCEEDED
@@ -48,8 +48,13 @@ class OrdersController < ApplicationController
   def login
     return if unsuccessful_order_redirected_to_show
 
-    store_credentials = session[:store_credentials]
-    @store_login_parameters = @order.store_login_parameters(store_credentials)
+    begin
+      store_credentials = session[:store_credentials]
+      @store_login_parameters = @order.store_login_parameters(store_credentials)
+    rescue
+      flash[:alert] = Order.invalid_store_login_notice(@order.store_name)
+      redirect_to controller: 'cart_lines'
+    end
   end
 
   private
