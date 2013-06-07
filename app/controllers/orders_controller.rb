@@ -26,7 +26,7 @@ class OrdersController < ApplicationController
   def show
     case @order.status
     when Order::FAILED
-      flash[:notice] = @order.error_notice
+      flash[:alert] = @order.error_notice
       redirect_to :controller => 'cart_lines'
       return
 

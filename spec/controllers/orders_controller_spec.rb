@@ -59,7 +59,7 @@ describe OrdersController do
       it "should set a flash message" do
         get 'show', :id => @order.id
 
-        flash[:notice].should == @order.error_notice
+        flash[:alert].should == @order.error_notice
       end
     end
 
