@@ -63,6 +63,8 @@ module MesCourses
     end
 
     def refresh_db(repo)
+      raise ArgumentError.new("Cannot refresh the #{BETA} app database") if repo == BETA
+
       heroku "pg:reset DATABASE --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
       heroku "pgbackups:restore DATABASE `heroku pgbackups:url --app #{heroku_app(BETA)}` --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
     end
