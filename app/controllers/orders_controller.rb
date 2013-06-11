@@ -10,9 +10,6 @@ class OrdersController < ApplicationController
   before_filter :assign_order, except: :create
   before_filter :assign_completion_percents, only: [:show, :logout]
 
-  # not sure this is required anymore
-  protect_from_forgery :except => :create
-
   # Builds the session cart on an online store
   def create
     order = Order.create!(:store => find_store, :cart => find_cart)
