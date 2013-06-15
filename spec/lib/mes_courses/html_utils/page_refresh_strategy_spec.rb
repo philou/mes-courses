@@ -11,8 +11,8 @@ module MesCourses
         expect(PageRefreshStrategy.new.to_html).to include('<meta http-equiv="refresh" content="3" />')
       end
 
-      it "can be nil and emits an empty refreshNow() js function" do
-        expect(PageRefreshStrategy.none.to_html).to eq('<script language="javascript">function refreshNow() {}</script>')
+      it "can be nil and emits no html" do
+        expect(PageRefreshStrategy.none.to_html).to eq('')
       end
 
       context "with a different interval" do
@@ -25,10 +25,6 @@ module MesCourses
         it "refreshes at different interval" do
           expect(@refresh_strategy.to_html).to include("<meta http-equiv=\"refresh\" content=\"#{@interval}\" />")
         end
-
-        it "generates a refreshNow() js function" do
-          expect(@refresh_strategy.to_html).to include('<script language="javascript">function refreshNow() { window.location.href = ""; }</script>')
-        end
       end
 
       context "with a different url" do
@@ -40,10 +36,6 @@ module MesCourses
 
         it "redirects to another page" do
           expect(@refresh_strategy.to_html).to include("<meta http-equiv=\"refresh\" content=\"3; url=#{@refresh_url}\" />")
-        end
-
-        it "generates a refreshNow() js function" do
-          expect(@refresh_strategy.to_html).to include("<script language=\"javascript\">function refreshNow() { window.location.href = \"#{@refresh_url}\"; }</script>")
         end
       end
 

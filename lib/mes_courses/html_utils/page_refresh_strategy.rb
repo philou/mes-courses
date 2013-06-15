@@ -11,7 +11,7 @@ module MesCourses
         end
 
         def to_html
-          '<script language="javascript">function refreshNow() {}</script>'.html_safe
+          ''.html_safe
         end
       end
 
@@ -29,11 +29,7 @@ module MesCourses
       end
 
       def to_html
-        result = <<-eos
-<meta http-equiv="refresh" content="#{html_meta_content}" />
-<script language="javascript">function refreshNow() { window.location.href = "#{@url}"; }</script>
-eos
-        result.html_safe
+        "<meta http-equiv=\"refresh\" content=\"#{html_meta_content}\" />".html_safe
       end
 
       private

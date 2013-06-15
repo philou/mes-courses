@@ -11,6 +11,26 @@
       ratioElement.text(ratio.toString())
     }, 1000);
   });
+
+  function refreshNow() {
+    var refreshUrl = extractRefreshUrl();
+    if (refreshUrl !== null) {
+      window.location.assign(refreshUrl);
+    }
+  };
+
+  function extractRefreshUrl() {
+    var refreshContent = $('meta[http-equiv=refresh]').attr('content');
+    if (refreshContent === undefined) {
+      return null;
+    }
+    var urlMatch = /url=([^;]*)/.exec(refreshContent)
+    if (urlMatch === null) {
+      return '';
+    }
+    return window.location.protocol + '//' + window.location.host + urlMatch[1];
+  };
+
 </script>
 
 <%= render partial: 'transfer', locals: {order: @order, forward_completion_percents: @forward_completion_percents } %>
