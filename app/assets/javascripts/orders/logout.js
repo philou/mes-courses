@@ -11,3 +11,7 @@ $(document).ready(function(){
     ratioElement.text(ratio.toString())
   }, 1000);
 });
+
+function onRemoteStoreIFrameLoad() {
+    refreshNow();
+};
