@@ -39,7 +39,6 @@ gem "database_cleaner"
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
 gem "spork"
 gem 'timecop'
-gem 'fakeweb'
 
 # developpment only tools
 gem "autotest-rails", :group => [:development]
