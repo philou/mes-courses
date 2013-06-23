@@ -78,6 +78,7 @@
 * [DEVENV] install spork-guard ou quelque chose comme ça
 ** regarder guard
 ** regarder aussi Zeus, un remplacant de spork
+** regarder jasmine-guard
 * [DESIGN] use rspec-fire to match mocks and classes
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)

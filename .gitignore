@@ -20,7 +20,7 @@ memory
 
 # Ignore all logfiles and tempfiles.
 *.log
-/tmp
+tmp
 *.dump
 *.out
 /local_stores

@@ -1,14 +1,15 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+function incrementUpTo(query, max) {
+  var element = $(query);
+  var value = parseInt(element.text());
+  if (value < max) {
+    value = value + 1;
+  }
+  element.text(value.toString());
+}
 
 $(document).ready(function(){
   setInterval(function(){
-    var ratioElement = $('#transfer-ratio');
-    var ratio = parseInt(ratioElement.text());
-    if (ratio < 100) {
-      ratio = ratio + 1;
-    }
-    ratioElement.text(ratio.toString())
+    incrementUpTo('#transfer-ratio', 100);
   }, 1000);
 });
 
