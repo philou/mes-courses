@@ -40,6 +40,7 @@ gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
 gem "spork"
 gem 'timecop'
 gem 'jasmine', :group => [:test, :development, :cucumber, :ci]
+gem 'jasmine-jquery-rails', :group => [:test, :development, :cucumber, :ci]
 
 
 # developpment only tools
