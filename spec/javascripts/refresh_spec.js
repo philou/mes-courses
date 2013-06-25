@@ -1,43 +1,43 @@
+describe('refresh', function() {
+    var refresh = mesCourses.refresh;
 
-describe('Refresh', function() {
+    beforeEach(function() {
+        // first make sure the jasmine page is as expected
+        expect($('meta[http-equiv=refresh]')).not.toExist();
 
-  beforeEach(function() {
-    // first make sure the jasmine page is as expected
-    expect($('meta[http-equiv=refresh]')).not.toExist();
+        // never do a real redirect
+        spyOn(refresh, 'doRedirect');
+    });
 
-    // never do a real redirect
-    spyOn(Refresh, 'doRedirect');
-  });
+    afterEach(function() {
+        $('meta[http-equiv=refresh]').remove()
+    });
 
-  afterEach(function() {
-    $('meta[http-equiv=refresh]').remove()
-  });
+    it('does not extract any refresh url without meta refresh tag', function() {
+        expect(refresh.extractRefreshUrl(undefined)).toBe(null);
+    });
 
-  it('does not extract any refresh url without meta refresh tag', function() {
-    expect(Refresh.extractRefreshUrl(undefined)).toBe(null);
-  });
+    it('extracts a blank url from a simple meta refresh tag', function() {
+        expect(refresh.extractRefreshUrl("1000000000")).toBe('');
+    });
 
-  it('extracts a blank url from a simple meta refresh tag', function() {
-    expect(Refresh.extractRefreshUrl("1000000000")).toBe('');
-  });
+    it('extracts the actual url from a full meta refresh tag', function() {
+        expect(refresh.extractRefreshUrl("1000000000; url=/blog/posts/3")).toBe(window.location.protocol + '//' + window.location.host + '/blog/posts/3');
+    });
 
-  it('extracts the actual url from a full meta refresh tag', function() {
-    expect(Refresh.extractRefreshUrl("1000000000; url=/blog/posts/3")).toBe(window.location.protocol + '//' + window.location.host + '/blog/posts/3');
-  });
+    it('really refreshes the page to the specified url', function() {
+        var refreshContent = '1000000000; url=/page/4';
+        $('head').append('<meta http-equiv="refresh" content="' + refreshContent + '" />');
 
-  it('really refreshes the page to the specified url', function() {
-    var refreshContent = '1000000000; url=/page/4';
-    $('head').append('<meta http-equiv="refresh" content="' + refreshContent + '" />');
+        refresh.doNow();
 
-    Refresh.doNow();
+        expect(refresh.doRedirect).toHaveBeenCalledWith(refresh.extractRefreshUrl(refreshContent));
+    });
 
-    expect(Refresh.doRedirect).toHaveBeenCalledWith(Refresh.extractRefreshUrl(refreshContent));
-  });
+    it('does nothing if no meta refresh tage is there', function() {
+        refresh.doNow();
 
-  it('does nothing if no meta refresh tage is there', function() {
-    Refresh.doNow();
-
-    expect(Refresh.doRedirect).not.toHaveBeenCalled();
-  });
+        expect(refresh.doRedirect).not.toHaveBeenCalled();
+    });
 
 });

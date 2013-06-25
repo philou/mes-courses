@@ -1,18 +1,16 @@
-function incrementUpTo(query, max) {
-  var element = $(query);
-  var value = parseInt(element.text());
-  if (value < max) {
-    value = value + 1;
-  }
-  element.text(value.toString());
-}
+var mesCourses = mesCourses || {};
+mesCourses.orders = mesCourses.orders || {};
 
-$(document).ready(function(){
-  setInterval(function(){
-    incrementUpTo('#transfer-ratio', 100);
-  }, 1000);
-});
+mesCourses.orders.logout = {
+    startUpdatingTransferRatio: function() {
+        return setInterval(function() {
+            $('#transfer-ratio').incrementUpTo(100);
+        }, 1000);
+    },
 
-function onRemoteStoreIFrameLoad() {
-    Refresh.doNow();
+    onRemoteStoreIFrameLoad: function() {
+        mesCourses.refresh.doNow();
+    }
 };
+
+$(document).ready(mesCourses.orders.logout.startUpdatingTransferRatio);

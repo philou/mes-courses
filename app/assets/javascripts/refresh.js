@@ -1,12 +1,11 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+var mesCourses = mesCourses || {};
 
-var Refresh = {
+mesCourses.refresh = {
 
     doNow: function() {
-        var refreshUrl = Refresh.extractRefreshUrl($('meta[http-equiv=refresh]').attr('content'));
+        var refreshUrl = mesCourses.refresh.extractRefreshUrl($('meta[http-equiv=refresh]').attr('content'));
         if (refreshUrl !== null) {
-            Refresh.doRedirect(refreshUrl);
+            mesCourses.refresh.doRedirect(refreshUrl);
         }
     },
 
