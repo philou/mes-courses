@@ -8,7 +8,7 @@ module KnowsHtml
   end
 
   def page_should_auto_refresh
-    page.should have_xpath("//meta[@http-equiv='refresh']")
+    expect(meta_refresh_tags).not_to(be_empty, "could not find a meta refresh tag")
   end
 
   def current_route_should_be(named_route, *regexps)
@@ -33,13 +33,17 @@ module KnowsHtml
   private
 
   def refresh_url
-    refresh_tag = page.all(:xpath, "//meta[@http-equiv='refresh']").first
+    refresh_tag = meta_refresh_tags.first
     return current_path if refresh_tag.nil?
 
     match = /url=([^;]*)/.match(refresh_tag['content'])
     return current_path if match.nil?
 
     match.captures[0]
+  end
+
+  def meta_refresh_tags
+    Nokogiri::HTML(page.source).xpath("//meta[@http-equiv='refresh']")
   end
 
 end
