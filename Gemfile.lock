@@ -1,18 +1,4 @@
 GIT
-  remote: git://github.com/KatanaCode/blogit.git
-  revision: 4a68b1626eb9baddc6b644294239b046a60fffac
-  specs:
-    blogit (0.8.0)
-      RedCloth (>= 4.2.9)
-      acts-as-taggable-on (>= 2.2.1)
-      albino (>= 1.3.3)
-      jquery-rails
-      kaminari (>= 0.13.0)
-      nokogiri (>= 1.5.0)
-      pingr (>= 0.0.3)
-      redcarpet (>= 2.0.1)
-
-GIT
   remote: git://github.com/djberg96/net-ping.git
   revision: 4cc9eb4204f2d9cfda6f3f8330be700b5d20e54b
   specs:
@@ -59,7 +45,7 @@ GEM
       multi_json (~> 1.0)
     acts-as-taggable-on (2.4.1)
       rails (>= 3, < 5)
-    acts_as_tree (1.3.0)
+    acts_as_tree (1.4.0)
       activerecord (>= 3.0.0)
     albino (1.3.3)
       posix-spawn (>= 0.3.6)
@@ -70,6 +56,15 @@ GEM
       ZenTest (~> 4.5)
     autotest-standalone (4.5.11)
     bcrypt-ruby (3.0.1)
+    blogit (0.8.0)
+      RedCloth (>= 4.2.9)
+      acts-as-taggable-on (>= 2.2.1)
+      albino (>= 1.3.3)
+      jquery-rails
+      kaminari (>= 0.13.0)
+      nokogiri (>= 1.5.0)
+      pingr (>= 0.0.3)
+      redcarpet (>= 2.0.1)
     builder (3.0.4)
     capybara (2.1.0)
       mime-types (>= 1.16)
@@ -280,7 +275,7 @@ DEPENDENCIES
   acts_as_tree
   autotest-notification
   autotest-rails
-  blogit!
+  blogit
   coffee-rails
   cucumber-rails
   database_cleaner
