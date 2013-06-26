@@ -16,18 +16,6 @@ module WEBrick::HTTPUtils
   end
 end
 
-class Mechanize
-  module Searcher
-    def search_links(selector)
-      search(selector).map {|node| Page::Link.new(node, @mech, self)}
-    end
-    def search_images(selector)
-      search(selector).map {|node| Page::Image.new(node, self)}
-    end
-  end
-  Page.send(:include, Searcher)
-end
-
 module MesCourses
   module Stores
     module Items
@@ -55,7 +43,7 @@ module MesCourses
         end
 
         def get_image(selector)
-          first_or_throw(@mechanize_page.search_images(selector), "images", selector)
+          first_or_throw(@mechanize_page.images_with(search: selector), "images", selector)
         end
 
         private
@@ -69,7 +57,7 @@ module MesCourses
         end
 
         def search_all_links(selector)
-          @mechanize_page.search_links(selector).map { |link| Link.new(link) }
+          @mechanize_page.links_with(search: selector).map { |link| Link.new(link) }
         end
 
         def first_or_throw(elements, name, selector)
