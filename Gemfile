@@ -50,6 +50,7 @@ group :test, :development, :cucumber, :ci do
   gem 'guard-spork'
   gem 'guard-cucumber'
   gem 'guard-rails'
+  gem 'guard-jasmine'
 
   # gem 'debugger'
 end
