@@ -1,4 +1,0 @@
-#!/bin/sh
-
-bundle exec an-install
-bundle exec spork & RAILS_ENV=cucumber bundle exec spork cucumber

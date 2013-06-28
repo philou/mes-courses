@@ -1,6 +1,0 @@
-Autotest.add_hook(:initialize) {|at|
-  `find spec -name "*_spec.rb" | xargs grep -l "describe.*slow: *true"`.split("\n").each do |slow_spec_file|
-    at.add_exception slow_spec_file
-  end
-  nil
-}
