@@ -1,7 +1,7 @@
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 desc "Runs all specs, and scenarios"
-task :behaviours => [:spec, :behaviours_env, "assets:precompile", :cucumber, :csslint, "db:fixtures:load", "cucumber:dry_run"]
+task :behaviours => ['spec', 'guard:jasmine', 'behaviours_env', 'assets:precompile', 'cucumber', 'csslint', 'db:fixtures:load', 'cucumber:dry_run']
 
 desc "Sets RAILS_ENV to BEHAVIOURS_ENV"
 task :behaviours_env do
