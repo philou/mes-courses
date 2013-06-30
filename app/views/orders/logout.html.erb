@@ -4,4 +4,8 @@
 
 <iframe id="remote-store-iframe" src="<%= @order.store.logout_url %>" onload="window.mesCourses.orders.logout.onRemoteStoreIFrameLoad()"></iframe>
 
-<%= javascript_include_tag "orders/logout" %>
+<script type="text/javascript">
+  $(document).ready(window.mesCourses.orders.logout.startUpdatingTransferRatio)
+</script>
+
+
