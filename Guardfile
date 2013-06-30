@@ -27,7 +27,7 @@ guard 'spork', cucumber_env: { 'RAILS_ENV' => 'cucumber' }, rspec_env: { 'RAILS_
   # watch('test/test_helper.rb') { :test_unit }
 end
 
-guard :rspec, cli: "--drb --tag ~@slow", all_after_pass: true, all_on_start: true, keep_failed: true do
+guard :rspec, cli: "--drb --tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -55,7 +55,7 @@ guard 'cucumber', cli: '--drb --format progress --no-profile', all_on_start: fal
 end
 
 
-guard :jasmine, server: :jasmine_gem do
+guard :jasmine, all_on_start: false do
   watch(%r{spec/javascripts/spec\.(js\.coffee|js|coffee)$}) { 'spec/javascripts' }
   watch(%r{spec/javascripts/.+_spec\.(js\.coffee|js|coffee)$})
   watch(%r{spec/javascripts/fixtures/.+$})

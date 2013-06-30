@@ -43,7 +43,7 @@ gem 'timecop'
 # developpment only tools
 group :test, :development, :cucumber, :ci do
   gem 'jasmine'
-  gem 'jasmine-jquery-rails'
+  gem 'jasminerice'
 
   gem 'guard'
   gem 'guard-rspec'

@@ -145,6 +145,8 @@ GEM
       childprocess (>= 0.2.3)
       guard (>= 1.1)
       spork (>= 0.8.4)
+    haml (4.0.3)
+      tilt
     heroku-api (0.3.13)
       excon (~> 0.25.0)
     hike (1.2.3)
@@ -157,7 +159,9 @@ GEM
       rspec (>= 1.3.1)
       selenium-webdriver (>= 0.1.3)
     jasmine-core (1.3.1)
-    jasmine-jquery-rails (1.4.2)
+    jasminerice (0.0.10)
+      coffee-rails
+      haml
     journey (1.0.4)
     jquery-rails (3.0.1)
       railties (>= 3.0, < 5.0)
@@ -327,7 +331,7 @@ DEPENDENCIES
   guard-spork
   heroku-api
   jasmine
-  jasmine-jquery-rails
+  jasminerice
   jquery-rails
   lazing!
   mechanize
