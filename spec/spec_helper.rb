@@ -48,6 +48,13 @@ Spork.prefork do
   include OfflineTestHelper
 
   RSpec.configure do |config|
+
+    # RSpec automatically cleans stuff out of backtraces;
+    # sometimes this is annoying when trying to debug something e.g. a gem
+    if ENV['FULLBACKTRACES'] == 'true'
+      config.backtrace_clean_patterns = []
+    end
+
     # ## Mock Framework
     #
     # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

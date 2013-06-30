@@ -22,7 +22,7 @@ Given /^the following items are disabled$/ do |item_table|
   end
 end
 
-Then /^there should (\d+) items with name "([^"]*)""? for sale$/ do |count, name|
+Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|
   Item.count(:conditions => {:name => name}).should == count.to_i
 end
 
@@ -70,9 +70,6 @@ Then /^no item should have been modified$/ do
   Item.maximum(:updated_at).should == Item.past_metrics[:updated_at]
 end
 
-Then /^some items should have been deleted$/ do
-  Item.count.should < Item.past_metrics[:count]
-end
 Then /^no item should have been deleted$/ do
   Item.count.should == Item.past_metrics[:count]
 end
@@ -100,29 +97,22 @@ Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
   page.find('#items-panel').should_not have_content(item_name)
 end
 
+Then(/^there should be the following items$/) do |table|
+  there_should_be_the_following_items(table)
+end
+
+Then /^the following items should be in categories$/ do |table|
+  the_following_items_should_be_in_categories(table)
+end
+
 Then /^the following items should be disabled$/ do |table|
-  table.each_item do |category, sub_category, item|
-    visit item_categories_path
-    click_link(category)
-    click_link(sub_category)
-    page.should contain_a(disabled_item_with_name(item))
-  end
+  the_following_items_should_be_disabled(table)
 end
 
 Then /^the following items should have been deleted$/ do |table|
-  table.each_item do |category, sub_category, item|
-    visit item_categories_path
-    click_link(category)
-    click_link(sub_category)
-    page.should_not contain_a(item_with_name(item))
-  end
+  the_following_items_should_have_been_deleted(table)
 end
 
 Then /^the following items should be enabled$/ do |table|
-  table.each_item do |category, sub_category, item|
-    visit item_categories_path
-    click_link(category)
-    click_link(sub_category)
-    page.should contain_an(enabled_item_with_name(item))
-  end
+  the_following_items_should_be_enabled(table)
 end

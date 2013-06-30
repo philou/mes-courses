@@ -18,7 +18,10 @@ module MesCourses
           def it_should_behave_like_any_store_items_api
 
             before :all do
-              @range = 0..2
+              @range = 0..1
+
+              generate_store
+              explore_store
             end
 
             it "should have many item categories" do
@@ -31,7 +34,7 @@ module MesCourses
             end
 
             it "should have item categories with different names" do
-              categories_attributes = @store.categories.map { |cat| cat.attributes }
+              categories_attributes = sample_categories.map { |cat| cat.attributes }
               categories_attributes.should mostly have_unique(:name)
             end
 
@@ -70,33 +73,40 @@ module MesCourses
             end
 
             it "should have items with unique uris" do
-              valid_sample_items.should all_do have_unique(:uri)
+              valid_sample_items.should mostly have_unique(:uri)
             end
           end
         end
 
+        def generate_store
+          # by default, the store already exists
+        end
 
-        def collect_all(categories, message)
+        def explore_store
+          @sample_categories = dig([@store], :categories)
+          @all_sample_categories, @sample_items = dig_deep(@sample_categories)
+          @valid_sample_items = valid_items(@sample_items)
+          @sample_items_attributes = (valid_sample_items.map &:attributes).uniq
+          @parseable_categories_attributes = all_sample_categories.map do |category|
+            category.attributes rescue {}
+          end
+        end
+
+        attr_accessor :sample_categories, :all_sample_categories, :sample_items, :valid_sample_items, :sample_items_attributes, :parseable_categories_attributes
+
+        def dig(categories, message)
           categories.map { |cat| cat.send(message).to_a[@range] }.flatten
         end
 
-        def sample_categories
-          @store.categories.to_a[@range]
-        end
-        def sample_sub_categories
-          collect_all(sample_categories, :categories)
-        end
-        def all_sample_categories
-          sample_categories + sample_sub_categories
-        end
-        def sample_items
-          collect_all(all_sample_categories, :items)
-        end
-        def valid_sample_items
-          valid_items(sample_items)
-        end
-        def sample_items_attributes
-          (valid_sample_items.map &:attributes).uniq
+        def dig_deep(categories)
+          all_categories = [categories]
+
+          while (items = dig(categories, :items)).empty?
+            categories = dig(categories, :categories)
+            all_categories << categories
+          end
+
+          [all_categories.flatten, items]
         end
 
         def valid_items(items)
@@ -110,12 +120,6 @@ module MesCourses
             end
           end
           result
-        end
-
-        def parseable_categories_attributes
-          all_sample_categories.map do |category|
-            category.attributes rescue {}
-          end
         end
 
       end

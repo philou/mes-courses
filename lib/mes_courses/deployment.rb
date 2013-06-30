@@ -15,6 +15,8 @@ module MesCourses
 
     HEROKU_STACK = "cedar"
     TRACE_KEY = "MES_COURSES_DEPLOYMENT_TRACE"
+    INTEG = "integ"
+    BETA = "beta"
 
     def shell(command, env = {})
       pid = Process.spawn(env, command)
@@ -40,8 +42,8 @@ module MesCourses
       shell "git pull #{repo} master"
     end
 
-    def push(repo)
-      shell "git push #{repo} master"
+    def push(repo, branch = 'master')
+      shell "git push #{repo} #{branch}:master"
     end
 
     def heroku_app(repo)
@@ -60,9 +62,16 @@ module MesCourses
       heroku "run rake db:migrate #{trace_option}", repo: repo
     end
 
-    def deploy(repo)
-      puts "Deploying to #{heroku_app(repo)}"
-      push repo
+    def refresh_db(repo)
+      raise ArgumentError.new("Cannot refresh the #{BETA} app database") if repo == BETA
+
+      heroku "pg:reset DATABASE --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
+      heroku "pgbackups:restore DATABASE `heroku pgbackups:url --app #{heroku_app(BETA)}` --app #{heroku_app(repo)} --confirm #{heroku_app(repo)}"
+    end
+
+    def deploy(repo, branch = 'master')
+      puts "Deploying local branch #{branch} to #{heroku_app(repo)}"
+      push repo, branch
       migrate repo
       ping repo
     end
@@ -153,7 +162,7 @@ module MesCourses
       puts "\nIntegration successful :-)"
     end
 
-    def create_heroku_app(repo, heroku_api_key, pgsql_plan, ssl)
+    def create_heroku_app(repo, pgsql_plan, ssl)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
       heroku "addons:add heroku-postgresql:#{pgsql_plan}", repo: repo
@@ -163,9 +172,12 @@ module MesCourses
       heroku "addons:add papertrail:choklad", repo: repo
       heroku "addons:add ssl:endpoint", repo: repo if ssl
 
-      heroku "config:set HEROKU_API_KEY=#{heroku_api_key}", repo: repo
       heroku "config:set APP_NAME=#{heroku_app(repo)}", repo: repo
       heroku "config:set RACK_ENV=production", repo: repo
+
+      local_env.each do |name, value|
+        heroku "config:set #{name}=#{value}", repo: repo
+      end
     end
 
     private
@@ -182,12 +194,13 @@ module MesCourses
       end
     end
 
+    MINUTE = 60
     def ping(repo)
       require_relative "../../config/boot"
       require "net/ping"
 
       url = "http://#{heroku_app(repo)}.herokuapp.com"
-      pinger = Net::Ping::HTTP.new(url, nil, 120)
+      pinger = Net::Ping::HTTP.new(url, nil, 5*MINUTE)
       unless pinger.ping?
         raise RuntimeError.new("The site deployed at \"#{url}\" does not respond to http (warning: #{pinger.warning}, exception: #{pinger.exception})")
       end
@@ -207,8 +220,8 @@ module MesCourses
 
     def start_deploying_test_and_integration_apps
       start_parallel_exec(test_and_integration_repos.map do |repo|
-        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo}"]
-                          end)
+        [repo, "#{private_ruby_command('do_deploy')} --repo #{repo} #{repo == INTEG ? '--refresh-db' : ''}"]
+      end)
     end
 
     def end_deploying_test_and_integration_apps(deployments)
@@ -305,5 +318,15 @@ module MesCourses
       File.join(File.dirname(__FILE__),"deployment",file_name)
     end
 
+    def local_env
+      local_env_file = File.join(File.dirname(__FILE__), "../../config/local_env.yml")
+      File.open(local_env_file).map do |line|
+        /^\s+([^#:][^:]*):([^\n]*)$/.match(line)
+      end.find_all do |m|
+        !m.nil?
+      end.map do |m|
+        m.captures.map &:strip
+      end
+    end
   end
 end

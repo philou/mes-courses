@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -9,45 +9,45 @@ describe OrdersController do
   ignore_user_authentication
 
   before(:each) do
-    @cart = stub_model(Cart)
-
-    @store = stub_model(Store, :url => "http://www.mega-store.com")
+    @cart = FactoryGirl.create(:cart)
+    @store = FactoryGirl.create(:store)
   end
 
   context "displaying an order" do
 
     before :each do
-      @order = stub_model(Order, :cart => @cart, :store => @store)
-      Order.stub(:find_by_id).with(@order.id).and_return(@order)
+      @order = FactoryGirl.create(:order, :cart => @cart, :store => @store)
+      session[:store_credentials] = @credentials = FactoryGirl.build(:credentials)
     end
 
-    it "should render template show_success when the order is passed" do
-      @order.stub(:status).and_return(Order::SUCCEEDED)
+    context "redirections" do
 
-      get 'show', :id => @order.id
+      ['logout', 'login'].each do |action|
+        it "#{action} should redirect to show when the order is not yet passed" do
+          get_with_status(action, :whatever_but_succeeded)
 
-      response.should render_template('orders/show_success')
+          response.should redirect_to(action: 'show')
+        end
+      end
+      it "should render show template when the order is not yet being passed" do
+        get_with_status('show', Order::NOT_PASSED)
+
+        response.should render_template('orders/show')
+      end
+
+      it "show should redirect passed orders to logout" do
+        get_with_status('show', Order::SUCCEEDED)
+
+        response.should redirect_to(action: 'logout')
+      end
+
     end
 
-    it "should assign a @path_bar with two items" do
-      get 'show', :id => @order.id
-
-      assigns(:path_bar).should == [path_bar_cart_lines_root,
-                                    path_bar_element_with_no_link("Transfert")]
-    end
-
-    it "should assign an order to the view" do
-      get 'show', :id => @order.id
-
-      assigns(:order).should == @order
-    end
-
-    context "using an invalid store account" do
+    context "when an order transfer failed" do
 
       before :each do
-        @error_notice = "Login failed"
-        @order.stub(:error_notice).and_return(@error_notice)
-        @order.stub(:status).and_return(Order::FAILED)
+        @order.update_attribute(:error_notice, "Login failed")
+        @order.update_attribute(:status, Order::FAILED)
       end
 
       it "should redirect to cart" do
@@ -59,84 +59,139 @@ describe OrdersController do
       it "should set a flash message" do
         get 'show', :id => @order.id
 
-        flash[:notice].should == @error_notice
+        flash[:alert].should == @order.error_notice
       end
     end
 
-    it "should render show_passing template when the order is not yet being passed" do
-      @order.stub(:status).and_return(Order::NOT_PASSED)
+    def self.it_should_assign_a_path_bar_with_2_items(action, order_status)
+      it "#{action} should assign a @path_bar with two items" do
+        get_with_status(action, order_status)
 
-      get 'show', :id => @order.id
-
-      response.should render_template('orders/show_passing')
+        assigns(:path_bar).should == [path_bar_cart_lines_root,
+                                      path_bar_element_with_no_link("Transfert")]
+      end
     end
 
-    context "when the order is being passed" do
+    def self.it_should_assign_an_order(action, order_status)
+      it "#{action} should assign an order" do
+        get_with_status(action, order_status)
 
-      before :each do
-        @order.stub(:status).and_return(Order::PASSING)
+        assigns(:order).should == @order
       end
+    end
 
-      it "should render show_passing template" do
-        get 'show', :id => @order.id
+    def self.it_should_render_corresponding_template(action, order_status)
+      it "#{action} with #{order_status} order should render #{action} template" do
+        get_with_status(action, order_status)
 
-        response.should render_template('orders/show_passing')
+        response.should render_template("orders/#{action}")
       end
+    end
+    def self.it_should_assign_forward_completion_percents(action, order_status)
+      it "#{action} with #{order_status} order should assign a forward_completion_percents" do
+        Order.proxy_chain(:find_by_id, :passed_ratio) {|s| s.and_return(0.2543) }
 
-      it "should assign a forward_completion_ratio" do
-        @order.stub(:forwarded_cart_lines_count).and_return(4)
-        @cart.stub(:lines).and_return(Array.new(7, stub_model(CartLine)))
+        get_with_status(action, order_status)
 
-        get 'show', :id => @order.id
-
-        assigns(:forward_completion_percents).should == 100 * 4 / 7
+        assigns(:forward_completion_percents).should == 25
       end
+    end
 
-      it "should ask to page to auto refresh" do
-        get 'show', :id => @order.id
+    SHOW = ['show', Order::PASSING]
+    LOGOUT = ['logout', Order::SUCCEEDED]
+    LOGIN = ['login', Order::SUCCEEDED]
 
-        assigns(:auto_refresh).should be_true
-      end
+    [SHOW, LOGOUT, LOGIN].each do |action_and_status|
+      it_should_assign_a_path_bar_with_2_items(*action_and_status)
+      it_should_assign_an_order(*action_and_status)
+      it_should_render_corresponding_template(*action_and_status)
+    end
+
+    [SHOW, LOGOUT].each do |action_and_status|
+      it_should_assign_forward_completion_percents(*action_and_status)
+    end
+
+    it "show with passing order asks the page to auto refresh" do
+      get_with_status('show', Order::PASSING)
+
+      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new
+    end
+
+    it "login should automaticaly redirect to logout" do
+      get_with_status('logout', Order::SUCCEEDED)
+
+      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
+    end
+
+    it "login should assign store login parameters" do
+      get_with_status('login', Order::SUCCEEDED)
+
+      expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.login, @credentials.password))
+    end
+
+    it "redirects to the cart if the login fails" do
+      MesCourses::Stores::Carts::DummyApi.stub(:login_parameters).and_raise(SocketError.new)
+
+      get_with_status('login', Order::SUCCEEDED)
+
+      expect(response).to redirect_to(:controller => 'cart_lines')
+      expect(flash[:alert]).to eq(Order.invalid_store_login_notice(@order.store_name))
+    end
+
+    def get_with_status(action, order_status)
+      @order.update_attribute(:status, order_status)
+
+      get action, :id => @order.id
     end
   end
 
   context "forwarding to a store" do
 
     before(:each) do
-      @missing_items_notices = []
-      Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
-      Store.stub(:find_by_id).with(@store.id).and_return(@store)
-
-      @order = stub_model(Order)
-      Order.stub(:create!).and_return(@order)
-      @order.stub(:pass) do |login, password|
-        @order.forwarded_cart_lines_count = @cart.lines.size
-        @order.stub(:warning_notices).and_return(@missing_items_notices)
-      end
+      @credentials = FactoryGirl.build(:valid_credentials)
     end
 
     it "should create an order with cart and store" do
-      Order.should_receive(:create!).with({ :cart => @cart, :store => @store })
+      capture_result_from(Order, :create!, into: :order)
 
       forward_to_valid_store_account
+
+      @order.should_not be_nil
+      @order.cart.should == @cart
+      @order.store.should == @store
     end
 
-    it "should asynchronously pass the order" do
-      delayed_job = stub("Delayed_job")
-      @order.should_receive(:delay).and_return(delayed_job)
-      delayed_job.should_receive(:pass).with(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password)
+    it "should pass the order" do
+      Order.on_result_from(:create!) {|order| order.skip_delay}
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+
+      forward_to_valid_store_account
+
+      expect(@dummy_api).to have_received_order(@cart, @credentials)
+    end
+
+    it "should pass the order asynchronously, later" do
+      MesCourses::Stores::Carts::DummyApi.should_not_receive(:login)
 
       forward_to_valid_store_account
     end
 
     it "should redirect to the created order" do
+      capture_result_from(Order, :create!, into: :order)
+
       forward_to_valid_store_account
 
-      response.should redirect_to(order_path(@order))
+      expect(response).to redirect_to(order_path(@order))
+    end
+
+    it "should store the login and password to the session" do
+      forward_to_valid_store_account
+
+      session[:store_credentials].should == @credentials
     end
 
     def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => MesCourses::Stores::Carts::Api.valid_login, :password => MesCourses::Stores::Carts::Api.valid_password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.login, :password => @credentials.password}
     end
 
   end

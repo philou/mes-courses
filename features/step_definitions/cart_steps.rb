@@ -1,42 +1,78 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
-def given_in_cart(quantity, item_name)
-  # maybe would be better find out how not to use side effects of functions
-  item = Item.find_by_name(item_name)
-  throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
-
-  # this won't work if I have many items with the same item category
-  quantity.times do
-    visit item_category_path(item.item_categories.first)
-    click_button("Ajouter au panier")
-  end
+Given(/^there (are|is) "([^"]*)" in the cart"?$/) do |_, item_name|
+  put_in_the_cart(1, item_name)
 end
 
-Given /^there (are|is) "([^"]*)" in the cart"?$/ do |_, item_name|
-  given_in_cart(1, item_name)
+Given(/^there are (\d+) "([^"]*)" in the cart"?$/) do |quantity, item_name|
+  put_in_the_cart(quantity.to_i, item_name)
 end
 
-Given /^there are (\d+) "([^"]*)" in the cart"?$/ do |quantity, item_name|
-  given_in_cart(quantity.to_i, item_name)
+Given(/^I have items in my cart$/) do
+  item = categorized_item("Marché", "Du jour")
+  put_in_the_cart(1, item.name)
 end
 
-Given /^I entered valid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_login)
-  fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.valid_password)
+When(/^I transfer my cart to the store$/) do
+  enter_valid_store_account_identifiers
+  start_transfering_the_cart
+  run_the_transfer_to_the_end
+  refresh_page
+  current_route_should_be(:order_logout_path, /\d+/)
+  refresh_page
+  current_route_should_be(:order_login_path, /\d+/)
 end
 
-Given /^I entered invalid store account identifiers$/ do
-  fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_login)
-  fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.invalid_password)
+When(/^I try to transfer my cart to the store with wrong identifiers$/) do
+  enter_invalid_store_account_identifiers
+  start_transfering_the_cart
+  run_the_transfer_to_the_end
+  refresh_page
+  current_route_should_be(:cart_lines_path)
 end
 
-When /^I wait for the transfer to end$/ do
-  Delayed::Worker.new().work_off()
-  visit current_path
+When(/^I start to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
+  enter_valid_store_account_identifiers
+  start_transfering_the_cart
 end
 
-Then /^there should be "([^"]*)" in my cart"?$/ do |item_name|
-  visit path_to("the cart page")
-  page.should have_content(item_name)
+When(/^no items have yet actually been transfered to #{CAPTURE_STORE_NAME}$/) do
+  wait_while_no_items_are_transfered
+  refresh_page
+  current_route_should_be(:order_path, /\d+/)
+end
+
+When(/^items are actually being transfered to #{CAPTURE_STORE_NAME}$/) do
+  start_the_transfer_thread
+  refresh_page
+  current_route_should_be(:order_path, /\d+/)
+end
+
+
+When(/^all items have actually been transfered to #{CAPTURE_STORE_NAME}$/) do
+  join_the_transfer_thread
+  refresh_page
+  current_route_should_be(:order_logout_path, /\d+/)
+end
+
+When(/^the transfer is completely finished$/) do
+  refresh_page
+  current_route_should_be(:order_login_path, /\d+/)
+end
+
+Then(/^there should be "([^"]*)" in my cart"?$/) do |item_name|
+  the_cart_should_contain(item_name)
+end
+
+Then(/^I should see that between (#{CAPTURE_PERCENTAGE}) and (#{CAPTURE_PERCENTAGE}) of the cart have been transfered to (#{CAPTURE_STORE_NAME})$/) do |min_progress, max_progress, store_name|
+  the_transfer_should_be_ongoing(to: store_name, min_progress: min_progress, max_progress: max_progress)
+end
+
+Then(/^the client should be automaticaly logged out from (#{CAPTURE_STORE_NAME})$/) do |store_name|
+  the_client_should_be_automaticaly_logged_out_from(store_name)
+end
+
+Then(/^there should be a button to log into (#{CAPTURE_STORE_NAME})$/) do |store_name|
+  there_should_be_a_button_to_log_into(store_name)
 end

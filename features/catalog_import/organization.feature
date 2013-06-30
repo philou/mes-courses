@@ -7,11 +7,17 @@ Feature: Catalog import organization
   Wants the import mechanism to organize items into types and
    sub categories.
 
-  @deprecated
   Scenario: Items import organizes the items by category
-    Given the "www.dummy-store.com" store
-    When  items from the store are imported
-    Then  all items should be organized by type and subtype
+    Given the unimported store "www.dummy-store.com" with items
+      | Category | Sub category   | Item     |
+      | Marché   | Légumes        | Tomates  |
+      | Surgelés | Plats préparés | Lasagnes |
+    When "www.dummy-store.com" is imported
+    Then all items should be organized by type and subtype
+    And the following items should be in categories
+      | Item     | Category | Sub category   |
+      | Tomates  | Marché   | Légumes        |
+      | Lasagnes | Surgelés | Plats préparés |
 
   Scenario: Items import deletes empty categories
 

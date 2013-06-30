@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -78,7 +78,7 @@ module MesCourses
             @walker_stack.push(summary)
             yield
 
-          rescue MesCourses::Stores::Items::BrowsingError, ActiveRecord::RecordInvalid => e
+          rescue MesCourses::Stores::Items::BrowsingError, ActiveRecord::RecordInvalid, Mechanize::ResponseCodeError => e
             # this should mean a page was not in an importable format
             # continue, this will eventually delete the faulty items
             log :warn, format_exception_message(summary, e)

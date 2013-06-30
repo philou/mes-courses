@@ -12,10 +12,14 @@ FactoryGirl.define do
 
   factory :item do
     name { FactoryGirl.generate(:item_name) }
-    price { |a| (a.name.length.to_f / 100.0 + 1.0).to_f }
     brand { |a| "#{a.name} Inc." }
     image { |a| "http://www.photofabric.com/#{a.name}" }
     remote_id { FactoryGirl.generate(:remote_id) }
+    price do |a|
+      hash = a.name.hash.abs
+      digits = Math.log(hash, 10).round
+      (hash/10.0**(digits-2)).round(2)
+    end
 
     factory :item_with_categories do
       after :create do |item|

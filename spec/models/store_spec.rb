@@ -40,14 +40,36 @@ describe Store do
     Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
   end
 
-  it "should know the logout url of the cart api" do
-    url = "http://www.megastore.com"
-    MesCourses::Stores::Carts::Base.stub(:for_url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
-    store_cart.stub(:logout_url).and_return(url+"/logout")
+  context "the cart api" do
+    before :each do
+      @store = FactoryGirl.build(:store)
+    end
 
-    store = Store.new(:url => url)
+    it "should know the logout url of the cart api" do
+      @store.logout_url.should == MesCourses::Stores::Carts::DummyApi.logout_url
+    end
 
-    store.logout_url.should == store_cart.logout_url
+    it "should know the login url of the cart api" do
+      @store.login_url.should == MesCourses::Stores::Carts::DummyApi.login_url
+    end
+
+    it "should know the login parameters of the cart api" do
+      credentials = FactoryGirl.build(:credentials)
+      @store.login_parameters(credentials).should == MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.login, credentials.password)
+    end
+
+    it "should yield the session to the cart api" do
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+
+      @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
+        session.should_not be_nil
+        @dummy_api.log.should include(:login)
+      end
+
+      @dummy_api.should_not be_nil
+      @dummy_api.log.should include(:logout)
+    end
+
   end
 
   context "importing all stores" do

@@ -20,7 +20,7 @@ memory
 
 # Ignore all logfiles and tempfiles.
 *.log
-/tmp
+tmp
 *.dump
 *.out
 /local_stores
@@ -28,3 +28,6 @@ memory
 
 # Ignore compiled assets
 /public/assets
+
+# Ignore sensitive files
+/config/local_env.yml

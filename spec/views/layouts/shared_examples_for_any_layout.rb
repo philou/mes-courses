@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -72,12 +72,13 @@ shared_examples_for "any layout" do
     rendered.should_not have_xpath("//meta[@http-equiv='refresh']")
   end
 
-  it "should auto refresh if @auto_refresh is assigned" do
-    assign :auto_refresh, true
+  it "should auto refresh if @refresh_strategy is assigned" do
+    assign :refresh_strategy, refresh_strategy = MesCourses::HtmlUtils::PageRefreshStrategy.new
 
     render
 
     rendered.should have_xpath("//meta[@http-equiv='refresh']")
+    rendered.should include(refresh_strategy.to_html)
   end
 
   it "should display the assigned session place" do

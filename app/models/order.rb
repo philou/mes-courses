@@ -37,10 +37,10 @@ class Order < ActiveRecord::Base
     self.forwarded_cart_lines_count= self.forwarded_cart_lines_count + 1
   end
 
-  def pass(login, password)
+  def pass(credentials)
     begin
       self.status = Order::PASSING
-      store.with_session(login, password) do |session|
+      store.with_session(credentials.login, credentials.password) do |session|
         cart.forward_to(session, self)
       end
       self.status = Order::SUCCEEDED
@@ -57,6 +57,38 @@ class Order < ActiveRecord::Base
       save!
 
     end
+  end
+
+  PASSED_RATIO_BEFORE = 0.15
+  PASSED_RATIO_AFTER = 0.1
+  PASSED_RATIO_DURING = 1.0 - PASSED_RATIO_BEFORE - PASSED_RATIO_AFTER
+
+  def passed_ratio
+    if created_at.nil?
+      0.0
+    elsif cart.lines.empty?
+      1.0
+    elsif forwarded_cart_lines_count == 0
+      PASSED_RATIO_BEFORE * [1.0, (Time.now - created_at) / 60.0].min
+    else
+      PASSED_RATIO_BEFORE +
+        PASSED_RATIO_DURING * forwarded_cart_lines_count.to_f / cart.lines.count
+    end
+  end
+
+  def store_name
+    self.store.name
+  end
+
+  def store_logout_url
+    self.store.logout_url
+  end
+  def store_login_url
+    self.store.login_url
+  end
+
+  def store_login_parameters(credentials)
+    self.store.login_parameters(credentials)
   end
 
   private

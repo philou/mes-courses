@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -21,6 +21,16 @@ module MesCourses
         # url for a client browser to log off the store
         def logout_url
           @api_factory.logout_url
+        end
+
+        # url at which a client browser can login
+        def login_url
+          @api_factory.login_url
+        end
+
+        # parameters for a client side login
+        def login_parameters(login, password)
+          @api_factory.login_parameters(login, password)
         end
 
         private

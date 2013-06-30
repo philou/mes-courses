@@ -1,0 +1,7 @@
+<!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
+
+<%= render partial: 'transfer', locals: {order: @order, forward_completion_percents: @forward_completion_percents } %>
+
+<iframe id="remote-store-iframe" src="<%= @order.store.logout_url %>" onload="mesCourses.orders.logout.onRemoteStoreIFrameLoad()"></iframe>
+
+<%= javascript_include_tag "orders/logout" %>

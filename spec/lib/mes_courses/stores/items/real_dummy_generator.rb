@@ -2,7 +2,7 @@
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "fileutils"
-require "mes_courses/stores/items/real_dummy_constants"
+require "mes_courses/stores/dummy_constants"
 
 class Array
 
@@ -41,6 +41,14 @@ class Hash
       result
     end
   end
+
+  def internalize_keys
+    result = {}
+    self.each do |key, value|
+      result[key.intern] = value
+    end
+    result
+  end
 end
 
 module MesCourses
@@ -67,6 +75,9 @@ module MesCourses
         def self.wipe_out
           FileUtils.rm_rf(root_dir)
         end
+        def self.wipe_out_store(store_name)
+          FileUtils.rm_rf(root_path(store_name))
+        end
 
         def uri
           "file://#{@path}"
@@ -74,6 +85,12 @@ module MesCourses
 
         attr_reader :name
 
+        def categories
+          _name, categories, _items, _attributes = read
+          categories.map do |category_name|
+            RealDummy.new("#{absolute_category_dir(category_name)}/index.html", category_name)
+          end
+        end
         def category(category_name)
           short_category_name = short_name(category_name)
           add([short_category_name], [], {})
@@ -85,6 +102,12 @@ module MesCourses
           FileUtils.rm_rf(absolute_category_dir(short_category_name))
         end
 
+        def items
+          _name, _categories, items, _attributes = read
+          items.map do |item_name|
+            RealDummy.new(absolute_item_file(item_name), item_name)
+          end
+        end
         def item(item_name)
           short_item_name = short_name(item_name)
           add([], [short_item_name], {})
@@ -96,7 +119,13 @@ module MesCourses
           FileUtils.rm_rf(absolute_item_file(short_item_name))
         end
 
-        def attributes(values)
+        def attributes(*args)
+          return add_attributes(args[0]) if args.size == 1
+
+          _name, _categories, _items, attributes = read
+          attributes.internalize_keys
+        end
+        def add_attributes(values)
           add([], [], values.stringify_keys)
         end
         def remove_attributes(*attribute_names)
@@ -110,7 +139,7 @@ module MesCourses
         private
 
         def self.root_dir
-          File.join(Rails.root, host_dir_name, RealDummyConstants::ROOT_DIR_NAME)
+          File.join(Rails.root, host_dir_name, DummyConstants::ROOT_DIR_NAME)
         end
         def self.root_path(store_name)
           "#{root_dir}/#{store_name}/index.html"

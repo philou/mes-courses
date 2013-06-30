@@ -25,4 +25,10 @@ module ApplicationHelper
   def google_analytics_enabled?
     ENV["GOOGLE_ANALYTICS_ENABLED"] == true.to_s
   end
+
+  def meta_http_equiv_refresh_tag
+    refresh_strategy = @refresh_strategy || MesCourses::HtmlUtils::PageRefreshStrategy.none
+    refresh_strategy.to_html
+  end
+
 end

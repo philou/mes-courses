@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 Given /^there is a dish "([^"]*)""?$/ do |dish_name|
   item_names = dish_name.split(/ aux? /)
@@ -14,11 +14,6 @@ Given /^there is a dish "([^"]*)""?$/ do |dish_name|
 
     Dish.create!(:name => dish_name, :items => items)
   end
-end
-
-Given /^a dish "([^"]*)" with "([^"]*)"$/ do |name, item_name|
-  item = Item.find_or_create_by_name(item_name)
-  Dish.create!(:name => name, :items => [item])
 end
 
 Given /^the dish "(.*?)" with items$/ do |dish_name, item_table|

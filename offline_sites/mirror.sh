@@ -10,5 +10,5 @@
 # --restrict-file-names=ascii convert file names so that ruby can read them
 
 
-wget --recursive --level=inf --no-clobber --convert-links --quota 100000k --exclude-directories=/assets,/static,/apropos,/boutique*,/rayon*,/img --wait=1 --user-agent=Mozilla --domains=auchandirect.fr,refonte.auchandirect.fr -e robots=off --adjust-extension --restrict-file-names=ascii 'www.refonte.auchandirect.fr'
+wget --recursive --level=inf --no-clobber --convert-links --quota 100000k --exclude-directories=/assets,/static,/apropos,/boutique*,/rayon*,/img --wait=1 --user-agent=Mozilla --domains=auchandirect.fr -e robots=off --adjust-extension --restrict-file-names=ascii 'www.auchandirect.fr'
 

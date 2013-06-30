@@ -11,6 +11,10 @@ module MesCourses
       # Store API for AuchanDirect store
       class AuchanDirectApi < Api
 
+        FORMDATA_PARAMETER = 't:formdata'
+        LOGIN_PARAMETER = 'inputLogin'
+        PASSWORD_PARAMETER = 'inputPwd'
+
         # main url of the store
         def self.url
           "http://www.auchandirect.fr"
@@ -20,17 +24,29 @@ module MesCourses
         def initialize(login, password)
           @agent = Mechanize.new
           do_login(login, password)
-          raise InvalidAccountError unless loged_in?
+          raise InvalidAccountError unless logged_in?
+        end
+
+        # url at which a client browser can login
+        def self.login_url
+          url + login_path
+        end
+        # parameters for a client side login
+        def self.login_parameters(login, password)
+          post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new),
+                                LOGIN_PARAMETER => login,
+                                PASSWORD_PARAMETER => password)
+        end
+
+
+        # url at which a client browser can logout
+        def self.logout_url
+          url + logout_path
         end
 
         # logs out from the store
         def logout
           get(self.class.logout_path)
-        end
-
-        # url at which a client browser can logout
-        def self.logout_url
-          url + logout_path
         end
 
         # total value of the remote cart
@@ -54,19 +70,29 @@ module MesCourses
         private
 
         def do_login(login,password)
-          @agent.get(AuchanDirectApi.url)
+          formdata = login_form_data(@agent)
 
-          login_form_json = post("/boutiques.paniervolant.customerinfos:showsigninpopup")
+          post(login_path,
+               FORMDATA_PARAMETER => formdata,
+               LOGIN_PARAMETER => login,
+               PASSWORD_PARAMETER => password)
+        end
+
+        def self.login_path
+          "/boutiques.blockzones.popuphandler.authenticatepopup.authenticateform"
+        end
+
+        def self.login_form_data(agent)
+          home_page = agent.get(AuchanDirectApi.url)
+
+          login_form_json = post(agent, "/boutiques.paniervolant.customerinfos:showsigninpopup", {}, {'Referer' => home_page.uri})
 
           html_body = JSON.parse(login_form_json.body)["zones"]["secondPopupZone"]
           doc = Nokogiri::HTML("<html><body>#{html_body}</body></html>")
-          formdata = doc.xpath("//input[@name='t:formdata']/@value").first.content
-
-          post("/boutiques.blockzones.popuphandler.authenticatepopup.authenticateform",
-               't:formdata' => formdata,'inputLogin' => login,'inputPwd' => password)
+          doc.xpath("//input[@name='#{FORMDATA_PARAMETER}']/@value").first.content
         end
 
-        def loged_in?
+        def logged_in?
           main_page = get("/Accueil")
           !main_page.body.include?("Identifiez-vous")
         end
@@ -75,11 +101,15 @@ module MesCourses
           @agent.get(url + path)
         end
 
-        def post(path, parameters = {})
-          @agent.post(url + path, self.class.post_parameters.merge(parameters), fast_header)
+        def post(path, parameters = {}, headers = {})
+          self.class.post(@agent, path, parameters, headers)
         end
 
-        def fast_header
+        def self.post(agent, path, parameters = {}, headers = {})
+          agent.post(url + path, post_parameters.merge(parameters), fast_header.merge(headers))
+        end
+
+        def self.fast_header
           {'X-Requested-With' => 'XMLHttpRequest'}
         end
 
@@ -110,8 +140,7 @@ module MesCourses
           super or delegate_to_class?(method_sym)
         end
         def delegate_to_class?(method_sym)
-          self.class.respond_to?(method_sym) and
-            ['path','url'].any? { |suffix| method_sym.to_s.end_with?("_#{suffix}") }
+          self.class.respond_to?(method_sym)
         end
       end
     end

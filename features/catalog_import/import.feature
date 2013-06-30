@@ -5,15 +5,15 @@ Feature: Catalog import
   Wants an automatic command to update the catalog from
    a remote online store
 
-  @deprecated
   Scenario: Importing items sold on a store
-    Given the "www.dummy-store.com" store
-    When  items from the store are imported
-    Then  all items from the store should have been imported
+    Given the unimported store "www.dummy-store.com"
+    When  "www.dummy-store.com" is imported
+    Then  all items from "www.dummy-store.com" should have been imported
 
-  @deprecated
   Scenario: Importing items with the same name
-    Given the "www.dummy-store.com" store
-    And   there are 2 items with the name "Petits pois" in the store
-    When  items from the store are imported
-    Then  there should 2 items with name "Petits pois" for sale
+    Given the unimported store "www.dummy-store.com" with items
+      | Category | Sub category | Item        |
+      | Marché   | Légumes      | Petits pois |
+      | Surgelés | Légumes      | Petits pois |
+    When  "www.dummy-store.com" is imported
+    Then  there should be 2 different items with name "Petits pois" for sale

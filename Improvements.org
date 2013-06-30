@@ -1,4 +1,71 @@
+* [DEVENV] speed up integration
+** DONE diminish the stores items api tests @range
+** DONE do less login-logout during cart testing
+*** refactor the availble and 2 items prices tests (they are already tested in the before :all clause
+** DONE start deploying to heroku in // with integration tests : 4" gain
+| process 1       | process 2          | process 3       |
+| deploy to integ | deploy to watchdog | migrate         |
+| restore prod db | migrate            | specs           |
+| migrate         | ping               | features        |
+| rollback        |                    | feature dry-run |
+| migrate         |                    | csslint         |
+| ping            |                    |                 |
+| trigger import  |                    |                 |
+| OK              | OK                 | OK              |
+*** DONE modify the parallel_exec to start_parallel_exec & end_parallel_exec
+**** TODO see if there is something like futures in ruby
+*** DONE start the deployments at the begining of the script
+** TODO write the time taken by each thread
+** TODO isolate auchan direct api into its gem : 4"30' to gain
+*** would the integ script be independent from this gem ? -> YES ! it would be faster
+*** special repo
+*** special deployment, must be compatible with heroku
+**** geminabox
+***** démarrer un serveur de gem local sur le poste de dev
+***** avoir une addresse ip fixe
+***** avoir un serveur en ligne en permanence
+**** gemfurry 9 to 14 $/month
+**** le publier dans un repo privé de github
+**** le mettre directement dans le repo
+***** il faudrait que le bundle install recopie la gem dans bundle/cache
+***** on pourrait faire un sur-script autour de bundle update (script/update)
+*** special ci
+**** pourrait-on lancer le watchdog directement sur le repo dans heorku ?
+*** TODO spikes
+**** TODO is there a way to keep the revision history ?
+**** TODO can we deploy a gem to heroku and just use scheduled rake tasks
+*** TODO create an empty repo "mes-courses-stores"
+*** TODO initialize an empty gem with Hoe
+*** TODO copy the code to it
+*** TODO make sure the specs pass
+*** TODO create a rake task or a script to deploy to the watchdog
+*** TODO create a version for the gem
+*** TODO deploy it on my machine
+*** TODO create a bundle_update script that wraps bundle update and
+**** TODO it should start the local machine's gem server
+**** TODO it should copy the latest store api gem version to vendor/cache
+**** TODO add this new gem to the gemfile with :path => "vendor/cache ..."
+** TODO fail the build if it takes more than 5/10 minutes ?
+** TODO run tests in parrallel
+*** DONE try the ruby "pty" library
+**** DONE deploy to both heroku apps in // -> 5m gain !
+***** DONE make pty work
+***** DONE return sub process error status
+***** DONE run pty in different threads
+***** DONE dump the outputs
+*** TODO try running the (fast?) specs in // with parallel_test gem : 2" to gain
+**** TODO setup parallel dbs
+***** les bases ne sont pas construites pour autre chose que RAILS_ENV=test ...
+***** TODO change my computer
+***** TODO avoir une vm pour l'environement d'integ, et merger tous les envs (test, cucumber et ci)
+**** TODO use an unique real_dummy_store dir per feature
+**** TODO add something to the env setup script to make sure all dbs are created
+**** TODO add something to the ci script to prepare the parallel dbs
+*** use an integration server
+*** migrate to github if it handles continuous integration
+
 * [HEROKU] use vagrant or chef to completly setup virtual dev envs
+** try lxc containers instead of vms
 ** wait until I have a good laptop
 ** use it to track heroku stack changes
 * [HEROKU] replace exception_notifier by papertrail alerts
@@ -9,9 +76,6 @@
 ** Fix csslint issues
 *** TODO utiliser un h3 pour les titres dans la sidebar
 *** TODO mettre la sidebar en 1° et utilisé un float right dessus
-* [DEVENV] install spork-guard ou quelque chose comme ça
-** regarder guard
-** regarder aussi Zeus, un remplacant de spork
 * [DESIGN] use rspec-fire to match mocks and classes
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)
@@ -41,8 +105,9 @@
 *** ou bien changer le ssd pour avoir plusieurs installations d'ubuntu, mais sans vm
 ** utiliser Chef, Puppet ou autre pour setuper les VMs de devs
 ** avoir le script pour setuper la vms dans le code
-* [DESIGN] replace the place matches by an extension to capybara/wetrat #within that associates a name to a selector
+* [DESIGN] replace the place matches by an extension to capybara/webrat #within that associates a name to a selector
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
+** bundle exec gem rdoc --all
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu
 ** setuper calibre
@@ -63,10 +128,7 @@
         http://www.emacswiki.org/RspecMode + http://stackoverflow.com/questions/10288785/rspec-request-specs-failing-when-run-from-emacs-using-rspec-mode
 ** commande emacs pour fermer tous les buffers dans un sous repertoire
 ** emacs ctags https://github.com/tpope/gem-ctags
-* [DESIGN] améliorer les tests cucumber d'imports
-** Passer les tests cucumber sur RealDummyStore
-** Utiliser des vrais mocks plutot que DummyStore dans store_importer_spec.rb
-** Supprimer complétement DummyStoreItemsAPI
+** use emacs packaging system
 * [DESIGN] remove if on_heroku? from application.rb by providing special envs or the like
 ** TODO fix the cucumber env warning message
 ** TODO make sqlite in memory db an env var option instead of a test env enforcement http://pivotallabs.com/parallelize-your-rspec-suite/
@@ -75,7 +137,6 @@
 ** dev : local
 ** watchdog ???
 ** use different virtual machines and the same env to simplify set up
-* [DESIGN] dans store_steps.rb, configurer le store via la classe et pas l'instance du cart_api : ça sera plus simple pour les tests
 * [DEVENV] import db from beta to integ to test migrations with real data
 * [HEROKU] utiliser la variable d'environnement URL de heroku pour avoir l'url de l'application
 * [HEROKU] configurer la variable d'environnement LANG de heroku pour afficher les choses dans la bonne langue
@@ -113,7 +174,6 @@
 ** peut être deux : un path_bar_element(index, text, url)
 ** un autre pour path_bar avec une liste d'elements
 * [DESIGN] faire un matcher pour les link_to avec du text et une url, faire le tour et l'utiliser partout (checker pour button_to au passage)
-* [DESIGN] make cucumber steps more high level
 * [DEVENV] fix recuring ubuntu crashes
 ** try Xubuntu
 ** try gnome session
@@ -142,16 +202,15 @@
 * [DESIGN] Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys
 * [DEVENV] Spike launching ci on heroku (might be a problem with db drop ...)
 * [DESIGN] Spike how to test ssl requirements in cucumber and/or local dev : already 3 bugs because of this ! (sign in, cart forward, empty cart)
+** TODO regarder comment tester localement
+*** TODO créer un certificat ssl local : https://gist.github.com/trcarden/3295935
+*** TODO installer foreman
+*** TODO settuper SslEnforcer sur un port https custom : https://github.com/tobmatth/rack-ssl-enforcer
+*** TODO démarrer 2 process sur 2 ports différents dans foreman : http://www.railway.at/2013/02/12/using-ssl-in-your-local-rails-environment/
+** TODO regarder comment tester automatiquement
+*** TODO démarrer tout les 2 applies
+*** TODO faire des gets
+*** TODO vérifier les urls
 * [DESIGN] Spiker des tests cucumber avec javascript (avec l'order view et l'iframe.onload par exemple)
-* [RADIANT] faire un script 'setup' pour le cms
-* [RADIANT] redesign cms pull and push
-** utiliser des subtree plutot que des subtree-merge (c'est un wrapper par dessus, cf : http://stackoverflow.com/questions/5977234/how-can-i-push-a-part-of-my-git-repo-to-heroku)
-** copier coller
-** rest api sur le cms (plus de lien git du tout)
-** mettre les snippets, layouts et styles dans le git du cms (comme au début)
-*** split entre design / écriture
-***  marchera peut être mieux qu'au début parce que:
-**** le design est stabilisé
-**** j'ai un modem 3G
-* [RADIANT] upgrade radiant to the latest version using bundler !
-* [RADIANT] merge latest design modifications
+* [DEVENV] spike vim :
+** try vim + all plugins, it seems to be the standard

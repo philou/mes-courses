@@ -49,12 +49,18 @@ class Store < ActiveRecord::Base
 
   # url for a client browser to logout of the store
   def logout_url
-    Carts::Base.for_url(url).logout_url
+    cart_api.logout_url
+  end
+  def login_url
+    cart_api.login_url
+  end
+  def login_parameters(credentials)
+    cart_api.login_parameters(credentials.login, credentials.password)
   end
 
   # Opens a remote cart session to the remote store
   def with_session(login, password)
-    Carts::Base.for_url(url).login(login, password).with_logout do |session|
+    cart_api.login(login, password).with_logout do |session|
       return yield session
     end
   end
@@ -67,7 +73,13 @@ class Store < ActiveRecord::Base
     importer.import(browser, incremental_store)
   end
 
-  # friend: IncrementalImporter
+  private
+
+  def cart_api
+    Carts::Base.for_url(url)
+  end
+
+  public  # friend: IncrementalImporter
 
   def known_item_category(name)
     ItemCategory.find_by_name(name)

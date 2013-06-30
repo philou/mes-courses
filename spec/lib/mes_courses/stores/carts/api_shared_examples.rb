@@ -10,7 +10,17 @@ module MesCourses
       shared_examples_for "Any Api" do
 
         it "should know its logout url" do
-          @store_cart_api.logout_url.should_not be_empty
+          logout_url = @store_cart_api.logout_url
+
+          expect(logout_url).to(match(URI.regexp(['http'])), "#{logout_url} is not an http url !")
+        end
+
+        it "should know its login url" do
+          expect(@store_cart_api.login_url).not_to be_empty
+        end
+
+        it "should know its login parameters" do
+          expect(@store_cart_api.login_parameters(@store_cart_api.valid_login, @store_cart_api.valid_password)).not_to be_nil
         end
 
         it "should raise when login in with an invalid account" do
@@ -86,18 +96,6 @@ module MesCourses
             @api.cart_value.should == 0
           end
 
-          it "should logout with HTTP GET" do
-            unless http_agent.nil?
-              @api.add_to_cart(1, sample_item_id)
-              @api.cart_value.should_not == 0
-
-              http_agent.get(@api.logout_url)
-
-              @api.cart_value.should == 0
-            end
-          end
-
-
           private
 
           def extract_another_item_id(sample_items, sample_item)
@@ -109,7 +107,7 @@ module MesCourses
           end
 
           def extract_sample_items
-            extract_sample_items_from(MesCourses::Stores::Items::Api.browse(@store_cart_api.url))
+            extract_sample_items_from(MesCourses::Stores::Items::Api.browse(@store_items_url))
           end
 
           def extract_sample_items_from(category)
@@ -147,12 +145,6 @@ module MesCourses
           def is_milk(element)
             ["lait", "crème"].any? do |word|
               element.title.downcase.include?(word)
-            end
-          end
-
-          def http_agent
-            @api.instance_eval do
-              @agent
             end
           end
 

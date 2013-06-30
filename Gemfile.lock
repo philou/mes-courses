@@ -1,18 +1,4 @@
 GIT
-  remote: git://github.com/KatanaCode/blogit.git
-  revision: 5aaea80045e1f32822b5ff5a23799aff8db103cf
-  specs:
-    blogit (0.7.0)
-      RedCloth (>= 4.2.9)
-      acts-as-taggable-on (>= 2.2.1)
-      albino (>= 1.3.3)
-      jquery-rails
-      kaminari (>= 0.13.0)
-      nokogiri (>= 1.5.0)
-      pingr (>= 0.0.3)
-      redcarpet (>= 2.0.1)
-
-GIT
   remote: git://github.com/djberg96/net-ping.git
   revision: 4cc9eb4204f2d9cfda6f3f8330be700b5d20e54b
   specs:
@@ -29,7 +15,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     RedCloth (4.2.9)
-    ZenTest (4.9.0)
     actionmailer (3.2.13)
       actionpack (= 3.2.13)
       mail (~> 2.5.3)
@@ -57,40 +42,44 @@ GEM
     activesupport (3.2.13)
       i18n (= 0.6.1)
       multi_json (~> 1.0)
-    acts-as-taggable-on (2.3.3)
-      rails (~> 3.0)
-    acts_as_tree (1.2.0)
+    acts-as-taggable-on (2.4.1)
+      rails (>= 3, < 5)
+    acts_as_tree (1.4.0)
       activerecord (>= 3.0.0)
     albino (1.3.3)
       posix-spawn (>= 0.3.6)
     arel (3.0.2)
-    autotest-notification (2.3.4)
-      autotest-standalone (~> 4.5)
-    autotest-rails (4.1.2)
-      ZenTest (~> 4.5)
-    autotest-standalone (4.5.11)
     bcrypt-ruby (3.0.1)
+    blogit (0.8.0)
+      RedCloth (>= 4.2.9)
+      acts-as-taggable-on (>= 2.2.1)
+      albino (>= 1.3.3)
+      jquery-rails
+      kaminari (>= 0.13.0)
+      nokogiri (>= 1.5.0)
+      pingr (>= 0.0.3)
+      redcarpet (>= 2.0.1)
     builder (3.0.4)
-    capybara (2.0.2)
+    capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
-      selenium-webdriver (~> 2.0)
-      xpath (~> 1.0.0)
+      xpath (~> 2.0)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
+    coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.6.1)
-    cucumber (1.2.3)
+    coffee-script-source (1.6.2)
+    cucumber (1.3.2)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.3)
-      gherkin (~> 2.11.6)
+      gherkin (~> 2.12.0)
       multi_json (~> 1.3)
     cucumber-rails (1.3.1)
       capybara (>= 1.1.2)
@@ -98,25 +87,26 @@ GEM
       nokogiri (>= 1.5.0)
       rails (~> 3.0)
     daemons (1.1.9)
-    database_cleaner (0.9.1)
+    database_cleaner (1.0.1)
     delayed_job (3.0.5)
       activesupport (~> 3.0)
-    delayed_job_active_record (0.4.3)
+    delayed_job_active_record (0.4.4)
       activerecord (>= 2.1.0, < 4)
       delayed_job (~> 3.0)
-    devise (2.2.3)
+    devise (2.2.4)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
-    diff-lcs (1.2.1)
-    domain_name (0.5.9)
+    diff-lcs (1.2.4)
+    domain_name (0.5.12)
       unf (>= 0.0.5, < 1.0.0)
+    encryptor (1.1.3)
     erubis (2.7.0)
     eventmachine (1.0.3)
     exception_notification (3.0.1)
       actionmailer (>= 3.0.4)
-    excon (0.16.10)
+    excon (0.25.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
@@ -125,46 +115,92 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     fattr (2.2.1)
-    ffi (1.4.0)
-    foreigner (1.4.0)
+    ffi (1.9.0)
+    foreigner (1.4.2)
       activerecord (>= 3.0.0)
-    gherkin (2.11.6)
-      json (>= 1.7.6)
-    heroku-api (0.3.8)
-      excon (~> 0.16.10)
-    hike (1.2.1)
+    formatador (0.2.4)
+    gherkin (2.12.0)
+      multi_json (~> 1.3)
+    guard (1.8.1)
+      formatador (>= 0.2.4)
+      listen (>= 1.0.0)
+      lumberjack (>= 1.0.2)
+      pry (>= 0.9.10)
+      thor (>= 0.14.6)
+    guard-cucumber (1.4.0)
+      cucumber (>= 1.2.0)
+      guard (>= 1.1.0)
+    guard-jasmine (1.17.0)
+      childprocess
+      guard (>= 1.1.0)
+      multi_json
+      thor
+      tilt
+    guard-rails (0.4.4)
+      guard (>= 0.2.2)
+    guard-rspec (3.0.2)
+      guard (>= 1.8)
+      rspec (~> 2.13)
+    guard-spork (1.5.1)
+      childprocess (>= 0.2.3)
+      guard (>= 1.1)
+      spork (>= 0.8.4)
+    heroku-api (0.3.13)
+      excon (~> 0.25.0)
+    hike (1.2.3)
+    http-cookie (1.0.1)
+      domain_name (~> 0.5)
     i18n (0.6.1)
+    jasmine (1.3.2)
+      jasmine-core (~> 1.3.1)
+      rack (~> 1.0)
+      rspec (>= 1.3.1)
+      selenium-webdriver (>= 0.1.3)
+    jasmine-core (1.3.1)
+    jasmine-jquery-rails (1.4.2)
     journey (1.0.4)
-    jquery-rails (2.2.1)
+    jquery-rails (3.0.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    json (1.7.7)
+    json (1.8.0)
     kaminari (0.14.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    mail (2.5.3)
-      i18n (>= 0.4.0)
+    listen (1.2.2)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+      rb-kqueue (>= 0.2)
+    lumberjack (1.0.4)
+    mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mechanize (2.5.1)
+    mechanize (2.7.1)
       domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0.0)
       mime-types (~> 1.17, >= 1.17.2)
       net-http-digest_auth (~> 1.1, >= 1.1.1)
       net-http-persistent (~> 2.5, >= 2.5.2)
       nokogiri (~> 1.4)
       ntlm-http (~> 0.1, >= 0.1.1)
-      webrobots (~> 0.0, >= 0.0.9)
-    mime-types (1.21)
-    multi_json (1.7.1)
-    net-http-digest_auth (1.2.1)
+      webrobots (>= 0.0.9, < 0.2)
+    method_source (0.8.1)
+    mime-types (1.23)
+    mini_portile (0.5.0)
+    multi_json (1.7.7)
+    net-http-digest_auth (1.3)
     net-http-persistent (2.8)
-    nokogiri (1.5.7)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
     ntlm-http (0.1.1)
     orm_adapter (0.4.0)
-    pg (0.14.1)
+    pg (0.15.1)
     pingr (0.0.3)
     polyglot (0.3.3)
     posix-spawn (0.3.6)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -188,15 +224,24 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-    rake (10.0.3)
+    rake (10.1.0)
+    rb-fsevent (0.9.3)
+    rb-inotify (0.9.0)
+      ffi (>= 0.5.0)
+    rb-kqueue (0.2.0)
+      ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
-    redcarpet (2.2.2)
+    redcarpet (2.3.0)
+    rspec (2.13.0)
+      rspec-core (~> 2.13.0)
+      rspec-expectations (~> 2.13.0)
+      rspec-mocks (~> 2.13.0)
     rspec-core (2.13.1)
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.13.0)
-    rspec-rails (2.13.0)
+    rspec-mocks (2.13.1)
+    rspec-rails (2.13.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)
@@ -206,18 +251,19 @@ GEM
     rubyzip (0.9.9)
     rush (0.6.8)
       session
-    sass (3.2.7)
+    sass (3.2.9)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
       tilt (~> 1.3)
-    selenium-webdriver (2.31.0)
+    selenium-webdriver (2.33.0)
       childprocess (>= 0.2.5)
       multi_json (~> 1.0)
       rubyzip
       websocket (~> 1.0.4)
     session (3.1.0)
       fattr
+    slop (3.4.5)
     spork (0.9.2)
     sprockets (2.2.2)
       hike (~> 1.2)
@@ -229,16 +275,17 @@ GEM
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
-    thor (0.17.0)
-    tilt (1.3.6)
-    treetop (1.4.12)
+    thor (0.18.1)
+    tilt (1.4.1)
+    timecop (0.6.1)
+    treetop (1.4.14)
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
-    uglifier (1.3.0)
+    uglifier (2.1.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
-    unf (0.1.0)
+    unf (0.1.1)
       unf_ext
     unf_ext (0.0.6)
     warden (1.2.1)
@@ -254,7 +301,7 @@ GEM
       heroku-api
       rails
       rush
-    xpath (1.0.0)
+    xpath (2.0.0)
       nokogiri (~> 1.3)
 
 PLATFORMS
@@ -262,18 +309,25 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
-  autotest-notification
-  autotest-rails
-  blogit!
+  blogit
   coffee-rails
   cucumber-rails
   database_cleaner
   delayed_job_active_record
   devise
+  encryptor
   exception_notification
   factory_girl_rails
   foreigner
+  guard
+  guard-cucumber
+  guard-jasmine
+  guard-rails
+  guard-rspec
+  guard-spork
   heroku-api
+  jasmine
+  jasmine-jquery-rails
   jquery-rails
   lazing!
   mechanize
@@ -287,6 +341,7 @@ DEPENDENCIES
   spork
   sqlite3
   thin
+  timecop
   uglifier
   webrat
   workless

@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011 by Philippe Bourgau
+# Copyright (C) 2011, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -29,6 +29,15 @@ describe ApplicationHelper do
 
     # rails inside's self learning ...
     actual.should_not == item_category_path(category)
+  end
+
+  it "'s meta_http_equiv_refresh_tag calls @refresh_strategy.to_html" do
+    @refresh_strategy = MesCourses::HtmlUtils::PageRefreshStrategy.new
+    meta_http_equiv_refresh_tag.should == @refresh_strategy.to_html
+  end
+
+  it "'s meta_http_equiv_refresh_tag defaults to no refresh strategy" do
+    meta_http_equiv_refresh_tag.should == MesCourses::HtmlUtils::PageRefreshStrategy.none.to_html
   end
 
 end

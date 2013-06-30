@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -9,11 +9,7 @@ module MesCourses
       class Api
 
         def self.browse(store_url)
-          if store_url == MesCourses::Stores::Carts::DummyApi.url
-            DummyApi.new_default_store(store_url)
-          else
-            builder(store_url).new(WalkerPage.open(store_url))
-          end
+          builder(store_url).new(WalkerPage.open(store_url))
         end
 
         def self.register_builder(name, builder)

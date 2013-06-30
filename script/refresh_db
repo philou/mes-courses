@@ -1,0 +1,13 @@
+#!/bin/usr/env ruby
+
+require_relative '../lib/mes_courses/deployment'
+include MesCourses::Deployment
+
+with_trace_argument "Refreshes the specified heroku app with beta data", (proc do
+  opt :app, "short name of the app whose data should be refresh (full name is mes-courses-<app> by convention)", required: true, type: :string
+end) do |options|
+
+  with_confirmation("erase and refresh all data of heroku app \"#{heroku_app(options[:app])}\" with data from beta") do
+    refresh_db(options[:app])
+  end
+end

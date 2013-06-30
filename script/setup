@@ -20,3 +20,7 @@ bundle exec rake db:migrate
 RAILS_ENV=cucumber bundle exec rake db:migrate
 RAILS_ENV=ci bundle exec rake db:migrate
 RAILS_ENV=production bundle exec rake db:migrate
+
+## initializing config vars
+cd config
+ln -s /home/philou/BoxCryptor/mes-courses.fr/local_env.yml .

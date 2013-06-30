@@ -11,13 +11,23 @@ module MesCourses
       class DummyApi < Api
 
         def self.url
-          "http://www.dummy-store.com"
+          "http://www.#{DummyConstants::ROOT_DIR_NAME}.com"
         end
         def self.valid_login
           "valid-login"
         end
         def self.valid_password
           "valid-password"
+        end
+
+        def self.logout_url
+          url+"/logout"
+        end
+        def self.login_url
+          url+"/login"
+        end
+        def self.login_parameters(login,password)
+          {'login' => login, 'password' => password}
         end
 
         attr_reader :login, :password, :log
@@ -60,12 +70,12 @@ module MesCourses
           end
         end
 
-        def self.logout_url
-          url+"/logout"
-        end
-
         def cart_value
           @content.values.inject(0.0) {|x,y| x+y}
+        end
+
+        def content
+          @content.keys
         end
 
         def add_unavailable_item(item_remote_id)
@@ -74,6 +84,7 @@ module MesCourses
         def available?(item_remote_id)
           !@unavailable_items[item_remote_id]
         end
+
       end
     end
   end

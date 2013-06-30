@@ -76,7 +76,7 @@ module MesCourses
     # config.assets.prefix = "/assets
 
     # Precompile blog.css and app.css
-    config.assets.precompile += [/blog.css/, /app.css/]
+    config.assets.precompile += [/blog\.css/, /app\.css/, /.*?js/]
 
     # Suggested by devise (& heroku) : do not access the DB or load models to
     # speed up precompiling your assets
@@ -86,8 +86,8 @@ module MesCourses
     if on_heroku?
       config.middleware.use ExceptionNotifier,
         :email_prefix => "[#{app_name}] ERROR ",
-        :sender_address => sender,
-        :exception_recipients => recipients
+        :sender_address => watchdog_email,
+        :exception_recipients => maintainers_emails
     end
   end
 end

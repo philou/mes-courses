@@ -6,9 +6,9 @@ require 'spec_helper'
 describe Order do
 
   before :each do
-    @cart = Cart.new()
-    @store = Store.new(:url => "http://www.funny-store.com")
-    @order = Order.new(:cart => @cart, :store => @store)
+    @order = FactoryGirl.build(:order)
+    @store = @order.store
+    @cart = @order.cart
   end
 
   it "should not have any warning notice by default" do
@@ -28,34 +28,77 @@ describe Order do
   end
 
   it "should extend warning notices when missing cart lines are added" do
-    @order.add_missing_cart_line(@cart_line_1 = stub_model(CartLine, :name => "Tomates"))
-    @order.add_missing_cart_line(@cart_line_2 = stub_model(CartLine, :name => "Steak"))
+    @order.add_missing_cart_line(@cart_line_1 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Tomates")))
+    @order.add_missing_cart_line(@cart_line_2 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Steak")))
 
     @order.warning_notices.should == [Order.missing_cart_line_notice(@cart_line_1.name, @store.name),
                                       Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
-  it "should increase the forwarded cart lines count when notified" do
-    [1,2].each do |i|
-      @order.notify_forwarded_cart_line
-      @order.forwarded_cart_lines_count.should == i
+  it "forwards store name to the store" do
+    @order.store_name.should == @store.name
+  end
+
+  it "forwards logout url to the store" do
+    expect(@order.store_logout_url).to eq(@store.logout_url)
+  end
+
+  it "forwards login url to the store" do
+    expect(@order.store_login_url).to eq(@store.login_url)
+  end
+
+  it "forwards login parameters to the store" do
+    credentials = FactoryGirl.build(:credentials)
+    @order.store_login_parameters(credentials).should == @store.login_parameters(credentials)
+  end
+
+  context "passed ratio" do
+
+    before :each do
+      @order.created_at = (@start_time = Time.now)
+      @cart.lines = FactoryGirl.build_list(:cart_line, 7)
     end
+
+    it "should be 100% if the order is empty" do
+      @cart.lines = []
+
+      @order.passed_ratio.should == 1.0
+    end
+
+    it "should depend on the start time before lines are transfered" do
+      Timecop.freeze(@start_time + 15)
+
+      @order.passed_ratio.should be_within(1e-8).of(Order::PASSED_RATIO_BEFORE * 15.0 / 60.0)
+    end
+
+    it "should be 0 if the order was not saved" do
+      @order.created_at = nil
+
+      @order.passed_ratio.should == 0.0
+    end
+
+    it "should caped before cart lines are transfered" do
+      Timecop.freeze(@start_time + 75)
+
+      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE
+    end
+
+    it "should be computed from forwarded cart lines" do
+      4.times { @order.notify_forwarded_cart_line }
+
+      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE + Order::PASSED_RATIO_DURING*(4.0 / 7.0)
+    end
+
   end
 
   context "when passing" do
 
     before :each do
-      @order.stub(:save!)
-      @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
-      MesCourses::Stores::Carts::Base.stub(:for_url).with(@store.url).and_return(store_cart = stub(MesCourses::Stores::Carts::Base))
-      store_cart.stub(:login).with(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password).and_return(@store_session)
-      class << @store_session
-        include MesCourses::Stores::Carts::WithLogoutMixin
-      end
+      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :api)
     end
 
     it "should forward the cart instance to the store" do
-      @cart.should_receive(:forward_to).with(@store_session, @order)
+      @cart.should_receive(:forward_to).with(instance_of(MesCourses::Stores::Carts::Session), @order)
 
       pass_order
     end
@@ -64,7 +107,7 @@ describe Order do
       it_should_logout_from_the_store
     end
 
-    it "should have the SENDING status when it is beeing passed" do
+    it "should have the PASSING status when it is beeing passed" do
       @cart.stub(:forward_to).with do |session, order|
         @order.status.should == Order::PASSING
       end
@@ -126,21 +169,19 @@ describe Order do
     end
 
     def it_should_logout_from_the_store
-      @cart.should_receive(:forward_to).ordered
-      @store_session.should_receive(:logout).ordered
-
       pass_order rescue nil
+
+      @api.log.last.should == :logout
     end
 
     def it_should_eventually_save_the_order
-      @order.should_receive(:status=).twice.ordered
-      @order.should_receive(:save!).ordered
-
       pass_order rescue nil
+
+      @order.should_not be_new_record
     end
 
     def pass_order
-      @order.pass(MesCourses::Stores::Carts::Api.valid_login, MesCourses::Stores::Carts::Api.valid_password)
+      @order.pass(FactoryGirl.build(:valid_credentials))
     end
   end
 end
