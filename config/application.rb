@@ -76,7 +76,7 @@ module MesCourses
     # config.assets.prefix = "/assets
 
     # Precompile blog.css and app.css
-    config.assets.precompile += [/blog\.css/, /app\.css/, /.*?js/]
+    config.assets.precompile += [/blog\.css/, /app\.css/, /.*\.js/]
 
     # Suggested by devise (& heroku) : do not access the DB or load models to
     # speed up precompiling your assets

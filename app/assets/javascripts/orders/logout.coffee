@@ -11,3 +11,5 @@ window.mesCourses.orders.logout = {
   onRemoteStoreIFrameLoad: ->
     mesCourses.refresh.doNow()
 }
+
+$(document).ready(window.mesCourses.orders.logout.startUpdatingTransferRatio)
