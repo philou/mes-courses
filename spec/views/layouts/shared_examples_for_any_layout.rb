@@ -106,5 +106,26 @@ shared_examples_for "any layout" do
     rendered.should include "best.css"
   end
 
-end
+  it 'does not include google analytics by default' do
+    expect(ENV['GOOGLE_ANALYTICS_ENABLED']).not_to equal('true')
 
+    render
+
+    expect(rendered).not_to include 'analytics.js'
+  end
+
+  it 'includes google analytics with GOOGLE_ANALYTICS_ENABLED' do
+    expect(ENV['GOOGLE_ANALYTICS_ENABLED']).not_to equal('true')
+
+    begin
+      ENV['GOOGLE_ANALYTICS_ENABLED'] = 'true'
+
+      render
+
+      expect(rendered).to include 'analytics.js'
+    ensure
+      ENV.delete('GOOGLE_ANALYTICS_ENABLED')
+    end
+  end
+
+end

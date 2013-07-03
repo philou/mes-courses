@@ -3,5 +3,5 @@
 require 'guard/jasmine/task'
 
 Guard::JasmineTask.new do |task|
-  task.options = '--server=jasmine_gem --server-timeout=60'
+  task.options = '--server-timeout=90'
 end
