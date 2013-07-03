@@ -106,7 +106,7 @@ GEM
     eventmachine (1.0.3)
     exception_notification (3.0.1)
       actionmailer (>= 3.0.4)
-    excon (0.25.0)
+    excon (0.25.1)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.2.0)
