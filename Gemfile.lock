@@ -336,6 +336,7 @@ DEPENDENCIES
   lazing!
   mechanize
   net-ping!
+  nokogiri
   pg
   rack-cache
   rack-ssl-enforcer

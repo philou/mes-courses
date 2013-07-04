@@ -3,6 +3,7 @@ ruby '2.0.0'
 
 gem 'thin'
 gem 'rails'
+gem 'nokogiri', :require => 'nokogiri' # to avoid could not find nokogir-xxx in any of the sources while running rake db:migrate on heroku
 gem 'mechanize'
 gem 'exception_notification', :require => 'exception_notifier'
 gem 'delayed_job_active_record'
