@@ -5,12 +5,6 @@ GIT
     net-ping (1.6.0)
       ffi (>= 1.0.0)
 
-GIT
-  remote: git://github.com/philou/lazing.git
-  revision: ad4d98f2825d6ae27eb904105a7de7af4c43874e
-  specs:
-    lazing (0.1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -333,7 +327,6 @@ DEPENDENCIES
   jasmine
   jasminerice
   jquery-rails
-  lazing!
   mechanize
   net-ping!
   nokogiri

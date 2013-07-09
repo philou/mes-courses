@@ -113,16 +113,16 @@ module MesCourses
           def extract_sample_items_from(category)
             items = find_available_items(category)
 
-            sub_items = nationaly_available_first(category.categories).mapping do |sub_category|
+            sub_items = nationaly_available_first(category.categories).lazy.map do |sub_category|
               extract_sample_items_from(sub_category)
             end
 
-            items.concating(sub_items.flattening)
+            [items, sub_items].lazy.flatten
           end
 
           def find_available_items(category)
             nationaly_available_first(category.items)
-              .finding_all {|item| item_available?(item.attributes[:remote_id]) }
+              .find_all {|item| item_available?(item.attributes[:remote_id]) }
           end
 
           def item_available?(item_id)

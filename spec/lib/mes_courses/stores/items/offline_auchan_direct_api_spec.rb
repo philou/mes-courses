@@ -3,7 +3,6 @@
 
 require 'spec_helper'
 require_relative 'api_shared_examples'
-require 'lazing'
 
 module MesCourses
   module Stores
@@ -21,11 +20,11 @@ module MesCourses
         it "parses promotions prices" do
           enumerator_of_cat_sub_cat_and_items_tokens.
 
-          mapping do |tokens|
+          map do |tokens|
             promo_price(*tokens)
           end.
 
-          selecting do |price|
+          select do |price|
             !price.nil?
           end.
 
@@ -35,14 +34,14 @@ module MesCourses
         private
 
         def enumerator_of_cat_sub_cat_and_items_tokens
-          `find #{File.join(Rails.root,'offline_sites','www.auchandirect.fr')} -name *.html -exec grep -l "prix-promo" {} \\;`.split("\n").
+          `find #{File.join(Rails.root,'offline_sites','www.auchandirect.fr')} -name *.html -exec grep -l "prix-promo" {} \\;`.split("\n").lazy.
 
-          selecting do |file|
+          select do |file|
             doc = Nokogiri::HTML(open(file))
             doc.search("#produit-infos .bloc-prix-promo > span.prix-promo").any?
           end.
 
-          mapping do |file|
+          map do |file|
             file = URI.unescape(file)
             file = file.gsub(/^.*\/www\.auchandirect\.fr\//, "")
             pieces = file.split("/").take(3)

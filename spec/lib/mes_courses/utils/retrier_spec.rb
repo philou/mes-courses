@@ -73,7 +73,7 @@ module MesCourses
             end
           end
 
-          @wrapped.stub(:properties).and_return(integers)
+          @wrapped.stub(:properties).and_return(integers.lazy)
 
           actual = @retrier.properties
           first = [actual.next, actual.next, actual.next]

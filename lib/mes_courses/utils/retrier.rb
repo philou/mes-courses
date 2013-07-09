@@ -20,10 +20,7 @@ module MesCourses
         if !@options[:wrap_result].include?(method_sym) || result.nil?
           return result
 
-        elsif result.instance_of?(Enumerator)
-          return result.mapping { |item| wrap(item) }
-
-        elsif result.instance_of?(Array)
+        elsif result.respond_to?(:map)
           return result.map { |item| wrap(item) }
 
         else
