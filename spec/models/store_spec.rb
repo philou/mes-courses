@@ -9,7 +9,7 @@ describe Store do
   before(:each) do
     @valid_attributes = { :url => "http://www.ze-store.com", :expected_items => 10, :sponsored_url => "http://www.ze-store.com/sponsored" }
 
-    @importer = mock(MesCourses::Stores::Imports::Base).as_null_object
+    @importer = double(MesCourses::Stores::Imports::Base).as_null_object
     MesCourses::Stores::Imports::Base.stub(:new).and_return(@importer)
 
     Store.stub(:maximum).with(:expected_items).and_return(0)

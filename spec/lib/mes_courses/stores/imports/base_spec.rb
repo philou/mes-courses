@@ -185,7 +185,7 @@ module MesCourses
           it "should register visited url AFTER the item was registered" do
             given_a_store_with_one_item
 
-            @store.mock(:register_visited_url) do |uri|
+            @store.stub(:register_visited_url) do |uri|
               @store.should have_received(:register_item).with(@item.attributes)
             end
 
