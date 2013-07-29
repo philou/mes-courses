@@ -9,7 +9,7 @@ module MesCourses
     describe Retrier do
 
       before :each do
-        @wrapped = stub("UnstableDummy")
+        @wrapped = double("UnstableDummy")
         @wrapped.stub(:throwing).and_raise(RuntimeError.new)
 
         @max_retries = 3

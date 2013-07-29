@@ -12,7 +12,7 @@ module MesCourses
         before :each do
           @importer = Base.new()
 
-          @store = stub("Store").as_null_object
+          @store = double("Store").as_null_object
           @store.stub(:already_visited_url?).and_return(false)
         end
 
@@ -80,7 +80,7 @@ module MesCourses
           categories = options.delete(:categories) || []
           attributes = options.merge(name: name)
 
-          stub("Walker #{uri}", {attributes: attributes, uri: URI.parse(uri), categories: categories, items: items})
+          double("Walker #{uri}", {attributes: attributes, uri: URI.parse(uri), categories: categories, items: items})
         end
 
         context "when starting from scratch" do
@@ -259,7 +259,7 @@ module MesCourses
           end
 
           it "should continue on server error" do
-            @item.stub(:attributes).and_raise(Mechanize::ResponseCodeError.new(stub("Page", code: 500)))
+            @item.stub(:attributes).and_raise(Mechanize::ResponseCodeError.new(double("Page", code: 500)))
 
             no_exception_should_climb_up_the_stack
           end

@@ -8,7 +8,7 @@ describe "sessions/new" do
   it "should display :password in french" do
     view.stub(:resource_name).and_return(:user)
     view.stub(:resource).and_return(stub_model(User))
-    view.stub(:devise_mapping).and_return(stub("devise mapping", :rememberable? => false, :registerable? => false, :recoverable? => false, :confirmable? => false, :lockable? => false, :omniauthable? => false))
+    view.stub(:devise_mapping).and_return(double("devise mapping", :rememberable? => false, :registerable? => false, :recoverable? => false, :confirmable? => false, :lockable? => false, :omniauthable? => false))
 
     render
 

@@ -10,7 +10,7 @@ module MesCourses
       describe Session do
 
         before :each do
-          @store_api = stub(Api).as_null_object
+          @store_api = double(Api).as_null_object
           @store_api.stub(:cart_value).and_return(2.0)
 
           @store_session = Session.new(@store_api)

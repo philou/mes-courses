@@ -60,7 +60,7 @@ module MesCourses
             end
 
             it "should send an email with broken dishes" do
-              BrokenDishesReporter.should_receive(:email).with(@dish_breaking_items).and_return(email = stub("Email"))
+              BrokenDishesReporter.should_receive(:email).with(@dish_breaking_items).and_return(email = double("Email"))
               email.should_receive(:deliver)
             end
 

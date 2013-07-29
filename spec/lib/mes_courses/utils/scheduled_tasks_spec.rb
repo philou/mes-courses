@@ -29,7 +29,7 @@ module MesCourses
 
       let(:task_name) { "scheduled:sample" }
       let(:task_path) { "spec/lib/mes_courses/utils/scheduled_tasks/sample" }
-      let(:sample_task) { stub("sample_task").as_null_object }
+      let(:sample_task) { double("sample_task").as_null_object }
 
       before do
         Rake::Task.define_task(:sample) { sample_task.invoke }
@@ -67,7 +67,7 @@ module MesCourses
 
       it "sends failure emails" do
         sample_task.stub(:invoke).and_throw(RuntimeError.new("It did a bad, bad thing !"))
-        CronTaskFailureReporter.should_receive(:failure).with("sample", anything()).and_return(email = stub(CronTaskFailureReporter))
+        CronTaskFailureReporter.should_receive(:failure).with("sample", anything()).and_return(email = double(CronTaskFailureReporter))
         email.should_receive(:deliver)
 
         subject.invoke

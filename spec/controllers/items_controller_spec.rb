@@ -8,13 +8,13 @@ describe ItemsController do
   ignore_user_authentication
 
   before :each do
-    @new_item = stub(Item, :id => 1, :name => "Chocolat noir à dessert")
+    @new_item = double(Item, :id => 1, :name => "Chocolat noir à dessert")
     Item.stub(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)
 
-    @old_item = stub(Item, :id => 2, :name => "Oeufs frais")
+    @old_item = double(Item, :id => 2, :name => "Oeufs frais")
     Item.stub(:find_by_id).with(@old_item.id.to_s).and_return(@old_item)
 
-    @dish = stub(Dish, :id => 3, :name => "Gateau au chocolat", :items => [@old_item])
+    @dish = double(Dish, :id => 3, :name => "Gateau au chocolat", :items => [@old_item])
     @dish.stub(:save!)
     Dish.stub(:find_by_id).with(@dish.id.to_s).and_return(@dish)
   end

@@ -10,12 +10,12 @@ module MesCourses
       describe Walker do
 
         before :each do
-          @page = stub("Page", :uri => "http://www.maxi-discount.com")
-          @page_getter = stub("Getter", :get => @page, :text => "Conserves")
+          @page = double("Page", :uri => "http://www.maxi-discount.com")
+          @page_getter = double("Getter", :get => @page, :text => "Conserves")
           @walker = Walker.new(@page_getter)
 
-          @sub_walkers = [stub("Sub walker")]
-          @digger = stub(Digger)
+          @sub_walkers = [double("Sub walker")]
+          @digger = double(Digger)
           @digger.stub(:sub_walkers).with(@page, @walker).and_return(@sub_walkers)
         end
 
@@ -66,7 +66,7 @@ module MesCourses
             walker.to_s.should include("@#{walker.uri}")
           end
           it "has a full genealogy" do
-            link = stub("Link")
+            link = double("Link")
             link.stub_chain(:get, :uri).and_return(@page.uri + "/viandes")
             child_walker = Walker.new(link)
             child_walker.index = 12

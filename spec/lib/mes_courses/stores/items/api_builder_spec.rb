@@ -11,13 +11,13 @@ module MesCourses
 
         before :each do
           @url = "http://www.mega-store.com"
-          @api = stub("Store api").as_null_object
-          @api_class = stub("Store api class")
+          @api = double("Store api").as_null_object
+          @api_class = double("Store api class")
           @api_class.stub(:new).with(@url).and_return(@api)
 
           @selector = "a.child"
-          @digger = stub("Digger")
-          @digger_class = stub("Digger class")
+          @digger = double("Digger")
+          @digger_class = double("Digger class")
         end
 
         context "using define method" do
@@ -28,7 +28,7 @@ module MesCourses
           end
 
           it "initializes nested definition through its block" do
-            ApiBuilder.stub(:new).and_return(builder = stub(ApiBuilder))
+            ApiBuilder.stub(:new).and_return(builder = double(ApiBuilder))
 
             builder.should_receive(:complex_builder_initialization)
 
@@ -51,7 +51,7 @@ module MesCourses
           [:categories, :items].each do |sub_definition|
 
             before :each do
-              ApiBuilder.stub(:new).and_return(@sub_builder = stub(ApiBuilder))
+              ApiBuilder.stub(:new).and_return(@sub_builder = double(ApiBuilder))
               @digger_class.stub(:new).with(@selector, @sub_builder).and_return(@digger)
             end
 

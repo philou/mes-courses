@@ -11,7 +11,7 @@ describe ApplicationHelper do
 
     any_item_category_path.should == root_category_path
     any_item_category_path(nil).should == root_category_path
-    any_item_category_path(stub(ItemCategory, :id => nil)).should == root_category_path
+    any_item_category_path(double(ItemCategory, :id => nil)).should == root_category_path
   end
 
   it "should create real item category path for the valid categories" do

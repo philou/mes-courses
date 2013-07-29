@@ -10,9 +10,9 @@ module MesCourses
       describe Digger do
 
         before :each do
-          @digger = Digger.new(@selector = "a.items", @factory = stub("Sub walker factory"))
-          @page = stub(WalkerPage)
-          @page.stub(:search_links).with(@selector).and_return(@links = [stub("Link"),stub("Link")])
+          @digger = Digger.new(@selector = "a.items", @factory = double("Sub walker factory"))
+          @page = double(WalkerPage)
+          @page.stub(:search_links).with(@selector).and_return(@links = [double("Link"),double("Link")])
         end
 
         it "creates sub walkers for each link it finds" do
@@ -24,7 +24,7 @@ module MesCourses
         end
 
         it "for debugging purpose, provides father walker and link index to sub walkers" do
-          father = stub("Father walker")
+          father = double("Father walker")
 
           @links.each_with_index do |link, index|
             @factory.should_receive(:new).with(link, father, index)

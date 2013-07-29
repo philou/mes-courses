@@ -83,7 +83,7 @@ describe Item do
       @fruits = FactoryGirl.build_stubbed(:item_category, name: "Fruits", parent: @marche)
       @marche.stub(:children).and_return([@legumes, @fruits])
 
-      @expected = stub("Array of items")
+      @expected = double("Array of items")
     end
 
     it "does not allow invalid search strings" do
@@ -101,7 +101,7 @@ describe Item do
     end
 
     def join_mock()
-      mock = stub("Where clause")
+      mock = double("Where clause")
       mock.stub(:joins).with("INNER JOIN item_categories_items ON (items.id = item_categories_items.item_id)").and_return(@expected)
       mock
     end

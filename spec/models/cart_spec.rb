@@ -32,7 +32,7 @@ describe Cart do
  end
 
   it "should contain items from added dishes" do
-    @cart.add_dish(stub(Dish, :name => "Home made soup", :items => @items))
+    @cart.add_dish(double(Dish, :name => "Home made soup", :items => @items))
     cart_should_contain_all_items
   end
 
@@ -80,7 +80,7 @@ describe Cart do
     before :each do
       @cart = Cart.new
       @store = Store.new(:url => "http://www.a-store.com")
-      @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
+      @store_session = double(MesCourses::Stores::Carts::Session).as_null_object
       @order = Order.new
       @order.stub(:save!)
     end

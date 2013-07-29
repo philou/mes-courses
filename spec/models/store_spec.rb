@@ -22,13 +22,13 @@ describe Store do
   it "should ask its importer to import" do
     store = Store.new(@valid_attributes)
 
-    browser = stub("Store Items API")
+    browser = double("Store Items API")
     MesCourses::Stores::Items::Api.stub(:browse).and_return(browser)
 
-    robust_browser = stub(MesCourses::Utils::Retrier)
+    robust_browser = double(MesCourses::Utils::Retrier)
     MesCourses::Utils::Retrier.stub(:new).with(browser, anything).and_return(robust_browser)
 
-    incremental_store = stub("Incremental store")
+    incremental_store = double("Incremental store")
     MesCourses::Stores::Imports::Incremental.stub(:new).with(store).and_return(incremental_store)
 
     @importer.should_receive(:import).with(robust_browser, incremental_store)
@@ -98,7 +98,7 @@ describe Store do
       end_time = Time.local(2011, 10, 29, 17, 48, 12)
       MesCourses::Utils::Timing.stub(:now).and_return(start_time, end_time)
 
-      ImportReporter.should_receive(:delta).with(end_time - start_time, anything).and_return(email = stub("Email"))
+      ImportReporter.should_receive(:delta).with(end_time - start_time, anything).and_return(email = double("Email"))
       email.should_receive(:deliver)
 
       Store.import
@@ -108,7 +108,7 @@ describe Store do
       expected_items = 3000
       Store.stub(:maximum).with(:expected_items).and_return(expected_items)
 
-      ImportReporter.should_receive(:delta).with(anything, expected_items).and_return(email = stub("Email"))
+      ImportReporter.should_receive(:delta).with(anything, expected_items).and_return(email = double("Email"))
       email.should_receive(:deliver)
 
       Store.import

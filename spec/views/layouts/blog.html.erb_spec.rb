@@ -21,7 +21,7 @@ describe "layouts/blog" do
   it_behaves_like "any layout"
 
   it "renders a tag cloud" do
-    assign(:tags, [stub("tagging", name: "cuisine", count: 3)])
+    assign(:tags, [double("tagging", name: "cuisine", count: 3)])
     render
     rendered.should contain_a(link_to_posts_with_tag("cuisine").within_a(blog_sidebar_section("tags")))
   end

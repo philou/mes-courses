@@ -10,10 +10,10 @@ module MesCourses
       describe Api do
 
         before :each do
-          Api.register_builder(my_store = "www.my-store.com", builder = stub(ApiBuilder.class))
+          Api.register_builder(my_store = "www.my-store.com", builder = double(ApiBuilder.class))
           @url = "http://#{my_store}"
-          WalkerPage.stub(:open).with(@url).and_return(walker = stub(WalkerPage))
-          builder.stub(:new).with(walker).and_return(@store_api = stub(ApiBuilder))
+          WalkerPage.stub(:open).with(@url).and_return(walker = double(WalkerPage))
+          builder.stub(:new).with(walker).and_return(@store_api = double(ApiBuilder))
         end
 
         it "select the good store items api builder to browse a store" do

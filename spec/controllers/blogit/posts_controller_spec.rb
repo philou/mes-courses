@@ -31,7 +31,7 @@ module Blogit
     end
 
     it "computes tag frequencies" do
-      Post.stub(:tag_counts).and_return(tags = stub("Tags"))
+      Post.stub(:tag_counts).and_return(tags = double("Tags"))
 
       get :index
 

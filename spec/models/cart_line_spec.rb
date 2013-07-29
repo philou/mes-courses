@@ -30,7 +30,7 @@ describe CartLine do
   it "should add its items to the online cart when forwarded" do
     @cart_line.increment_quantity
 
-    store_api = stub(MesCourses::Stores::Carts::Api)
+    store_api = double(MesCourses::Stores::Carts::Api)
     store_api.should_receive(:add_to_cart).once.with(@cart_line.quantity, @item)
 
     @cart_line.forward_to(store_api)
