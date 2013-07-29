@@ -10,7 +10,7 @@ describe ItemCategoriesControllerDishNesting do
   before :each do
     @dish = stub_model(Dish, :name => "Salade")
     @nesting = ItemCategoriesControllerDishNesting.new(@dish.id)
-    Dish.stub!(:find_by_id).with(@dish.id).and_return(@dish)
+    Dish.stub(:find_by_id).with(@dish.id).and_return(@dish)
   end
 
   it "should create path bars starting from dishes" do

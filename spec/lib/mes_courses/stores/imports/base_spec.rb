@@ -271,7 +271,7 @@ module MesCourses
           end
 
           it "should continue on badly formed store items" do
-            @store.stub!(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
+            @store.stub(:register_item).and_raise(ActiveRecord::RecordInvalid.new(Item.new))
 
             no_exception_should_climb_up_the_stack
           end

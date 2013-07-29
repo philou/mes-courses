@@ -82,7 +82,7 @@ describe Cart do
       @store = Store.new(:url => "http://www.a-store.com")
       @store_session = stub(MesCourses::Stores::Carts::Session).as_null_object
       @order = Order.new
-      @order.stub!(:save!)
+      @order.stub(:save!)
     end
 
     it "should empty the remote cart" do

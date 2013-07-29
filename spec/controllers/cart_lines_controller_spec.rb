@@ -101,7 +101,7 @@ describe CartLinesController do
 
     before(:each) do
       @item = stub_model(Item)
-      Item.stub!(:find).and_return(@item)
+      Item.stub(:find).and_return(@item)
     end
 
     it "should delegate to the cart" do
@@ -131,7 +131,7 @@ describe CartLinesController do
 
     before(:each) do
       @dish = stub_model(Dish)
-      Dish.stub!(:find).and_return(@dish)
+      Dish.stub(:find).and_return(@dish)
     end
 
     it "should delegate to the cart" do

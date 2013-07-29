@@ -9,14 +9,14 @@ describe ItemsController do
 
   before :each do
     @new_item = stub(Item, :id => 1, :name => "Chocolat noir à dessert")
-    Item.stub!(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)
+    Item.stub(:find_by_id).with(@new_item.id.to_s).and_return(@new_item)
 
     @old_item = stub(Item, :id => 2, :name => "Oeufs frais")
-    Item.stub!(:find_by_id).with(@old_item.id.to_s).and_return(@old_item)
+    Item.stub(:find_by_id).with(@old_item.id.to_s).and_return(@old_item)
 
     @dish = stub(Dish, :id => 3, :name => "Gateau au chocolat", :items => [@old_item])
-    @dish.stub!(:save!)
-    Dish.stub!(:find_by_id).with(@dish.id.to_s).and_return(@dish)
+    @dish.stub(:save!)
+    Dish.stub(:find_by_id).with(@dish.id.to_s).and_return(@dish)
   end
 
   [:put_create, :delete_destroy].each do |action|

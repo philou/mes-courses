@@ -81,7 +81,7 @@ describe DishesController do
   describe 'POST create' do
     before :each do
       @dish = stub_model(Dish)
-      Dish.stub!(:create!).and_return(@dish)
+      Dish.stub(:create!).and_return(@dish)
     end
 
     it "should save the posted data as a new dish" do

@@ -15,7 +15,7 @@ describe ItemCategoriesController do
     ItemCategoriesControllerStandaloneNesting.stub(:new).and_return(@nesting)
 
     @dish = stub_model(Dish, :name => "Hamburger maison")
-    Dish.stub!(:find_by_id).and_return(@dish)
+    Dish.stub(:find_by_id).and_return(@dish)
   end
 
   def expect_use_of_dish_nesting
