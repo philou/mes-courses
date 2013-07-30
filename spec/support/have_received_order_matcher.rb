@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
-require 'spec_helper'
-
 RSpec::Matchers.define :have_received_order do |cart, credentials|
   match do |dummy_api|
     not dummy_api.nil? and

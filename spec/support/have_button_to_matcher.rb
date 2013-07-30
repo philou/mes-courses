@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
-
-require 'spec_helper'
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 RSpec::Matchers.define :have_button_to do |label, href, method|
   match do |response|

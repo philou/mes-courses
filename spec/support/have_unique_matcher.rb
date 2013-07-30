@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2013 by Philippe Bourgau
 
-require 'spec_helper'
-
 # Matcher to verify that a hash's key is unique in a collection of other hashes
 # a full class is required to implement the in method
 # Use like: hash.should have_unique(:id).in(hashes)
