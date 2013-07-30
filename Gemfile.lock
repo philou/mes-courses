@@ -337,7 +337,7 @@ DEPENDENCIES
   rack-cache
   rack-ssl-enforcer
   rails
-  rspec-rails (>= 2.12.0)
+  rspec-rails
   sass-rails
   spork
   sqlite3

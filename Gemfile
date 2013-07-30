@@ -31,7 +31,7 @@ group :assets do
 end
 
 # testing tools, required in watchdog prod env
-gem 'rspec-rails', '>= 2.12.0'
+gem 'rspec-rails'
 gem 'factory_girl_rails', :require => false # lazy require factories at each spork run
 gem 'webrat'
 gem 'cucumber-rails', :require => false
