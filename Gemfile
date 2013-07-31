@@ -2,11 +2,11 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'thin'
-gem 'rails'
+gem 'rails', '< 4.0'
 gem 'nokogiri', :require => 'nokogiri' # to avoid could not find nokogir-xxx in any of the sources while running rake db:migrate on heroku
 gem 'mechanize'
-gem 'exception_notification', :require => 'exception_notifier'
-gem 'delayed_job_active_record'
+gem 'exception_notification', '< 4.0', :require => 'exception_notifier'
+gem 'delayed_job_active_record', '< 4.0'
 gem 'workless', :group => [:production, :development] # we don't want workless poluting our tests
 gem 'heroku-api'
 gem 'foreigner'
