@@ -344,4 +344,3 @@ DEPENDENCIES
   uglifier
   webrat
   workless
-  zeus

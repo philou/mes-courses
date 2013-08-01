@@ -43,7 +43,6 @@ gem 'timecop'
 group :test, :development, :cucumber, :ci do
   gem 'jasmine'
   gem 'jasminerice'
-  gem 'zeus'
 
   gem 'guard'
   gem 'guard-rspec'
