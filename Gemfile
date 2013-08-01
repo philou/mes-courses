@@ -37,17 +37,17 @@ gem 'webrat'
 gem 'cucumber-rails', :require => false
 gem 'database_cleaner'
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
-gem 'spork'
 gem 'timecop'
 
 # developpment only tools
 group :test, :development, :cucumber, :ci do
   gem 'jasmine'
   gem 'jasminerice'
+  gem 'zeus'
 
   gem 'guard'
   gem 'guard-rspec'
-  gem 'guard-spork'
+  gem 'guard-zeus'
   gem 'guard-cucumber'
   gem 'guard-rails'
   gem 'guard-jasmine'

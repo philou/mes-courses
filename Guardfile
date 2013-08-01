@@ -15,18 +15,7 @@ guard 'rails', timeout: 60 do
   # watch(%r{^(config|lib)/.*}) # I removed the lib folder ...
 end
 
-guard 'spork', rspec_env: { 'RAILS_ENV' => 'test' }, wait: 60 do
-  watch('config/application.rb')
-  watch('config/environment.rb')
-  watch('config/environments/test.rb')
-  watch(%r{^config/initializers/.+\.rb$})
-  watch('Gemfile.lock')
-  watch('spec/spec_helper.rb') { :rspec }
-
-  # watch('test/test_helper.rb') { :test_unit }
-end
-
-guard :rspec, cli: "--drb --tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true do
+guard :rspec, cli: "--tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
