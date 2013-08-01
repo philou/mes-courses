@@ -15,14 +15,13 @@ guard 'rails', timeout: 60 do
   # watch(%r{^(config|lib)/.*}) # I removed the lib folder ...
 end
 
-guard 'spork', cucumber_env: { 'RAILS_ENV' => 'cucumber' }, rspec_env: { 'RAILS_ENV' => 'test' }, wait: 60 do
+guard 'spork', rspec_env: { 'RAILS_ENV' => 'test' }, wait: 60 do
   watch('config/application.rb')
   watch('config/environment.rb')
   watch('config/environments/test.rb')
   watch(%r{^config/initializers/.+\.rb$})
   watch('Gemfile.lock')
   watch('spec/spec_helper.rb') { :rspec }
-  watch(%r{features/support/}) { :cucumber }
 
   # watch('test/test_helper.rb') { :test_unit }
 end
@@ -48,7 +47,7 @@ guard :rspec, cli: "--drb --tag ~@slow", all_after_pass: true, all_on_start: fal
   # watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-guard 'cucumber', cli: '--drb --format progress --no-profile', all_on_start: false do
+guard 'cucumber', cli: '--format progress --no-profile', all_on_start: false do
   watch(%r{^features/.+\.feature$})
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
