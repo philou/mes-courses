@@ -9,7 +9,7 @@
 
 
 # Use a custom cucumber env so that I can use a different db than test
-ENV['RAILS_ENV'] ||= 'cucumber'
+ENV['RAILS_ENV'] ||= 'test'
 
 require 'cucumber/rails'
 require 'capybara'

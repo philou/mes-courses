@@ -25,7 +25,7 @@ Loaded this time from:
 end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] = 'test'
+ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl_rails'
@@ -73,11 +73,13 @@ RSpec.configure do |config|
   config.include(AuthenticationControllerMacros, :type => :controller)
 end
 
-# Load schema for in memory sqlite database
+# Setup sqlite in memory database for speedup
 unless on_heroku?
-  load_schema = lambda do
+  setup_sqlite_db = lambda do
+    ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+
     load "#{Rails.root.to_s}/db/schema.rb" # use db agnostic schema by default
     # ActiveRecord::Migrator.up('db/migrate') # use migrations
   end
-  silence_stream(STDOUT, &load_schema)
+  silence_stream(STDOUT, &setup_sqlite_db)
 end

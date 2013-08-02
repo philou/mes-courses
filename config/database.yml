@@ -10,12 +10,8 @@ development:
   port: 5433
 
 test: &test
-  adapter: sqlite3
-  database: ":memory:"
-
-cucumber:
   adapter: postgresql
-  database: mes_courses_cucumber
+  database: mes_courses_test
   encoding: utf8
   pool: 5
   timeout: 5000
@@ -24,6 +20,7 @@ cucumber:
   host: localhost
   port: 5433
 
+# remove when we have a segregated host to run the ci
 ci:
   adapter: postgresql
   database: mes_courses_ci

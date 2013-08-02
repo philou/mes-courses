@@ -40,7 +40,7 @@ gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
 gem 'timecop'
 
 # developpment only tools
-group :test, :development, :cucumber, :ci do
+group :test, :development, :ci do
   gem 'jasmine'
   gem 'jasminerice'
 
