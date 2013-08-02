@@ -44,9 +44,10 @@ group :test, :development, :ci do
   gem 'jasmine'
   gem 'jasminerice'
 
+  gem 'spring'
+
   gem 'guard'
   gem 'guard-rspec'
-  gem 'guard-zeus'
   gem 'guard-cucumber'
   gem 'guard-rails'
   gem 'guard-jasmine'

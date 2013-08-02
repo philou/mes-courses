@@ -2,7 +2,6 @@
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
 require "fileutils"
-require "mes_courses/stores/dummy_constants"
 
 class Array
 

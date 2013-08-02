@@ -58,6 +58,8 @@
 ***** les bases ne sont pas construites pour autre chose que RAILS_ENV=test ...
 ***** TODO change my computer
 ***** TODO avoir une vm pour l'environement d'integ, et merger tous les envs (test, cucumber et ci)
+****** DONE merge cucumber and test
+****** TODO regarder les container linux !
 **** TODO use an unique real_dummy_store dir per feature
 **** TODO add something to the env setup script to make sure all dbs are created
 **** TODO add something to the ci script to prepare the parallel dbs
@@ -131,7 +133,7 @@
 ** use emacs packaging system
 * [DESIGN] remove if on_heroku? from application.rb by providing special envs or the like
 ** TODO fix the cucumber env warning message
-** TODO make sqlite in memory db an env var option instead of a test env enforcement http://pivotallabs.com/parallelize-your-rspec-suite/
+** DONE make sqlite in memory db an env var option instead of a test env enforcement http://pivotallabs.com/parallelize-your-rspec-suite/
 ** prod : heroku
 ** integ : ci
 ** dev : local

@@ -2,20 +2,22 @@
 # More info at https://github.com/guard/guard#readme
 #
 # other possible guards
+# - bundler to install/update the bundle
 # - livereload to refresh the browser views
-# - bundler to install/update the browser
 # - migrate to migrate db
 # - shell to run shell scripts (csslint ?)
 # - rake to run rake tasks
 
-guard 'rails', zeus: true, timeout: 60 do
+
+guard 'rails', timeout: 60 do
   watch('Gemfile.lock')
   watch(%r{^(config)/.*})
 
   # watch(%r{^(config|lib)/.*}) # I removed the lib folder ...
 end
 
-guard :rspec, cli: "--tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true, zeus: true, bundler: false do
+
+guard :rspec, cli: "--tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true, spring: true, bundler: false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -36,7 +38,8 @@ guard :rspec, cli: "--tag ~@slow", all_after_pass: true, all_on_start: false, ke
   # watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-guard 'cucumber', all_on_start: false, cli: '--format progress --no-profile', command_prefix: 'zeus', bundler: false do
+
+guard 'cucumber', all_on_start: false, cli: '--format progress --no-profile', command_prefix: 'spring', bundler: false do
   watch(%r{^features/.+\.feature$})
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
