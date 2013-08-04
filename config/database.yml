@@ -9,7 +9,7 @@ development:
   host: localhost
   port: 5433
 
-test: &test
+test:
   adapter: postgresql
   database: mes_courses_test
   encoding: utf8

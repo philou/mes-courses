@@ -1,3 +1,14 @@
+* [DEVENV] write custom dish management commands
+** TODO create a module to include from the console
+** TODO create a script to start the console with this module loaded on an heroku instance
+** TODO add custom methods to this module
+*** TODO have something to dump the results in tables in the console
+*** TODO list all used items
+*** TODO list used and unavailable items
+*** TODO search all items with some piece of name
+*** TODO search all used items with some piece of name
+*** TODO replace an item by another everywhere it is used
+*** TODO renomer un plat
 * [DEVENV] speed up integration
 ** DONE diminish the stores items api tests @range
 ** DONE do less login-logout during cart testing
@@ -15,6 +26,9 @@
 *** DONE modify the parallel_exec to start_parallel_exec & end_parallel_exec
 **** TODO see if there is something like futures in ruby
 *** DONE start the deployments at the begining of the script
+** TODO allow to run ci while running test in dev
+*** TODO setup vms or containers
+*** TODO check vagrant and vagrant-lxc
 ** TODO write the time taken by each thread
 ** TODO isolate auchan direct api into its gem : 4"30' to gain
 *** would the integ script be independent from this gem ? -> YES ! it would be faster
@@ -65,7 +79,6 @@
 **** TODO add something to the ci script to prepare the parallel dbs
 *** use an integration server
 *** migrate to github if it handles continuous integration
-
 * [HEROKU] use vagrant or chef to completly setup virtual dev envs
 ** try lxc containers instead of vms
 ** wait until I have a good laptop
