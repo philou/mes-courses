@@ -1,30 +1,13 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2013 by Philippe Bourgau
 
-class Cucumber::Ast::Table
-  def each_item
-    hashes.each do |row|
-      attributes = downcase_keys(row)
-
-      cat = attributes.delete("category")
-      sub_cat = attributes.delete("sub category")
-      item = attributes.delete("item")
-
-      yield cat, sub_cat, item, attributes
-    end
-  end
-
-  private
-  def downcase_keys(hash)
-    attributes = {}
-    hash.each do |k, v|
-      attributes[k.downcase] = v
-    end
-    attributes
-  end
-end
-
 module KnowsItems
+
+  def create_items(table)
+    table.hashes.each do |row|
+      item = FactoryGirl.create(:item_with_categories, row)
+    end
+  end
 
   def there_should_be_the_following_items(table)
     visit_every_item_in(table) do |page, item, attributes|
@@ -61,6 +44,7 @@ module KnowsItems
   end
 
   private
+
 
   def visit_every_item_in(table)
     table.each_item do |category, sub_category, item, attributes|

@@ -13,4 +13,6 @@ CAPTURE_STORE_NAME = Transform(/^(a|the) ?"?([^" ]*)"? store$/) do |_prefix, sto
   end
 end
 
-
+CAPTURE_AMOUNT = Transform(/^(\d+(\.\d+)?)€$/) do |whole, _fraction|
+  whole.to_f
+end

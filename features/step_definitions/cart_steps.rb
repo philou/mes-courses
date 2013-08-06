@@ -14,6 +14,10 @@ Given(/^I have items in my cart$/) do
   put_in_the_cart(1, item.name)
 end
 
+When(/^I empty the cart$/) do
+  empty_the_cart
+end
+
 When(/^I transfer my cart to the store$/) do
   enter_valid_store_account_identifiers
   start_transfering_the_cart
@@ -61,8 +65,20 @@ When(/^the transfer is completely finished$/) do
   current_route_should_be(:order_login_path, /\d+/)
 end
 
+Then(/^the cart should contain$/) do |table|
+  the_cart_should_contain_items(table)
+end
+
 Then(/^there should be "([^"]*)" in my cart"?$/) do |item_name|
-  the_cart_should_contain(item_name)
+  the_cart_should_contain_item(1, item_name)
+end
+
+Then(/^the cart should not contain any item$/) do
+  the_cart_should_not_contain_any_item
+end
+
+Then(/^the cart should amount to (#{CAPTURE_AMOUNT})$/) do |price|
+  the_cart_should_amount_to(price)
 end
 
 Then(/^I should see that between (#{CAPTURE_PERCENTAGE}) and (#{CAPTURE_PERCENTAGE}) of the cart have been transfered to (#{CAPTURE_STORE_NAME})$/) do |min_progress, max_progress, store_name|

@@ -3,26 +3,38 @@
 
 module KnowsCart
 
-  def put_in_the_cart(quantity, item_name)
-    # maybe it would be to better find out how not to use side effects of functions
-    item = Item.find_by_name(item_name)
-    throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
-
-    # this won't work if I have many items with the same item category
-    quantity.times do
-      visit item_category_path(item.item_categories.first)
-      click_button("Ajouter au panier")
+  def buy_items(table)
+    table.each_item_quantity_and_name do |quantity, item_name|
+      put_in_the_cart(quantity, item_name)
     end
   end
 
+  def put_in_the_cart(quantity, item_name)
+    item = Item.find_by_name(item_name)
+    throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
+
+    quantity.times do
+      visit item_category_path(item.item_categories.first)
+      within(:xpath, "//div[@id='items-panel']//tr[td/text()='#{item.name}']") do
+        click_button('Ajouter au panier')
+      end
+    end
+  end
+
+  def empty_the_cart
+    visit_cart_page
+
+    click_button('Vider le panier')
+  end
+
   def enter_valid_store_account_identifiers
-    visit path_to("the cart page")
+    visit_cart_page
     fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_login)
     fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.valid_password)
   end
 
   def enter_invalid_store_account_identifiers
-    visit path_to("the cart page")
+    visit_cart_page
     fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_login)
     fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.invalid_password)
   end
@@ -60,9 +72,27 @@ module KnowsCart
     @cart_transfer_thread.join
   end
 
-  def the_cart_should_contain(item_name)
-    visit path_to("the cart page")
-    page.should have_content(item_name)
+  def the_cart_should_contain_items(table)
+    table.each_item_quantity_and_name do |quantity, item_name|
+      the_cart_should_contain_item(quantity, item_name)
+    end
+  end
+
+  def the_cart_should_contain_item(quantity, item_name)
+    item = Item.find_by_name(item_name)
+
+    visit_cart_page
+    expect(page).to contain_a(cart_line_with_long_name_and_quantity(item.long_name, quantity))
+  end
+
+  def the_cart_should_not_contain_any_item
+    visit_cart_page
+    expect(page).not_to contain_a(cart_line)
+  end
+
+  def the_cart_should_amount_to(price)
+    visit_cart_page
+    expect(find(:xpath, "//tr[td/text()='Total']/td[contains(.,'€')]").text.to_f).to eq(price)
   end
 
   def the_transfer_should_be_ongoing(options)
@@ -89,6 +119,12 @@ module KnowsCart
 
     expect(page).to have_content("Votre panier a été transféré à '#{store_name}'")
     expect(page).to have_xpath("//form[@action='#{cart_api.login_url}']")
+  end
+
+  private
+
+  def visit_cart_page
+    visit path_to("the cart page")
   end
 
 end

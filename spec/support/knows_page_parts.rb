@@ -43,6 +43,18 @@ module KnowsPageParts
     dish_with_name(name).that("is enabled", "[//input[@type='submit' and not(@disabled)]]")
   end
 
+  def cart_line
+    PagePart.new("a cart line", "//tr[not(td/text()='Total')]")
+  end
+
+  def cart_line_with_long_name(long_name)
+    cart_line.that("is named #{long_name}", "[td/text()='#{long_name}']")
+  end
+
+  def cart_line_with_long_name_and_quantity(long_name, quantity)
+    cart_line_with_long_name(long_name).that("has quantity #{quantity}", "[td[contains(.,'#{quantity} x')]]")
+  end
+
   def blog_body
     PagePart.new("a blog body", "//body[@id='blog']")
   end

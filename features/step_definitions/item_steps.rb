@@ -1,6 +1,10 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
+Given(/^the items$/) do |table|
+  create_items(table)
+end
+
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
   @item = categorized_item(category_name, sub_category_name, :name => item_name)
   @item.remote_id = @item.id
@@ -20,6 +24,14 @@ Given /^the following items are disabled$/ do |item_table|
     item = sub_category.items.find_by_name(item_name)
     item.disable
   end
+end
+
+Given(/^I bought the items$/) do |table|
+  buy_items(table)
+end
+
+When(/^I buy the items$/) do |table|
+  buy_items(table)
 end
 
 Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|
