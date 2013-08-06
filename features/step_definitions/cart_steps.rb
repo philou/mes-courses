@@ -5,10 +5,6 @@ Given(/^there (are|is) "([^"]*)" in the cart"?$/) do |_, item_name|
   put_in_the_cart(1, item_name)
 end
 
-Given(/^there are (\d+) "([^"]*)" in the cart"?$/) do |quantity, item_name|
-  put_in_the_cart(quantity.to_i, item_name)
-end
-
 Given(/^I have items in my cart$/) do
   item = categorized_item("Marché", "Du jour")
   put_in_the_cart(1, item.name)

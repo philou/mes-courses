@@ -35,10 +35,6 @@ Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path.should == path_to(page_name)
 end
 
-Then /^I should see a link "([^\"]*)" to "([^\"]*)"$/ do |text, url|
-  page.should have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
-end
-
 Then /^the "([^"]*)" field of the "([^"]*)" should be "([^"]*)""?$/ do |field, form, value|
   page.should have_xpath("//form[@id='#{form}']/input[@name='#{form}[#{field}]'][@value='#{value}']")
 end
