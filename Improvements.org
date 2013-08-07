@@ -100,6 +100,12 @@
 ** voir comment faire un break on exception
 ** try pry
 * [DEVENV] réduire la maintenance due aux updates de stack et OS
+** Le problème : ce sont des grandes migrations, qui prennent du temps
+   et qui ont des dépendances. Il est courant d'avoir un bug de prod pendant
+   qu'on migre. On pourrait régler tout ça avec une autre branche de dev, mais
+   si jamais la migration demande une mise à jour de l'OS ou des paquets installés
+   au niveau de l'OS (on sort de rbenv) alors, ça commence à poser des problèmes, et
+   on se retrouve aec un besoin de VMs.
 ** le faire le plus souvent possible
 ** OS
 *** le meme que dans la stack heroku ? (LTS, vieille)
@@ -118,6 +124,8 @@
 **** grande résolution
 **** léger
 *** ou bien changer le ssd pour avoir plusieurs installations d'ubuntu, mais sans vm
+**** utiliser une partition pour installer un container qui correspond à l'intégration (caractéristiques proches d'une vm heroku)
+**** utiliser une install/partition différente pour mes-courses-dev et pour le reste de ce que je fais sur mon pc
 ** utiliser Chef, Puppet ou autre pour setuper les VMs de devs
 ** avoir le script pour setuper la vms dans le code
 * [DESIGN] replace the place matches by an extension to capybara/webrat #within that associates a name to a selector
