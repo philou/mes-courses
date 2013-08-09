@@ -109,7 +109,7 @@ module MesCourses
           it "should call start_import before registering items" do
             given_a_store_with_items
 
-            @store.should_receive(:starting_import).once
+            expect(@store).to receive(:starting_import).once
 
             import
 
@@ -119,7 +119,7 @@ module MesCourses
           it "should call stop_import after registering items" do
             given_a_store_with_items
 
-            @store.should_receive(:finishing_import).once
+            expect(@store).to receive(:finishing_import).once
 
             import
 
@@ -130,7 +130,7 @@ module MesCourses
             given_a_store_with_root_categories
 
             @root_categories.each do |category|
-              @store.should_receive(:register_item_category).with(category.attributes.merge(:parent => nil))
+              expect(@store).to receive(:register_item_category).with(category.attributes.merge(:parent => nil))
             end
 
             import
@@ -140,7 +140,7 @@ module MesCourses
             given_a_store_with_sub_categories
 
             @sub_categories.each do |sub_category|
-              @store.should_receive(:register_item_category).with(sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil)))
+              expect(@store).to receive(:register_item_category).with(sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil)))
             end
 
             import
@@ -150,7 +150,7 @@ module MesCourses
             given_a_store_with_items
 
             @items.each do |item|
-              @store.should_receive(:register_item).with(item.attributes.merge(:item_categories => [@sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil))]))
+              expect(@store).to receive(:register_item).with(item.attributes.merge(:item_categories => [@sub_category.attributes.merge(:parent => @root_category.attributes.merge(:parent => nil))]))
             end
 
             import
@@ -176,7 +176,7 @@ module MesCourses
 
           def it_should_register_visited_urls_for(walkers)
             walkers.each do |walker|
-              @store.should_receive(:register_visited_url).with(walker.uri.to_s)
+              expect(@store).to receive(:register_visited_url).with(walker.uri.to_s)
             end
 
             import
@@ -204,14 +204,14 @@ module MesCourses
 
           it "should start a new import if the last one finished" do
             @store.stub(:last_import_finished?).and_return(true)
-            @store.should_receive(:starting_import)
+            expect(@store).to receive(:starting_import)
 
             import
           end
 
           it "should not start a new import if the last one did not finish" do
             @store.stub(:last_import_finished?).and_return(false)
-            @store.should_not_receive(:starting_import)
+            expect(@store).not_to receive(:starting_import)
 
             import
           end
@@ -219,7 +219,7 @@ module MesCourses
           it "should ask if urls were already visited with string uris" do
             uris = [@store_api.uri, @root_categories.first.uri, @sub_categories.first.uri, @items.first.uri]
 
-            @store.should_receive(:already_visited_url?).with(instance_of(String)).exactly(uris.size).and_return(false)
+            expect(@store).to receive(:already_visited_url?).with(instance_of(String)).exactly(uris.size).and_return(false)
 
             import
           end
@@ -227,8 +227,8 @@ module MesCourses
           it "should not register item categories if urls were visited" do
             @store.stub(:already_visited_url?).and_return(true)
 
-            @store.should_not_receive(:register_item_category)
-            @store.should_not_receive(:register_item)
+            expect(@store).not_to receive(:register_item_category)
+            expect(@store).not_to receive(:register_item)
 
             import
           end
@@ -236,8 +236,8 @@ module MesCourses
           it "should not register items if urls were visited" do
             @store.stub(:already_visited_url?).with(@item.uri.to_s).and_return(true)
 
-            @store.should_receive(:register_item_category).twice
-            @store.should_not_receive(:register_item)
+            expect(@store).to receive(:register_item_category).twice
+            expect(@store).not_to receive(:register_item)
 
             import
           end

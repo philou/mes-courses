@@ -27,7 +27,7 @@ describe "layouts/blog" do
   end
 
   it "renders a post archive" do
-    view.should_receive(:blog_posts_archive_tag)
+    expect(view).to receive(:blog_posts_archive_tag)
     render
     expect(rendered).to contain_a(blog_sidebar_section("archive"))
   end

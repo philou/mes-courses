@@ -29,13 +29,13 @@ module MesCourses
         end
 
         it "should call logout when everything went well" do
-          @thing.should_receive(:logout).once
+          expect(@thing).to receive(:logout).once
 
           @thing.with_logout {|t|}
         end
 
         it "should call logout even if an exception was raised" do
-          @thing.should_receive(:logout).once
+          expect(@thing).to receive(:logout).once
           begin
             @thing.with_logout { |t| raise RuntimeError.new }
           rescue

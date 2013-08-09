@@ -98,7 +98,7 @@ describe Order do
     end
 
     it "should forward the cart instance to the store" do
-      @cart.should_receive(:forward_to).with(instance_of(MesCourses::Stores::Carts::Session), @order)
+      expect(@cart).to receive(:forward_to).with(instance_of(MesCourses::Stores::Carts::Session), @order)
 
       pass_order
     end

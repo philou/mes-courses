@@ -171,7 +171,7 @@ describe OrdersController do
     end
 
     it "should pass the order asynchronously, later" do
-      MesCourses::Stores::Carts::DummyApi.should_not_receive(:login)
+      expect(MesCourses::Stores::Carts::DummyApi).not_to receive(:login)
 
       forward_to_valid_store_account
     end

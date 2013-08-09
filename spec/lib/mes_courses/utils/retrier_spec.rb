@@ -21,14 +21,14 @@ module MesCourses
       end
 
       it "should forward calls to the wrapped object" do
-        @wrapped.should_receive(:command)
+        expect(@wrapped).to receive(:command)
 
         @retrier.command
       end
 
       it "should forward arguments to the wrapped object" do
         args = [:a, :b, :c]
-        @wrapped.should_receive(:complex_op).with(*args)
+        expect(@wrapped).to receive(:complex_op).with(*args)
 
         @retrier.complex_op(*args)
       end
@@ -83,19 +83,19 @@ module MesCourses
       end
 
       it "should retry the specified times in case of exception" do
-        @wrapped.should_receive(:throwing).exactly(@max_retries).times
+        expect(@wrapped).to receive(:throwing).exactly(@max_retries).times
 
         expect(lambda { @retrier.throwing }).to raise_error(RuntimeError)
       end
 
       it "should not retry for the ignored excption" do
-        @wrapped.should_receive(:throwing).once.and_raise(@ignored_exception.new)
+        expect(@wrapped).to receive(:throwing).once.and_raise(@ignored_exception.new)
 
         expect(lambda { @retrier.throwing }).to raise_error(@ignored_exception)
       end
 
       it "should wait the specified time between retries" do
-        @retrier.should_receive(:sleep).with(@sleep_delay).exactly(@max_retries-1).times
+        expect(@retrier).to receive(:sleep).with(@sleep_delay).exactly(@max_retries-1).times
 
         expect(lambda { @retrier.throwing }).to raise_error(RuntimeError)
       end

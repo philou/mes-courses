@@ -86,7 +86,7 @@ describe DishesController do
 
     it "should save the posted data as a new dish" do
       attributes = { "name" => "Salade grecque" }
-      Dish.should_receive(:create!).with(attributes)
+      expect(Dish).to receive(:create!).with(attributes)
 
       post 'create', :dish => attributes
     end

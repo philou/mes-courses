@@ -46,7 +46,7 @@ describe Item do
 
     it "should run tokenizer when indexing" do
       tokens = %w(token1 token2)
-      MesCourses::Utils::Tokenizer.should_receive(:run).with(@item.long_name).and_return(tokens)
+      expect(MesCourses::Utils::Tokenizer).to receive(:run).with(@item.long_name).and_return(tokens)
 
       @item.index
 
@@ -93,7 +93,7 @@ describe Item do
     end
 
     it "should directly search items when it has no children" do
-      Item.should_receive(:where).
+      expect(Item).to receive(:where).
         with(/item_category_id = :category_id/, hash_including(:category_id => @legumes.id)).
         and_return(join_mock)
 
@@ -107,7 +107,7 @@ describe Item do
     end
 
     it "should search in sub categories when it has no parent" do
-      Item.should_receive(:where).
+      expect(Item).to receive(:where).
         with(/item_category_id in \(:category_ids\)/, hash_including(:category_ids => [@legumes.id,@fruits.id])).
         and_return(join_mock)
 
@@ -115,7 +115,7 @@ describe Item do
     end
 
     it "should search all items when root category is specified" do
-      Item.should_receive(:where).and_return(join_mock)
+      expect(Item).to receive(:where).and_return(join_mock)
 
       expect(Item.search_by_string_and_category("tomates", ItemCategory.root)).to eq @expected
     end
@@ -123,7 +123,7 @@ describe Item do
     it "should search in tokens column" do
       search_string = "poulet"
 
-      Item.should_receive(:where).
+      expect(Item).to receive(:where).
         with(/items.tokens like :token0/, hash_including(:token0 => "%#{search_string}%")).
         exactly(3).times.
         and_return(join_mock)
@@ -138,7 +138,7 @@ describe Item do
       tokens = %w(poulet salade)
       MesCourses::Utils::Tokenizer.stub(:run).and_return(tokens)
 
-      Item.should_receive(:where).
+      expect(Item).to receive(:where).
         with(/items.tokens like :token0 and items.tokens like :token1/, hash_including(:token0 => "%#{tokens[0]}%", :token1 => "%#{tokens[1]}%")).
         exactly(3).times.
         and_return(join_mock)

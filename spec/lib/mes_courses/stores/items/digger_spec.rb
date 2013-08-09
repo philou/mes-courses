@@ -17,7 +17,7 @@ module MesCourses
 
         it "creates sub walkers for each link it finds" do
           @links.each do |link|
-            @factory.should_receive(:new).with(link, anything, anything)
+            expect(@factory).to receive(:new).with(link, anything, anything)
           end
 
           @digger.sub_walkers(@page, nil).to_a
@@ -27,7 +27,7 @@ module MesCourses
           father = double("Father walker")
 
           @links.each_with_index do |link, index|
-            @factory.should_receive(:new).with(link, father, index)
+            expect(@factory).to receive(:new).with(link, father, index)
           end
 
           @digger.sub_walkers(@page, father).to_a

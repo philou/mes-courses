@@ -20,13 +20,13 @@ module MesCourses
 
         context "when starting import" do
           it "should mark existing items from the store when starting import" do
-            @store.should_receive(:mark_existing_items)
+            expect(@store).to receive(:mark_existing_items)
             @i_store.starting_import
           end
 
           it "should check if there are visited urls to know if the last import finished" do
             finished = true
-            @store.should_receive(:are_there_visited_urls?).and_return(finished)
+            expect(@store).to receive(:are_there_visited_urls?).and_return(finished)
             expect(@i_store.last_import_finished?).to eq !finished
           end
         end
@@ -37,19 +37,19 @@ module MesCourses
           end
 
           it "should clean up sold out items" do
-            @store.should_receive(:disable_sold_out_items).ordered
-            @store.should_receive(:delete_unused_items).ordered
-            @store.should_receive(:delete_unused_item_categories).ordered
+            expect(@store).to receive(:disable_sold_out_items).ordered
+            expect(@store).to receive(:delete_unused_items).ordered
+            expect(@store).to receive(:delete_unused_item_categories).ordered
           end
 
           it "should delete visited urls" do
-            @store.should_receive(:delete_visited_urls)
+            expect(@store).to receive(:delete_visited_urls)
           end
 
           it "should not send an email if no dish are broken" do
             @store.stub(:find_sold_out_items).and_return([FactoryGirl.build_stubbed(:item_with_categories)])
 
-            BrokenDishesReporter.should_not_receive(:email)
+            expect(BrokenDishesReporter).not_to receive(:email)
           end
 
           context "when there are broken dishes" do
@@ -60,8 +60,8 @@ module MesCourses
             end
 
             it "should send an email with broken dishes" do
-              BrokenDishesReporter.should_receive(:email).with(@dish_breaking_items).and_return(email = double("Email"))
-              email.should_receive(:deliver)
+              expect(BrokenDishesReporter).to receive(:email).with(@dish_breaking_items).and_return(email = double("Email"))
+              expect(email).to receive(:deliver)
             end
 
           end
@@ -76,8 +76,8 @@ module MesCourses
           argument = {:parent => nil}
           new_record = ItemCategory.new
 
-          ItemCategory.should_receive(:new).with(argument.merge(:parent => ItemCategory.root)).and_return(new_record)
-          @store.should_receive(:register!).with(new_record)
+          expect(ItemCategory).to receive(:new).with(argument.merge(:parent => ItemCategory.root)).and_return(new_record)
+          expect(@store).to receive(:register!).with(new_record)
 
           result = @i_store.register_item_category(argument)
 
@@ -98,12 +98,12 @@ module MesCourses
 
           it "should ask to its store if an url was already visited" do
             visited = true
-            @store.should_receive(:already_visited_url?).with(@url).and_return(visited)
+            expect(@store).to receive(:already_visited_url?).with(@url).and_return(visited)
             expect(@i_store.already_visited_url?(@url)).to be(visited)
           end
 
           it "should register visited urls to its store" do
-            @store.should_receive(:register_visited_url).with(@url)
+            expect(@store).to receive(:register_visited_url).with(@url)
             @i_store.register_visited_url(@url)
           end
         end
@@ -116,13 +116,13 @@ module MesCourses
           end
 
           it "should check if the item has changed" do
-            @known_item.should_receive(:equal_to_attributes?).with(@attributes).and_return(false)
+            expect(@known_item).to receive(:equal_to_attributes?).with(@attributes).and_return(false)
             @i_store.register_item(@attributes)
           end
 
           context "that did not change" do
             it "should not register any item" do
-              @store.should_not_receive(:register!)
+              expect(@store).not_to receive(:register!)
               @i_store.register_item(@attributes)
             end
 
@@ -142,12 +142,12 @@ module MesCourses
             end
 
             it "should update the item" do
-              @known_item.should_receive(:attributes=).with(@attributes)
+              expect(@known_item).to receive(:attributes=).with(@attributes)
               @i_store.register_item(@attributes)
             end
 
             it "should register the modified item" do
-              @store.should_receive(:register!).with(@known_item)
+              expect(@store).to receive(:register!).with(@known_item)
               @i_store.register_item(@attributes)
             end
 
@@ -168,7 +168,7 @@ module MesCourses
           @store.stub(:known_item_category).with(name).and_return(known_item_category)
           known_item_category.stub(:equal_to_attributes?).and_return(true)
 
-          @store.should_not_receive(:register!)
+          expect(@store).not_to receive(:register!)
 
           @i_store.register_item_category(attributes)
         end
@@ -177,8 +177,8 @@ module MesCourses
         def should_register_in_store(message, argument, recordType)
           new_record = recordType.new
 
-          recordType.should_receive(:new).with(argument).and_return(new_record)
-          @store.should_receive(:register!).with(new_record)
+          expect(recordType).to receive(:new).with(argument).and_return(new_record)
+          expect(@store).to receive(:register!).with(new_record)
 
           result = @i_store.send(message, argument)
 
@@ -186,7 +186,7 @@ module MesCourses
         end
 
         def should_tell_the_store_that_item_is_not_sold_out(item_hash)
-          @store.should_receive(:mark_not_sold_out).with(instance_of(Item))
+          expect(@store).to receive(:mark_not_sold_out).with(instance_of(Item))
           @i_store.register_item(item_hash)
         end
 

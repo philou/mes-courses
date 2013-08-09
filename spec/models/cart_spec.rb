@@ -70,7 +70,7 @@ describe Cart do
     end
 
     it "should have a cart item with quantity 2" do
-      @cart.lines.first.should_receive(:increment_quantity)
+      expect(@cart.lines.first).to receive(:increment_quantity)
       @cart.add_item(@bavette)
     end
   end
@@ -86,21 +86,21 @@ describe Cart do
     end
 
     it "should empty the remote cart" do
-      @store_session.should_receive(:empty_the_cart)
+      expect(@store_session).to receive(:empty_the_cart)
       forward_to_store
     end
 
     it "should forward its lines" do
       fill_the_cart
       @cart.lines.each do |line|
-        line.should_receive(:forward_to).with(@store_session)
+        expect(line).to receive(:forward_to).with(@store_session)
       end
 
       forward_to_store
     end
 
     it "should not add missing cart lines" do
-      @order.should_not_receive(:add_missing_cart_lines)
+      expect(@order).not_to receive(:add_missing_cart_lines)
 
       forward_to_store
     end
@@ -110,7 +110,7 @@ describe Cart do
 
       missing_lines = @cart.lines[2..3]
       missing_lines.each { |line| line.stub(:forward_to).and_raise(MesCourses::Stores::Carts::UnavailableItemError) }
-      missing_lines.each { |line| @order.should_receive(:add_missing_cart_line).with(line)}
+      missing_lines.each { |line| expect(@order).to receive(:add_missing_cart_line).with(line)}
 
       forward_to_store
     end
@@ -118,7 +118,7 @@ describe Cart do
     it "should update the count of forwarded lines after each" do
       fill_the_cart
 
-      @order.should_receive(:notify_forwarded_cart_line).exactly(@cart.lines.size).times
+      expect(@order).to receive(:notify_forwarded_cart_line).exactly(@cart.lines.size).times
 
       forward_to_store
     end
@@ -126,7 +126,7 @@ describe Cart do
     it "should save the order after each cart line is forwarded" do
       fill_the_cart
 
-      @order.should_receive(:save!).exactly(@cart.lines.size).times
+      expect(@order).to receive(:save!).exactly(@cart.lines.size).times
 
       forward_to_store
     end

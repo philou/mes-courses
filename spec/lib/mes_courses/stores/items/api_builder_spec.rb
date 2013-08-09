@@ -30,7 +30,7 @@ module MesCourses
           it "initializes nested definition through its block" do
             ApiBuilder.stub(:new).and_return(builder = double(ApiBuilder))
 
-            builder.should_receive(:complex_builder_initialization)
+            expect(builder).to receive(:complex_builder_initialization)
 
             ApiBuilder.define(@api_class, Digger) do
               complex_builder_initialization
@@ -56,13 +56,13 @@ module MesCourses
             end
 
             it "tells the store api how to find sub #{sub_definition}" do
-              @api.should_receive("#{sub_definition}_digger=").with(@digger)
+              expect(@api).to receive("#{sub_definition}_digger=").with(@digger)
 
               @builder.send(sub_definition, @selector) do end
             end
 
             it "initialises the sub #{sub_definition} builder" do
-              @sub_builder.should_receive(:sub_builder_initialization)
+              expect(@sub_builder).to receive(:sub_builder_initialization)
 
               @builder.send(sub_definition, @selector) do
                 sub_builder_initialization
@@ -73,7 +73,7 @@ module MesCourses
           it "tells the store api how to parse attributes" do
             scrap_attributes_block = Proc.new { |page| @scrap_attributes_block_is_unique = true }
 
-            @api.should_receive(:scrap_attributes_block=).with(scrap_attributes_block)
+            expect(@api).to receive(:scrap_attributes_block=).with(scrap_attributes_block)
 
             @builder.attributes(&scrap_attributes_block)
           end

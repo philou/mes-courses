@@ -40,7 +40,7 @@ describe CartLinesController do
           session[:cart_id] = @cart.id
           Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
 
-          Cart.should_not_receive(:create)
+          expect(Cart).not_to receive(:create)
 
           instance_eval(&http_request)
         end
@@ -79,13 +79,13 @@ describe CartLinesController do
   context "when destroying the cart" do
 
     it "should empty the session cart" do
-      @cart.should_receive(:empty)
+      expect(@cart).to receive(:empty)
 
       delete :destroy_all
     end
 
     it "should save the modified cart" do
-      @cart.should_receive(:save!)
+      expect(@cart).to receive(:save!)
 
       delete :destroy_all
     end
@@ -105,13 +105,13 @@ describe CartLinesController do
     end
 
     it "should delegate to the cart" do
-      @cart.should_receive(:add_item).with(@item)
+      expect(@cart).to receive(:add_item).with(@item)
 
       post_add_item
     end
 
     it "should save the modified cart" do
-      @cart.should_receive(:save!)
+      expect(@cart).to receive(:save!)
 
       post_add_item
     end
@@ -135,13 +135,13 @@ describe CartLinesController do
     end
 
     it "should delegate to the cart" do
-      @cart.should_receive(:add_dish).with(@dish)
+      expect(@cart).to receive(:add_dish).with(@dish)
 
       post_add_dish
     end
 
     it "should save the modified cart" do
-      @cart.should_receive(:save!)
+      expect(@cart).to receive(:save!)
 
       post_add_dish
     end

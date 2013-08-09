@@ -36,13 +36,13 @@ module MesCourses
       end
 
       it "calls the main task by default" do
-        sample_task.should_receive(:invoke)
+        expect(sample_task).to receive(:invoke)
         subject.invoke
       end
 
       it "calls the main task if XXX_DAY_OF_WEEK is set to today" do
         with_sample_day_of_week(Time.now) do
-          sample_task.should_receive(:invoke)
+          expect(sample_task).to receive(:invoke)
           subject.invoke
         end
       end
@@ -60,15 +60,15 @@ module MesCourses
       it "does not call the main task if XXX_DAY_OF_WEEK is set to another day" do
         one_day = 24*60*60
         with_sample_day_of_week(Time.now + one_day) do
-          sample_task.should_not_receive(:invoke)
+          expect(sample_task).not_to receive(:invoke)
           subject.invoke
         end
       end
 
       it "sends failure emails" do
         sample_task.stub(:invoke).and_throw(RuntimeError.new("It did a bad, bad thing !"))
-        CronTaskFailureReporter.should_receive(:failure).with("sample", anything()).and_return(email = double(CronTaskFailureReporter))
-        email.should_receive(:deliver)
+        expect(CronTaskFailureReporter).to receive(:failure).with("sample", anything()).and_return(email = double(CronTaskFailureReporter))
+        expect(email).to receive(:deliver)
 
         subject.invoke
       end

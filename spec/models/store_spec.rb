@@ -31,7 +31,7 @@ describe Store do
     incremental_store = double("Incremental store")
     MesCourses::Stores::Imports::Incremental.stub(:new).with(store).and_return(incremental_store)
 
-    @importer.should_receive(:import).with(robust_browser, incremental_store)
+    expect(@importer).to receive(:import).with(robust_browser, incremental_store)
 
     store.import
   end
@@ -81,14 +81,14 @@ describe Store do
     end
 
     it "should import all stores" do
-      @stores.each { |store| store.should_receive(:import) }
+      @stores.each { |store| expect(store).to receive(:import) }
 
       Store.import
     end
 
     it "update the stats first" do
-      ModelStat.should_receive(:update!).ordered
-      @stores.each { |store| store.should_receive(:import).ordered }
+      expect(ModelStat).to receive(:update!).ordered
+      @stores.each { |store| expect(store).to receive(:import).ordered }
 
       Store.import
     end
@@ -98,8 +98,8 @@ describe Store do
       end_time = Time.local(2011, 10, 29, 17, 48, 12)
       MesCourses::Utils::Timing.stub(:now).and_return(start_time, end_time)
 
-      ImportReporter.should_receive(:delta).with(end_time - start_time, anything).and_return(email = double("Email"))
-      email.should_receive(:deliver)
+      expect(ImportReporter).to receive(:delta).with(end_time - start_time, anything).and_return(email = double("Email"))
+      expect(email).to receive(:deliver)
 
       Store.import
     end
@@ -108,8 +108,8 @@ describe Store do
       expected_items = 3000
       Store.stub(:maximum).with(:expected_items).and_return(expected_items)
 
-      ImportReporter.should_receive(:delta).with(anything, expected_items).and_return(email = double("Email"))
-      email.should_receive(:deliver)
+      expect(ImportReporter).to receive(:delta).with(anything, expected_items).and_return(email = double("Email"))
+      expect(email).to receive(:deliver)
 
       Store.import
     end
@@ -122,7 +122,7 @@ describe Store do
     store = stub_model(Store)
     Store.stub(:find_or_create_by_url).with(url).and_return(store)
 
-    store.should_receive(:import)
+    expect(store).to receive(:import)
 
     Store.import(url)
   end

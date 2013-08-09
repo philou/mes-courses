@@ -18,8 +18,8 @@ describe ModelStat do
   it "should save item stats when updating" do
     ModelStat::ALL.each do |name|
       stat = ModelStat.new(:name => name)
-      ModelStat.should_receive(:find_or_initialize_by_name).with(name).and_return(stat)
-      stat.should_receive(:update_attributes!).with(:count => @stats[name][:count])
+      expect(ModelStat).to receive(:find_or_initialize_by_name).with(name).and_return(stat)
+      expect(stat).to receive(:update_attributes!).with(:count => @stats[name][:count])
     end
 
     ModelStat.update!

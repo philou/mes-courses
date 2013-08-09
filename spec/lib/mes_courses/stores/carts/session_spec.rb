@@ -34,13 +34,13 @@ module MesCourses
         it "should delegate adding items to the cart to the store api" do
           @store_api.stub(:cart_value).and_return(0.0, 5.0)
 
-          @store_api.should_receive(:add_to_cart).once.with(1, @bavette.remote_id)
+          expect(@store_api).to receive(:add_to_cart).once.with(1, @bavette.remote_id)
 
           @store_session.add_to_cart(1, @bavette)
         end
 
         it "should not ask the value if it already knows it" do
-          @store_api.should_receive(:cart_value).exactly(1).times
+          expect(@store_api).to receive(:cart_value).exactly(1).times
           2.times do
             @store_session.cart_value
           end
@@ -74,7 +74,7 @@ module MesCourses
           expect(@store_session.send(message)).to eq value
         end
         def ensure_delegates(message, args = [])
-          @store_api.should_receive(message).once.with(*args)
+          expect(@store_api).to receive(message).once.with(*args)
           @store_session.send message, *args
         end
       end

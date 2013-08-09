@@ -20,8 +20,8 @@ describe ItemCategoriesController do
 
   def expect_use_of_dish_nesting
     nesting = ItemCategoriesControllerDishNesting.new(@dish.id.to_s)
-    ItemCategoriesControllerDishNesting.should_receive(:new).with(@dish.id.to_s).and_return(nesting)
-    ItemCategoriesControllerStandaloneNesting.should_not_receive(:new)
+    expect(ItemCategoriesControllerDishNesting).to receive(:new).with(@dish.id.to_s).and_return(nesting)
+    expect(ItemCategoriesControllerStandaloneNesting).not_to receive(:new)
   end
 
   describe "GET 'index'" do
@@ -33,7 +33,7 @@ describe ItemCategoriesController do
     end
 
     it "should use a standalone nesting" do
-      ItemCategoriesControllerStandaloneNesting.should_receive(:new)
+      expect(ItemCategoriesControllerStandaloneNesting).to receive(:new)
 
       get 'index'
     end
@@ -72,7 +72,7 @@ describe ItemCategoriesController do
     end
 
     it "should use a standalone nesting" do
-      ItemCategoriesControllerStandaloneNesting.should_receive(:new)
+      expect(ItemCategoriesControllerStandaloneNesting).to receive(:new)
 
       get_show
     end
@@ -199,7 +199,7 @@ describe ItemCategoriesController do
 
       it "should assign searched items" do
         searched_items = [FactoryGirl.create(:item)]
-        Item.should_receive(:search_by_string_and_category).with(@search_string, @item_category).and_return(searched_items)
+        expect(Item).to receive(:search_by_string_and_category).with(@search_string, @item_category).and_return(searched_items)
 
         get_show_search
 
@@ -209,7 +209,7 @@ describe ItemCategoriesController do
       it "should not search with an invalid search string" do
         Item.stub(:search_string_is_valid?).and_return(false)
 
-        Item.should_not_receive(:search_by_string_and_category)
+        expect(Item).not_to receive(:search_by_string_and_category)
 
         get_show_search
       end

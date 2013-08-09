@@ -29,7 +29,7 @@ describe ItemsController do
       end
 
       it "should save the modified dish" do
-        @dish.should_receive(:save!)
+        expect(@dish).to receive(:save!)
 
         self.send(action)
       end
@@ -39,7 +39,7 @@ describe ItemsController do
   describe "put_create" do
 
     it "should add an item to the dish" do
-      @dish.items.should_receive(:push).with(@new_item)
+      expect(@dish.items).to receive(:push).with(@new_item)
 
       put_create
     end
@@ -49,7 +49,7 @@ describe ItemsController do
   describe "delete_destroy" do
 
     it "should remove an item from the dish" do
-      @dish.items.should_receive(:delete).with(@old_item)
+      expect(@dish.items).to receive(:delete).with(@old_item)
 
       delete_destroy
     end
