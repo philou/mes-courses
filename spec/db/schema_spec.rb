@@ -12,7 +12,7 @@ describe "Schema" do
       lines = lines.find_all {|line| line =~ /[^a-zA-Z0-9_]string[^a-zA-Z0-9_]/ } # get all lines with the word "string"
       lines = lines.find_all {|line| !(line =~ /t\.string\s+\"[^\"]*_type\"/)} # ignore polymorphic xxx_type columns
 
-      lines.should be_empty
+      expect(lines).to be_empty
     end
   end
 end

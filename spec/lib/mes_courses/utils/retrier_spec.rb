@@ -36,7 +36,7 @@ module MesCourses
       it "should return the result of the call to the wrapped object" do
         @wrapped.stub(:attribute).and_return(:raw_result)
 
-        @retrier.attribute.should == :raw_result
+        expect(@retrier.attribute).to eq :raw_result
       end
 
       context "when message is to be wrapped" do
@@ -45,13 +45,13 @@ module MesCourses
           @wrapped.stub(:property).and_return(:result)
           Retrier.stub(:new).with(:result, @options).and_return(:wrapped_result)
 
-          @retrier.property.should == :wrapped_result
+          expect(@retrier.property).to eq :wrapped_result
         end
 
         it "should not wrap nil result" do
           @wrapped.stub(:property).and_return(nil)
 
-          @retrier.property.should be_nil
+          expect(@retrier.property).to be_nil
         end
 
         it "should wrap array results in a new array of retriers" do
@@ -61,7 +61,7 @@ module MesCourses
           Retrier.stub(:new).with(:b, @options).and_return(:wrapped_b)
           Retrier.stub(:new).with(:c, @options).and_return(:wrapped_c)
 
-          @retrier.properties.should == [:wrapped_a, :wrapped_b, :wrapped_c]
+          expect(@retrier.properties).to eq [:wrapped_a, :wrapped_b, :wrapped_c]
         end
 
         it "should wrap content of enumerators" do
@@ -77,27 +77,27 @@ module MesCourses
 
           actual = @retrier.properties
           first = [actual.next, actual.next, actual.next]
-          first.should all_do be_an_instance_of(Retrier)
-          (first.map &:to_i).should == [0,1,2]
+          expect(first).to all_do be_an_instance_of(Retrier)
+          expect(first.map &:to_i).to eq [0,1,2]
         end
       end
 
       it "should retry the specified times in case of exception" do
         @wrapped.should_receive(:throwing).exactly(@max_retries).times
 
-        lambda { @retrier.throwing }.should raise_error(RuntimeError)
+        expect(lambda { @retrier.throwing }).to raise_error(RuntimeError)
       end
 
       it "should not retry for the ignored excption" do
         @wrapped.should_receive(:throwing).once.and_raise(@ignored_exception.new)
 
-        lambda { @retrier.throwing }.should raise_error(@ignored_exception)
+        expect(lambda { @retrier.throwing }).to raise_error(@ignored_exception)
       end
 
       it "should wait the specified time between retries" do
         @retrier.should_receive(:sleep).with(@sleep_delay).exactly(@max_retries-1).times
 
-        lambda { @retrier.throwing }.should raise_error(RuntimeError)
+        expect(lambda { @retrier.throwing }).to raise_error(RuntimeError)
       end
 
     end

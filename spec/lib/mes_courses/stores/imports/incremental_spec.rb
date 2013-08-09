@@ -27,7 +27,7 @@ module MesCourses
           it "should check if there are visited urls to know if the last import finished" do
             finished = true
             @store.should_receive(:are_there_visited_urls?).and_return(finished)
-            @i_store.last_import_finished?.should == !finished
+            expect(@i_store.last_import_finished?).to eq !finished
           end
         end
 
@@ -81,7 +81,7 @@ module MesCourses
 
           result = @i_store.register_item_category(argument)
 
-          result.should be(new_record)
+          expect(result).to be(new_record)
         end
         it "should register found items to its store" do
           should_register_in_store(:register_item, {}, Item)
@@ -99,7 +99,7 @@ module MesCourses
           it "should ask to its store if an url was already visited" do
             visited = true
             @store.should_receive(:already_visited_url?).with(@url).and_return(visited)
-            @i_store.already_visited_url?(@url).should be(visited)
+            expect(@i_store.already_visited_url?(@url)).to be(visited)
           end
 
           it "should register visited urls to its store" do
@@ -128,8 +128,8 @@ module MesCourses
 
             it "should return the known item" do
               known_item = @i_store.register_item(@attributes)
-              known_item.should be_an(Item)
-              known_item.name.should == @attributes[:name]
+              expect(known_item).to be_an(Item)
+              expect(known_item.name).to eq @attributes[:name]
             end
 
             it "should tell the store that new items are not sold out" do
@@ -152,7 +152,7 @@ module MesCourses
             end
 
             it "should return the updated item" do
-              @i_store.register_item(@attributes).should == @known_item
+              expect(@i_store.register_item(@attributes)).to eq @known_item
             end
 
             it "should tell the store that new items are not sold out" do
@@ -182,7 +182,7 @@ module MesCourses
 
           result = @i_store.send(message, argument)
 
-          result.should be(new_record)
+          expect(result).to be(new_record)
         end
 
         def should_tell_the_store_that_item_is_not_sold_out(item_hash)

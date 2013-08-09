@@ -12,7 +12,7 @@ describe "blogit/posts/_post_footer" do
     expected = rendered
 
     render "blogit/posts/post_footer", post: post
-    rendered.should == expected
+    expect(rendered).to eq expected
   end
 
 end

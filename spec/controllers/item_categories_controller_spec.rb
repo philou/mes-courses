@@ -29,7 +29,7 @@ describe ItemCategoriesController do
     it "should redirect to 'show' root item category" do
       get 'index'
 
-      response.should redirect_to(item_category_path(ItemCategory.root))
+      expect(response).to redirect_to(item_category_path(ItemCategory.root))
     end
 
     it "should use a standalone nesting" do
@@ -48,7 +48,7 @@ describe ItemCategoriesController do
       it "should redirect to 'show' root item category" do
         get 'index', :dish_id => @dish.id
 
-        response.should redirect_to(dish_item_category_path(@dish, ItemCategory.root))
+        expect(response).to redirect_to(dish_item_category_path(@dish, ItemCategory.root))
       end
 
     end
@@ -67,8 +67,8 @@ describe ItemCategoriesController do
     it "should be successful" do
       get_show
 
-      response.should be_success
-      response.should render_template("show")
+      expect(response).to be_success
+      expect(response).to render_template("show")
     end
 
     it "should use a standalone nesting" do
@@ -82,19 +82,19 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns(:search_url).should == @nesting.item_category_path
+      expect(assigns(:search_url)).to eq @nesting.item_category_path
     end
 
     it "should assign sub categories attributes" do
       get_show
 
-      assigns(:categories).should == @item_category.children
+      expect(assigns(:categories)).to eq @item_category.children
     end
 
     it "should assign items attributes" do
       get_show
 
-      assigns(:items).should == @item_category.items
+      expect(assigns(:items)).to eq @item_category.items
     end
 
     it "should assign a path bar starting with its nesting root path bar" do
@@ -102,13 +102,13 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns(:path_bar).should be_starting_with(@nesting.root_path_bar)
+      expect(assigns(:path_bar)).to be_starting_with(@nesting.root_path_bar)
     end
 
     it "should assign a path bar with current category" do
       get_show
 
-      assigns(:path_bar).should be_ending_with([path_bar_items_root,
+      expect(assigns(:path_bar)).to be_ending_with([path_bar_items_root,
                                                 path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
 
@@ -118,7 +118,7 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns(:path_bar).should be_ending_with([path_bar_items_root,
+      expect(assigns(:path_bar)).to be_ending_with([path_bar_items_root,
                                                 path_bar_element(parent_category.name, item_category_path(parent_category)),
                                                 path_bar_element(@item_category.name, item_category_path(@item_category))])
     end
@@ -130,9 +130,9 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns(:add_item_label).should == @nesting.add_item_label
-      assigns(:add_item_url_options).should == @nesting.add_item_url_options.stringify_keys
-      assigns(:add_item_html_options).should == @nesting.add_item_html_options.stringify_keys
+      expect(assigns(:add_item_label)).to eq @nesting.add_item_label
+      expect(assigns(:add_item_url_options)).to eq @nesting.add_item_url_options.stringify_keys
+      expect(assigns(:add_item_html_options)).to eq @nesting.add_item_html_options.stringify_keys
     end
 
     it "should assign show sub category link params" do
@@ -140,7 +140,7 @@ describe ItemCategoriesController do
 
       get_show
 
-      assigns(:show_sub_category_url_options).should == @nesting.show_sub_category_url_options.stringify_keys
+      expect(assigns(:show_sub_category_url_options)).to eq @nesting.show_sub_category_url_options.stringify_keys
     end
 
     describe "when showing ItemCategory root" do
@@ -150,7 +150,7 @@ describe ItemCategoriesController do
 
         get 'show', :id => ItemCategory.root.id
 
-        assigns(:path_bar).should be_ending_with([path_bar_items_root])
+        expect(assigns(:path_bar)).to be_ending_with([path_bar_items_root])
       end
 
     end
@@ -179,14 +179,14 @@ describe ItemCategoriesController do
       it "should assign a path_bar containing the searched category" do
         get_show_search
 
-        assigns(:path_bar).should be_containing([path_bar_items_root,
+        expect(assigns(:path_bar)).to be_containing([path_bar_items_root,
                                                  path_bar_element(@item_category.name, item_category_path(@item_category))])
       end
 
       it "should assign a path_bar ending with the search" do
         get_show_search
 
-        assigns(:path_bar).should be_ending_with([path_bar_element_with_no_link(@search_string)])
+        expect(assigns(:path_bar)).to be_ending_with([path_bar_element_with_no_link(@search_string)])
       end
 
       it "should assign no categories" do
@@ -194,7 +194,7 @@ describe ItemCategoriesController do
 
         get_show_search
 
-        assigns(:categories).should == []
+        expect(assigns(:categories)).to eq []
       end
 
       it "should assign searched items" do
@@ -203,7 +203,7 @@ describe ItemCategoriesController do
 
         get_show_search
 
-        assigns(:items).should == searched_items
+        expect(assigns(:items)).to eq searched_items
       end
 
       it "should not search with an invalid search string" do

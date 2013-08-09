@@ -13,7 +13,7 @@ describe "orders/logout" do
 
     render
 
-    rendered.should have_xpath("//iframe[@id='remote-store-iframe'][@src='#{@order.store_logout_url}']")
+    expect(rendered).to have_xpath("//iframe[@id='remote-store-iframe'][@src='#{@order.store_logout_url}']")
   end
 
 end

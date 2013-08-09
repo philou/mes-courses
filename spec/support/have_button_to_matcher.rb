@@ -14,14 +14,14 @@ RSpec::Matchers.define :have_button_to do |label, href, method|
                   end
 
 
-    response.should have_selector("form", :action => href, :method => form_method) do |form|
+    expect(response).to have_selector("form", :action => href, :method => form_method) do |form|
       if ['put', 'delete'].include?(method)
-        form.should have_selector("input", :type => "hidden", :name => "_method", :value => method)
+        expect(form).to have_selector("input", :type => "hidden", :name => "_method", :value => method)
       else
-        form.should_not have_selector("input", :type => "hidden", :name => "_method")
+        expect(form).not_to have_selector("input", :type => "hidden", :name => "_method")
       end
 
-      form.should have_selector("input", :type => 'submit', :value => label)
+      expect(form).to have_selector("input", :type => 'submit', :value => label)
     end
   end
 

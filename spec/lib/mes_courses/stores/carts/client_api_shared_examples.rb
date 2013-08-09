@@ -11,13 +11,13 @@ shared_examples_for "Any Client Api" do |please_login_text|
 
   it "logs in and out through HTTP" do
     @client = Mechanize.new
-    logged_in?.should(be_false, "should not be logged in at the begining")
+    expect(logged_in?).to(be_false, "should not be logged in at the begining")
 
     login
-    logged_in?.should(be_true, "should be logged in after submitting the login form")
+    expect(logged_in?).to(be_true, "should be logged in after submitting the login form")
 
     logout
-    logged_in?.should(be_false, "should he logged out after clicking the logout link")
+    expect(logged_in?).to(be_false, "should he logged out after clicking the logout link")
   end
 
   private

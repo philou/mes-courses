@@ -23,13 +23,13 @@ describe "layouts/blog" do
   it "renders a tag cloud" do
     assign(:tags, [double("tagging", name: "cuisine", count: 3)])
     render
-    rendered.should contain_a(link_to_posts_with_tag("cuisine").within_a(blog_sidebar_section("tags")))
+    expect(rendered).to contain_a(link_to_posts_with_tag("cuisine").within_a(blog_sidebar_section("tags")))
   end
 
   it "renders a post archive" do
     view.should_receive(:blog_posts_archive_tag)
     render
-    rendered.should contain_a(blog_sidebar_section("archive"))
+    expect(rendered).to contain_a(blog_sidebar_section("archive"))
   end
 end
 

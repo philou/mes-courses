@@ -28,28 +28,28 @@ module ImportReporterSpecMacros
       it "should have a subject with item count delta" do
         send_monitoring_email
 
-        @subject.should include(@stats["Item"]['% delta'])
+        expect(@subject).to include(@stats["Item"]['% delta'])
       end
 
       it "should have a subject containing \"OK\" for deltas smaller than 5%" do
         send_monitoring_email
 
-        @subject.should include("OK")
-        @subject.should_not include("WARNING")
+        expect(@subject).to include("OK")
+        expect(@subject).not_to include("WARNING")
       end
 
       it "should have a subjet containing \"WARNING\" when there are less items than expected" do
         send_monitoring_email(@total_duration, @stats[ModelStat::ITEM][:count] + 1)
 
-        @subject.should include("WARNING")
-        @subject.should_not include("OK")
+        expect(@subject).to include("WARNING")
+        expect(@subject).not_to include("OK")
       end
 
       it "should have a subjet containing \"OK\" when there are no stores to import" do
         send_monitoring_email(@total_duration, nil)
 
-        @subject.should include("OK")
-        @subject.should_not include("WARNING")
+        expect(@subject).to include("OK")
+        expect(@subject).not_to include("WARNING")
       end
 
       it "should contain a line describing the delta of each record type" do
@@ -57,14 +57,14 @@ module ImportReporterSpecMacros
 
         ModelStat::ALL.each do |record_type|
           record_stats = @stats[record_type]
-          @body.should include("#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{record_stats['% delta']}")
+          expect(@body).to include("#{record_type}: #{record_stats[:old_count]} -> #{record_stats[:count]} #{record_stats['% delta']}")
         end
       end
 
       it "should contain a line with the total import duration" do
         send_monitoring_email
 
-        @body.should include("Import took : #{@total_duration.to_pretty_duration}")
+        expect(@body).to include("Import took : #{@total_duration.to_pretty_duration}")
       end
 
       should_contain_the_logs
@@ -92,8 +92,8 @@ describe ImportReporter do
 
       send_monitoring_email
 
-      @subject.should include("WARNING")
-      @subject.should_not include("OK")
+      expect(@subject).to include("WARNING")
+      expect(@subject).not_to include("OK")
     end
 
   end

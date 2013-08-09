@@ -12,8 +12,8 @@ describe "sessions/new" do
 
     render
 
-    rendered.should contain("Mot de passe")
-    rendered.should_not contain("Password")
+    expect(rendered).to contain("Mot de passe")
+    expect(rendered).not_to contain("Password")
   end
 
 end

@@ -20,40 +20,40 @@ module MesCourses
         end
 
         it "has the uri of its page" do
-          @walker.uri.should == @page.uri
+          expect(@walker.uri).to eq @page.uri
         end
 
         it "it uses the text of its origin (ex: link) as title" do
-          @walker.title.should == @page_getter.text
+          expect(@walker.title).to eq @page_getter.text
         end
 
         context "by default" do
           it "has no items" do
-            @walker.items.should be_empty
+            expect(@walker.items).to be_empty
           end
           it "has no sub categories" do
-            @walker.categories.should be_empty
+            expect(@walker.categories).to be_empty
           end
           it "has no attributes" do
-            @walker.attributes.should be_empty
+            expect(@walker.attributes).to be_empty
           end
         end
 
         it "uses its items digger to collect its items" do
           @walker.items_digger = @digger
 
-          @walker.items.should == @sub_walkers
+          expect(@walker.items).to eq @sub_walkers
         end
         it "uses its categories digger to collect its sub categories" do
           @walker.categories_digger = @digger
 
-          @walker.categories.should == @sub_walkers
+          expect(@walker.categories).to eq @sub_walkers
         end
         it "uses its scrap attributes block to collect its attributes" do
           attributes = { :name => "Candy" }
           @walker.scrap_attributes_block = lambda { |page| attributes }
 
-          @walker.attributes.should == attributes
+          expect(@walker.attributes).to eq attributes
         end
 
         context "when troubleshooting" do
@@ -61,9 +61,9 @@ module MesCourses
           it "has a meaningfull string representation" do
             walker = Walker.new(@page_getter)
             walker.index= 23
-            walker.to_s.should include(Walker.to_s)
-            walker.to_s.should include("##{walker.index}")
-            walker.to_s.should include("@#{walker.uri}")
+            expect(walker.to_s).to include(Walker.to_s)
+            expect(walker.to_s).to include("##{walker.index}")
+            expect(walker.to_s).to include("@#{walker.uri}")
           end
           it "has a full genealogy" do
             link = double("Link")
@@ -74,7 +74,7 @@ module MesCourses
 
             genealogy = child_walker.genealogy.split("\n")
 
-            genealogy.should == [@walker.to_s, child_walker.to_s]
+            expect(genealogy).to eq [@walker.to_s, child_walker.to_s]
           end
         end
       end

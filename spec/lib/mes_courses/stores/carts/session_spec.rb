@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -51,27 +51,27 @@ module MesCourses
 
           old_value = @store_session.cart_value
           @store_session.add_to_cart(3, @pdt)
-          @store_session.cart_value.should_not == old_value
+          expect(@store_session.cart_value).not_to eq old_value
         end
 
 
         it "should throw when value of the cart does not change after adding items" do
-          lambda {
-            @store_session.add_to_cart(4, @pdt)
-          }.should raise_error(UnavailableItemError)
+          expect(lambda {
+                   @store_session.add_to_cart(4, @pdt)
+                 }).to raise_error(UnavailableItemError)
         end
 
         it "should not throw if adding 0 items" do
           @store_session.add_to_cart(0, @bavette)
 
-          lambda {
-            @store_session.add_to_cart(0, @pdt)
-          }.should_not raise_error
+          expect(lambda {
+                   @store_session.add_to_cart(0, @pdt)
+                 }).not_to raise_error
         end
 
         def ensure_delegates_read(message, value)
           @store_api.stub(message).and_return(value)
-          @store_session.send(message).should == value
+          expect(@store_session.send(message)).to eq value
         end
         def ensure_delegates(message, args = [])
           @store_api.should_receive(message).once.with(*args)

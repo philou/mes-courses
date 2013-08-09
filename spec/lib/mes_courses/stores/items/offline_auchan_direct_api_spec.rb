@@ -28,7 +28,7 @@ module MesCourses
             !price.nil?
           end.
 
-          first.should be_instance_of(Float)
+          expect(first).to be_instance_of(Float)
         end
 
         private

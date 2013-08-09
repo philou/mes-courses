@@ -21,9 +21,9 @@ describe "item_categories/show" do
   it "has a search form" do
     render
 
-    rendered.should have_xpath('//form[@id="search"]//input[@name="search[search_string]"][@type="text"]')
-    rendered.should have_xpath('//form[@id="search"]//input[@type="submit"]')
-    rendered.should have_xpath("//form[@id='search'][@method='get'][@action='#{@search_url}']")
+    expect(rendered).to have_xpath('//form[@id="search"]//input[@name="search[search_string]"][@type="text"]')
+    expect(rendered).to have_xpath('//form[@id="search"]//input[@type="submit"]')
+    expect(rendered).to have_xpath("//form[@id='search'][@method='get'][@action='#{@search_url}']")
   end
 
   describe "a category with children" do
@@ -32,7 +32,7 @@ describe "item_categories/show" do
       render
 
       @categories.each do |category|
-        rendered.should contain(category.name)
+        expect(rendered).to contain(category.name)
       end
     end
 
@@ -40,7 +40,7 @@ describe "item_categories/show" do
       render
 
       @categories.each do |category|
-        rendered.should have_selector("a", :href => url_for(@show_sub_category_url_options.merge(:id => category.id)))
+        expect(rendered).to have_selector("a", :href => url_for(@show_sub_category_url_options.merge(:id => category.id)))
       end
     end
 
@@ -61,7 +61,7 @@ describe "item_categories/show" do
         render
 
         @items.each do |item|
-          rendered.should contain(item.send(attribute).to_s)
+          expect(rendered).to contain(item.send(attribute).to_s)
         end
       end
     end
@@ -70,7 +70,7 @@ describe "item_categories/show" do
       render
 
       @items.each do |item|
-        rendered.should have_button_to(@add_item_label, url_for(@add_item_url_options.merge(:id => item.id)), @add_item_html_options[:method])
+        expect(rendered).to have_button_to(@add_item_label, url_for(@add_item_url_options.merge(:id => item.id)), @add_item_html_options[:method])
       end
     end
 
@@ -78,14 +78,14 @@ describe "item_categories/show" do
       render
 
       @items.each do |item|
-        rendered.should have_selector("img", :src => https_url(item.image))
+        expect(rendered).to have_selector("img", :src => https_url(item.image))
       end
     end
 
     it "displays the number of items" do
       render
 
-      rendered.should contain("#{@items.count} ingrédients")
+      expect(rendered).to contain("#{@items.count} ingrédients")
     end
 
     it "displays disabled items accordingly" do
@@ -94,7 +94,7 @@ describe "item_categories/show" do
 
       render
 
-      rendered.should contain_a(disabled_item_with_name(item.name))
+      expect(rendered).to contain_a(disabled_item_with_name(item.name))
     end
 
   end

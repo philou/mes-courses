@@ -25,28 +25,28 @@ When /^I delete the blog article "(.*?)"$/ do |title|
 end
 
 Then /^there should be a link to the write a new article$/ do
-  page.should have_xpath("//a[@href='/blog/posts/new'][contains(.,'Nouvel article')]")
+  expect(page).to have_xpath("//a[@href='/blog/posts/new'][contains(.,'Nouvel article')]")
 end
 
 Then /^there should be a blog article "(.*?)"$/ do |title|
   visit path_to('the blog page')
-  page.should have_content(title)
+  expect(page).to have_content(title)
 end
 
 Then /^there should not be a blog article "(.*?)"$/ do |title|
   visit path_to('the blog page')
-  page.should_not have_content(title)
+  expect(page).not_to have_content(title)
 end
 
 Then /^I should see the whole blog sidebar$/ do
-  page.should contain_a(blog_sidebar_section("about"))
-  page.should contain_a(blog_sidebar_section("tags"))
-  page.should contain_a(blog_sidebar_section("subscription"))
-  page.should contain_a(blog_sidebar_section("archive"))
+  expect(page).to contain_a(blog_sidebar_section("about"))
+  expect(page).to contain_a(blog_sidebar_section("tags"))
+  expect(page).to contain_a(blog_sidebar_section("subscription"))
+  expect(page).to contain_a(blog_sidebar_section("archive"))
 end
 
 Then /^I should see the social and navigation article footer$/ do
-  page.should contain_a(blog_post_social_bar)
-  page.should contain_a(blog_post_related_posts)
-  page.should contain_a(blog_post_disqus_comments)
+  expect(page).to contain_a(blog_post_social_bar)
+  expect(page).to contain_a(blog_post_related_posts)
+  expect(page).to contain_a(blog_post_disqus_comments)
 end

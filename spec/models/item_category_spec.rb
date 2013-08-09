@@ -9,7 +9,7 @@ describe ItemCategory do
 
   it "should have items" do
     category = ItemCategory.new(:name => "Boeuf")
-    category.items.should_not be_nil
+    expect(category.items).not_to be_nil
   end
 
   has_singleton(:root, Constants::ROOT_ITEM_CATEGORY_NAME)

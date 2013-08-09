@@ -26,11 +26,11 @@ module KnowsStoreCart
   end
 
   def then_an_empty_cart_should_be_created_in_the_store_account_of_the_user
-    cart_api.log.should include(:empty_the_cart)
+    expect(cart_api.log).to include(:empty_the_cart)
   end
 
   def then_a_non_empty_cart_should_be_created_in_the_store_account_of_the_user
-    cart_api.log.should include(:add_to_cart)
+    expect(cart_api.log).to include(:add_to_cart)
   end
 
 end

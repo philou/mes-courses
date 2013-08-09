@@ -11,35 +11,35 @@ module KnowsItems
 
   def there_should_be_the_following_items(table)
     visit_every_item_in(table) do |page, item, attributes|
-      page.should contain_an(item_with_name(item))
+      expect(page).to contain_an(item_with_name(item))
       attributes.each do |name, value|
         item_with_attribute = send("item_with_#{name}", item, value)
-        page.should contain_an(item_with_attribute)
+        expect(page).to contain_an(item_with_attribute)
       end
     end
   end
 
   def the_following_items_should_be_in_categories(table)
     visit_every_item_in(table) do |page, item|
-      page.should contain_an(item_with_name(item))
+      expect(page).to contain_an(item_with_name(item))
     end
   end
 
   def the_following_items_should_be_disabled(table)
     visit_every_item_in(table) do |page, item|
-      page.should contain_a(disabled_item_with_name(item))
+      expect(page).to contain_a(disabled_item_with_name(item))
     end
   end
 
   def the_following_items_should_have_been_deleted(table)
     visit_every_item_in(table) do |page, item|
-      page.should_not contain_a(item_with_name(item))
+      expect(page).not_to contain_a(item_with_name(item))
     end
   end
 
   def the_following_items_should_be_enabled(table)
     visit_every_item_in(table) do |page, item|
-      page.should contain_an(enabled_item_with_name(item))
+      expect(page).to contain_an(enabled_item_with_name(item))
     end
   end
 

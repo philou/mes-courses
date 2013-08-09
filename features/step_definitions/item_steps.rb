@@ -35,70 +35,70 @@ When(/^I buy the items$/) do |table|
 end
 
 Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|
-  Item.count(:conditions => {:name => name}).should == count.to_i
+  expect(Item.count(:conditions => {:name => name})).to eq count.to_i
 end
 
 Then /^all items should be organized by type and subtype$/ do
   Item.all_but_lost.each do |item|
-    item.item_categories.should_not be_empty
+    expect(item.item_categories).not_to be_empty
     item.item_categories.each do |item_category|
-      item_category.parent.should_not be_nil
+      expect(item_category.parent).not_to be_nil
     end
   end
 end
 
 Then /^all items should have an? (.*)$/ do |attribute|
   items = Item.all_but_lost
-  items.should all_do have_non_nil(attribute)
+  expect(items).to all_do have_non_nil(attribute)
 end
 
 Then /^most items should have an? (.*)$/ do |attribute|
-  Item.all_but_lost.should mostly have_non_nil(attribute)
+  expect(Item.all_but_lost).to mostly have_non_nil(attribute)
 end
 
 Then /^I should see the "([^"]*)" of "([^"]*)"$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  page.should have_content(attribute_text)
+  expect(page).to have_content(attribute_text)
 end
 
 Then /^I should see the "([^"]*)" of "([^"]*)" as img$/ do |attribute, item_name|
   item = Item.find_by_name(item_name)
   attribute_text = item.send(attribute).to_s
-  page.should have_xpath(".//img[@src='#{https_url(attribute_text)}']")
+  expect(page).to have_xpath(".//img[@src='#{https_url(attribute_text)}']")
 end
 
 Then /^new items should have been inserted$/ do
-  Item.maximum(:created_at).should > Item.past_metrics[:created_at]
+  expect(Item.maximum(:created_at)).to be > Item.past_metrics[:created_at]
 end
 Then /^no new item should have been inserted$/ do
-  Item.maximum(:created_at).should == Item.past_metrics[:created_at]
+  expect(Item.maximum(:created_at)).to eq Item.past_metrics[:created_at]
 end
 
 Then /^some items should have been modified$/ do
-  Item.maximum(:updated_at).should > Item.past_metrics[:updated_at]
+  expect(Item.maximum(:updated_at)).to be > Item.past_metrics[:updated_at]
 end
 Then /^no item should have been modified$/ do
-  Item.maximum(:updated_at).should == Item.past_metrics[:updated_at]
+  expect(Item.maximum(:updated_at)).to eq Item.past_metrics[:updated_at]
 end
 
 Then /^no item should have been deleted$/ do
-  Item.count.should == Item.past_metrics[:count]
+  expect(Item.count).to eq Item.past_metrics[:count]
 end
 
 Then /^existing items should not have been modified$/ do
   Item.past_metrics[:all].each do |item|
     item.reload
-    item.updated_at.should <= Item.past_metrics[:updated_at]
+    expect(item.updated_at).to be <= Item.past_metrics[:updated_at]
   end
 end
 
 Then /^item organization should not have changed$/ do
-  ItemCategory.current_metrics.should == ItemCategory.past_metrics
+  expect(ItemCategory.current_metrics).to eq ItemCategory.past_metrics
 end
 
 def i_should_see_an_item(item_name)
-  page.find('#items-panel').should have_content(item_name)
+  expect(page.find('#items-panel')).to have_content(item_name)
 end
 
 Then /^I should see an? "([^"]*)" item"?$/ do |item_name|
@@ -106,7 +106,7 @@ Then /^I should see an? "([^"]*)" item"?$/ do |item_name|
 end
 
 Then /^I should not see an? "([^"]*)" item"?$/ do |item_name|
-  page.find('#items-panel').should_not have_content(item_name)
+  expect(page.find('#items-panel')).not_to have_content(item_name)
 end
 
 Then(/^there should be the following items$/) do |table|

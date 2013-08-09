@@ -24,14 +24,14 @@ module MesCourses
           it "should send a non empty email" do
             send_monitoring_email
 
-            @emails.should have(1).entry
-            @email.to.should_not be_empty
+            expect(@emails).to have(1).entry
+            expect(@email.to).not_to be_empty
           end
 
           it "should have a subject including the app name" do
             send_monitoring_email
 
-            @subject.should include(HerokuHelper.app_name)
+            expect(@subject).to include(HerokuHelper.app_name)
           end
         end
 
@@ -42,7 +42,7 @@ module MesCourses
 
             send_monitoring_email
 
-            @body.should include(log_text)
+            expect(@body).to include(log_text)
           end
         end
       end

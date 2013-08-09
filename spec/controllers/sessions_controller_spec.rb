@@ -15,12 +15,12 @@ describe SessionsController do
     end
 
     it "renders 'new' template" do
-      response.should be_success
-      response.should render_template('new')
+      expect(response).to be_success
+      expect(response).to render_template('new')
     end
 
     it "assigns a 'Connection' path bar" do
-      assigns(:path_bar).should == [path_bar_session_root]
+      expect(assigns(:path_bar)).to eq [path_bar_session_root]
     end
 
   end

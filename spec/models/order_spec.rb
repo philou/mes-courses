@@ -12,31 +12,31 @@ describe Order do
   end
 
   it "should not have any warning notice by default" do
-    @order.warning_notices.should be_empty
+    expect(@order.warning_notices).to be_empty
   end
 
   it "should have a blank error notice by default" do
-    @order.error_notice.should == ""
+    expect(@order.error_notice).to eq ""
   end
 
   it "should assign 0 forwarded cart lines count by default" do
-    @order.forwarded_cart_lines_count.should == 0
+    expect(@order.forwarded_cart_lines_count).to eq 0
   end
 
   it "should have the NOT_SENT status by default" do
-    @order.status.should == Order::NOT_PASSED
+    expect(@order.status).to eq Order::NOT_PASSED
   end
 
   it "should extend warning notices when missing cart lines are added" do
     @order.add_missing_cart_line(@cart_line_1 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Tomates")))
     @order.add_missing_cart_line(@cart_line_2 = FactoryGirl.build(:cart_line, item: FactoryGirl.build(:item, name: "Steak")))
 
-    @order.warning_notices.should == [Order.missing_cart_line_notice(@cart_line_1.name, @store.name),
+    expect(@order.warning_notices).to eq [Order.missing_cart_line_notice(@cart_line_1.name, @store.name),
                                       Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
   it "forwards store name to the store" do
-    @order.store_name.should == @store.name
+    expect(@order.store_name).to eq @store.name
   end
 
   it "forwards logout url to the store" do
@@ -49,7 +49,7 @@ describe Order do
 
   it "forwards login parameters to the store" do
     credentials = FactoryGirl.build(:credentials)
-    @order.store_login_parameters(credentials).should == @store.login_parameters(credentials)
+    expect(@order.store_login_parameters(credentials)).to eq @store.login_parameters(credentials)
   end
 
   context "passed ratio" do
@@ -62,31 +62,31 @@ describe Order do
     it "should be 100% if the order is empty" do
       @cart.lines = []
 
-      @order.passed_ratio.should == 1.0
+      expect(@order.passed_ratio).to eq 1.0
     end
 
     it "should depend on the start time before lines are transfered" do
       Timecop.freeze(@start_time + 15)
 
-      @order.passed_ratio.should be_within(1e-8).of(Order::PASSED_RATIO_BEFORE * 15.0 / 60.0)
+      expect(@order.passed_ratio).to be_within(1e-8).of(Order::PASSED_RATIO_BEFORE * 15.0 / 60.0)
     end
 
     it "should be 0 if the order was not saved" do
       @order.created_at = nil
 
-      @order.passed_ratio.should == 0.0
+      expect(@order.passed_ratio).to eq 0.0
     end
 
     it "should caped before cart lines are transfered" do
       Timecop.freeze(@start_time + 75)
 
-      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE
+      expect(@order.passed_ratio).to eq Order::PASSED_RATIO_BEFORE
     end
 
     it "should be computed from forwarded cart lines" do
       4.times { @order.notify_forwarded_cart_line }
 
-      @order.passed_ratio.should == Order::PASSED_RATIO_BEFORE + Order::PASSED_RATIO_DURING*(4.0 / 7.0)
+      expect(@order.passed_ratio).to eq Order::PASSED_RATIO_BEFORE + Order::PASSED_RATIO_DURING*(4.0 / 7.0)
     end
 
   end
@@ -109,7 +109,7 @@ describe Order do
 
     it "should have the PASSING status when it is beeing passed" do
       @cart.stub(:forward_to).with do |session, order|
-        @order.status.should == Order::PASSING
+        expect(@order.status).to eq Order::PASSING
       end
 
       pass_order
@@ -118,7 +118,7 @@ describe Order do
     it "should have the SUCCEEDED status after it is passed" do
       pass_order
 
-      @order.status.should == Order::SUCCEEDED
+      expect(@order.status).to eq Order::SUCCEEDED
     end
 
     it "should eventually save the order" do
@@ -138,7 +138,7 @@ describe Order do
       it "should have the FAILED status" do
         pass_order rescue nil
 
-        @order.status.should == Order::FAILED
+        expect(@order.status).to eq Order::FAILED
       end
 
       it "should eventually save the order" do
@@ -150,7 +150,7 @@ describe Order do
       it_aborts_passing_orders_on(SocketError.new("Connection lost"))
 
       it "should let the exception climb up" do
-        lambda { pass_order }.should raise_error(SocketError)
+        expect(lambda { pass_order }).to raise_error(SocketError)
       end
     end
 
@@ -158,26 +158,26 @@ describe Order do
       it_aborts_passing_orders_on(MesCourses::Stores::Carts::InvalidAccountError.new)
 
       it "should not let any exception climb up" do
-        lambda { pass_order }.should_not raise_error
+        expect(lambda { pass_order }).not_to raise_error
       end
 
       it "should have an error notice" do
         pass_order
 
-        @order.error_notice.should == Order.invalid_store_login_notice(@store.name)
+        expect(@order.error_notice).to eq Order.invalid_store_login_notice(@store.name)
       end
     end
 
     def it_should_logout_from_the_store
       pass_order rescue nil
 
-      @api.log.last.should == :logout
+      expect(@api.log.last).to eq :logout
     end
 
     def it_should_eventually_save_the_order
       pass_order rescue nil
 
-      @order.should_not be_new_record
+      expect(@order).not_to be_new_record
     end
 
     def pass_order

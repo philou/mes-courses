@@ -17,15 +17,15 @@ module MesCourses
 
         context "before actually getting the page" do
           it "nothing should throw if the uri is invalid" do
-            lambda { WalkerPage.open("http://impossible.file.name") }.should_not raise_error
+            expect(lambda { WalkerPage.open("http://impossible.file.name") }).not_to raise_error
           end
 
           it "knows the uri of the page" do
-            @page_getter.uri.should == @uri
+            expect(@page_getter.uri).to eq @uri
           end
 
           it "has text of the uri" do
-            @page_getter.text.should == @uri.to_s
+            expect(@page_getter.text).to eq @uri.to_s
           end
         end
 
@@ -35,61 +35,61 @@ module MesCourses
           end
 
           it "delegates uri to the mechanize page" do
-            @page.uri.should == @uri
+            expect(@page.uri).to eq @uri
           end
 
           it "finds an element by css" do
             element = @page.get_one("#unique")
 
-            element.should_not be_nil
-            element.attribute("id").value.should == "unique"
+            expect(element).not_to be_nil
+            expect(element.attribute("id").value).to eq "unique"
           end
 
           it "finds only the first element by css" do
-            @page.get_one(".number").text.should == "0"
+            expect(@page.get_one(".number").text).to eq "0"
           end
 
           it "throws if it cannot find the element by css" do
-            lambda { @page.get_one("#invalid_id") }.should raise_error(WalkerPageError)
+            expect(lambda { @page.get_one("#invalid_id") }).to raise_error(WalkerPageError)
           end
 
           it "finds the first element from a list of css" do
-            @page.get_one(".absent, #unique").should be @page.get_one("#unique")
+            expect(@page.get_one(".absent, #unique")).to be @page.get_one("#unique")
           end
 
           it "finds relative links sorted by uri" do
             links = @page.search_links("a.letter")
 
             uris = links.map { |link| link.uri.to_s }
-            uris.should == ["a.html", "b.html"]
+            expect(uris).to eq ["a.html", "b.html"]
           end
 
           it "ignores links to other domains" do
-            @page.search_links("#outbound").should be_empty
+            expect(@page.search_links("#outbound")).to be_empty
           end
 
           it "ignores duplicate links" do
-            @page.search_links("a.twin").should have(1).link
+            expect(@page.search_links("a.twin")).to have(1).link
           end
 
           it "links to other instances of WalkerPage" do
-            @page.search_links("#myself").map { |link| link.get }.should all_do(be_instance_of(WalkerPage))
+            expect(@page.search_links("#myself").map { |link| link.get }).to all_do(be_instance_of(WalkerPage))
           end
 
           it "knows the text of the links" do
             @page.search_links("#myself").each do |link|
-              link.text.should == "myself"
+              expect(link.text).to eq "myself"
             end
           end
 
           it "finds an image by selector" do
             image = @page.get_image(".image")
-            image.should be_instance_of(Mechanize::Page::Image)
-            image.dom_class.should == "image"
+            expect(image).to be_instance_of(Mechanize::Page::Image)
+            expect(image.dom_class).to eq "image"
           end
 
           it "throws if it cannot find the image by selector" do
-            lambda { @page.get_image("#invalid_id") }.should raise_error(WalkerPageError)
+            expect(lambda { @page.get_image("#invalid_id") }).to raise_error(WalkerPageError)
           end
         end
       end

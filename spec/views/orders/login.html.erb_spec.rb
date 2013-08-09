@@ -15,9 +15,9 @@ describe "orders/login" do
 
     expect(response).to have_selector("form", action: @order.store_login_url, method: 'post') do |form|
       @store_login_parameters.each do |name, value|
-        form.should have_selector("input", type: 'hidden', name: name, value: value)
+        expect(form).to have_selector("input", type: 'hidden', name: name, value: value)
       end
-      form.should have_selector("input", type: 'submit', value: "Connectez-vous sur #{@order.store_name} pour payer")
+      expect(form).to have_selector("input", type: 'submit', value: "Connectez-vous sur #{@order.store_name} pour payer")
     end
   end
 
@@ -26,9 +26,9 @@ describe "orders/login" do
 
     render
 
-    rendered.should have_selector("div", class: "warning") do |div|
+    expect(rendered).to have_selector("div", class: "warning") do |div|
       @order.warning_notices.each do |notice|
-        div.should contain(notice)
+        expect(div).to contain(notice)
       end
     end
   end

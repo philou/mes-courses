@@ -38,8 +38,8 @@ describe ApplicationController do
       it "should be ''" do
         get :index
 
-        assigns[:body_id].should == ApplicationController::NO_BODY_ID
-        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
+        expect(assigns[:body_id]).to eq ApplicationController::NO_BODY_ID
+        expect(assigns[:app_part]).to eq ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -55,8 +55,8 @@ describe ApplicationController do
       it "should be cart" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::CART_BODY_ID
-        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::CART_BODY_ID
+        expect(assigns[:app_part]).to eq ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -72,8 +72,8 @@ describe ApplicationController do
       it "should be dish" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::DISHES_BODY_ID
-        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::DISHES_BODY_ID
+        expect(assigns[:app_part]).to eq ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -89,8 +89,8 @@ describe ApplicationController do
       it "should be item" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::ITEMS_BODY_ID
-        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::ITEMS_BODY_ID
+        expect(assigns[:app_part]).to eq ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -106,8 +106,8 @@ describe ApplicationController do
       it "should be session" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::SESSION_BODY_ID
-        assigns[:app_part].should == ApplicationController::MAIN_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::SESSION_BODY_ID
+        expect(assigns[:app_part]).to eq ApplicationController::MAIN_APP_PART
       end
     end
 
@@ -121,7 +121,7 @@ describe ApplicationController do
       end
 
       it "should throw" do
-        lambda { get :index }.should raise_error
+        expect(lambda { get :index }).to raise_error
       end
     end
 
@@ -137,8 +137,8 @@ describe ApplicationController do
       it "should not be assigned" do
         get :index
 
-        assigns(:body_id).should be_nil
-        assigns(:app_part).should be_nil
+        expect(assigns(:body_id)).to be_nil
+        expect(assigns(:app_part)).to be_nil
       end
     end
   end
@@ -154,8 +154,8 @@ describe ApplicationController do
       it "assigns body id and app part" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::PRESENTATION_BODY_ID
-        assigns(:app_part).should == ApplicationController::BLOG_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::PRESENTATION_BODY_ID
+        expect(assigns(:app_part)).to eq ApplicationController::BLOG_APP_PART
       end
     end
 
@@ -169,8 +169,8 @@ describe ApplicationController do
       it "assigns body id and app part" do
         get :index
 
-        assigns(:body_id).should == ApplicationController::BLOG_BODY_ID
-        assigns(:app_part).should == ApplicationController::BLOG_APP_PART
+        expect(assigns(:body_id)).to eq ApplicationController::BLOG_BODY_ID
+        expect(assigns(:app_part)).to eq ApplicationController::BLOG_APP_PART
       end
     end
   end
@@ -189,8 +189,8 @@ describe ApplicationController do
     it "is signin before authentication" do
       get :index
 
-      assigns(:session_place_text).should == "Connection"
-      assigns(:session_place_url).should == new_user_session_path
+      expect(assigns(:session_place_text)).to eq "Connection"
+      expect(assigns(:session_place_url)).to eq new_user_session_path
     end
 
     it "is signout after authentication" do
@@ -199,8 +199,8 @@ describe ApplicationController do
 
       get :index
 
-      assigns(:session_place_text).should == "Deconnection (#{email})"
-      assigns(:session_place_url).should == destroy_user_session_path
+      expect(assigns(:session_place_text)).to eq "Deconnection (#{email})"
+      expect(assigns(:session_place_url)).to eq destroy_user_session_path
     end
   end
 end

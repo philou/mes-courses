@@ -24,7 +24,7 @@ module MesCourses
           it "creates new store api" do
             @builder = ApiBuilder.define(@api_class, Digger) { }
 
-            @builder.new(@url).should == @api
+            expect(@builder.new(@url)).to eq @api
           end
 
           it "initializes nested definition through its block" do

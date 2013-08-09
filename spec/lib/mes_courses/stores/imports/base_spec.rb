@@ -113,7 +113,7 @@ module MesCourses
 
             import
 
-            @recorded_calls.first.should == :starting_import
+            expect(@recorded_calls.first).to eq :starting_import
           end
 
           it "should call stop_import after registering items" do
@@ -123,7 +123,7 @@ module MesCourses
 
             import
 
-            @recorded_calls.last.should == :finishing_import
+            expect(@recorded_calls.last).to eq :finishing_import
           end
 
           it "should register item categories for root categories" do
@@ -186,7 +186,7 @@ module MesCourses
             given_a_store_with_one_item
 
             @store.stub(:register_visited_url) do |uri|
-              @store.should have_received(:register_item).with(@item.attributes)
+              expect(@store).to have_received(:register_item).with(@item.attributes)
             end
 
             import
@@ -279,11 +279,11 @@ module MesCourses
           def exception_should_climb_up_the_stack(exception_class)
             @item.stub(:attributes).and_raise(exception_class.new("Test mock simulated error."))
 
-            lambda { import }.should raise_error(exception_class)
+            expect(lambda { import }).to raise_error(exception_class)
           end
 
           def no_exception_should_climb_up_the_stack
-            lambda { import }.should_not raise_error
+            expect(lambda { import }).not_to raise_error
           end
 
         end

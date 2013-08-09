@@ -13,16 +13,16 @@ describe Cart do
   end
 
   it "should be empty when created" do
-    @cart.should be_empty
+    expect(@cart).to be_empty
   end
 
   it "should have no items when created" do
-    @cart.lines.should be_empty
+    expect(@cart.lines).to be_empty
   end
 
   it "should not be empty once items were added" do
     @cart.add_item(@bavette)
-    @cart.should_not be_empty
+    expect(@cart).not_to be_empty
  end
 
   it "should contain added items" do
@@ -37,17 +37,17 @@ describe Cart do
   end
 
   it "should have a total price of 0 when empty" do
-    @cart.total_price.should == 0
+    expect(@cart.total_price).to eq 0
   end
 
   it "should have a total price of its item" do
     @cart.add_item(@bavette)
-    @cart.total_price.should == 4.5
+    expect(@cart.total_price).to eq 4.5
   end
 
   it "should have a total price equal to the sum of the prices of all its items" do
     @items.each {|item| @cart.add_item(item) }
-    @cart.total_price.should == 12.5
+    expect(@cart.total_price).to eq 12.5
   end
 
   it "should remove all items when emptied" do
@@ -55,7 +55,7 @@ describe Cart do
 
     @cart.empty
 
-    @cart.should be_empty
+    expect(@cart).to be_empty
   end
 
   context "when the same item was added twice" do
@@ -66,7 +66,7 @@ describe Cart do
 
     it "should have only one cart item" do
       @cart.add_item(@bavette)
-      @cart.lines.should have(1).entry
+      expect(@cart.lines).to have(1).entry
     end
 
     it "should have a cart item with quantity 2" do
@@ -141,7 +141,7 @@ describe Cart do
   def cart_should_contain_all_items
     @items.each do |added_item|
       cart_item = @cart.lines.detect {|line| line.item == added_item}
-      cart_item.should_not be_nil
+      expect(cart_item).not_to be_nil
     end
   end
 

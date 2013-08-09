@@ -10,32 +10,32 @@ describe Item do
   has_singleton(:lost, Constants::LOST_ITEM_NAME)
 
   it "has a lost item that is disabled" do
-    Item.lost.item_categories.should include(ItemCategory.disabled), "item categories of lost item"
+    expect(Item.lost.item_categories).to include(ItemCategory.disabled), "item categories of lost item"
   end
 
   it "is not disabled by default" do
-    Item.new.should_not be_disabled
+    expect(Item.new).not_to be_disabled
   end
 
   it "is disabled if it has the disabled category" do
-    Item.new.that_is_disabled.should be_disabled
+    expect(Item.new.that_is_disabled).to be_disabled
   end
 
   it "has the specified image" do
     image = "dirty_potatoes.png"
-    Item.new(image: image).image.should == image
+    expect(Item.new(image: image).image).to eq image
   end
   it "has an unknown image if not specified" do
-    Item.new.image.should == "/images/unknown.png"
+    expect(Item.new.image).to eq "/images/unknown.png"
   end
   it "has a disabled image if disabled" do
-    Item.new.that_is_disabled.image.should == "/images/disabled.png"
-    Item.new(image: 'muchy_peas.png').that_is_disabled.image.should == "/images/disabled.png"
+    expect(Item.new.that_is_disabled.image).to eq "/images/disabled.png"
+    expect(Item.new(image: 'muchy_peas.png').that_is_disabled.image).to eq "/images/disabled.png"
   end
 
   it "presents a long name from its brand and name" do
     item = FactoryGirl.build(:item)
-    item.long_name.should == "#{item.brand} #{item.name}"
+    expect(item.long_name).to eq "#{item.brand} #{item.name}"
   end
 
   context "indexing" do
@@ -50,7 +50,7 @@ describe Item do
 
       @item.index
 
-      @item.tokens.should == tokens.join(" ")
+      expect(@item.tokens).to eq tokens.join(" ")
     end
 
     it "should index when the name is set" do
@@ -70,7 +70,7 @@ describe Item do
     end
 
     def should_be_indexed(item)
-      item.tokens.should == MesCourses::Utils::Tokenizer.run(item.long_name).join(" ")
+      expect(item.tokens).to eq MesCourses::Utils::Tokenizer.run(item.long_name).join(" ")
     end
   end
 
@@ -87,9 +87,9 @@ describe Item do
     end
 
     it "does not allow invalid search strings" do
-      Item.search_string_is_valid?("something").should be_true
-      Item.search_string_is_valid?("").should be_false
-      Item.search_string_is_valid?("s").should be_false
+      expect(Item.search_string_is_valid?("something")).to be_true
+      expect(Item.search_string_is_valid?("")).to be_false
+      expect(Item.search_string_is_valid?("s")).to be_false
     end
 
     it "should directly search items when it has no children" do
@@ -97,7 +97,7 @@ describe Item do
         with(/item_category_id = :category_id/, hash_including(:category_id => @legumes.id)).
         and_return(join_mock)
 
-      Item.search_by_string_and_category("tomates", @legumes).should == @expected
+      expect(Item.search_by_string_and_category("tomates", @legumes)).to eq @expected
     end
 
     def join_mock()
@@ -111,13 +111,13 @@ describe Item do
         with(/item_category_id in \(:category_ids\)/, hash_including(:category_ids => [@legumes.id,@fruits.id])).
         and_return(join_mock)
 
-      Item.search_by_string_and_category("cerise", @marche).should == @expected
+      expect(Item.search_by_string_and_category("cerise", @marche)).to eq @expected
     end
 
     it "should search all items when root category is specified" do
       Item.should_receive(:where).and_return(join_mock)
 
-      Item.search_by_string_and_category("tomates", ItemCategory.root).should == @expected
+      expect(Item.search_by_string_and_category("tomates", ItemCategory.root)).to eq @expected
     end
 
     it "should search in tokens column" do

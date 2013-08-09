@@ -19,15 +19,15 @@ module KnowsHtml
     end
     path_regex = Regexp.new(path)
 
-    current_path.should match(path_regex)
+    expect(current_path).to match(path_regex)
   end
 
   def page_should_contain_an_iframe(dom_id, url)
-    page.should have_xpath("//iframe[@id='#{dom_id}'][@src='#{url}']")
+    expect(page).to have_xpath("//iframe[@id='#{dom_id}'][@src='#{url}']")
   end
 
   def page_should_have_a_link(text, url)
-    page.should have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
+    expect(page).to have_xpath("//a[@href='#{url}'][contains(.,'#{text}')]")
   end
 
   private

@@ -29,13 +29,13 @@ shared_examples_for "any layout" do
   it "should render flash[:notice]" do
     flash[:notice] = notice = "Something went bad ..."
     render
-    rendered.should contain notice
+    expect(rendered).to contain notice
   end
 
   it "should render flash[:alert]" do
     flash[:alert] = alert = "Something went really bad ..."
     render
-    rendered.should contain alert
+    expect(rendered).to contain alert
   end
 
   it "should render the link in a @path_bar element" do
@@ -43,7 +43,7 @@ shared_examples_for "any layout" do
     controller = "cart_lines"
     assign :path_bar, path_bar = [path_bar_element(text, :controller => controller)]
     render
-    rendered.should have_xpath("//div[@id='path-bar']/a[@href='/#{controller}'][text()='#{text}']")
+    expect(rendered).to have_xpath("//div[@id='path-bar']/a[@href='/#{controller}'][text()='#{text}']")
   end
 
   it "should render an empty @path_bar" do
@@ -55,7 +55,7 @@ shared_examples_for "any layout" do
     text = "Recettes"
     assign :path_bar, path_bar = [path_bar_element_with_no_link(text)]
     render
-    rendered.should have_xpath("//div[@id='path-bar']/a[not(@href)][text()='#{text}']")
+    expect(rendered).to have_xpath("//div[@id='path-bar']/a[not(@href)][text()='#{text}']")
   end
 
   it "should display nicely a @path_bar with many elements" do
@@ -63,13 +63,13 @@ shared_examples_for "any layout" do
                                      path_bar_element_with_no_link("Marché"),
                                      path_bar_element_with_no_link("Poisson")]
     render
-    rendered.should contain "Ingrédients > Marché > Poisson"
+    expect(rendered).to contain "Ingrédients > Marché > Poisson"
   end
 
   it "should not auto refresh by default" do
     render
 
-    rendered.should_not have_xpath("//meta[@http-equiv='refresh']")
+    expect(rendered).not_to have_xpath("//meta[@http-equiv='refresh']")
   end
 
   it "should auto refresh if @refresh_strategy is assigned" do
@@ -77,8 +77,8 @@ shared_examples_for "any layout" do
 
     render
 
-    rendered.should have_xpath("//meta[@http-equiv='refresh']")
-    rendered.should include(refresh_strategy.to_html)
+    expect(rendered).to have_xpath("//meta[@http-equiv='refresh']")
+    expect(rendered).to include(refresh_strategy.to_html)
   end
 
   it "should display the assigned session place" do
@@ -87,7 +87,7 @@ shared_examples_for "any layout" do
 
     render
 
-    rendered.should have_place(text: text, url: url)
+    expect(rendered).to have_place(text: text, url: url)
   end
 
   it "should render the inner content" do
@@ -95,7 +95,7 @@ shared_examples_for "any layout" do
 
     render text: content, layout: "layouts/application.html"
 
-    rendered.occurences_of(content).should == 1
+    expect(rendered.occurences_of(content)).to eq 1
   end
 
   it "should include the css of the corresponding app part" do
@@ -103,7 +103,7 @@ shared_examples_for "any layout" do
 
     render
 
-    rendered.should include "best.css"
+    expect(rendered).to include "best.css"
   end
 
   it 'does not include google analytics by default' do

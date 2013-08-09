@@ -19,22 +19,22 @@ describe CronTaskFailureReporter do
   it "'s subject should contain an error marker" do
     send_monitoring_email
 
-    @subject.should include("ERROR")
+    expect(@subject).to include("ERROR")
   end
   it "'s subject should contain the failed task name" do
     send_monitoring_email
 
-    @subject.should include(@task_name)
+    expect(@subject).to include(@task_name)
   end
   it "'s subject should contain the class name of the exception" do
     send_monitoring_email
 
-    @subject.should include(@exception.class.name)
+    expect(@subject).to include(@exception.class.name)
   end
   it "'s subject should contain the message of the exception" do
     send_monitoring_email
 
-    @subject.should include(@exception.message)
+    expect(@subject).to include(@exception.message)
   end
 
   should_contain_the_logs
@@ -44,7 +44,7 @@ describe CronTaskFailureReporter do
 
     send_monitoring_email
 
-    @body.should include (@exception.backtrace.join("\n"))
+    expect(@body).to include (@exception.backtrace.join("\n"))
   end
 
 end

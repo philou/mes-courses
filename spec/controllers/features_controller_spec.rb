@@ -9,7 +9,7 @@ describe FeaturesController do
   it "should assign a path_bar with index" do
     get :index
 
-    assigns[:path_bar].should_not be_nil
+    expect(assigns[:path_bar]).not_to be_nil
   end
 
 end

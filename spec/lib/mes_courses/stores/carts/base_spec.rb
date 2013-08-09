@@ -15,7 +15,7 @@ module MesCourses
         end
 
         it "should create a session wrapper on a loged in cart api" do
-          @store_cart.login(DummyApi.valid_login, DummyApi.valid_password).should be_instance_of(Session)
+          expect(@store_cart.login(DummyApi.valid_login, DummyApi.valid_password)).to be_instance_of(Session)
 
           expect(@dummy_api.login).to eq(DummyApi.valid_login)
           expect(@dummy_api.password).to eq(DummyApi.valid_password)

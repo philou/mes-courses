@@ -11,7 +11,7 @@ describe DishesController do
     it "should forbid dish modifications by default" do
       instance_eval(&http_request_proc)
 
-      assigns(:can_modify_dishes).should == false
+      expect(assigns(:can_modify_dishes)).to eq false
     end
 
     it "should let signed in users modify dishes" do
@@ -19,7 +19,7 @@ describe DishesController do
 
       instance_eval(&http_request_proc)
 
-      assigns(:can_modify_dishes).should == true
+      expect(assigns(:can_modify_dishes)).to eq true
     end
 
   end
@@ -33,20 +33,20 @@ describe DishesController do
     it "should render 'index'" do
       get 'index'
 
-      response.should be_success
-      response.should render_template('index')
+      expect(response).to be_success
+      expect(response).to render_template('index')
     end
 
     it "should publish the list of all dishes" do
       get 'index'
 
-      assigns(:dishes).should == @all_dishes
+      expect(assigns(:dishes)).to eq @all_dishes
     end
 
     it "should create a path bar with a link to the root dish page" do
       get 'index'
 
-      assigns(:path_bar).should == [path_bar_dishes_root]
+      expect(assigns(:path_bar)).to eq [path_bar_dishes_root]
     end
 
     allows_dish_modifications_for_signed_in_users_only { get 'index' }
@@ -59,21 +59,21 @@ describe DishesController do
     end
 
     it "should render 'new'" do
-      response.should be_success
-      response.should render_template('new')
+      expect(response).to be_success
+      expect(response).to render_template('new')
     end
 
     it "should publish a new dish" do
-      assigns(:dish).should be_instance_of(Dish)
-      assigns(:dish).id.should be_nil
+      expect(assigns(:dish)).to be_instance_of(Dish)
+      expect(assigns(:dish).id).to be_nil
     end
 
     it "should use a nice default name for the dish" do
-      assigns(:dish).name.should == "Nouvelle recette"
+      expect(assigns(:dish).name).to eq "Nouvelle recette"
     end
 
     it "should create a path bar with a link to the dish creation page" do
-      assigns(:path_bar).should == [path_bar_dishes_root,
+      expect(assigns(:path_bar)).to eq [path_bar_dishes_root,
                                     path_bar_element_for_current_resource("Nouvelle recette")]
     end
   end
@@ -94,7 +94,7 @@ describe DishesController do
     it "should redirect the main dish catalog" do
       post 'create'
 
-      response.should redirect_to(:controller => 'dishes', :action => 'show', :id => @dish.id)
+      expect(response).to redirect_to(:controller => 'dishes', :action => 'show', :id => @dish.id)
     end
   end
 
@@ -109,20 +109,20 @@ describe DishesController do
     it "should render 'show'" do
       get 'show', :id => @dish.id
 
-      response.should be_success
-      response.should render_template('show')
+      expect(response).to be_success
+      expect(response).to render_template('show')
     end
 
     it "should publish the requested dish" do
       get 'show', :id => @dish.id
 
-      assigns(:dish).should == @dish
+      expect(assigns(:dish)).to eq @dish
     end
 
     it "should create a path bar with a link to the curent dish page" do
       get 'show', :id => @dish.id
 
-      assigns(:path_bar).should == [path_bar_dishes_root,
+      expect(assigns(:path_bar)).to eq [path_bar_dishes_root,
                                     path_bar_element_for_current_resource(@dish.name)]
     end
 

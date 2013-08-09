@@ -31,14 +31,14 @@ describe ModelStat do
     end
     ModelStat.stub(:all).and_return(old_stats)
 
-    ModelStat.generate_delta.should == @stats
+    expect(ModelStat.generate_delta).to eq @stats
   end
 
   it "should generate delta without previous stats should have old_count == 0" do
     ModelStat.stub(:all).and_return([])
 
     ModelStat.generate_delta.each do |name, stats|
-      stats[:old_count].should == 0
+      expect(stats[:old_count]).to eq 0
     end
   end
 

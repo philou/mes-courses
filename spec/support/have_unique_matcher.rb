@@ -3,7 +3,7 @@
 
 # Matcher to verify that a hash's key is unique in a collection of other hashes
 # a full class is required to implement the in method
-# Use like: hash.should have_unique(:id).in(hashes)
+# Use like: expect(hash).to have_unique(:id).in(hashes)
 class HaveUnique
 
   def initialize(key)

@@ -15,19 +15,19 @@ module Blogit
     it "should assign a body id" do
       get :index
 
-      assigns[:body_id].should == ApplicationController::BLOG_BODY_ID
+      expect(assigns[:body_id]).to eq ApplicationController::BLOG_BODY_ID
     end
 
     it "should assign a app part" do
       get :index
 
-      assigns[:app_part].should == ApplicationController::BLOG_APP_PART
+      expect(assigns[:app_part]).to eq ApplicationController::BLOG_APP_PART
     end
 
     it "should use a custom blog layout" do
       get :index
 
-      response.should render_template("layouts/blog")
+      expect(response).to render_template("layouts/blog")
     end
 
     it "computes tag frequencies" do
@@ -35,7 +35,7 @@ module Blogit
 
       get :index
 
-      assigns[:tags].should == tags
+      expect(assigns[:tags]).to eq tags
     end
 
   end

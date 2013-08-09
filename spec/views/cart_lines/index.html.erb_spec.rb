@@ -23,36 +23,36 @@ describe "cart_lines/index" do
   end
 
   it "renders items in an html table" do
-    rendered.should have_selector("table")
+    expect(rendered).to have_selector("table")
   end
 
   it "displays the first item" do
-    rendered.should contain(@tomates.name)
+    expect(rendered).to contain(@tomates.name)
   end
 
   it "displays the second item" do
-    rendered.should contain(@pdt.name)
+    expect(rendered).to contain(@pdt.name)
   end
 
   it "displays the price of each item" do
-    rendered.should contain("#{@tomates.price}€")
+    expect(rendered).to contain("#{@tomates.price}€")
   end
 
   it "displays the total price" do
-    rendered.should contain("#{@total_price}€")
+    expect(rendered).to contain("#{@total_price}€")
   end
 
   it "displays the quantity of each item" do
-    rendered.should contain(@tomates.quantity.to_s)
+    expect(rendered).to contain(@tomates.quantity.to_s)
   end
 
   it "should have a button to empty the cart" do
-    rendered.should have_button_to("Vider le panier", destroy_all_cart_lines_path, 'delete')
+    expect(rendered).to have_button_to("Vider le panier", destroy_all_cart_lines_path, 'delete')
   end
 
   it "displays store forwarding forms" do
     @stores.each do |store|
-      rendered.should have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
+      expect(rendered).to have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
                                  "[starts-with(@action, '#{url_for(:controller => 'orders', :action => 'create')}')]" +
                                  "[contains(@action, 'store_id=#{store.id}')]" +
                                  "[contains(@action, 'cart_id=#{@cart.id}')]")
@@ -60,13 +60,13 @@ describe "cart_lines/index" do
   end
 
   it "displays a login input" do
-    rendered.should have_xpath('//form[@class="store-login"]//input[@name="store[login]"]')
+    expect(rendered).to have_xpath('//form[@class="store-login"]//input[@name="store[login]"]')
   end
   it "displays a password input" do
-    rendered.should have_xpath('//form[@class="store-login"]//input[@name="store[password]"]')
+    expect(rendered).to have_xpath('//form[@class="store-login"]//input[@name="store[password]"]')
   end
   it "displays a forward button" do
-    rendered.should have_xpath('//form[@class="store-login"]//input[@type="submit"]')
+    expect(rendered).to have_xpath('//form[@class="store-login"]//input[@type="submit"]')
   end
 
 end

@@ -26,24 +26,24 @@ module MesCourses
 
             it "should have many item categories" do
               # TODO remove .first(3) once rspec handles lazy enums
-              @store.categories.first(3).should have_at_least(3).items
+              expect(@store.categories.first(3)).to have_at_least(3).items
             end
 
             it "should have many items" do
-              sample_items.should have_at_least(3).items
+              expect(sample_items).to have_at_least(3).items
             end
 
             it "should have item categories with different names" do
               categories_attributes = sample_categories.map { |cat| cat.attributes }
-              categories_attributes.should mostly have_unique(:name)
+              expect(categories_attributes).to mostly have_unique(:name)
             end
 
             it "should have items with different names" do
-              sample_items_attributes.should mostly have_unique(:name)
+              expect(sample_items_attributes).to mostly have_unique(:name)
             end
 
             it "should have parseable item category attributes" do
-              parseable_categories_attributes.should mostly have_key(:name)
+              expect(parseable_categories_attributes).to mostly have_key(:name)
             end
 
             it "should have valid item category attributes" do
@@ -53,27 +53,27 @@ module MesCourses
             end
 
             it "should have some valid item attributes" do
-              sample_items_attributes.should_not be_empty
+              expect(sample_items_attributes).not_to be_empty
             end
 
             it "should have items with a price" do
-              sample_items_attributes.should all_do have_key(:price)
+              expect(sample_items_attributes).to all_do have_key(:price)
             end
 
             it "should mostly have items with an image" do
-              sample_items_attributes.should mostly have_key(:image)
+              expect(sample_items_attributes).to mostly have_key(:image)
             end
 
             it "should mostly have items with a brand" do
-              sample_items_attributes.should mostly have_key(:brand)
+              expect(sample_items_attributes).to mostly have_key(:brand)
             end
 
             it "should have items with unique remote id" do
-              sample_items_attributes.should all_do have_unique(:remote_id)
+              expect(sample_items_attributes).to all_do have_unique(:remote_id)
             end
 
             it "should have items with unique uris" do
-              valid_sample_items.should mostly have_unique(:uri)
+              expect(valid_sample_items).to mostly have_unique(:uri)
             end
           end
         end

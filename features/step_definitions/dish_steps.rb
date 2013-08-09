@@ -36,16 +36,16 @@ Then /^the dish "(.*?)" should still have items$/ do |dish_name, item_table|
   visit dish_path(Dish.find_by_name(dish_name))
 
   item_table.raw.each do |item_name|
-    page.should contain_an(item_with_name(item_name[0]))
+    expect(page).to contain_an(item_with_name(item_name[0]))
   end
 end
 
 Then /^the dish "(.*?)" should be disabled$/ do |dish_name|
   visit dishes_path
-  page.should contain_a(disabled_dish_with_name(dish_name))
+  expect(page).to contain_a(disabled_dish_with_name(dish_name))
 end
 
 Then /^the dish "(.*?)" should be enabled$/ do |dish_name|
   visit dishes_path
-  page.should contain_a(enabled_dish_with_name(dish_name))
+  expect(page).to contain_a(enabled_dish_with_name(dish_name))
 end

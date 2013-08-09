@@ -18,9 +18,9 @@ describe "dishes/show" do
     render
 
     @dish.items.each do |item|
-      rendered.should have_selector('img', :src => https_url(item.image))
-      rendered.should contain(item.name)
-      rendered.should contain(item.brand)
+      expect(rendered).to have_selector('img', :src => https_url(item.image))
+      expect(rendered).to contain(item.name)
+      expect(rendered).to contain(item.brand)
     end
   end
 
@@ -28,7 +28,7 @@ describe "dishes/show" do
     it "is forbidden by default" do
       render
 
-      rendered.should_not contain("Ajouter un ingrédient")
+      expect(rendered).not_to contain("Ajouter un ingrédient")
     end
 
     it "can be allowed" do
@@ -36,8 +36,8 @@ describe "dishes/show" do
 
       render
 
-      rendered.should contain("Ajouter un ingrédient")
-      rendered.should have_selector("a", :href => dish_item_categories_path(@dish))
+      expect(rendered).to contain("Ajouter un ingrédient")
+      expect(rendered).to have_selector("a", :href => dish_item_categories_path(@dish))
     end
   end
 
@@ -46,7 +46,7 @@ describe "dishes/show" do
     it "is forbidden by default" do
       render
 
-      rendered.should_not contain("Enlever de la recette")
+      expect(rendered).not_to contain("Enlever de la recette")
     end
 
     it "can be allowed" do
@@ -55,7 +55,7 @@ describe "dishes/show" do
       render
 
       @dish.items.each do |item|
-        rendered.should have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
+        expect(rendered).to have_button_to("Enlever de la recette", dish_item_path(@dish, item), 'delete')
       end
     end
   end

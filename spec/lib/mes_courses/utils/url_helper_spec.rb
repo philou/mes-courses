@@ -9,15 +9,15 @@ module MesCourses
       include UrlHelper
 
       it "should convert http urls to https" do
-        https_url("http://toto.com").should == "https://toto.com"
+        expect(https_url("http://toto.com")).to eq "https://toto.com"
       end
 
       it "should not change https urls" do
-        https_url("https://toto.com").should == "https://toto.com"
+        expect(https_url("https://toto.com")).to eq "https://toto.com"
       end
 
       it "should not change file uris" do
-        https_url("file:///tmp/toto.com").should == "file:///tmp/toto.com"
+        expect(https_url("file:///tmp/toto.com")).to eq "file:///tmp/toto.com"
       end
 
     end

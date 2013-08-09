@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -17,11 +17,11 @@ module MesCourses
         end
 
         it "select the good store items api builder to browse a store" do
-          Api.browse(@url).should == @store_api
+          expect(Api.browse(@url)).to eq @store_api
         end
 
         it "fails when it does not know how to browse a store" do
-          lambda { Api.browse("http://unknown.store.com") }.should raise_error(NotImplementedError)
+          expect(lambda { Api.browse("http://unknown.store.com") }).to raise_error(NotImplementedError)
         end
 
       end

@@ -23,10 +23,10 @@ module MesCourses
       it "should provide the total duration to the given block" do
         Timing.duration_of do |timer|
           wait(10)
-          timer.seconds.should == 10
+          expect(timer.seconds).to eq 10
 
           wait(5)
-          timer.seconds.should == 15
+          expect(timer.seconds).to eq 15
         end
       end
 

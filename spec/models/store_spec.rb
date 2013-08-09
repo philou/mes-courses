@@ -37,7 +37,7 @@ describe Store do
   end
 
   it "should use its url host as name" do
-    Store.new(:url => "http://www.hard-discount-store.eco/index").name.should == "www.hard-discount-store.eco"
+    expect(Store.new(:url => "http://www.hard-discount-store.eco/index").name).to eq "www.hard-discount-store.eco"
   end
 
   context "the cart api" do
@@ -46,28 +46,28 @@ describe Store do
     end
 
     it "should know the logout url of the cart api" do
-      @store.logout_url.should == MesCourses::Stores::Carts::DummyApi.logout_url
+      expect(@store.logout_url).to eq MesCourses::Stores::Carts::DummyApi.logout_url
     end
 
     it "should know the login url of the cart api" do
-      @store.login_url.should == MesCourses::Stores::Carts::DummyApi.login_url
+      expect(@store.login_url).to eq MesCourses::Stores::Carts::DummyApi.login_url
     end
 
     it "should know the login parameters of the cart api" do
       credentials = FactoryGirl.build(:credentials)
-      @store.login_parameters(credentials).should == MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.login, credentials.password)
+      expect(@store.login_parameters(credentials)).to eq MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.login, credentials.password)
     end
 
     it "should yield the session to the cart api" do
       capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
 
       @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
-        session.should_not be_nil
-        @dummy_api.log.should include(:login)
+        expect(session).not_to be_nil
+        expect(@dummy_api.log).to include(:login)
       end
 
-      @dummy_api.should_not be_nil
-      @dummy_api.log.should include(:logout)
+      expect(@dummy_api).not_to be_nil
+      expect(@dummy_api.log).to include(:logout)
     end
 
   end

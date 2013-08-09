@@ -20,9 +20,9 @@ shared_examples_for "Any Api" do
   end
 
   it "should raise when login in with an invalid account" do
-    lambda {
-      @store_cart_api.login("unknown-account", "wrong-password")
-    }.should raise_error(MesCourses::Stores::Carts::InvalidAccountError)
+    expect(lambda {
+             @store_cart_api.login("unknown-account", "wrong-password")
+           }).to raise_error(MesCourses::Stores::Carts::InvalidAccountError)
   end
 
   context "with a valid account" do
@@ -52,14 +52,14 @@ shared_examples_for "Any Api" do
       @api.add_to_cart(1, sample_item_id)
 
       @api.empty_the_cart
-      @api.cart_value.should == 0
+      expect(@api.cart_value).to eq 0
     end
 
     it "should set the cart value to something greater than 0 when adding items to the cart" do
       @api.empty_the_cart
 
       @api.add_to_cart(1, sample_item_id)
-      @api.cart_value.should >  0
+      expect(@api.cart_value).to be > 0
     end
 
     it "should set the cart value to 2 times that of one item when adding 2 items" do
@@ -69,14 +69,14 @@ shared_examples_for "Any Api" do
       item_price = @api.cart_value
 
       @api.add_to_cart(1, sample_item_id)
-      @api.cart_value.should == 2*item_price
+      expect(@api.cart_value).to eq 2*item_price
     end
 
     it "should set different cart values with different items" do
       sample_item_cart_value = cart_value_with_item(sample_item_id)
       another_item_cart_value = cart_value_with_item(another_item_id)
 
-      sample_item_cart_value.should_not == another_item_cart_value
+      expect(sample_item_cart_value).not_to eq another_item_cart_value
     end
 
     it "should synchronize different sessions with logout login" do
@@ -89,7 +89,7 @@ shared_examples_for "Any Api" do
       @api.logout
       @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
 
-      @api.cart_value.should == 0
+      expect(@api.cart_value).to eq 0
     end
 
     private

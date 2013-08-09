@@ -98,7 +98,7 @@ module KnowsCart
   def the_transfer_should_be_ongoing(options)
     page_should_auto_refresh
 
-    page.should have_content("Votre panier est en cours de transfert vers '#{options[:to]}'")
+    expect(page).to have_content("Votre panier est en cours de transfert vers '#{options[:to]}'")
 
     ratio_element = page.find_by_id('transfer-ratio')
     expect(ratio_element).not_to be_nil

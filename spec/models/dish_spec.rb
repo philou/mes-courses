@@ -11,13 +11,13 @@ describe Dish do
   end
 
   it "is currently not disabled" do
-    @dish.should_not be_disabled
+    expect(@dish).not_to be_disabled
   end
 
   it "is disabled if one of its items is disabled" do
     @dish.items << FactoryGirl.build(:item).that_is_disabled
 
-    @dish.should be_disabled
+    expect(@dish).to be_disabled
   end
 
 end

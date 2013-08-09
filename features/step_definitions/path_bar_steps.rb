@@ -21,7 +21,7 @@ end
 
 Then /^The path bar should be$/ do |path_bar_lines|
   path_bar_lines.lines.each_with_index do |path_bar_line, index|
-    page.should have_xpath("//div[@id='path-bar']/a[#{index+1}]#{path_bar_link_constraint(path_bar_line)}")
+    expect(page).to have_xpath("//div[@id='path-bar']/a[#{index+1}]#{path_bar_link_constraint(path_bar_line)}")
   end
-  page.should_not have_xpath("//div[@id='path-bar']/a[#{path_bar_lines.lines.count+2}]")
+  expect(page).not_to have_xpath("//div[@id='path-bar']/a[#{path_bar_lines.lines.count+2}]")
 end

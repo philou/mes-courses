@@ -33,7 +33,7 @@ describe CartLinesController do
         it "should create a new cart in session if no one exists" do
           instance_eval(&http_request)
 
-          session[:cart_id].should == @cart.id
+          expect(session[:cart_id]).to eq @cart.id
         end
 
         it "should reuse existing cart from session if one exists" do
@@ -59,19 +59,19 @@ describe CartLinesController do
   it "should assign a path_bar with index" do
     get :index
 
-    assigns(:path_bar).should == [path_bar_cart_lines_root]
+    expect(assigns(:path_bar)).to eq [path_bar_cart_lines_root]
   end
 
   it "should assign a cart with index" do
     get :index
 
-    assigns(:cart).should == @cart
+    expect(assigns(:cart)).to eq @cart
   end
 
   it "should assign stores with index" do
     get :index
 
-    assigns(:stores).should == @stores
+    expect(assigns(:stores)).to eq @stores
   end
 
   # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...
@@ -93,7 +93,7 @@ describe CartLinesController do
     it "should redirect to show" do
       delete :destroy_all
 
-      response.should redirect_to(:action => 'index')
+      expect(response).to redirect_to(:action => 'index')
     end
   end
 
@@ -119,7 +119,7 @@ describe CartLinesController do
     it "should redirect to items" do
       post_add_item
 
-      response.should redirect_to(:controller => 'item_categories')
+      expect(response).to redirect_to(:controller => 'item_categories')
     end
 
     def post_add_item
@@ -149,7 +149,7 @@ describe CartLinesController do
     it "should redirect to products" do
       post_add_dish
 
-      response.should redirect_to(:controller => 'dishes')
+      expect(response).to redirect_to(:controller => 'dishes')
     end
 
     def post_add_dish

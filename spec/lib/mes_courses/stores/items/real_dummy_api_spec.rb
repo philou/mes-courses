@@ -35,13 +35,13 @@ module MesCourses
             item(item_name = "super extra long item name").generate().attributes
 
           category = new_store.categories.find {|cat| cat_name.start_with?(cat.title)}
-          category.attributes[:name].should == cat_name
+          expect(category.attributes[:name]).to eq cat_name
 
           sub_category = category.categories.find {|sub_cat| sub_cat_name.start_with?(sub_cat.title)}
-          sub_category.attributes[:name].should == sub_cat_name
+          expect(sub_category.attributes[:name]).to eq sub_cat_name
 
           item = sub_category.items.find {|it| item_name.start_with?(it.title)}
-          item.attributes[:name].should == item_name
+          expect(item.attributes[:name]).to eq item_name
         end
 
         it "should use constant memory" do
@@ -50,7 +50,7 @@ module MesCourses
           small_inputs_memory = memory_usage_for_items(1)
           large_inputs_memory = memory_usage_for_items(200)
 
-          large_inputs_memory.should be <= small_inputs_memory * 1.1
+          expect(large_inputs_memory).to be <= small_inputs_memory * 1.1
         end
 
         def memory_usage_for_items(item_count)

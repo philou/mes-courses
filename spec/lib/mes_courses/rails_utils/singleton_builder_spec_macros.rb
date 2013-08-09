@@ -13,19 +13,19 @@ module MesCourses
         factory_name = described_class.to_s.underscore.intern
 
         it "has a #{symbol} that is marked so" do
-          singleton.should self.send("be_#{symbol}")
+          expect(singleton).to self.send("be_#{symbol}")
         end
 
         it "has other categories that are not #{symbol}" do
-          FactoryGirl.build(factory_name).should_not self.send("be_#{symbol}")
+          expect(FactoryGirl.build(factory_name)).not_to self.send("be_#{symbol}")
         end
 
         it "publishes the name of #{symbol} directly" do
-          described_class.send("#{symbol}_name").should == value
+          expect(described_class.send("#{symbol}_name")).to eq value
         end
 
         it "has a #{symbol} with a special name" do
-          singleton.name.should == value
+          expect(singleton.name).to eq value
         end
       end
     end

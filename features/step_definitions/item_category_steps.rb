@@ -17,8 +17,8 @@ end
 
 Then /^the following categories should have been deleted$/ do |item_categories|
   item_categories.raw.each do |name|
-    ItemCategory.find_by_name(name).should be_nil
+    expect(ItemCategory.find_by_name(name)).to be_nil
   end
-  ItemCategory.find_by_name(Constants::ROOT_ITEM_CATEGORY_NAME).should_not be_nil
-  ItemCategory.find_by_name(Constants::DISABLED_ITEM_CATEGORY_NAME).should_not be_nil
+  expect(ItemCategory.find_by_name(Constants::ROOT_ITEM_CATEGORY_NAME)).not_to be_nil
+  expect(ItemCategory.find_by_name(Constants::DISABLED_ITEM_CATEGORY_NAME)).not_to be_nil
 end

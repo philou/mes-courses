@@ -11,11 +11,11 @@ describe WelcomeController do
   end
 
   it "should assign a body id" do
-    assigns[:body_id].should == ApplicationController::PRESENTATION_BODY_ID
+    expect(assigns[:body_id]).to eq ApplicationController::PRESENTATION_BODY_ID
   end
 
   it "should assign a app part" do
-    assigns[:app_part].should == ApplicationController::BLOG_APP_PART
+    expect(assigns[:app_part]).to eq ApplicationController::BLOG_APP_PART
   end
 
 end

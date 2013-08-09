@@ -12,11 +12,11 @@ shared_examples "a view with order transfer" do |store_parameters = {}|
   end
 
   it "renders the name of the store" do
-    rendered.should contain(@order.store_name)
+    expect(rendered).to contain(@order.store_name)
   end
 
   it "renders the passing progress ratio" do
-    rendered.should contain('47%')
+    expect(rendered).to contain('47%')
   end
 
 end

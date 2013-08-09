@@ -25,7 +25,7 @@ describe ItemsController do
       it "should redirect to the specified dish page" do
         self.send(action)
 
-        response.should redirect_to(dish_path(@dish))
+        expect(response).to redirect_to(dish_path(@dish))
       end
 
       it "should save the modified dish" do

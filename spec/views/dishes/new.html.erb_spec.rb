@@ -13,14 +13,14 @@ describe "dishes/new" do
   it "should display a default name for the new dish" do
     render
 
-    rendered.should have_xpath('//form[@id="dish"]//input[@name="dish[name]"][@type="text"][@value="'+@dish.name+'"]')
+    expect(rendered).to have_xpath('//form[@id="dish"]//input[@name="dish[name]"][@type="text"][@value="'+@dish.name+'"]')
   end
 
   it "should have a dish creation form" do
     render
 
-    rendered.should have_xpath('//form[@id="dish"][@method="post"][@action="'+url_for(:controller => 'dishes', :action => 'create')+'"]')
-    rendered.should have_xpath('//form[@id="dish"]//input[@type="submit"]')
+    expect(rendered).to have_xpath('//form[@id="dish"][@method="post"][@action="'+url_for(:controller => 'dishes', :action => 'create')+'"]')
+    expect(rendered).to have_xpath('//form[@id="dish"]//input[@type="submit"]')
   end
 
 end

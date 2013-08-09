@@ -26,19 +26,19 @@ describe OrdersController do
         it "#{action} should redirect to show when the order is not yet passed" do
           get_with_status(action, :whatever_but_succeeded)
 
-          response.should redirect_to(action: 'show')
+          expect(response).to redirect_to(action: 'show')
         end
       end
       it "should render show template when the order is not yet being passed" do
         get_with_status('show', Order::NOT_PASSED)
 
-        response.should render_template('orders/show')
+        expect(response).to render_template('orders/show')
       end
 
       it "show should redirect passed orders to logout" do
         get_with_status('show', Order::SUCCEEDED)
 
-        response.should redirect_to(action: 'logout')
+        expect(response).to redirect_to(action: 'logout')
       end
 
     end
@@ -53,13 +53,13 @@ describe OrdersController do
       it "should redirect to cart" do
         get 'show', :id => @order.id
 
-        response.should redirect_to(:controller => 'cart_lines')
+        expect(response).to redirect_to(:controller => 'cart_lines')
       end
 
       it "should set a flash message" do
         get 'show', :id => @order.id
 
-        flash[:alert].should == @order.error_notice
+        expect(flash[:alert]).to eq @order.error_notice
       end
     end
 
@@ -67,7 +67,7 @@ describe OrdersController do
       it "#{action} should assign a @path_bar with two items" do
         get_with_status(action, order_status)
 
-        assigns(:path_bar).should == [path_bar_cart_lines_root,
+        expect(assigns(:path_bar)).to eq [path_bar_cart_lines_root,
                                       path_bar_element_with_no_link("Transfert")]
       end
     end
@@ -76,7 +76,7 @@ describe OrdersController do
       it "#{action} should assign an order" do
         get_with_status(action, order_status)
 
-        assigns(:order).should == @order
+        expect(assigns(:order)).to eq @order
       end
     end
 
@@ -84,7 +84,7 @@ describe OrdersController do
       it "#{action} with #{order_status} order should render #{action} template" do
         get_with_status(action, order_status)
 
-        response.should render_template("orders/#{action}")
+        expect(response).to render_template("orders/#{action}")
       end
     end
     def self.it_should_assign_forward_completion_percents(action, order_status)
@@ -93,7 +93,7 @@ describe OrdersController do
 
         get_with_status(action, order_status)
 
-        assigns(:forward_completion_percents).should == 25
+        expect(assigns(:forward_completion_percents)).to eq 25
       end
     end
 
@@ -114,13 +114,13 @@ describe OrdersController do
     it "show with passing order asks the page to auto refresh" do
       get_with_status('show', Order::PASSING)
 
-      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new
+      expect(assigns(:refresh_strategy)).to eq MesCourses::HtmlUtils::PageRefreshStrategy.new
     end
 
     it "login should automaticaly redirect to logout" do
       get_with_status('logout', Order::SUCCEEDED)
 
-      assigns(:refresh_strategy).should == MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
+      expect(assigns(:refresh_strategy)).to eq MesCourses::HtmlUtils::PageRefreshStrategy.new(interval: OrdersController::LOGOUT_ALLOWED_SECONDS, url: order_login_path(@order))
     end
 
     it "login should assign store login parameters" do
@@ -156,9 +156,9 @@ describe OrdersController do
 
       forward_to_valid_store_account
 
-      @order.should_not be_nil
-      @order.cart.should == @cart
-      @order.store.should == @store
+      expect(@order).not_to be_nil
+      expect(@order.cart).to eq @cart
+      expect(@order.store).to eq @store
     end
 
     it "should pass the order" do
@@ -187,7 +187,7 @@ describe OrdersController do
     it "should store the login and password to the session" do
       forward_to_valid_store_account
 
-      session[:store_credentials].should == @credentials
+      expect(session[:store_credentials]).to eq @credentials
     end
 
     def forward_to_valid_store_account

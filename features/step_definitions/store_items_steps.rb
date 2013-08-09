@@ -30,7 +30,7 @@ end
 Given /^last store import of "(.*?)" was unexpectedly interrupted$/ do |store_name|
   simulate_network_issues {|i| 5 < i}
 
-  lambda { import_real_dummy_store(store_name) }.should raise_error(RuntimeError)
+  expect(lambda { import_real_dummy_store(store_name) }).to raise_error(RuntimeError)
   note_past_metrics
 
   fix_network_issues
@@ -66,5 +66,5 @@ When /^"(.*?)" raises its prices$/ do |store_name|
 end
 
 Then /^all items from "(.*?)" should have been imported$/ do |store_name|
-  Item.count.should == items_count_in_generated_store(store_name)
+  expect(Item.count).to eq items_count_in_generated_store(store_name)
 end
