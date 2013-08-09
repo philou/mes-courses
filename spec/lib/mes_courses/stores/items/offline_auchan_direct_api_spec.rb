@@ -18,7 +18,7 @@ module MesCourses
         it_should_behave_like_any_store_items_api
 
         it "parses promotions prices" do
-          enumerator_of_cat_sub_cat_and_items_tokens.
+          prices = enumerator_of_cat_sub_cat_and_items_tokens.
 
           map do |tokens|
             promo_price(*tokens)
@@ -26,9 +26,9 @@ module MesCourses
 
           select do |price|
             !price.nil?
-          end.
+          end
 
-          expect(first).to be_instance_of(Float)
+          expect(prices.first).to be_instance_of(Float)
         end
 
         private
