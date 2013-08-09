@@ -12,7 +12,8 @@ describe "item_categories/show" do
     assign :add_item_label, @add_item_label = "Acheter"
     assign :add_item_url_options, @add_item_url_options = {:controller => 'cart_lines', :action => 'create'}
     assign :add_item_html_options, @add_item_html_options = {:method => :post}
-    assign :categories, @categories = ["Produits laitiers", "Fruits & Légumes"].map {|name| stub_model(ItemCategory, :name => name) }
+
+    assign :categories, @categories = FactoryGirl.create_list(:item_category, 2)
     assign :search_url, @search_url = "/item_category/search_it"
     assign :title, "Tous les produits"
     assign :items, []
@@ -49,11 +50,7 @@ describe "item_categories/show" do
   describe "a category with items" do
     before(:each) do
       assign :categories, []
-      assign :items, @items = ["Bavette", "Entrecôte"].map {|item| stub_model(Item,
-                                                              :name => item,
-                                                              :price => item.length/100.0,
-                                                              :brand => "#{item} INC",
-                                                              :image => "http://www.photofabric.com/#{item}")}
+      assign :items, @items = FactoryGirl.create_list(:item, 2)
     end
 
     [:name, :price, :brand].each do |attribute|
@@ -89,8 +86,7 @@ describe "item_categories/show" do
     end
 
     it "displays disabled items accordingly" do
-      item = @items.first
-      item.stub(:item_categories).and_return([ItemCategory.disabled])
+      item = @items.first.disable
 
       render
 

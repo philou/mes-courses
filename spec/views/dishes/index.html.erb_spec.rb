@@ -7,8 +7,7 @@ describe "dishes/index" do
   include KnowsPageParts
 
   before(:each) do
-    @dishes = ["Tomates farcies", "Pates au gruyère"].map {|name| stub_model(Dish, :name => name) }
-    assign :dishes, @dishes
+    assign :dishes, @dishes = FactoryGirl.create_list(:dish, 2)
     assign :can_modify_dishes, false
   end
 
@@ -25,8 +24,7 @@ describe "dishes/index" do
   end
 
   it "displays disabled dishes accordingly" do
-    dish = @dishes.first
-    dish.stub(:disabled?).and_return(true)
+    dish = @dishes.first.disable
 
     render
 
