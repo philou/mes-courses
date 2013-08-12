@@ -4,18 +4,34 @@
 module KnowsCart
 
   def buy_items(table)
-    table.each_item_quantity_and_name do |quantity, item_name|
-      put_in_the_cart(quantity, item_name)
+    table.each_quantity_and_name do |quantity, item_name|
+      put_item_in_the_cart(quantity, item_name)
     end
   end
 
-  def put_in_the_cart(quantity, item_name)
+  def buy_dishes(table)
+    table.each_quantity_and_name do |quantity, name|
+      put_dish_in_the_cart(quantity, name)
+    end
+  end
+
+
+  def put_item_in_the_cart(quantity, item_name)
     item = Item.find_by_name(item_name)
     throw ArgumentError.new("Item '#{item_name}' could not be found") unless item
 
     quantity.times do
       visit item_category_path(item.item_categories.first)
       within(:xpath, "//div[@id='items-panel']//tr[td/text()='#{item.name}']") do
+        click_button('Ajouter au panier')
+      end
+    end
+  end
+
+  def put_dish_in_the_cart(quantity, dish_name)
+    quantity.times do
+      visit dishes_path
+      within(:xpath, "//table[@id='dish-panel']//tr[td/a/text()='#{dish_name}']") do
         click_button('Ajouter au panier')
       end
     end
@@ -73,16 +89,24 @@ module KnowsCart
   end
 
   def the_cart_should_contain_items(table)
-    table.each_item_quantity_and_name do |quantity, item_name|
+    table.each_quantity_and_name do |quantity, item_name|
       the_cart_should_contain_item(quantity, item_name)
     end
   end
 
   def the_cart_should_contain_item(quantity, item_name)
     item = Item.find_by_name(item_name)
+    expect(item).not_to be_nil, "could not find an item with name '#{item_name}'"
 
     visit_cart_page
     expect(page).to contain_a(cart_line_with_long_name_and_quantity(item.long_name, quantity))
+  end
+
+  def the_cart_should_contain_dishes(table)
+    visit_cart_page
+    table.each_quantity_and_name do |quantity, name|
+      expect(page).to contain_a(dish_with_name(name))
+    end
   end
 
   def the_cart_should_not_contain_any_item

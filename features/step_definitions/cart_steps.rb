@@ -2,12 +2,12 @@
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 Given(/^there (are|is) "([^"]*)" in the cart"?$/) do |_, item_name|
-  put_in_the_cart(1, item_name)
+  put_item_in_the_cart(1, item_name)
 end
 
 Given(/^I have items in my cart$/) do
   item = categorized_item("Marché", "Du jour")
-  put_in_the_cart(1, item.name)
+  put_item_in_the_cart(1, item.name)
 end
 
 When(/^I empty the cart$/) do
@@ -61,7 +61,7 @@ When(/^the transfer is completely finished$/) do
   current_route_should_be(:order_login_path, /\d+/)
 end
 
-Then(/^the cart should contain$/) do |table|
+Then(/^the cart should contain the items$/) do |table|
   the_cart_should_contain_items(table)
 end
 
@@ -71,6 +71,10 @@ end
 
 Then(/^the cart should not contain any item$/) do
   the_cart_should_not_contain_any_item
+end
+
+Then(/^the cart should contain the dishes$/) do |table|
+  the_cart_should_contain_dishes(table)
 end
 
 Then(/^the cart should amount to (#{CAPTURE_AMOUNT})$/) do |price|

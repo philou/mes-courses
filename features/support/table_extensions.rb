@@ -14,10 +14,10 @@ class Cucumber::Ast::Table
     end
   end
 
-  def each_item_quantity_and_name
+  def each_quantity_and_name
     if column_names.size == 1
-      raw.each do |item_name|
-        yield 1, item_name.first
+      raw.each do |name|
+        yield 1, name.first
       end
     else
       hashes.each do |hash|
@@ -26,6 +26,15 @@ class Cucumber::Ast::Table
     end
   end
 
+  def hash_2_lists
+    result = {}
+    raw.each do |row|
+      raise StandardError.new("hash_2_lists tables must have a ':' in the second column") unless row[1] == ':'
+
+      result[row[0]] = row.drop(2)
+    end
+    result
+  end
 
   private
   def downcase_keys(hash)

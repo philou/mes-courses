@@ -19,7 +19,7 @@ Feature: Cart quantities and prices
     When I buy the items
       | PdT Charlottes |
       | Bavette        |
-    Then the cart should contain
+    Then the cart should contain the items
       | PdT Charlottes |
       | Bavette        |
     And the cart should amount to 6.5€
@@ -33,7 +33,7 @@ Feature: Cart quantities and prices
     When I buy the items
       | quantities | name    |
       |          2 | Bavette |
-    Then the cart should contain
+    Then the cart should contain the items
       | quantities | name    |
       |          2 | Bavette |
     And the cart should amount to 8.0€

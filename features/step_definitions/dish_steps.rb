@@ -1,6 +1,10 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
+Given(/^the dishes$/) do |table|
+  create_dishes(table)
+end
+
 Given /^there is a dish "([^"]*)""?$/ do |dish_name|
   item_names = dish_name.split(/ aux? /)
 
@@ -21,6 +25,10 @@ Given /^the dish "(.*?)" with items$/ do |dish_name, item_table|
     Item.find_by_name(item_name)
   end
   Dish.create!(:name => dish_name, :items => items)
+end
+
+When(/^I buy the dishes$/) do |table|
+  buy_dishes(table)
 end
 
 When /^I set the dish name to "([^"]*)"?"$/ do |name|

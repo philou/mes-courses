@@ -45,7 +45,6 @@ module KnowsItems
 
   private
 
-
   def visit_every_item_in(table)
     table.each_item do |category, sub_category, item, attributes|
       visit item_categories_path
