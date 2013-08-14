@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -7,16 +7,18 @@ describe "cart_lines/index" do
   include ApplicationHelper
 
   before(:each) do
-    @tomates = stub_model(CartLine, :name => "Tomates", :price => 2.4, :quantity => 7)
-    @pdt = stub_model(CartLine, :name => "Pommes de terre", :price => 0.99, :quantity => 1)
-    @total_price = @tomates.price + @pdt.price
-    @cart = stub_model(Cart, :total_price => @total_price)
+    @cart = FactoryGirl.create(:cart)
+
+    @tomates = FactoryGirl.build(:cart_line, quantity: 7)
     @cart.lines.push(@tomates)
+
+    @pdt = FactoryGirl.build(:cart_line)
     @cart.lines.push(@pdt)
+
     assign :cart, @cart
 
-    @stores = [stub_model(Store, :url => "http://www.auchandirect.fr", :name => "www.auchandirect.fr"),
-               stub_model(Store, :url => "http://www.mon-marche.fr", :name => "www.mon-marche.fr")]
+    @stores = FactoryGirl.create_list(:store, 2, :unhandled)
+
     assign :stores, @stores
 
     render
@@ -39,7 +41,7 @@ describe "cart_lines/index" do
   end
 
   it "displays the total price" do
-    expect(rendered).to contain("#{@total_price}€")
+    expect(rendered).to contain("#{@cart.total_price}€")
   end
 
   it "displays the quantity of each item" do

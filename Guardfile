@@ -17,7 +17,7 @@ guard 'rails', timeout: 60 do
 end
 
 
-guard :rspec, cli: "--tag ~@slow", all_after_pass: true, all_on_start: false, keep_failed: true, spring: true, bundler: false do
+guard :rspec, cli: "--tag ~@slow", all_on_start: false, keep_failed: true, spring: true, bundler: false do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
