@@ -25,6 +25,7 @@ tmp
 *.out
 /local_stores
 .env
+rerun.txt
 
 # Ignore compiled assets
 /public/assets
