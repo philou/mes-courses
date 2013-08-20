@@ -1,6 +1,17 @@
 <!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
 
 <div class="section">
+  <span class="section-title">Recettes</span>
+  <table id="dish-panel">
+    <% @cart.dishes.each do |dish| %>
+      <tr>
+        <td><%= link_to h(dish.name), dish_path(dish) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+
+<div class="section">
   <span class="section-title">Produits</span>
   <table>
     <% @cart.lines.each do |line| %>

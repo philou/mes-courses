@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
 class ContainA
   def initialize(page_part)
@@ -60,3 +60,4 @@ def contain_a(page_part)
 end
 
 alias :contain_an :contain_a
+alias :contain_the :contain_a

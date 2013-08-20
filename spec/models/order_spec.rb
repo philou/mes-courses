@@ -89,6 +89,14 @@ describe Order do
       expect(@order.passed_ratio).to eq Order::PASSED_RATIO_BEFORE + Order::PASSED_RATIO_DURING*(4.0 / 7.0)
     end
 
+    it "should save cart line forwarding progress" do
+      expect(@order).to be_new_record
+
+      @order.notify_forwarded_cart_line
+
+      expect(@order).not_to be_new_record
+    end
+
   end
 
   context "when passing" do

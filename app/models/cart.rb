@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 # Session cart for a user
 class Cart < ActiveRecord::Base
@@ -10,6 +10,8 @@ class Cart < ActiveRecord::Base
            :dependent => :destroy,
            :autosave => true
 
+  has_and_belongs_to_many :dishes
+
   def empty?
     return lines.empty?
   end
@@ -18,7 +20,7 @@ class Cart < ActiveRecord::Base
     cart_line = lines.detect {|line| line.item == item }
     if cart_line.nil?
       lines.build(:quantity => 1, :item => item)
-   else
+    else
       cart_line.increment_quantity
     end
   end
@@ -27,10 +29,13 @@ class Cart < ActiveRecord::Base
     dish.items.each do |item|
       add_item(item)
     end
+
+    dishes.push(dish)
   end
 
   def empty
     lines.clear
+    dishes.clear
   end
 
   def total_price

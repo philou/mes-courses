@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130529201510) do
+ActiveRecord::Schema.define(:version => 20130814174704) do
 
   create_table "blog_comments", :force => true do |t|
     t.text     "name",       :null => false
@@ -52,6 +52,14 @@ ActiveRecord::Schema.define(:version => 20130529201510) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "carts_dishes", :id => false, :force => true do |t|
+    t.integer "cart_id", :null => false
+    t.integer "dish_id", :null => false
+  end
+
+  add_index "carts_dishes", ["cart_id"], :name => "carts_dishes_cart_id_index"
+  add_index "carts_dishes", ["dish_id"], :name => "carts_dishes_dish_id_index"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0

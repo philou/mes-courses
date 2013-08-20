@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe Cart do
 
   before(:each) do
-    @bavette = stub_model(Item, :name => "Bavette", :price => 4.5)
+    @bavette = FactoryGirl.create(:item)
+    @cart = FactoryGirl.create(:cart)
 
-    @cart = Cart.new
-    @items = Array.new(5) {|i| stub_model(Item, :name => "item_#{i.to_s}", :price => 0.5 + i.to_f) }
+    @items = FactoryGirl.create_list(:item, 5)
   end
 
   it "should be empty when created" do
@@ -23,18 +23,36 @@ describe Cart do
   it "should not be empty once items were added" do
     @cart.add_item(@bavette)
     expect(@cart).not_to be_empty
- end
+  end
 
   it "should contain added items" do
     fill_the_cart
 
-    cart_should_contain_all_items
- end
-
-  it "should contain items from added dishes" do
-    @cart.add_dish(double(Dish, :name => "Home made soup", :items => @items))
-    cart_should_contain_all_items
+    cart_should_contain_all(@items)
   end
+
+  describe "adding a dish" do
+
+    before :each do
+      @cart.add_dish(@dish = FactoryGirl.create(:dish_with_items))
+    end
+
+    it "notes added dishes" do
+      expect(@cart.dishes).to include(@dish)
+    end
+
+    it "contains items from added dishes" do
+      cart_should_contain_all(@dish.items)
+    end
+
+    it "forgets about dishes when emptied" do
+      @cart.empty
+
+      expect(@cart.dishes).to be_empty
+    end
+
+  end
+
 
   it "should have a total price of 0 when empty" do
     expect(@cart.total_price).to eq 0
@@ -42,12 +60,14 @@ describe Cart do
 
   it "should have a total price of its item" do
     @cart.add_item(@bavette)
-    expect(@cart.total_price).to eq 4.5
+    expect(@cart.total_price).to eq @bavette.price
   end
 
   it "should have a total price equal to the sum of the prices of all its items" do
-    @items.each {|item| @cart.add_item(item) }
-    expect(@cart.total_price).to eq 12.5
+    fill_the_cart
+
+    items_amount = (@items.map &:price).inject &:+
+    expect(@cart.total_price).to eq items_amount
   end
 
   it "should remove all items when emptied" do
@@ -78,68 +98,72 @@ describe Cart do
   context "when forwarding to an online store" do
 
     before :each do
-      @cart = Cart.new
-      @store = Store.new(:url => "http://www.a-store.com")
-      @store_session = double(MesCourses::Stores::Carts::Session).as_null_object
-      @order = Order.new
-      @order.stub(:save!)
+      @order = FactoryGirl.create(:order)
+      @cart = @order.cart
+
+      @store_api = MesCourses::Stores::Carts::DummyApi.new
     end
 
-    it "should empty the remote cart" do
-      expect(@store_session).to receive(:empty_the_cart)
+    it "should empty the remote cart first" do
+      @store_api.add_to_cart(1, 1)
+
       forward_to_store
+
+      expect(@store_api).to be_empty
     end
 
     it "should forward its lines" do
       fill_the_cart
+
+      forward_to_store
+
       @cart.lines.each do |line|
-        expect(line).to receive(:forward_to).with(@store_session)
+        expect(@store_api).to be_containing(line.item.remote_id, line.quantity)
       end
-
-      forward_to_store
     end
 
-    it "should not add missing cart lines" do
-      expect(@order).not_to receive(:add_missing_cart_lines)
-
-      forward_to_store
-    end
-
-    it "should store the missing items names in the order" do
+    it "should not report warning without reason" do
       fill_the_cart
 
-      missing_lines = @cart.lines[2..3]
-      missing_lines.each { |line| line.stub(:forward_to).and_raise(MesCourses::Stores::Carts::UnavailableItemError) }
-      missing_lines.each { |line| expect(@order).to receive(:add_missing_cart_line).with(line)}
-
       forward_to_store
+
+      expect(@order.warning_notices).to be_empty
     end
 
-    it "should update the count of forwarded lines after each" do
+    it "should report missing items warnings" do
       fill_the_cart
-
-      expect(@order).to receive(:notify_forwarded_cart_line).exactly(@cart.lines.size).times
+      missing_lines = some_cart_lines_are_missing
 
       forward_to_store
+
+      expect(@order.warning_notices).to have(missing_lines.count).items
     end
 
-    it "should save the order after each cart line is forwarded" do
+    it "should update the forwarded lines progress after each" do
       fill_the_cart
 
-      expect(@order).to receive(:save!).exactly(@cart.lines.size).times
-
       forward_to_store
+
+      expect(@order.forwarded_cart_lines_count).to eq @cart.lines.size
     end
 
     def forward_to_store
-      @cart.forward_to(@store_session, @order)
+      @cart.forward_to(@store_api.new_session, @order)
+    end
+
+    def some_cart_lines_are_missing
+      missing_lines = @cart.lines[2..3]
+      missing_lines.each do |line|
+        @store_api.add_unavailable_item(line.item.remote_id)
+      end
+      missing_lines
     end
   end
 
   private
 
-  def cart_should_contain_all_items
-    @items.each do |added_item|
+  def cart_should_contain_all(items)
+    items.each do |added_item|
       cart_item = @cart.lines.detect {|line| line.item == added_item}
       expect(cart_item).not_to be_nil
     end

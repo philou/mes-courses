@@ -1,3 +1,7 @@
+* [DESIGN] Improve PageParts and ContainA matchers
+** rename to NamedXPath or NXPath or XPathWithName, XPathWN
+** extraire une gem
+** les utiliser dans d'autres contexts (find / within de capybara)
 * [DEVENV] write custom dish management commands
 ** TODO create a module to include from the console
 ** TODO create a script to start the console with this module loaded on an heroku instance
@@ -79,7 +83,7 @@
 **** TODO add something to the ci script to prepare the parallel dbs
 *** use an integration server
 *** migrate to github if it handles continuous integration
-* [HEROKU] use vagrant or chef to completly setup virtual dev envs
+* [DEVENV] use vagrant or chef to completly setup virtual dev envs
 ** try lxc containers instead of vms
 ** wait until I have a good laptop
 ** use it to track heroku stack changes
@@ -91,7 +95,6 @@
 ** Fix csslint issues
 *** TODO utiliser un h3 pour les titres dans la sidebar
 *** TODO mettre la sidebar en 1° et utilisé un float right dessus
-* [DESIGN] use rspec-fire to match mocks and classes
 * [DEVENV] écrire un guide de debugging complet
 ** debugger rails (dans emacs)
 ** débugger rspec (dans emacs)
@@ -128,9 +131,9 @@
 **** utiliser une install/partition différente pour mes-courses-dev et pour le reste de ce que je fais sur mon pc
 ** utiliser Chef, Puppet ou autre pour setuper les VMs de devs
 ** avoir le script pour setuper la vms dans le code
-* [DESIGN] replace the place matches by an extension to capybara/webrat #within that associates a name to a selector
 * [DEVENV] voir comment installer les rdoc avec les gem via bundle
 ** bundle exec gem rdoc --all
+* [DESIGN] try rspec-fire to match mocks and classes
 * [DEVENV] améliorer la recherche dans les ebooks
 ** trouver un bon indexeur de fichier pour ubuntu
 ** setuper calibre
@@ -220,6 +223,7 @@
 ** add an essentiel cucumber tag in include these scenarios in autotest suite
 ** remove "plumbing" unit tests by essential cucumber scenarios
 ** refactor the code to more clear responsibilities
+* [DEVENV] Spike rspec & cucumber guard to use rcov to automaticaly rerun affeted tests
 * [DESIGN] Spike how to control accessibility in models
 * [DESIGN] Spike rspec-spies + .ordered, try to add it (wait for rspec 2)
 * [DESIGN] Spiker ce qu'apporte NoSql pour les problèmes de Foreign Keys

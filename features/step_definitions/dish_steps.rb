@@ -27,10 +27,6 @@ Given /^the dish "(.*?)" with items$/ do |dish_name, item_table|
   Dish.create!(:name => dish_name, :items => items)
 end
 
-When(/^I buy the dishes$/) do |table|
-  buy_dishes(table)
-end
-
 When /^I set the dish name to "([^"]*)"?"$/ do |name|
   fill_in("dish[name]", :with => name)
   click_button("Créer")

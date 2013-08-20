@@ -114,6 +114,11 @@ module KnowsCart
     expect(page).not_to contain_a(cart_line)
   end
 
+  def the_cart_should_not_contain_any_dish
+    visit_cart_page
+    expect(page).not_to contain_a(dish_line)
+  end
+
   def the_cart_should_amount_to(price)
     visit_cart_page
     expect(find(:xpath, "//tr[td/text()='Total']/td[contains(.,'€')]").text.to_f).to eq(price)

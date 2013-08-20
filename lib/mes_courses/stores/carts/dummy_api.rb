@@ -63,26 +63,45 @@ module MesCourses
           @content.clear
         end
 
-        def add_to_cart(quantity, item_remote_id)
-          if available?(item_remote_id)
+        def add_to_cart(quantity, item)
+          if available?(item)
             @log.push(:add_to_cart)
-            @content[item_remote_id] += (item_remote_id.hash.abs.to_f/1e7)
+            @content[item] += quantity
           end
         end
 
         def cart_value
-          @content.values.inject(0.0) {|x,y| x+y}
+          @content.to_a.inject(0.0) do |amount,id_and_quantity|
+            item = id_and_quantity.first
+            quantity = id_and_quantity.last
+
+            unit_price = item.hash.abs.to_f/1e7
+
+            amount + quantity * unit_price
+          end
         end
 
         def content
           @content.keys
         end
 
-        def add_unavailable_item(item_remote_id)
-          @unavailable_items[item_remote_id] = true
+        def empty?
+          @content.empty?
         end
-        def available?(item_remote_id)
-          !@unavailable_items[item_remote_id]
+
+        def containing?(item, quantity)
+          @content[item] == quantity
+        end
+
+        def add_unavailable_item(item)
+          @unavailable_items[item] = true
+        end
+        def available?(item)
+          !@unavailable_items[item]
+        end
+
+        def new_session
+          Session.new(self)
         end
 
       end

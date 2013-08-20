@@ -10,6 +10,14 @@ Given(/^I have items in my cart$/) do
   put_item_in_the_cart(1, item.name)
 end
 
+Given(/^I bought the dishes$/) do |table|
+  buy_dishes(table)
+end
+
+When(/^I buy the dishes$/) do |table|
+  buy_dishes(table)
+end
+
 When(/^I empty the cart$/) do
   empty_the_cart
 end
@@ -71,6 +79,10 @@ end
 
 Then(/^the cart should not contain any item$/) do
   the_cart_should_not_contain_any_item
+end
+
+Then(/^the cart should not contain any dish$/) do
+  the_cart_should_not_contain_any_dish
 end
 
 Then(/^the cart should contain the dishes$/) do |table|

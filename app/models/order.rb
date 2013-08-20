@@ -35,6 +35,7 @@ class Order < ActiveRecord::Base
 
   def notify_forwarded_cart_line
     self.forwarded_cart_lines_count= self.forwarded_cart_lines_count + 1
+    self.save!
   end
 
   def pass(credentials)

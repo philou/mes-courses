@@ -31,8 +31,16 @@ module KnowsPageParts
     item_with_name(name).that("is enabled", "[//input[@type='submit' and not(@disabled)]]")
   end
 
+  def dish_panel
+    PagePart.new("the dish panel", "//table[@id='dish-panel']")
+  end
+
+  def dish_line
+    dish_panel.with("a dish", "//tr")
+  end
+
   def dish_with_name(name)
-    PagePart.new("a dish named #{name}", "//table[@id='dish-panel']//tr[td[contains(.,'#{name}')]]")
+    dish_line.that("is named #{name}", "[td[contains(.,'#{name}')]]")
   end
 
   def disabled_dish_with_name(name)
@@ -53,6 +61,13 @@ module KnowsPageParts
 
   def cart_line_with_long_name_and_quantity(long_name, quantity)
     cart_line_with_long_name(long_name).that("has quantity #{quantity}", "[td[contains(.,'#{quantity} x')]]")
+  end
+  def cart_line_with_long_name_and_price(long_name, price)
+    cart_line_with_long_name(long_name).that("has price #{price}", "[td[contains(.,'#{price}€')]]")
+  end
+
+  def cart_total(amount)
+    PagePart.new("the cart total amount of #{amount}", "//tr[td/text()='Total'][td[contains(.,'#{amount}€')]]")
   end
 
   def blog_body

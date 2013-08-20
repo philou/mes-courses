@@ -36,3 +36,10 @@ Feature: Cart dishes
     And the cart should contain the dishes
       | quantities | name            |
       |          2 | Tomates farcies |
+
+  Scenario: Emptying a cart with dishes
+
+    Given I bought the dishes
+      | Tomates farcies      |
+    When I empty the cart
+    Then the cart should not contain any dish
