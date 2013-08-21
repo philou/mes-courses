@@ -5,7 +5,7 @@ Feature: Dish buying
   Wants to add all the ingredient of a dish to its caddy
 
   Scenario: Adding a dish to the cart
-    Given the dish "Pates au saumon"
-    When  I buy the dish "Pates au saumon"
-#    Then I should get a confirmation that I bought the dish "Pates au saumon"
-    Then  the cart should contain the dish "Pates au saumon"
+    Given a dish "Pates au saumon"
+    When  I buy this dish
+#    Then I should get a confirmation that I bought this dish
+    Then  the cart should contain this dish

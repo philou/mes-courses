@@ -5,7 +5,7 @@ Given(/^the dishes$/) do |table|
   create_dishes(table)
 end
 
-Given(/^the dish "(.*?)"$/) do |dish_name|
+Given(/^(#{CAPTURE_DISH_NAME})$/) do |dish_name|
   create_dishes(cucumber_table(dish_name))
 end
 
