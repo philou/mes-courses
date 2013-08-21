@@ -5,6 +5,10 @@ Given(/^the items$/) do |table|
   create_items(table)
 end
 
+Given(/^the item "(.*?)"$/) do |item_name|
+  create_items(cucumber_table(item_name))
+end
+
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
   @item = categorized_item(category_name, sub_category_name, :name => item_name)
   @item.remote_id = @item.id
@@ -32,6 +36,9 @@ end
 
 When(/^I buy the items$/) do |table|
   buy_items(table)
+end
+When(/^I buy the item "(.*?)"$/) do |item_name|
+  buy_items(cucumber_table(item_name))
 end
 
 Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|
