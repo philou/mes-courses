@@ -46,6 +46,7 @@ group :test, :development, :ci do
 
   gem 'spring'
 
+  gem 'rb-inotify', :git => 'git://github.com/philou/rb-inotify.git'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-cucumber'
