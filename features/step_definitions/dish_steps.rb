@@ -5,6 +5,10 @@ Given(/^the dishes$/) do |table|
   create_dishes(table)
 end
 
+Given(/^the dish "(.*?)"$/) do |dish_name|
+  create_dishes(cucumber_table(dish_name))
+end
+
 Given /^there is a dish "([^"]*)""?$/ do |dish_name|
   item_names = dish_name.split(/ aux? /)
 

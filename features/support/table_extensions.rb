@@ -45,3 +45,11 @@ class Cucumber::Ast::Table
     attributes
   end
 end
+
+module KnowsCucumberTables
+  def cucumber_table(single_value)
+    Cucumber::Ast::Table.new([[single_value]])
+  end
+end
+
+World(KnowsCucumberTables)

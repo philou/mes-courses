@@ -17,6 +17,9 @@ end
 When(/^I buy the dishes$/) do |table|
   buy_dishes(table)
 end
+When(/^I buy the dish "(.*?)"$/) do |dish_name|
+  buy_dishes(cucumber_table(dish_name))
+end
 
 When(/^I empty the cart$/) do
   empty_the_cart
@@ -83,6 +86,9 @@ end
 
 Then(/^the cart should contain the dishes$/) do |table|
   the_cart_should_contain_dishes(table)
+end
+Then(/^the cart should contain the dish "(.*?)"$/) do |dish_name|
+  the_cart_should_contain_dishes(cucumber_table(dish_name))
 end
 
 Then(/^the cart should amount to (#{CAPTURE_AMOUNT})$/) do |price|
