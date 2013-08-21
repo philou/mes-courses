@@ -9,6 +9,7 @@ CAPTURE_STORE_NAME = Transform(/^(a|the) ?"?([^" ]*)"? store$/) do |_prefix, sto
   if store_name == ""
     main_store_name
   else
+    register_store_name(store_name)
     store_name
   end
 end
@@ -17,6 +18,7 @@ CAPTURE_DISH_NAME = Transform(/^(a|the|this) dish( "([^"]*)")?$/) do |_prefix, _
   if dish_name.nil?
     main_dish_name
   else
+    register_dish_name(dish_name)
     dish_name
   end
 end

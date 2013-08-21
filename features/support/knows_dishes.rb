@@ -17,7 +17,6 @@ module KnowsDishes
       end
 
       FactoryGirl.create(:dish, name: name, items: items)
-      register_dish_name(name)
     end
   end
 
