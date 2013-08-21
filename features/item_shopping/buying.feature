@@ -5,8 +5,13 @@ Feature: Item buying
   Wants to its cart any available item
 
   Scenario: Adding an item to the cart
-    Given there is a "Fruits & Légumes > Pommes de terre > PdT Charlottes" item
-    And   I am on the "Pommes de terre" item sub category page
-    When  I press "Ajouter au panier"
-    Then  there should be "PdT Charlottes" in my cart
+    Given the items
+      | name           |
+      | PdT Charlottes |
+    When I buy the items
+      | PdT Charlottes |
+#    Then I should get a confirmation that I bought the items
+#      | PdT Charlottes |
+    Then the cart should contain the items
+      | PdT Charlottes |
 

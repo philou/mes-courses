@@ -73,10 +73,6 @@ Then(/^the cart should contain the items$/) do |table|
   the_cart_should_contain_items(table)
 end
 
-Then(/^there should be "([^"]*)" in my cart"?$/) do |item_name|
-  the_cart_should_contain_item(1, item_name)
-end
-
 Then(/^the cart should not contain any item$/) do
   the_cart_should_not_contain_any_item
 end
