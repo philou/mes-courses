@@ -7,8 +7,8 @@ Feature: Cart dishes
   Background: Some dishes
 
     Given the dishes
-      | Tomates farcies      | : | Tomates farcies congelées | Riz              |
-      | Spaghetti bolognaise | : | Spaghetti                 | Sauce bolognaise |
+      | Tomates farcies      | => | Tomates farcies congelées | Riz              |
+      | Spaghetti bolognaise | => | Spaghetti                 | Sauce bolognaise |
 
   Scenario: Buying dishes
 
