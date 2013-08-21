@@ -6,7 +6,6 @@ Feature: Item buying
 
   Scenario: Adding an item to the cart
     Given the items
-      | name           |
       | PdT Charlottes |
     When I buy the items
       | PdT Charlottes |

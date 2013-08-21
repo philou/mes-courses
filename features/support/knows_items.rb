@@ -4,7 +4,7 @@
 module KnowsItems
 
   def create_items(table)
-    table.hashes.each do |row|
+    table.hashes_with_defaults('name').each do |row|
       item = FactoryGirl.create(:item_with_categories, row)
     end
   end
