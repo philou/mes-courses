@@ -5,8 +5,8 @@ Feature: Item buying
   Wants to its cart any available item
 
   Scenario: Adding an item to the cart
-    Given the item "PdT Charlottes"
-    When I buy the item "PdT Charlottes"
-#    Then I should get a confirmation that I bought the item "PdT Charlottes"
-    Then the cart should contain the item "PdT Charlottes"
+    Given an item "PdT Charlottes"
+    When I buy this item
+#    Then I should get a confirmation that I bought this item
+    Then the cart should contain this item
 

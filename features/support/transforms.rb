@@ -14,12 +14,21 @@ CAPTURE_STORE_NAME = Transform(/^(a|the) ?"?([^" ]*)"? store$/) do |_prefix, sto
   end
 end
 
-CAPTURE_DISH_NAME = Transform(/^(a|the|this) dish( "([^"]*)")?$/) do |_prefix, _quoted_dish_name, dish_name|
+CAPTURE_DISH_NAME = Transform(/^(a|an|the|this) dish( "([^"]*)")?$/) do |_prefix, _quoted_dish_name, dish_name|
   if dish_name.nil?
     main_dish_name
   else
     register_dish_name(dish_name)
     dish_name
+  end
+end
+
+CAPTURE_ITEM_NAME = Transform(/^(a|an|the|this) item( "([^"]*)")?$/) do |_prefix, _quoted_item_name, item_name|
+  if item_name.nil?
+    main_item_name
+  else
+    register_item_name(item_name)
+    item_name
   end
 end
 

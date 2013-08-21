@@ -5,7 +5,7 @@ Given(/^the items$/) do |table|
   create_items(table)
 end
 
-Given(/^the item "(.*?)"$/) do |item_name|
+Given(/^(#{CAPTURE_ITEM_NAME})$/) do |item_name|
   create_items(cucumber_table(item_name))
 end
 
@@ -37,7 +37,7 @@ end
 When(/^I buy the items$/) do |table|
   buy_items(table)
 end
-When(/^I buy the item "(.*?)"$/) do |item_name|
+When(/^I buy (#{CAPTURE_ITEM_NAME})$/) do |item_name|
   buy_items(cucumber_table(item_name))
 end
 

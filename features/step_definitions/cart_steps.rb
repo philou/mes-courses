@@ -75,7 +75,7 @@ end
 Then(/^the cart should contain the items$/) do |table|
   the_cart_should_contain_items(table)
 end
-Then(/^the cart should contain the item "(.*?)"$/) do |item_name|
+Then(/^the cart should contain (#{CAPTURE_ITEM_NAME})$/) do |item_name|
   the_cart_should_contain_items(cucumber_table(item_name))
 end
 
