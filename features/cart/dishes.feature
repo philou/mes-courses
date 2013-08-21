@@ -27,15 +27,15 @@ Feature: Cart dishes
   Scenario: Buying the same dish many times
 
     When I buy the dishes
-      | quantities | name            |
-      |          2 | Tomates farcies |
+      | quantity | name            |
+      |        2 | Tomates farcies |
     Then the cart should contain the items
-      | quantities | name                      |
-      |          2 | Tomates farcies congelées |
-      |          2 | Riz                       |
+      | quantity | name                      |
+      |        2 | Tomates farcies congelées |
+      |        2 | Riz                       |
     And the cart should contain the dishes
-      | quantities | name            |
-      |          2 | Tomates farcies |
+      | quantity | name            |
+      |        2 | Tomates farcies |
 
   Scenario: Emptying a cart with dishes
 

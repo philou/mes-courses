@@ -31,11 +31,11 @@ Feature: Cart quantities and prices
     and the number of items is reported in the cart.
 
     When I buy the items
-      | quantities | name    |
-      |          2 | Bavette |
+      | quantity | name    |
+      |        2 | Bavette |
     Then the cart should contain the items
-      | quantities | name    |
-      |          2 | Bavette |
+      | quantity | name    |
+      |        2 | Bavette |
     And the cart should amount to 8.0€
 
 
@@ -44,9 +44,9 @@ Feature: Cart quantities and prices
     The cart can be emptied of all its content.
 
     Given I bought the items
-      | quantities | name    |
-      |          2 | Bavette |
-      |          1 | Tomates |
+      | quantity | name    |
+      |        2 | Bavette |
+      |        1 | Tomates |
     When I empty the cart
     Then the cart should not contain any item
     And the cart should amount to 0.0€

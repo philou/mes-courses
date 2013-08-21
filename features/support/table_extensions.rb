@@ -14,15 +14,9 @@ class Cucumber::Ast::Table
     end
   end
 
-  def each_quantity_and_name
-    if column_names.size == 1
-      raw.each do |name|
-        yield 1, name.first
-      end
-    else
-      hashes.each do |hash|
-        yield hash[:quantities].to_i, hash[:name]
-      end
+  def hashes_with_defaults(main_column, defaults = {})
+    hashes_with_default_column(main_column).map do |hash|
+      defaults.merge(hash)
     end
   end
 
@@ -37,6 +31,7 @@ class Cucumber::Ast::Table
   end
 
   private
+
   def downcase_keys(hash)
     attributes = {}
     hash.each do |k, v|
@@ -44,6 +39,17 @@ class Cucumber::Ast::Table
     end
     attributes
   end
+
+  def hashes_with_default_column(main_column)
+    if column_names.size == 1
+      raw.map do |row|
+        { main_column => row.first }
+      end
+    else
+      hashes
+    end
+  end
+
 end
 
 module KnowsCucumberTables

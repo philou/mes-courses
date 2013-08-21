@@ -4,13 +4,13 @@
 module KnowsCart
 
   def buy_items(table)
-    table.each_quantity_and_name do |quantity, item_name|
+    each_quantity_and_name_in(table) do |quantity, item_name|
       put_item_in_the_cart(quantity, item_name)
     end
   end
 
   def buy_dishes(table)
-    table.each_quantity_and_name do |quantity, name|
+    each_quantity_and_name_in(table) do |quantity, name|
       put_dish_in_the_cart(quantity, name)
     end
   end
@@ -89,7 +89,7 @@ module KnowsCart
   end
 
   def the_cart_should_contain_items(table)
-    table.each_quantity_and_name do |quantity, item_name|
+    each_quantity_and_name_in(table) do |quantity, item_name|
       the_cart_should_contain_item(quantity, item_name)
     end
   end
@@ -104,7 +104,7 @@ module KnowsCart
 
   def the_cart_should_contain_dishes(table)
     visit_cart_page
-    table.each_quantity_and_name do |quantity, name|
+    each_quantity_and_name_in(table) do |quantity, name|
       expect(page).to contain_a(dish_with_name(name))
     end
   end
@@ -154,6 +154,12 @@ module KnowsCart
 
   def visit_cart_page
     visit path_to("the cart page")
+  end
+
+  def each_quantity_and_name_in(table)
+    table.hashes_with_defaults('name', 'quantity' => 1).each do |hash|
+      yield hash['quantity'].to_i, hash['name']
+    end
   end
 
 end
