@@ -1,12 +1,9 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
-Given(/^the dishes$/) do |table|
+GivenEither(/^(#{CAPTURE_DISH_NAME})$/,
+            /^the dishes$/) do |table|
   create_dishes(table)
-end
-
-Given(/^(#{CAPTURE_DISH_NAME})$/) do |dish_name|
-  create_dishes(cucumber_table(dish_name))
 end
 
 Given /^there is a dish "([^"]*)""?$/ do |dish_name|

@@ -14,11 +14,9 @@ Given(/^I bought the dishes$/) do |table|
   buy_dishes(table)
 end
 
-When(/^I buy the dishes$/) do |table|
+WhenEither(/^I buy (#{CAPTURE_DISH_NAME})$/,
+           /^I buy the dishes$/) do |table|
   buy_dishes(table)
-end
-When(/^I buy (#{CAPTURE_DISH_NAME})$/) do |dish_name|
-  buy_dishes(cucumber_table(dish_name))
 end
 
 When(/^I empty the cart$/) do
@@ -72,11 +70,9 @@ When(/^the transfer is completely finished$/) do
   current_route_should_be(:order_login_path, /\d+/)
 end
 
-Then(/^the cart should contain the items$/) do |table|
+ThenEither(/^the cart should contain (#{CAPTURE_ITEM_NAME})$/,
+           /^the cart should contain the items$/) do |table|
   the_cart_should_contain_items(table)
-end
-Then(/^the cart should contain (#{CAPTURE_ITEM_NAME})$/) do |item_name|
-  the_cart_should_contain_items(cucumber_table(item_name))
 end
 
 Then(/^the cart should not contain any item$/) do
@@ -87,11 +83,9 @@ Then(/^the cart should not contain any dish$/) do
   the_cart_should_not_contain_any_dish
 end
 
-Then(/^the cart should contain the dishes$/) do |table|
+ThenEither(/^the cart should contain (#{CAPTURE_DISH_NAME})$/,
+           /^the cart should contain the dishes$/) do |table|
   the_cart_should_contain_dishes(table)
-end
-Then(/^the cart should contain (#{CAPTURE_DISH_NAME})$/) do |dish_name|
-  the_cart_should_contain_dishes(cucumber_table(dish_name))
 end
 
 Then(/^the cart should amount to (#{CAPTURE_AMOUNT})$/) do |price|

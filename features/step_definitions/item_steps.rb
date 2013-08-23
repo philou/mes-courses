@@ -1,12 +1,9 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
-Given(/^the items$/) do |table|
+GivenEither(/^(#{CAPTURE_ITEM_NAME})$/,
+            /^the items$/) do |table|
   create_items(table)
-end
-
-Given(/^(#{CAPTURE_ITEM_NAME})$/) do |item_name|
-  create_items(cucumber_table(item_name))
 end
 
 Given /^there is an? "([^">]*) > ([^">]*) > ([^">]*)" item"?$/ do |category_name, sub_category_name, item_name|
@@ -34,11 +31,9 @@ Given(/^I bought the items$/) do |table|
   buy_items(table)
 end
 
-When(/^I buy the items$/) do |table|
+WhenEither(/^I buy (#{CAPTURE_ITEM_NAME})$/,
+           /^I buy the items$/) do |table|
   buy_items(table)
-end
-When(/^I buy (#{CAPTURE_ITEM_NAME})$/) do |item_name|
-  buy_items(cucumber_table(item_name))
 end
 
 Then /^there should be (\d+) different items with name "([^"]*)""? for sale$/ do |count, name|

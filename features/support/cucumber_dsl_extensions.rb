@@ -41,3 +41,34 @@ def NameOrPronounTransform(kind, default_value)
     end
   end
 end
+
+
+#
+# GivenEither, WhenEither and ThenEither defines 2 steps in 1 call.
+#   * &bloc : is the implementation of the step, taking a table as argument
+#   * table_regex : is the regex with no arguments, matching the table
+#   * inline_regex : is a regex matching a single textual argument, that
+#     will be embedded in a one cell table before calling the block
+#
+# example:
+#
+#   GivenEither(/^I have an? ("[^"]*")$/,
+#               /^I have the following animals$/) do |table|
+#     create_animals(table)
+#   end
+#
+def register_either_step_definitions(adverb, inline_regex, table_regex, &block)
+  send(adverb,inline_regex) do |arg|
+    self.instance_exec(cucumber_table(arg), &block)
+  end
+  send(adverb,table_regex, &block)
+end
+def GivenEither(inline_regex, table_regex, &block)
+  register_either_step_definitions('Given', inline_regex, table_regex, &block)
+end
+def WhenEither(inline_regex, table_regex, &block)
+  register_either_step_definitions('When', inline_regex, table_regex, &block)
+end
+def ThenEither(inline_regex, table_regex, &block)
+  register_either_step_definitions('Then', inline_regex, table_regex, &block)
+end
