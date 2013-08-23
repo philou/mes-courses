@@ -3,13 +3,6 @@
 
 module KnowsItems
 
-  def main_item_name
-    @main_item_name ||= "Patates"
-  end
-  def register_item_name(item_name)
-    @main_item_name ||= item_name
-  end
-
   def create_items(table)
     table.hashes_with_defaults('name').each do |row|
       item = FactoryGirl.create(:item_with_categories, row)

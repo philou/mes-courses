@@ -5,32 +5,9 @@ CAPTURE_PERCENTAGE = Transform(/^\d+%$/) do |digits|
   digits.to_f
 end
 
-CAPTURE_STORE_NAME = Transform(/^(a|the) ?"?([^" ]*)"? store$/) do |_prefix, store_name|
-  if store_name == ""
-    main_store_name
-  else
-    register_store_name(store_name)
-    store_name
-  end
-end
-
-CAPTURE_DISH_NAME = Transform(/^(a|an|the|this) dish( "([^"]*)")?$/) do |_prefix, _quoted_dish_name, dish_name|
-  if dish_name.nil?
-    main_dish_name
-  else
-    register_dish_name(dish_name)
-    dish_name
-  end
-end
-
-CAPTURE_ITEM_NAME = Transform(/^(a|an|the|this) item( "([^"]*)")?$/) do |_prefix, _quoted_item_name, item_name|
-  if item_name.nil?
-    main_item_name
-  else
-    register_item_name(item_name)
-    item_name
-  end
-end
+CAPTURE_STORE_NAME = NameOrPronounTransform('store', 'www.dummy-store.com')
+CAPTURE_DISH_NAME = NameOrPronounTransform('dish', 'Pizza pommes de terre')
+CAPTURE_ITEM_NAME = NameOrPronounTransform('item', 'Patates')
 
 CAPTURE_AMOUNT = Transform(/^(\d+(\.\d+)?)€$/) do |whole, _fraction|
   whole.to_f

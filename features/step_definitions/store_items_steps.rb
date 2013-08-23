@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 # Copyright (C) 2012, 2013 by Philippe Bourgau
 
-Given /the store "(.*?)"$/ do |store_name|
+Given /^the store "(.*?)"$/ do |store_name|
   generate_store(store_name)
 end
-Given /the unimported store "(.*?)"$/ do |store_name|
+Given /^the unimported store "(.*?)"$/ do |store_name|
   generate_store(store_name)
 end
-Given /the unimported store "(.*?)" with items$/ do |store_name, item_table|
+Given /^the unimported store "(.*?)" with items$/ do |store_name, item_table|
   generate_store(store_name, item_table)
 end
 
@@ -23,7 +23,7 @@ Given /^the imported store "(.*?)" with items$/ do |store_name, item_table|
   note_past_metrics
 end
 
-Given /an unstable network interface/ do
+Given /^an unstable network interface/ do
   simulate_network_issues {|i| i%10 == 0}
 end
 
