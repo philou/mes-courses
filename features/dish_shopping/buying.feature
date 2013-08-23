@@ -6,6 +6,6 @@ Feature: Dish buying
 
   Scenario: Adding a dish to the cart
     Given a dish "Pates au saumon"
-    When  I buy this dish
-#    Then I should get a confirmation that I bought this dish
-    Then  the cart should contain this dish
+    When I buy this dish
+    Then I should get a confirmation that I bought this dish
+    And the cart should contain this dish

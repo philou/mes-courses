@@ -124,6 +124,10 @@ module KnowsCart
     expect(find(:xpath, "//tr[td/text()='Total']/td[contains(.,'€')]").text.to_f).to eq(price)
   end
 
+  def there_should_be_a_buying_confirmation(name)
+    after_refresh_there_should_be(buying_confirmation_notice(name))
+  end
+
   def the_transfer_should_be_ongoing(options)
     page_should_auto_refresh
 

@@ -7,6 +7,6 @@ Feature: Item buying
   Scenario: Adding an item to the cart
     Given an item "PdT Charlottes"
     When I buy this item
-#    Then I should get a confirmation that I bought this item
+    Then I should get a confirmation that I bought this item
     Then the cart should contain this item
 

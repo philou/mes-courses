@@ -92,6 +92,13 @@ Then(/^the cart should amount to (#{CAPTURE_AMOUNT})$/) do |price|
   the_cart_should_amount_to(price)
 end
 
+Then(/^I should get a confirmation that I bought (#{CAPTURE_ITEM_NAME})$/) do |item_name|
+  there_should_be_a_buying_confirmation(item_name)
+end
+Then(/^I should get a confirmation that I bought (#{CAPTURE_DISH_NAME})$/) do |dish_name|
+  there_should_be_a_buying_confirmation(dish_name)
+end
+
 Then(/^I should see that between (#{CAPTURE_PERCENTAGE}) and (#{CAPTURE_PERCENTAGE}) of the cart have been transfered to (#{CAPTURE_STORE_NAME})$/) do |min_progress, max_progress, store_name|
   the_transfer_should_be_ongoing(to: store_name, min_progress: min_progress, max_progress: max_progress)
 end
