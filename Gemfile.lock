@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/philou/rb-inotify.git
-  revision: 336f8b68d84ef8dd25328ead4e0bc6c866aeb0b1
+  revision: edaa9dd8f935d89b07b44ea3f5f0bc9f1bdac84c
   specs:
     rb-inotify (0.9.1)
       ffi (>= 0.5.0)
