@@ -162,15 +162,15 @@ module MesCourses
       puts "\nIntegration successful :-)"
     end
 
-    def create_heroku_app(repo, pgsql_plan, ssl)
+    def create_heroku_app(repo, pgsql_plan, prod_addons)
       heroku "apps:create --remote #{repo} --stack #{HEROKU_STACK} #{heroku_app(repo)}"
 
       heroku "addons:add heroku-postgresql:#{pgsql_plan}", repo: repo
-      heroku "addons:add pgbackups:auto-month", repo: repo
       heroku "addons:add scheduler:standard", repo: repo
       heroku "addons:add sendgrid:starter", repo: repo
       heroku "addons:add papertrail:choklad", repo: repo
-      heroku "addons:add ssl:endpoint", repo: repo if ssl
+      heroku "addons:add pgbackups:#{prod_addons ? 'auto-month' : 'plus'}", repo: repo
+      heroku "addons:add ssl:endpoint", repo: repo if prod_addons
 
       heroku "config:set APP_NAME=#{heroku_app(repo)}", repo: repo
       heroku "config:set RACK_ENV=production", repo: repo
