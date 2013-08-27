@@ -10,6 +10,12 @@ class CartLinesController < ApplicationController
   before_filter :find_cart
   before_filter :find_stores
 
+  BUYING_CONFIRMATION_NOTICE = 'a été ajouté à votre panier'
+
+  def self.buying_confirmation_notice(name)
+    "\"#{name}\" #{BUYING_CONFIRMATION_NOTICE}"
+  end
+
   # Displays the full session's cart
   def index
     self.path_bar = [path_bar_cart_lines_root]
@@ -18,18 +24,16 @@ class CartLinesController < ApplicationController
   # adds the item with params[:id] to the cart
   def create
     item = add_to_cart(Item)
-    flash[:notice] = "\"#{item.long_name}\" a été ajouté à votre panier"
 
-    Rails.logger.debug flash[:notice]
-
+    confirm_buying(item.long_name)
     redirect_to root_item_category_path
   end
 
   # adds the whole dish with params[:id] to the cart
   def add_dish
     dish = add_to_cart(Dish)
-    flash[:notice] = "\"#{dish.name}\" a été ajouté à votre panier"
 
+    confirm_buying(dish.name)
     redirect_to dishes_path
   end
 
@@ -60,6 +64,10 @@ class CartLinesController < ApplicationController
 
   def find_stores
     @stores = Store.all
+  end
+
+  def confirm_buying(name)
+    flash[:notice] = self.class.buying_confirmation_notice(name)
   end
 
 end

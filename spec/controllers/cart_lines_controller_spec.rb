@@ -125,7 +125,7 @@ describe CartLinesController do
     it "displays a buying confirmation notice" do
       post_add_item
 
-      expect(flash[:notice]).to eq "\"#{@item.long_name}\" a été ajouté à votre panier"
+      expect(flash[:notice]).to eq CartLinesController.buying_confirmation_notice(@item.long_name)
     end
 
     def post_add_item
@@ -161,7 +161,7 @@ describe CartLinesController do
     it "displays a buying confirmation notice" do
       post_add_dish
 
-      expect(flash[:notice]).to eq "\"#{@dish.name}\" a été ajouté à votre panier"
+      expect(flash[:notice]).to eq CartLinesController.buying_confirmation_notice(@dish.name)
     end
 
     def post_add_dish
