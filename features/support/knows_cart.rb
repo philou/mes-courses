@@ -125,7 +125,7 @@ module KnowsCart
   end
 
   def there_should_be_a_buying_confirmation(name)
-    after_refresh_there_should_be(buying_confirmation_notice(name))
+    expect(page).to contain_a(buying_confirmation_notice(name))
   end
 
   def the_transfer_should_be_ongoing(options)

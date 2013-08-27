@@ -4,7 +4,7 @@
 require 'spec_helper'
 
 describe CartLinesController do
-  include PathBarHelper
+  include ApplicationHelper
 
   ignore_user_authentication
 
@@ -119,7 +119,13 @@ describe CartLinesController do
     it "should redirect to items" do
       post_add_item
 
-      expect(response).to redirect_to(:controller => 'item_categories')
+      expect(response).to redirect_to(root_item_category_path)
+    end
+
+    it "displays a buying confirmation notice" do
+      post_add_item
+
+      expect(flash[:notice]).to eq "\"#{@item.long_name}\" a été ajouté à votre panier"
     end
 
     def post_add_item
@@ -150,6 +156,12 @@ describe CartLinesController do
       post_add_dish
 
       expect(response).to redirect_to(:controller => 'dishes')
+    end
+
+    it "displays a buying confirmation notice" do
+      post_add_dish
+
+      expect(flash[:notice]).to eq "\"#{@dish.name}\" a été ajouté à votre panier"
     end
 
     def post_add_dish

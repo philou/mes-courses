@@ -53,5 +53,6 @@ group :test, :development, :ci do
   gem 'guard-rails'
   gem 'guard-jasmine'
 
+  gem 'launchy'
   # gem 'debugger'
 end

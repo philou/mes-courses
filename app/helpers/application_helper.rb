@@ -10,14 +10,16 @@ module ApplicationHelper
     base.send :include, PathBarHelper
   end
 
+  def root_item_category_path
+    item_category_path(ItemCategory.root)
+  end
+
   # path for a category, defaults to the main browser for a nil or new category
   def any_item_category_path(*args)
-    root_category_path = item_categories_path
-
-    return root_category_path if args.empty?
+    return root_item_category_path if args.empty?
 
     category = args[0]
-    return root_category_path if category.nil? || category.id.nil?
+    return root_item_category_path if category.nil? || category.id.nil?
 
     item_category_path(*args)
   end

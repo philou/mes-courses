@@ -33,8 +33,12 @@ class ContainA
     end
   end
 
+  def matched_node(page_part)
+    @doc.xpath(page_part.xpath)
+  end
+
   def doc_contains(page_part)
-    !@doc.xpath(page_part.xpath).empty?
+    !matched_node(page_part).empty?
   end
 
   def failure_message_for_should_ex(page_part)
@@ -45,7 +49,8 @@ class ContainA
        "but could not find #{page_part.long_description}"].join("\n")
     else
       [description,
-       "it found #{page_part.parent.long_description}",
+       "it found #{page_part.parent.long_description} :",
+       "   #{matched_node(page_part.parent)}",
        "but not #{page_part.long_description}"].join("\n")
     end
   end

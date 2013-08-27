@@ -11,11 +11,6 @@ module KnowsHtml
     expect(meta_refresh_tags).not_to(be_empty, "could not find a meta refresh tag")
   end
 
-  def after_refresh_there_should_be(page_part)
-    refresh_page
-    expect(page).to contain_a(page_part)
-  end
-
   def current_route_should_be(named_route, *regexps)
     params = regexps.each_with_index.map {|r, i| ":id#{i}" }
     path = self.send(named_route, *params)

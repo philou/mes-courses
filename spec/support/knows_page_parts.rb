@@ -7,12 +7,8 @@ module KnowsPageParts
     PagePart.new("a notice", "//div[@class='notice']")
   end
 
-  def notice_with_text(text)
-    notice.that("has text '#{text}", "[text()='#{text}']")
-  end
-
   def buying_confirmation_notice(name)
-    notice_with_text("\"#{name.capitalize}\" a bien été ajoutée à votre panier")
+    notice.that("has text '#{text}", "/p[contains(text(),'#{name}') and contains(text(),'a été ajouté à votre panier')]")
   end
 
   def items_panel
