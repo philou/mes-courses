@@ -8,7 +8,7 @@ module KnowsPageParts
   end
 
   def buying_confirmation_notice(name)
-    notice.that("has text '#{text}", "/p[contains(text(),'#{name}') and contains(text(),'#{CartLinesController.BUYING_CONFIRMATION_MESSAGE}')]")
+    notice.that("has text '#{text}", "/p[contains(text(),'#{name}') and contains(text(),'#{CartLinesController::BUYING_CONFIRMATION_NOTICE}')]")
   end
 
   def items_panel

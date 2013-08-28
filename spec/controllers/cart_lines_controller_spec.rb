@@ -9,49 +9,45 @@ describe CartLinesController do
   ignore_user_authentication
 
   before(:each) do
-    @cart = stub_model(Cart)
-    @cart.stub(:save!)
-    @cart.stub(:add_dish)
-    Cart.stub(:create).and_return(@cart)
-
-    @store = stub_model(Store, :url => "http://www.mega-store.com")
-    @stores = [@store]
-    Store.stub(:all).and_return(@stores)
-    Store.stub(:find_by_id).with(@store.id).and_return(@store)
+    capture_result_from(Cart, :create, into: :cart)
   end
 
   context "session handling" do
 
     before :each do
-      Item.stub(:find).and_return(stub_model(Item))
-      Dish.stub(:find).and_return(stub_model(Dish))
+      @item = FactoryGirl.create(:item)
+      @dish = FactoryGirl.create(:dish)
     end
 
-    def self.it_should_find_or_create_a_session_when_answering (action, &http_request)
+    def self.it_should_find_or_create_a_session_when_answering (action, &request)
       context "when answering #{action}" do
 
         it "should create a new cart in session if no one exists" do
-          instance_eval(&http_request)
+          http(&request)
 
           expect(session[:cart_id]).to eq @cart.id
         end
 
         it "should reuse existing cart from session if one exists" do
-          session[:cart_id] = @cart.id
-          Cart.stub(:find_by_id).with(@cart.id).and_return(@cart)
+          session[:cart_id] = FactoryGirl.create(:cart).id
 
-          expect(Cart).not_to receive(:create)
-
-          instance_eval(&http_request)
+          expect { http(&request) }.not_to change { carts_ids }
         end
 
+        def http(&request)
+          instance_eval(&request)
+        end
+
+        def carts_ids
+          Cart.all.map &:id
+        end
       end
     end
 
     it_should_find_or_create_a_session_when_answering(:index) { get :index }
     it_should_find_or_create_a_session_when_answering(:destroy_all) { delete :destroy_all}
-    it_should_find_or_create_a_session_when_answering(:create) { post :create}
-    it_should_find_or_create_a_session_when_answering(:add_dish) { post :add_dish, :id => @cart.id }
+    it_should_find_or_create_a_session_when_answering(:create) { post :create, id: @item.id}
+    it_should_find_or_create_a_session_when_answering(:add_dish) { post :add_dish, id: @dish.id }
 
   end
 
@@ -69,25 +65,27 @@ describe CartLinesController do
   end
 
   it "should assign stores with index" do
+    store = FactoryGirl.create(:store)
+
     get :index
 
-    expect(assigns(:stores)).to eq @stores
+    expect(assigns(:stores)).to eq [store]
   end
 
   # The 3 following contexts look a lot like each other, there were factored out before, but it was unreadable ...
 
   context "when destroying the cart" do
 
-    it "should empty the session cart" do
-      expect(@cart).to receive(:empty)
-
-      delete :destroy_all
+    before :each do
+      @cart = FactoryGirl.create(:cart, :with_items)
+      session[:cart_id] = @cart.id
     end
 
-    it "should save the modified cart" do
-      expect(@cart).to receive(:save!)
-
+    it "should empty the session cart" do
       delete :destroy_all
+
+      @cart.reload
+      expect(@cart).to be_empty
     end
 
     it "should redirect to show" do
@@ -100,23 +98,17 @@ describe CartLinesController do
   context "when adding item to cart" do
 
     before(:each) do
-      @item = stub_model(Item)
-      Item.stub(:find).and_return(@item)
+      @item = FactoryGirl.create(:item)
     end
 
-    it "should delegate to the cart" do
-      expect(@cart).to receive(:add_item).with(@item)
-
+    it "adds a line to the cart" do
       post_add_item
+
+      @cart.reload
+      expect(@cart.lines.map &:item).to include(@item)
     end
 
-    it "should save the modified cart" do
-      expect(@cart).to receive(:save!)
-
-      post_add_item
-    end
-
-    it "should redirect to items" do
+    it "redirects to items" do
       post_add_item
 
       expect(response).to redirect_to(root_item_category_path)
@@ -136,20 +128,14 @@ describe CartLinesController do
   context "when adding dish to cart" do
 
     before(:each) do
-      @dish = stub_model(Dish)
-      Dish.stub(:find).and_return(@dish)
+      @dish = FactoryGirl.create(:dish)
     end
 
-    it "should delegate to the cart" do
-      expect(@cart).to receive(:add_dish).with(@dish)
-
+    it "adds a dish to the cart" do
       post_add_dish
-    end
 
-    it "should save the modified cart" do
-      expect(@cart).to receive(:save!)
-
-      post_add_dish
+      @cart.reload
+      expect(@cart.dishes).to include(@dish)
     end
 
     it "should redirect to products" do
@@ -168,6 +154,5 @@ describe CartLinesController do
       post :add_dish, :id => @dish.id
     end
   end
-
 
 end

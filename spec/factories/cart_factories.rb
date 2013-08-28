@@ -4,6 +4,11 @@
 FactoryGirl.define do
 
   factory :cart do
+    trait :with_items do
+      after :create do |cart|
+        cart.lines = FactoryGirl.create_list(:cart_line, 2, cart: cart)
+      end
+    end
   end
 
 end
