@@ -25,7 +25,7 @@ class Cucumber::Ast::Table
     raw.each do |row|
       raise StandardError.new("hash_2_lists tables must have a '=>' in the second column") unless row.size == 1 or row[1] == '=>'
 
-      result[row[0]] = row.drop(2)
+      result[row[0]] = row.drop(2).reject &:empty?
     end
     result
   end
