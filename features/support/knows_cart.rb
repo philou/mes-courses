@@ -147,11 +147,11 @@ module KnowsCart
     page_should_contain_an_iframe("remote-store-iframe", cart_api.logout_url)
   end
 
-  def there_should_be_a_button_to_log_into(store_name)
+  def there_should_be_a_button_to_a_new_tab_to_log_into(store_name)
     cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
 
     expect(page).to have_content("Votre panier a été transféré à '#{store_name}'")
-    expect(page).to have_xpath("//form[@action='#{cart_api.login_url}']")
+    expect(page).to have_xpath("//form[@action='#{cart_api.login_url}'][@target='_blank']")
   end
 
   private

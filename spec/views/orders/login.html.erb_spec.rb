@@ -21,6 +21,12 @@ describe "orders/login" do
     end
   end
 
+  it "'s login form always opens in a new tab" do
+    render
+
+    expect(response).to have_selector("form", action: @order.store_login_url, target: '_blank')
+  end
+
   it "renders forward report warnings" do
     2.times { @order.add_missing_cart_line(FactoryGirl.build(:cart_line)) }
 

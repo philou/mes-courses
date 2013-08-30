@@ -9,7 +9,7 @@
   </div>
 <% end %>
 
-<form action="<%= @order.store_login_url %>" method="post">
+<form action="<%= @order.store_login_url %>" method="post" target="_blank">
   <% @store_login_parameters.each do |name, value| %>
     <input name="<%= name %>" value="<%= value %>" type="hidden"/>
   <% end %>

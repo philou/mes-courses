@@ -107,6 +107,6 @@ Then(/^the client should be automaticaly logged out from (#{CAPTURE_STORE_NAME})
   the_client_should_be_automaticaly_logged_out_from(store_name)
 end
 
-Then(/^there should be a button to log into (#{CAPTURE_STORE_NAME})$/) do |store_name|
-  there_should_be_a_button_to_log_into(store_name)
+Then(/^there should be a button to log into (#{CAPTURE_STORE_NAME}) in a new tab$/) do |store_name|
+  there_should_be_a_button_to_a_new_tab_to_log_into(store_name)
 end
