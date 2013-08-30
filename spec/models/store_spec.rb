@@ -61,7 +61,7 @@ describe Store do
     it "should yield the session to the cart api" do
       capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
 
-      @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_login, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
+      @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_email, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
         expect(session).not_to be_nil
         expect(@dummy_api.log).to include(:login)
       end

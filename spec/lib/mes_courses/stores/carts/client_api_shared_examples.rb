@@ -29,7 +29,7 @@ shared_examples_for "Any Client Api" do |please_login_text|
 
   def login
     @client.post(@store_cart_api.login_url,
-                 @store_cart_api.login_parameters(@store_cart_api.valid_login, @store_cart_api.valid_password))
+                 @store_cart_api.login_parameters(@store_cart_api.valid_email, @store_cart_api.valid_password))
   end
 
   def logout

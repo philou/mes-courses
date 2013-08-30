@@ -14,6 +14,6 @@ FactoryGirl.define do
   end
 
   factory :valid_credentials, class: MesCourses::Utils::Credentials do
-    initialize_with {new(MesCourses::Stores::Carts::Api.valid_login,MesCourses::Stores::Carts::Api.valid_password) }
+    initialize_with {new(MesCourses::Stores::Carts::Api.valid_email,MesCourses::Stores::Carts::Api.valid_password) }
   end
 end

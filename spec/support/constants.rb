@@ -7,14 +7,14 @@ module MesCourses
 
       # Testing constants added to the Api class
       module TestingCredentials
-        def valid_login
-          "valid-login"
+        def valid_email
+          "valid@mail.com"
         end
         def valid_password
           "valid-password"
         end
-        def invalid_login
-          "in" + valid_login
+        def invalid_email
+          "in" + valid_email
         end
         def invalid_password
           "in" + valid_password

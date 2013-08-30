@@ -16,7 +16,7 @@ shared_examples_for "Any Api" do
   end
 
   it "should know its login parameters" do
-    expect(@store_cart_api.login_parameters(@store_cart_api.valid_login, @store_cart_api.valid_password)).not_to be_nil
+    expect(@store_cart_api.login_parameters(@store_cart_api.valid_email, @store_cart_api.valid_password)).not_to be_nil
   end
 
   it "should raise when login in with an invalid account" do
@@ -30,7 +30,7 @@ shared_examples_for "Any Api" do
     attr_reader :sample_item_id, :another_item_id, :store_cart_api
 
     before(:all) do
-      @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
+      @api = @store_cart_api.login(@store_cart_api.valid_email, @store_cart_api.valid_password)
 
       sample_items = extract_sample_items
       sample_item = sample_items.next
@@ -82,12 +82,12 @@ shared_examples_for "Any Api" do
     it "should synchronize different sessions with logout login" do
       @api.add_to_cart(1, sample_item_id)
 
-      @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password).with_logout do |api2|
+      @store_cart_api.login(@store_cart_api.valid_email, @store_cart_api.valid_password).with_logout do |api2|
         api2.empty_the_cart
       end
 
       @api.logout
-      @api = @store_cart_api.login(@store_cart_api.valid_login, @store_cart_api.valid_password)
+      @api = @store_cart_api.login(@store_cart_api.valid_email, @store_cart_api.valid_password)
 
       expect(@api.cart_value).to eq 0
     end

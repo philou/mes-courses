@@ -45,13 +45,13 @@ module KnowsCart
 
   def enter_valid_store_account_identifiers
     visit_cart_page
-    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_login)
+    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_email)
     fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.valid_password)
   end
 
   def enter_invalid_store_account_identifiers
     visit_cart_page
-    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_login)
+    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_email)
     fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.invalid_password)
   end
 

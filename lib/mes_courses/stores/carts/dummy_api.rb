@@ -13,8 +13,8 @@ module MesCourses
         def self.url
           "http://www.#{DummyConstants::ROOT_DIR_NAME}.com"
         end
-        def self.valid_login
-          "valid-login"
+        def self.valid_email
+          "valid@mail.com"
         end
         def self.valid_password
           "valid-password"
@@ -45,7 +45,7 @@ module MesCourses
         end
 
         def relog(login, password)
-          if login != DummyApi.valid_login
+          if login != DummyApi.valid_email
             raise InvalidAccountError.new
           end
 

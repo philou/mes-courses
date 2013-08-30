@@ -12,7 +12,7 @@ when_online("AuchanDirectApi remote spec") do
       module Carts
 
         module AuchanDirectApiCredentials
-          def valid_login
+          def valid_email
             "mes.courses.fr.test@gmail.com"
           end
           def valid_password
