@@ -7,9 +7,10 @@ namespace :db do
     heroku_app = args[:heroku_app]
     config = Rails.configuration.database_configuration[Rails.env]
 
-    config['adapter'] != 'postgresql' and
+    raise StandardError.new('Only works with postgresql databases') unless config['adapter'] == 'postgresql'
+
     system "heroku pgbackups:capture --app #{heroku_app}" and
     system "curl -o tmp/latest_db.dump `heroku pgbackups:url --app #{heroku_app}`" and
-    system "pg_restore --verbose --clean --no-acl --no-owner -h #{config['host']} -U #{config['username']} -d #{config['database']}"
+    system "pg_restore --verbose --clean --no-acl --no-owner -h #{config['host']} -U #{config['username']} -d #{config['database']} tmp/latest_db.dump"
   end
 end
