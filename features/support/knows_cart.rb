@@ -43,16 +43,28 @@ module KnowsCart
     click_button('Vider le panier')
   end
 
-  def enter_valid_store_account_identifiers
-    visit_cart_page
-    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.valid_email)
-    fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.valid_password)
+  def transfer_the_cart(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
+    enter_store_account_identifiers(email, password)
+    start_transfering_the_cart
+    run_the_transfer_to_the_end
+    refresh_page
+    current_route_should_be(:order_logout_path, /\d+/)
+    refresh_page
+    current_route_should_be(:order_login_path, /\d+/)
   end
 
-  def enter_invalid_store_account_identifiers
+  def try_to_transfer_the_cart_with_wrong_identifiers(email = MesCourses::Stores::Carts::Api.invalid_email, password = MesCourses::Stores::Carts::Api.invalid_password)
+    enter_store_account_identifiers(email, password)
+    start_transfering_the_cart
+    run_the_transfer_to_the_end
+    refresh_page
+    current_route_should_be(:cart_lines_path)
+  end
+
+  def enter_store_account_identifiers(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
     visit_cart_page
-    fill_in("store[login]", :with => MesCourses::Stores::Carts::Api.invalid_email)
-    fill_in("store[password]", :with => MesCourses::Stores::Carts::Api.invalid_password)
+    fill_in("store[login]", :with => email)
+    fill_in("store[password]", :with => password)
   end
 
   def start_transfering_the_cart

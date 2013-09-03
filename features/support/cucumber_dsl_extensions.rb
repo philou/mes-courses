@@ -32,7 +32,7 @@ def NameOrPronounTransform(kind, default_value)
 
   World(knows_this_kind_of_things)
 
-  Transform(/^(a|an|the|this) #{kind}( "([^"]*)")?$/) do |_prefix, _quoted_thing_name, thing_name|
+  Transform(/^(a|an|the|this|of) #{kind}( "([^"]*)")?$/) do |_prefix, _quoted_thing_name, thing_name|
     if thing_name.nil?
       self.send("main_#{kind}_name")
     else

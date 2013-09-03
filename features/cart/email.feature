@@ -4,12 +4,13 @@ Feature: Cart email
   A customer
   Wants to receive an email with dishes and items details
 
-  Background: Some dishes in my cart
+  Background: Some dishes and a stores
 
-    Given the dishes
-      | Tomates farcies      | => | Tomates farcies congelées | Riz              |       |
-      | Spaghetti bolognaise | => | Spaghetti                 | Sauce bolognaise |       |
-      | Spaghetti carbonara  | => | Spaghetti                 | Lardons          | Crème |
+    Given the "www.dummy-store.com" store
+    And the dishes
+      | Tomates farcies      | => | MEGA STORE, Tomates farcies congelées | UNCLE BOB, Riz            |             |
+      | Spaghetti bolognaise | => | LAPASTA, Spaghetti                    | LAPASTA, Sauce bolognaise |             |
+      | Spaghetti carbonara  | => | LAPASTA, Spaghetti                    | PORCIES, Lardons          | COWS, Crème |
     And I bought the dishes
       | Tomates farcies      |
       | Spaghetti bolognaise |
@@ -17,30 +18,30 @@ Feature: Cart email
 
   Scenario: Email after an order
 
-    When I transfer my cart to the store, with account email "valid@mail.com"
+    When I transfer my cart to the store, with account of email "valid@mail.com"
     Then I should receive "Les recettes de votre commande" at this email
 """
 ------------------------------------------------------------------------------
 Tomates farcies
-   * Tomates farcies congelées
-   * Riz
+   * MEGA STORE, Tomates farcies congelées
+   * UNCLE BOB, Riz
 ------------------------------------------------------------------------------
 Spaghetti bolognaise
-   * Spaghetti
-   * Sauce bolognaise
+   * LAPASTA, Spaghetti
+   * LAPASTA, Sauce bolognaise
 ------------------------------------------------------------------------------
 Spaghetti carbonara
-   * Spaghetti
-   * Lardons
-   * Crème
+   * LAPASTA, Spaghetti
+   * PORCIES, Lardons
+   * COWS, Crème
 
 ------------------------------------------------------------------------------
 Merci d'avoir commandé sur http://www.mes-courses.fr
 
-Ceci est un email automatique, ne pas répondre.
+Ceci est un email automatique, merci de ne pas répondre.
 """
 
   Scenario: No email if the transfer does not succeed
 
-    When I transfer my cart to the store, with account email "invalid@mail.com"
+    When I try transfer my cart to the store, with wrong account of email "invalid@mail.com"
     Then I should not receive anything at this email

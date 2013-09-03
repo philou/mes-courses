@@ -24,25 +24,23 @@ When(/^I empty the cart$/) do
 end
 
 When(/^I transfer my cart to the store$/) do
-  enter_valid_store_account_identifiers
-  start_transfering_the_cart
-  run_the_transfer_to_the_end
-  refresh_page
-  current_route_should_be(:order_logout_path, /\d+/)
-  refresh_page
-  current_route_should_be(:order_login_path, /\d+/)
+  transfer_the_cart
+end
+
+When(/^I transfer my cart to the store, with account (#{CAPTURE_EMAIL})$/) do |email|
+  transfer_the_cart(email)
 end
 
 When(/^I try to transfer my cart to the store with wrong identifiers$/) do
-  enter_invalid_store_account_identifiers
-  start_transfering_the_cart
-  run_the_transfer_to_the_end
-  refresh_page
-  current_route_should_be(:cart_lines_path)
+  try_to_transfer_the_cart_with_wrong_identifiers
+end
+
+When(/^I try transfer my cart to the store, with wrong account (#{CAPTURE_EMAIL})$/) do |email|
+  try_to_transfer_the_cart_with_wrong_identifiers(email)
 end
 
 When(/^I start to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
-  enter_valid_store_account_identifiers
+  enter_store_account_identifiers
   start_transfering_the_cart
 end
 
