@@ -1,0 +1,11 @@
+<% @dishes.each do |dish| %>
+<%= truncate(dish.name, length: 78) %>
+<% dish.items.each do |item| %>
+   * <%= truncate(item.long_name, length: 73) %>
+<% end %>
+------------------------------------------------------------------------------
+<% end %>
+
+Merci d'avoir commandé sur http://www.mes-courses.fr
+
+Ceci est un email automatique, merci de ne pas répondre.
