@@ -4,13 +4,13 @@
 module MesCourses
   module Utils
     class Credentials
-      def initialize(login,password)
-        @login = login
+      def initialize(email,password)
+        @email = email
         @password = password.encrypt(key: encryption_key)
       end
 
-      def login
-        @login
+      def email
+        @email
       end
 
       def password
@@ -20,13 +20,13 @@ module MesCourses
       def eql?(other)
         return !other.nil? &&
           other.instance_of?(self.class) &&
-          login == other.login &&
+          email == other.email &&
           password == other.password
       end
       alias :== :eql?
 
       def to_s
-        "(#{login},#{password})"
+        "(#{email},#{password})"
       end
 
       private

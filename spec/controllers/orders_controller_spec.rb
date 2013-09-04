@@ -126,7 +126,7 @@ describe OrdersController do
     it "login should assign store login parameters" do
       get_with_status('login', Order::SUCCEEDED)
 
-      expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.login, @credentials.password))
+      expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.email, @credentials.password))
     end
 
     it "redirects to the cart if the login fails" do
@@ -191,7 +191,7 @@ describe OrdersController do
     end
 
     def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.login, :password => @credentials.password}
+      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.email, :password => @credentials.password}
     end
 
   end

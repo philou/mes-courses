@@ -55,7 +55,7 @@ describe Store do
 
     it "should know the login parameters of the cart api" do
       credentials = FactoryGirl.build(:credentials)
-      expect(@store.login_parameters(credentials)).to eq MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.login, credentials.password)
+      expect(@store.login_parameters(credentials)).to eq MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.email, credentials.password)
     end
 
     it "should yield the session to the cart api" do

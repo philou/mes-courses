@@ -8,17 +8,17 @@ module MesCourses
     describe Credentials do
 
       before :each do
-        @login,@password = "my login", "my secret password"
-        @credentials = Credentials.new(@login,@password)
+        @email,@password = "login@me.net", "my secret password"
+        @credentials = Credentials.new(@email,@password)
       end
 
-      it "should have the provided login and password" do
-        expect(@credentials.login).to eq(@login)
+      it "should have the provided email and password" do
+        expect(@credentials.email).to eq(@email)
         expect(@credentials.password).to eq(@password)
       end
 
       it "implements equality" do
-        expect(@credentials).to eq(Credentials.new(@login,@password))
+        expect(@credentials).to eq(Credentials.new(@email,@password))
       end
 
       it "should not store the password in clear when serialized" do

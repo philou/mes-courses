@@ -41,7 +41,7 @@ class Order < ActiveRecord::Base
   def pass(credentials)
     begin
       self.status = Order::PASSING
-      store.with_session(credentials.login, credentials.password) do |session|
+      store.with_session(credentials.email, credentials.password) do |session|
         cart.forward_to(session, self)
       end
       self.status = Order::SUCCEEDED

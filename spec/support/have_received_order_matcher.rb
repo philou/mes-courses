@@ -4,7 +4,7 @@
 RSpec::Matchers.define :have_received_order do |cart, credentials|
   match do |dummy_api|
     not dummy_api.nil? and
-    dummy_api.login == credentials.login and
+    dummy_api.login == credentials.email and
     dummy_api.password == credentials.password and
     cart.lines.all? do |cart_line|
       cart.content.include?(cart_line.item.remote_id)

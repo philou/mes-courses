@@ -21,7 +21,6 @@ Feature: Cart email
     When I transfer my cart to the store, with account of email "valid@mail.com"
     Then I should receive "Les recettes de votre commande" at this email
 """
-------------------------------------------------------------------------------
 Tomates farcies
    * MEGA STORE, Tomates farcies congelées
    * UNCLE BOB, Riz
@@ -34,8 +33,8 @@ Spaghetti carbonara
    * LAPASTA, Spaghetti
    * PORCIES, Lardons
    * COWS, Crème
-
 ------------------------------------------------------------------------------
+
 Merci d'avoir commandé sur http://www.mes-courses.fr
 
 Ceci est un email automatique, merci de ne pas répondre.
