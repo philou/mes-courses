@@ -6,8 +6,6 @@ require "spec_helper"
 describe OrderMailer do
 
   before :each do
-    emails.clear
-
     @user = "john@doe.net"
     @dishes = FactoryGirl.create_list(:dish_with_items, 2)
   end
@@ -48,7 +46,7 @@ describe OrderMailer do
 
   def summary_for(dish)
     lines = [dish.name]
-    lines += dish.items.map do |item|
+    lines += (dish.items.sort_by &:long_name).map do |item|
       "   * #{item.long_name}"
     end
     lines.join("\n")

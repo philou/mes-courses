@@ -50,11 +50,9 @@ module MesCourses
       def send_monitoring_email(*parameters)
         parameters = @mailer_default_parameters if parameters.empty?
 
-        @emails = ActionMailer::Base.deliveries
-        @emails.clear()
-
         @mailer_class.send(@mailer_template, *parameters).deliver
 
+        @emails = ActionMailer::Base.deliveries
         @email = @emails.last
         @subject = @email.subject
         @body = @email.body

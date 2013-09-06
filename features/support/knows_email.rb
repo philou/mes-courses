@@ -3,14 +3,14 @@
 
 module KnowsEmail
   def an_email_must_have_been_sent(subject, receiver, body)
-    emails = emails_to(receiver)
-    expect(emails).not_to be_empty, "No emails were sent to #{receiver}"
+    mails = emails_to(receiver)
+    expect(mails).not_to be_empty, "No emails were sent to #{receiver}"
 
-    emails = emails.find_all {|email| email.subject == subject}
-    expect(emails).not_to be_empty, "No emails were sent with subject '#{subject}', subjects were #{(emails.map &:subject).inspect}"
+    memo_emails = mails.find_all {|email| email.subject == subject}
+    expect(memo_emails).not_to be_empty, "No emails were sent with subject '#{subject}', subjects were #{(mails.map &:subject).inspect}"
 
-    emails = emails.find_all {|email| email.body == body}
-    expect(emails).not_to be_empty, "No emails were sent with body '#{body}', bodies were #{(emails.map &:body).inspect}"
+    well_formed_emails = memo_emails.find_all {|email| email.body.include?(body)}
+    expect(well_formed_emails).not_to be_empty, "No emails were sent with body '#{body}', bodies were #{(memo_emails.map {|mail| mail.body.to_s}).inspect}"
   end
 
   def no_emails_should_have_been_sent_to(receiver)
@@ -43,7 +43,6 @@ module KnowsEmail
   private
 
   def find_maintainance_email(subject)
-    emails = ActionMailer::Base.deliveries
     email = emails.find { |email| email.subject =~ Regexp.new(subject) }
 
     expect(email.to).to eq maintainers_emails
@@ -52,8 +51,11 @@ module KnowsEmail
   end
 
   def emails_to(receiver)
-    emails = ActionMailer::Base.deliveries
-    emails.find_all { |email| email.to == receiver }
+    emails.find_all { |email| email.to.include?(receiver) }
+  end
+
+  def emails
+    ActionMailer::Base.deliveries
   end
 
 end

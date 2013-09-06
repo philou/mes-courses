@@ -71,6 +71,10 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
 
   config.include(AuthenticationControllerMacros, :type => :controller)
+
+  config.before :each do
+    ActionMailer::Base.deliveries.clear
+  end
 end
 
 # Setup sqlite in memory database for speedup

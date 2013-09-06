@@ -44,6 +44,9 @@ class Order < ActiveRecord::Base
       store.with_session(credentials.email, credentials.password) do |session|
         cart.forward_to(session, self)
       end
+
+      OrderMailer.memo(credentials.email, cart.dishes).deliver
+
       self.status = Order::SUCCEEDED
 
     rescue MesCourses::Stores::Carts::InvalidAccountError

@@ -21,18 +21,18 @@ Feature: Cart email
     When I transfer my cart to the store, with account of email "valid@mail.com"
     Then I should receive "Les recettes de votre commande" at this email
 """
+Spaghetti bolognaise
+   * LAPASTA, Sauce bolognaise
+   * LAPASTA, Spaghetti
+------------------------------------------------------------------------------
+Spaghetti carbonara
+   * COWS, Crème
+   * LAPASTA, Spaghetti
+   * PORCIES, Lardons
+------------------------------------------------------------------------------
 Tomates farcies
    * MEGA STORE, Tomates farcies congelées
    * UNCLE BOB, Riz
-------------------------------------------------------------------------------
-Spaghetti bolognaise
-   * LAPASTA, Spaghetti
-   * LAPASTA, Sauce bolognaise
-------------------------------------------------------------------------------
-Spaghetti carbonara
-   * LAPASTA, Spaghetti
-   * PORCIES, Lardons
-   * COWS, Crème
 ------------------------------------------------------------------------------
 
 Merci d'avoir commandé sur http://www.mes-courses.fr

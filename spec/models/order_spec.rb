@@ -133,6 +133,16 @@ describe Order do
       it_should_eventually_save_the_order
     end
 
+    it "sends an order memo to the user" do
+      pass_order
+
+      emails = ActionMailer::Base.deliveries.find_all {|mail| mail.subject == OrderMailer::MEMO_SUBJECT }
+      expect(emails).not_to be_empty, "No emails with memo '#{OrderMailer::MEMO_SUBJECT}'"
+
+      emails = emails.find_all {|mail| mail.to.include?(@credentials.email)}
+      expect(emails).not_to be_empty, "No memo emails sent to '#{@credentials.email}'"
+    end
+
     def self.it_aborts_passing_orders_on(exception)
 
       before :each do
@@ -174,6 +184,12 @@ describe Order do
 
         expect(@order.error_notice).to eq Order.invalid_store_login_notice(@store.name)
       end
+
+      it "does not send any email" do
+        pass_order
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
     end
 
     def it_should_logout_from_the_store
@@ -189,7 +205,7 @@ describe Order do
     end
 
     def pass_order
-      @order.pass(FactoryGirl.build(:valid_credentials))
+      @order.pass(@credentials = FactoryGirl.build(:valid_credentials))
     end
   end
 end
