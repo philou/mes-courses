@@ -2,6 +2,7 @@
 # Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
 
 class Order < ActiveRecord::Base
+  include MesCourses::Notifications::ByMail
 
   NOT_PASSED = "not_passed"
   PASSING = "passing"
@@ -45,7 +46,7 @@ class Order < ActiveRecord::Base
         cart.forward_to(session, self)
       end
 
-      OrderMailer.memo(credentials.email, cart.dishes).deliver
+      notify_order_passed(cart, credentials.email)
 
       self.status = Order::SUCCEEDED
 
