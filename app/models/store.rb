@@ -6,6 +6,8 @@ require 'uri'
 # Backend online store of a distributor
 class Store < ActiveRecord::Base
 
+  extend MesCourses::Notifications::ByMail
+
   Utils = MesCourses::Utils
   Carts = MesCourses::Stores::Carts
   Items = MesCourses::Stores::Items
@@ -38,7 +40,7 @@ class Store < ActiveRecord::Base
         raise
       end
 
-      ImportReporter.delta(timer.seconds, Store.maximum(:expected_items)).deliver
+      notify_stores_imported(timer)
     end
   end
 

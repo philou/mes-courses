@@ -1,10 +1,14 @@
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
+
+require_relative("../notifications/by_mail")
 
 module MesCourses
   module Utils
     module ScheduledTasks
 
       def scheduled_task(target)
+        include MesCourses::Notifications::ByMail
+
         desc "Schedules #{target} task, define #{day_of_week_key(target)} to limit runs to the specified day of week."
         task target => :environment do
           begin
@@ -13,8 +17,9 @@ module MesCourses
             else
               Rake::Task[target].invoke
             end
+
           rescue Exception => e
-            CronTaskFailureReporter.failure(target, e).deliver
+            notify_scheduled_task_failure(target, e)
           end
         end
       end

@@ -12,6 +12,8 @@ module MesCourses
       # and forward record instances to the store.
       class Incremental
 
+        include MesCourses::Notifications::ByMail
+
         def initialize(store)
           @store = store
         end
@@ -74,12 +76,11 @@ module MesCourses
           !record.equal_to_attributes?(params)
         end
 
-        def handle_broken_dishes()
+        def handle_broken_dishes
           sold_out_items = @store.find_sold_out_items
           dish_breaking_items = sold_out_items.reject { |item| item.dishes.empty? }
-          unless dish_breaking_items.empty?
-            BrokenDishesReporter.email(dish_breaking_items).deliver
-          end
+
+          notify_broken_dishes(dish_breaking_items) unless dish_breaking_items.empty?
         end
       end
     end
