@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 # Matcher to verify that all items match something else
-RSpec::Matchers.define :all_do do |item_matcher|
+RSpec::Matchers.define :all_ do |item_matcher|
 
   match do |actual_items|
     if item_matcher.respond_to?(:in)

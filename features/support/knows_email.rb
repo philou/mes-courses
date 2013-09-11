@@ -3,19 +3,13 @@
 
 module KnowsEmail
   def an_email_must_have_been_sent(subject, receiver, body)
-    mails = emails_to(receiver)
-    expect(mails).not_to be_empty, "No emails were sent to #{receiver}"
-
-    memo_emails = mails.find_all {|email| email.subject == subject}
-    expect(memo_emails).not_to be_empty, "No emails were sent with subject '#{subject}', subjects were #{(mails.map &:subject).inspect}"
-
-    well_formed_emails = memo_emails.find_all {|email| email.body.include?(body)}
-    expect(well_formed_emails).not_to be_empty, "No emails were sent with body '#{body}', bodies were #{(memo_emails.map {|mail| mail.body.to_s}).inspect}"
+    expect(all_emails).to have_one_that(and_(deliver_to(receiver),
+                                             have_subject(subject),
+                                             have_body_text(body)))
   end
 
   def no_emails_should_have_been_sent_to(receiver)
-    emails = emails_to(receiver)
-    expect(emails).to be_empty, "Emails were sent to #{receiver} : #{(emails.map &:subject).inspect}"
+    expect(mailbox_for(receiver)).to be_empty
   end
 
   def an_import_report_email_should_be_sent_to_the_maintainer
@@ -48,10 +42,6 @@ module KnowsEmail
     expect(email.to).to eq maintainers_emails
 
     email
-  end
-
-  def emails_to(receiver)
-    emails.find_all { |email| email.to.include?(receiver) }
   end
 
   def emails

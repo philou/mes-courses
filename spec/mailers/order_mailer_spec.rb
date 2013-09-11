@@ -11,22 +11,22 @@ describe OrderMailer do
   end
 
   it "sends an email to the user" do
-    deliver
+    render_order_memo_email
 
-    expect(email.to).to eq [@user]
+    expect(@email).to deliver_to(@user)
   end
 
   it "uses an explicit subject" do
-    deliver
+    render_order_memo_email
 
-    expect(email.subject).to eq OrderMailer::MEMO_SUBJECT
+    expect(@email).to have_subject(OrderMailer::MEMO_SUBJECT)
   end
 
   it "lists dishes and their items" do
-    deliver
+    render_order_memo_email
 
     @dishes.each do |dish|
-      expect(email.body).to include summary_for(dish)
+      expect(@email).to have_body_text(summary_for(dish))
     end
   end
 
@@ -37,9 +37,9 @@ describe OrderMailer do
     extra_long_item_name = "Ceci est un super long nom pour un ingrédient qui est vraiment très très bon mais aussi très très rare et très très cher"
     dish.items.push FactoryGirl.create(:item, name: extra_long_item_name)
 
-    deliver
+    render_order_memo_email
 
-    expect(email.body.to_s.lines).to all_do have_at_most(79).characters
+    expect(@email.body.to_s.lines).to all_ have_at_most(79).characters
   end
 
   private
@@ -52,15 +52,8 @@ describe OrderMailer do
     lines.join("\n")
   end
 
-  def deliver
-    OrderMailer.memo(@user, @dishes).deliver
-  end
-
-  def email
-    emails.last
-  end
-  def emails
-    ActionMailer::Base.deliveries
+  def render_order_memo_email
+    @email = OrderMailer.memo(@user, @dishes)
   end
 
 end

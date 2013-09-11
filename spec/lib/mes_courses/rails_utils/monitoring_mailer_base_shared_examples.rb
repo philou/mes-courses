@@ -24,7 +24,6 @@ module MesCourses
           it "should send a non empty email" do
             send_monitoring_email
 
-            expect(@emails).to have(1).entry
             expect(@email.to).not_to be_empty
           end
 
@@ -50,10 +49,8 @@ module MesCourses
       def send_monitoring_email(*parameters)
         parameters = @mailer_default_parameters if parameters.empty?
 
-        @mailer_class.send(@mailer_template, *parameters).deliver
+        @email = @mailer_class.send(@mailer_template, *parameters)
 
-        @emails = ActionMailer::Base.deliveries
-        @email = @emails.last
         @subject = @email.subject
         @body = @email.body
       end

@@ -136,11 +136,7 @@ describe Order do
     it "sends an order memo to the user" do
       pass_order
 
-      emails = ActionMailer::Base.deliveries.find_all {|mail| mail.subject == OrderMailer::MEMO_SUBJECT }
-      expect(emails).not_to be_empty, "No emails with memo '#{OrderMailer::MEMO_SUBJECT}'"
-
-      emails = emails.find_all {|mail| mail.to.include?(@credentials.email)}
-      expect(emails).not_to be_empty, "No memo emails sent to '#{@credentials.email}'"
+      expect(mailbox_for(@credentials.email)).to include_email_with_subject(OrderMailer::MEMO_SUBJECT)
     end
 
     def self.it_aborts_passing_orders_on(exception)
@@ -188,7 +184,7 @@ describe Order do
       it "does not send any email" do
         pass_order
 
-        expect(ActionMailer::Base.deliveries).to be_empty
+        expect(all_emails).to be_empty
       end
     end
 

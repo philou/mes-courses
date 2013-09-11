@@ -38,6 +38,7 @@ gem 'cucumber-rails', :require => false
 gem 'database_cleaner'
 gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
 gem 'timecop'
+gem 'email_spec'
 
 # developpment only tools
 group :test, :development, :ci do

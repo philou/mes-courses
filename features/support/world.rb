@@ -3,7 +3,9 @@
 
 # custom matchers
 require_relative '../../spec/support/mostly_matcher'
-require_relative '../../spec/support/all_do_matcher'
+require_relative '../../spec/support/all_matcher'
+require_relative '../../spec/support/have_one_that_matcher'
+require_relative '../../spec/support/and_matcher'
 require_relative '../../spec/support/have_non_nil_matcher'
 require_relative '../../spec/support/have_place_matcher'
 require_relative '../../spec/support/highlight_place_matcher'
@@ -14,10 +16,13 @@ require_relative '../../spec/support/knows_page_parts'
 require_relative '../../spec/support/rspec_proxies'
 require_relative '../../lib/mes_courses/utils/url_helper'
 require_relative '../../lib/mes_courses/utils/email_constants'
+require 'email_spec'
 
 World(KnowsPageParts)
 World(MesCourses::Utils::UrlHelper)
 World(MesCourses::Utils::EmailConstants)
+World(EmailSpec::Helpers)
+World(EmailSpec::Matchers)
 
 module KnowsUsers
   def user

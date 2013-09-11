@@ -29,6 +29,7 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl_rails'
+require 'email_spec'
 
 # Uncomment the next line to use webrat's matchers
 # require 'webrat/integrations/rspec-rails'
@@ -72,6 +73,9 @@ RSpec.configure do |config|
 
   config.include(AuthenticationControllerMacros, :type => :controller)
 
+  # Email testing
+  config.include(EmailSpec::Helpers)
+  config.include(EmailSpec::Matchers)
   config.before :each do
     ActionMailer::Base.deliveries.clear
   end

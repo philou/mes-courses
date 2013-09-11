@@ -77,7 +77,7 @@ module MesCourses
 
           actual = @retrier.properties
           first = [actual.next, actual.next, actual.next]
-          expect(first).to all_do be_an_instance_of(Retrier)
+          expect(first).to all_ be_an_instance_of(Retrier)
           expect(first.map &:to_i).to eq [0,1,2]
         end
       end

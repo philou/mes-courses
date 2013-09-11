@@ -57,7 +57,7 @@ module MesCourses
             end
 
             it "should have items with a price" do
-              expect(sample_items_attributes).to all_do have_key(:price)
+              expect(sample_items_attributes).to all_ have_key(:price)
             end
 
             it "should mostly have items with an image" do
@@ -69,7 +69,7 @@ module MesCourses
             end
 
             it "should have items with unique remote id" do
-              expect(sample_items_attributes).to all_do have_unique(:remote_id)
+              expect(sample_items_attributes).to all_ have_unique(:remote_id)
             end
 
             it "should have items with unique uris" do
