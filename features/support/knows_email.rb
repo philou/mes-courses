@@ -3,7 +3,7 @@
 
 module KnowsEmail
   def an_email_must_have_been_sent(subject, receiver, body)
-    expect(all_emails).to have_one_that(and_(deliver_to(receiver),
+    expect(all_emails).to have_any_that(and_(deliver_to(receiver),
                                              have_subject(subject),
                                              have_body_text(body)))
   end
