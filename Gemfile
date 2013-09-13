@@ -32,11 +32,11 @@ end
 
 # testing tools, required in watchdog prod env
 gem 'rspec-rails'
-gem 'factory_girl_rails', :require => false # lazy require factories at each spork run
+gem 'factory_girl_rails', :require => false # lazy require for guard/spring
 gem 'webrat'
 gem 'cucumber-rails', :require => false
 gem 'database_cleaner'
-gem 'net-ping', :git => 'git://github.com/djberg96/net-ping.git'
+gem 'net-ping', :github => 'djberg96/net-ping'
 gem 'timecop'
 gem 'email_spec'
 
@@ -47,7 +47,6 @@ group :test, :development, :ci do
 
   gem 'spring'
 
-  gem 'rb-inotify', :git => 'git://github.com/philou/rb-inotify.git'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-cucumber'
