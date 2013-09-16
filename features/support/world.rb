@@ -16,6 +16,7 @@ require_relative '../../spec/support/knows_page_parts'
 require_relative '../../spec/support/rspec_proxies'
 require_relative '../../lib/mes_courses/utils/url_helper'
 require_relative '../../lib/mes_courses/utils/email_constants'
+require 'email_spec'
 
 World(KnowsPageParts)
 World(MesCourses::Utils::UrlHelper)
