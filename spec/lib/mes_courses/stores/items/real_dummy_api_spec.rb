@@ -50,7 +50,7 @@ module MesCourses
           small_inputs_memory = memory_usage_for_items(1)
           large_inputs_memory = memory_usage_for_items(200)
 
-          expect(large_inputs_memory).to be <= small_inputs_memory * 1.1
+          expect(large_inputs_memory).to be <= small_inputs_memory * 1.25
         end
 
         def memory_usage_for_items(item_count)
