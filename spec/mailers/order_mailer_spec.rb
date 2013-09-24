@@ -39,7 +39,7 @@ describe OrderMailer do
 
     render_order_memo_email
 
-    expect(@email.body.to_s.lines).to all_ have_at_most(79).characters
+    expect(@email.body.to_s.lines).to all_ { have_at_most(79).characters }
   end
 
   private

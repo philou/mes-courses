@@ -39,6 +39,7 @@ gem 'database_cleaner'
 gem 'net-ping', :github => 'djberg96/net-ping'
 gem 'timecop'
 gem 'email_spec'
+gem 'spec_combos'
 
 # developpment only tools
 group :test, :development, :ci do

@@ -51,7 +51,7 @@ end
 
 Then /^all items should have an? (.*)$/ do |attribute|
   items = Item.all_but_lost
-  expect(items).to all_ have_non_nil(attribute)
+  expect(items).to all_ {have_non_nil(attribute)}
 end
 
 Then /^most items should have an? (.*)$/ do |attribute|

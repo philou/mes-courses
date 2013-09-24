@@ -35,11 +35,11 @@ module MesCourses
 
             it "should have item categories with different names" do
               categories_attributes = sample_categories.map { |cat| cat.attributes }
-              expect(categories_attributes).to mostly have_unique(:name)
+              expect(categories_attributes).to mostly have_unique(:name).in(categories_attributes)
             end
 
             it "should have items with different names" do
-              expect(sample_items_attributes).to mostly have_unique(:name)
+              expect(sample_items_attributes).to mostly have_unique(:name).in(sample_items_attributes)
             end
 
             it "should have parseable item category attributes" do
@@ -57,7 +57,7 @@ module MesCourses
             end
 
             it "should have items with a price" do
-              expect(sample_items_attributes).to all_ have_key(:price)
+              expect(sample_items_attributes).to all_ { have_key(:price) }
             end
 
             it "should mostly have items with an image" do
@@ -69,11 +69,11 @@ module MesCourses
             end
 
             it "should have items with unique remote id" do
-              expect(sample_items_attributes).to all_ have_unique(:remote_id)
+              expect(sample_items_attributes).to all_ { have_unique(:remote_id).in(sample_items_attributes) }
             end
 
             it "should have items with unique uris" do
-              expect(valid_sample_items).to mostly have_unique(:uri)
+              expect(valid_sample_items).to mostly have_unique(:uri).in(valid_sample_items)
             end
           end
         end
