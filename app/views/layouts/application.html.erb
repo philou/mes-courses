@@ -16,7 +16,7 @@
     <% if @app_part %>
       <%= stylesheet_link_tag @app_part, :media => "all", :name => "#{@app_part} stylesheet" %>
     <% end %>
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds.feedburner.com/mes-courses-fr" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/blog/posts.rss" />
 
     <% if google_analytics_enabled? %>
       <%= javascript_include_tag "analytics" %>
