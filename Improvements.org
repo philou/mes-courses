@@ -1,6 +1,12 @@
+* [DESIGN] extract cucumber macros to their own gem
+** monkey patch the dsl ?
+** extract the table_extenssions as well ?
+* [DESIGN] extract rspec proxies in its gem ?
+* [DEVENV] faire un repo git avec le artwork
+* [DEVENV] use mail chimp to send newsletters
 * [DESIGN] replace my config/initializers/env.rb file with the dotenv gem (if possible)
 * [DESIGN] add Brakeman and Rails Best Practices static analysers to my ci
-* [DESIGN] Improve PageParts and ContainA matchers
+* [DESIGN] extract NamedXPath gem
 ** rename to NamedXPath or NXPath or XPathWithName, XPathWN
 ** extraire une gem
 ** les utiliser dans d'autres contexts (find / within de capybara)
