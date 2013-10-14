@@ -1,25 +1,25 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
 
 describe ModelStat do
 
-  ROOT_COUNT = 2 # root and disabled
-  CATEGORY_COUNT = 4
-  ITEM_COUNT = 20
-
   before(:each) do
     # root categories
     ItemCategory.root
     ItemCategory.disabled
+    @root_count = 2
 
     @a_category = create_category
-    ITEM_COUNT.times { create_item }
+    20.times { create_item }
+    @item_count = Item.count
 
-    while ItemCategory.count < CATEGORY_COUNT
+    while ItemCategory.count < 4
       create_category
     end
+    @category_count = ItemCategory.count
+
   end
 
   def create_category
@@ -32,21 +32,21 @@ describe ModelStat do
   it "should snapshot current counts when updating" do
     ModelStat.update!
 
-    expect(ModelStat.find_by_name(ModelStat::ITEM).count).to eq(ITEM_COUNT)
-    expect(ModelStat.find_by_name(ModelStat::CATEGORY).count).to eq(CATEGORY_COUNT)
-    expect(ModelStat.find_by_name(ModelStat::ROOT_CATEGORY).count).to eq(ROOT_COUNT)
+    expect(ModelStat.find_by_name(ModelStat::ITEM).count).to eq(@item_count)
+    expect(ModelStat.find_by_name(ModelStat::CATEGORY).count).to eq(@category_count)
+    expect(ModelStat.find_by_name(ModelStat::ROOT_CATEGORY).count).to eq(@root_count)
   end
 
   it "should generate the expected delta from curent count versus saved model stats" do
     ModelStat.update!
 
-    (ITEM_DELTA = 7).times { create_item }
-    (CATEGORY_DELTA = 4).times { create_category }
+    (item_delta = 7).times { create_item }
+    (category_delta = 4).times { create_category }
 
     stats = ModelStat.generate_delta
-    expect(stats[ModelStat::ROOT_CATEGORY]).to eq(old_count: ROOT_COUNT, count: ROOT_COUNT, delta: 1.0)
-    expect(stats[ModelStat::CATEGORY]).to eq(old_count: CATEGORY_COUNT, count: CATEGORY_COUNT + CATEGORY_DELTA, delta: (CATEGORY_COUNT + CATEGORY_DELTA).to_f / CATEGORY_COUNT)
-    expect(stats[ModelStat::ITEM]).to eq(old_count: ITEM_COUNT, count: ITEM_COUNT + ITEM_DELTA, delta: (ITEM_COUNT + ITEM_DELTA).to_f / ITEM_COUNT)
+    expect(stats[ModelStat::ROOT_CATEGORY]).to eq(old_count: @root_count, count: @root_count, delta: 1.0)
+    expect(stats[ModelStat::CATEGORY]).to eq(old_count: @category_count, count: @category_count + category_delta, delta: (@category_count + category_delta).to_f / @category_count)
+    expect(stats[ModelStat::ITEM]).to eq(old_count: @item_count, count: @item_count + item_delta, delta: (@item_count + item_delta).to_f / @item_count)
   end
 
   it "should generate delta without previous stats should have old_count == 0" do
