@@ -57,6 +57,14 @@ module MesCourses
             expect(@page.get_one(".absent, #unique")).to be @page.get_one("#unique")
           end
 
+          it "finds all elements by css" do
+            expect(@page.get_all(".number", ', ')).to eq "0, 1"
+          end
+
+          it "throws if it cannot find at least one element by css" do
+            expect(lambda{ @page.get_all('#invalid_id', ', ') }).to raise_error(WalkerPageError)
+          end
+
           it "finds relative links sorted by uri" do
             links = @page.search_links("a.letter")
 

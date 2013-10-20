@@ -42,6 +42,13 @@ module MesCourses
           first_or_throw(@mechanize_page.search(selector), "elements", selector)
         end
 
+        def get_all(selector, separator)
+          elements = @mechanize_page.search(selector)
+          throw_if_empty(elements, "elements", selector)
+
+          (elements.map &:text).join(separator)
+        end
+
         def get_image(selector)
           first_or_throw(@mechanize_page.images_with(search: selector), "images", selector)
         end
@@ -61,10 +68,14 @@ module MesCourses
         end
 
         def first_or_throw(elements, name, selector)
+          throw_if_empty(elements, name, selector)
+          elements.first
+        end
+
+        def throw_if_empty(elements, name, selector)
           if elements.empty?
             raise WalkerPageError.new("Page \"#{uri}\" does not contain any #{name} like \"#{selector}\"")
           end
-          elements.first
         end
 
         class Getter

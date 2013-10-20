@@ -7,6 +7,10 @@ module MesCourses
   module Stores
     module Items
 
+      module AuchanDirectApi
+        NAMES_SEPARATOR = ', '
+      end
+
       define_api "auchandirect.fr" do
 
         categories '#footer-menu h2 a' do
@@ -28,7 +32,7 @@ module MesCourses
                 attributes do
                   {
                     :brand => page.get_one('#produit-infos .titre-principal').content,
-                    :name => page.get_one('#produit-infos .titre-annexe').content,
+                    :name => page.get_all('#produit-infos .titre-annexe, #produit-infos .titre-secondaire', AuchanDirectApi::NAMES_SEPARATOR),
                     :price => page.get_one('#produit-infos .prix-actuel > span, #produit-infos .bloc-prix-promo > span.prix-promo').content.to_f,
                     :image => page.get_image('#produit-infos img.produit').url.to_s,
                     :remote_id => /\/([^\/\.]*)[^\/]*$/.match(uri.to_s)[1]
