@@ -5,5 +5,6 @@
 # spec/javascripts/*_spec.js.erb
 # IT IS UNLIKELY THAT YOU WILL NEED TO CHANGE THIS FILE
 #
-#= require_tree ../../app/assets/javascripts
+#= require ../../app/assets/javascripts/dependencies.js
+#= require_tree ../../app/assets/javascripts/application
 #= require_tree ./

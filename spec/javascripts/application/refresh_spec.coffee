@@ -1,4 +1,5 @@
 describe 'refresh', ->
+  redirect = window.mesCourses.redirect
   refresh = window.mesCourses.refresh
 
   beforeEach ->
@@ -6,7 +7,7 @@ describe 'refresh', ->
     expect($('meta[http-equiv=refresh]')).not.toExist()
 
     # never do a real redirect
-    spyOn(refresh, 'doRedirect')
+    spyOn(redirect, 'doRedirect')
 
   afterEach ->
     $('meta[http-equiv=refresh]').remove()
@@ -26,9 +27,9 @@ describe 'refresh', ->
 
     refresh.doNow()
 
-    expect(refresh.doRedirect).toHaveBeenCalledWith refresh.extractRefreshUrl(refreshContent)
+    expect(redirect.doRedirect).toHaveBeenCalledWith refresh.extractRefreshUrl(refreshContent)
 
   it 'does nothing if no meta refresh tage is there', ->
     refresh.doNow()
 
-    expect(refresh.doRedirect).not.toHaveBeenCalled()
+    expect(redirect.doRedirect).not.toHaveBeenCalled()

@@ -1,11 +1,10 @@
 window.mesCourses or= {}
-
 window.mesCourses.refresh = {
 
   doNow: ->
-    refreshUrl = mesCourses.refresh.extractRefreshUrl($('meta[http-equiv=refresh]').attr('content'))
+    refreshUrl = this.extractRefreshUrl($('meta[http-equiv=refresh]').attr('content'))
     if (refreshUrl != null)
-      mesCourses.refresh.doRedirect(refreshUrl)
+      mesCourses.redirect.doRedirect(refreshUrl)
 
   extractRefreshUrl: (refreshContent) ->
     if (refreshContent == undefined)
@@ -16,7 +15,4 @@ window.mesCourses.refresh = {
       return ''
 
     window.location.protocol + '//' + window.location.host + urlMatch[1]
-
-  doRedirect: (href) ->
-    window.location.assign(href)
 }

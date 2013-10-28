@@ -17,7 +17,10 @@ class OrdersController < ApplicationController
     session[:store_credentials] = credentials = find_credentials
     order.delay.pass(credentials)
 
-    redirect_to order_path(order)
+    respond_to do |format|
+      format.html { redirect_to order_path(order) }
+      format.json { render json: {redirect: order_path(order)} }
+    end
   end
 
   def show

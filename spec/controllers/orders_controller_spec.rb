@@ -68,7 +68,7 @@ describe OrdersController do
         get_with_status(action, order_status)
 
         expect(assigns(:path_bar)).to eq [path_bar_cart_lines_root,
-                                      path_bar_element_with_no_link("Transfert")]
+                                          path_bar_element_with_no_link("Transfert")]
       end
     end
 
@@ -151,47 +151,65 @@ describe OrdersController do
       @credentials = FactoryGirl.build(:valid_credentials)
     end
 
-    it "should create an order with cart and store" do
-      capture_result_from(Order, :create!, into: :order)
+    def self.it_should_create_and_pass_an_order(extra_params = {})
+      it "should create an order with cart and store" do
+        capture_result_from(Order, :create!, into: :order)
 
-      forward_to_valid_store_account
+        forward_to_valid_store_account(extra_params)
 
-      expect(@order).not_to be_nil
-      expect(@order.cart).to eq @cart
-      expect(@order.store).to eq @store
+        expect(@order).not_to be_nil
+        expect(@order.cart).to eq @cart
+        expect(@order.store).to eq @store
+      end
+
+      it "should pass the order" do
+        Order.on_result_from(:create!) {|order| order.skip_delay}
+        capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+
+        forward_to_valid_store_account(extra_params)
+
+        expect(@dummy_api).to have_received_order(@cart, @credentials)
+      end
+
+      it "should pass the order asynchronously, later" do
+        expect(MesCourses::Stores::Carts::DummyApi).not_to receive(:login)
+
+        forward_to_valid_store_account(extra_params)
+      end
+
+      it "should store the login and password to the session" do
+        forward_to_valid_store_account(extra_params)
+
+        expect(session[:store_credentials]).to eq @credentials
+      end
     end
 
-    it "should pass the order" do
-      Order.on_result_from(:create!) {|order| order.skip_delay}
-      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+    context "through html" do
+      it_should_create_and_pass_an_order
 
-      forward_to_valid_store_account
+      it "should redirect to the created order" do
+        capture_result_from(Order, :create!, into: :order)
 
-      expect(@dummy_api).to have_received_order(@cart, @credentials)
+        forward_to_valid_store_account
+
+        expect(response).to redirect_to(order_path(@order))
+      end
     end
 
-    it "should pass the order asynchronously, later" do
-      expect(MesCourses::Stores::Carts::DummyApi).not_to receive(:login)
+    context "through ajax json" do
+      it_should_create_and_pass_an_order(format: 'json')
 
-      forward_to_valid_store_account
+      it "should redirect to the created order" do
+        capture_result_from(Order, :create!, into: :order)
+
+        forward_to_valid_store_account(format: 'json')
+
+        expect(JSON.parse(response.body)["redirect"]).to eq order_path(@order)
+      end
     end
 
-    it "should redirect to the created order" do
-      capture_result_from(Order, :create!, into: :order)
-
-      forward_to_valid_store_account
-
-      expect(response).to redirect_to(order_path(@order))
-    end
-
-    it "should store the login and password to the session" do
-      forward_to_valid_store_account
-
-      expect(session[:store_credentials]).to eq @credentials
-    end
-
-    def forward_to_valid_store_account
-      post 'create', :store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.email, :password => @credentials.password}
+    def forward_to_valid_store_account(extra_params = {})
+      post 'create', params = extra_params.merge(:store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.email, :password => @credentials.password})
     end
 
   end
