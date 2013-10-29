@@ -33,9 +33,12 @@ module MesCourses
         end
         # parameters for a client side login
         def self.login_parameters(login, password)
-          post_parameters.merge(FORMDATA_PARAMETER => login_form_data(Mechanize.new),
-                                LOGIN_PARAMETER => login,
-                                PASSWORD_PARAMETER => password)
+          default_params = post_parameters.map {|name, value| {name: name, value: value, type: 'hidden'}}
+          user_params = [{name: FORMDATA_PARAMETER, value: login_form_data(Mechanize.new), type: 'hidden'},
+                         {name: LOGIN_PARAMETER, value: login, type: 'text'},
+                         {name: PASSWORD_PARAMETER, value: password, type: 'password'}]
+
+          default_params + user_params
         end
 
 

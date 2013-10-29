@@ -1,0 +1,70 @@
+diff --git a/app/controllers/orders_controller.rb b/app/controllers/orders_controller.rb
+index fcae5e3..3a5d3b0 100644
+--- a/app/controllers/orders_controller.rb
++++ b/app/controllers/orders_controller.rb
+@@ -17,10 +17,7 @@ class OrdersController < ApplicationController
+     session[:store_credentials] = credentials = find_credentials
+     order.delay.pass(credentials)
+
+-    respond_to do |format|
+-      format.html { redirect_to order_path(order) }
+-      format.json { render json: {location: order_path(order)} }
+-    end
++    redirect_to order_path(order)
+   end
+
+   def show
+@@ -77,7 +74,7 @@ class OrdersController < ApplicationController
+     Store.find_by_id(params[:store_id].to_i)
+   end
+   def find_credentials
+-    MesCourses::Utils::Credentials.new(params[:inputLogin],params[:inputPwd])
++    MesCourses::Utils::Credentials.new(params[:store][:login],params[:store][:password])
+   end
+
+   def unsuccessful_order_redirected_to_show
+diff --git a/app/views/cart_lines/index.html.erb b/app/views/cart_lines/index.html.erb
+index 4a4496c..67b8dff 100644
+--- a/app/views/cart_lines/index.html.erb
++++ b/app/views/cart_lines/index.html.erb
+@@ -35,34 +34,15 @@
+   <div class="section">
+     <span class="section-title">Passer cette commande sur <%=h store.name %></span>
+     <p> Entrez vos identifiant et mot de passe <%=h store.name %></p>
+-    <%= form_for :store, :url => store.login_url, :html => {:class => "store-login", :transfer_url => url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id), :target => 'remote-store-logout-iframe'} do |form| %>
+-      <% store.login_parameters(MesCourses::Utils::Credentials.new("mes.courses.fr.test@gmail.com","mescourses")).each do |name, value| %>
+-        <span><%= name %></span>
+-        <input name="<%= name %>" value="<%= value %>"></input>
+-      <% end %>
++    <%= form_for :store, :url => url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
++      <span>Identifiant:</span>
++      <%= form.text_field "login", :size => 40 %> </input>
++      <span>Mot de passe:</span>
++      <%= form.password_field "password", :size => 20 %> </input>
+       <%= submit_tag "Transférer le panier" %> </input>
+     <% end %>
+-
+-    <iframe id="remote-store-logout-iframe" name="remote-store-logout-iframe" src="<%= store.logout_url %>"></iframe>
+-
+   </div>
+ <% end %>
+
+-<script language="javascript">
+-$('form').submit(function() {
+-    var valuesToSubmit = $(this).serialize();
+-    $.ajax({
+-        type: 'POST',
+-        url: $(this).attr('transfer_url'), //sumbits it to the given url of the form
+-        data: valuesToSubmit,
+-        dataType: "JSON" // you want a difference between normal and ajax-calls
+-    }).success(function(json){
+-        setTimeout(function() {
+-            //alert("start transfer ?");
+-            window.location.href = json.location;
+-        }, 5000);
+-    });
+-    return true;
+-});
+-</script>
++
+

@@ -28,8 +28,10 @@ shared_examples_for "Any Client Api" do |please_login_text|
   end
 
   def login
-    @client.post(@store_cart_api.login_url,
-                 @store_cart_api.login_parameters(@store_cart_api.valid_email, @store_cart_api.valid_password))
+    params = @store_cart_api.login_parameters(@store_cart_api.valid_email, @store_cart_api.valid_password)
+    post_params = params.map {|param| {param[:name] => param[:value]}}.inject &:merge
+
+    @client.post(@store_cart_api.login_url, post_params)
   end
 
   def logout

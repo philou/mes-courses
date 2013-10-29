@@ -14,8 +14,8 @@ describe "orders/login" do
     render
 
     expect(response).to have_selector("form", action: @order.store_login_url, method: 'post') do |form|
-      @store_login_parameters.each do |name, value|
-        expect(form).to have_selector("input", type: 'hidden', name: name, value: value)
+      @store_login_parameters.each do |parameter|
+        expect(form).to have_selector("input", parameter)
       end
       expect(form).to have_selector("input", type: 'submit', value: "Connectez-vous sur #{@order.store_name} pour payer")
     end
