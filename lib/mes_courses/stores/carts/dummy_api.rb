@@ -27,8 +27,8 @@ module MesCourses
           url+"/login"
         end
         def self.login_parameters(login,password)
-          [{name: 'login', value: login, type: 'text'},
-           {name: 'password', value: password, type: 'password'}]
+          [{'name' =>'login', 'value' => login, 'type' => 'text'},
+           {'name' =>'password', 'value' => password, 'type' => 'password'}]
         end
 
         attr_reader :login, :password, :log
