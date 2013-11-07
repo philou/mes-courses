@@ -19,6 +19,17 @@ shared_examples_for "Any Api" do
     expect(@store_cart_api.login_parameters(@store_cart_api.valid_email, @store_cart_api.valid_password)).not_to be_nil
   end
 
+  {login_parameter: 'text', password_parameter: 'password'}.each do |parameter_reader, html_input_type|
+    it "should know its #{parameter_reader} name" do
+      parameter_name = @store_cart_api.send(parameter_reader)
+      expect(parameter_name).not_to be_empty
+
+      param = @store_cart_api.login_parameters("","").find{|param| param['name'] == parameter_name}
+      expect(param).not_to be_nil
+      expect(param['type']).to eq(html_input_type)
+    end
+  end
+
   it "should raise when login in with an invalid account" do
     expect(lambda {
              @store_cart_api.login("unknown-account", "wrong-password")

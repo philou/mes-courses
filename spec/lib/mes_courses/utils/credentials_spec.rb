@@ -27,6 +27,10 @@ module MesCourses
         end
       end
 
+      it "can be blank" do
+        expect(Credentials.blank).to eq(Credentials.new('',''))
+      end
+
     end
   end
 end

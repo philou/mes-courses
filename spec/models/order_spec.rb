@@ -35,22 +35,18 @@ describe Order do
                                       Order.missing_cart_line_notice(@cart_line_2.name, @store.name)]
   end
 
-  it "forwards store name to the store" do
-    expect(@order.store_name).to eq @store.name
-  end
-
-  it "forwards logout url to the store" do
-    expect(@order.store_logout_url).to eq(@store.logout_url)
-  end
-
-  it "forwards login url to the store" do
-    expect(@order.store_login_url).to eq(@store.login_url)
+  [:name, :logout_url, :login_url, :login_parameter, :password_parameter].each do |method|
+    it "forwards store #{method} to the store" do
+      expect(@order.send("store_#{method}")).to eq @store.send(method)
+    end
   end
 
   it "forwards login parameters to the store" do
     credentials = FactoryGirl.build(:credentials)
     expect(@order.store_login_parameters(credentials)).to eq @store.login_parameters(credentials)
   end
+
+
 
   context "passed ratio" do
 

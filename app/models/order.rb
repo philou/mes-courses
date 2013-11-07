@@ -81,20 +81,7 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def store_name
-    self.store.name
-  end
-
-  def store_logout_url
-    self.store.logout_url
-  end
-  def store_login_url
-    self.store.login_url
-  end
-
-  def store_login_parameters(credentials)
-    self.store.login_parameters(credentials)
-  end
+  delegate :name, :logout_url, :login_url, :login_parameters, :login_parameter, :password_parameter, to: :store, prefix: true
 
   private
 

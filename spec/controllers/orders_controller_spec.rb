@@ -182,6 +182,13 @@ describe OrdersController do
 
         expect(session[:store_credentials]).to eq @credentials
       end
+
+      it "handles store specific login/password parameters" do
+        MesCourses::Stores::Carts::DummyApi.stub(:login_parameter).and_return(:different_login)
+        MesCourses::Stores::Carts::DummyApi.stub(:password_parameter).and_return(:different_password)
+
+        forward_to_valid_store_account(extra_params)
+      end
     end
 
     context "through html" do
@@ -209,7 +216,10 @@ describe OrdersController do
     end
 
     def forward_to_valid_store_account(extra_params = {})
-      post 'create', params = extra_params.merge(:store_id => @store.id, :cart_id => @cart.id, :store => {:login => @credentials.email, :password => @credentials.password})
+      post 'create', params = extra_params.merge(:store_id => @store.id,
+                                                 :cart_id => @cart.id,
+                                                 MesCourses::Stores::Carts::DummyApi.login_parameter => @credentials.email,
+                                                 MesCourses::Stores::Carts::DummyApi.password_parameter => @credentials.password)
     end
 
   end

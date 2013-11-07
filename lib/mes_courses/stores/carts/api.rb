@@ -13,7 +13,7 @@ module MesCourses
         def self.for_url(store_url)
           if store_url == AuchanDirectApi.url
             AuchanDirectApi
-          elsif store_url == DummyApi.url
+          elsif store_url.include?(DummyApi.url)
             DummyApi
           else
             raise ArgumentError.new("No store api found for store at '#{store_url}'")
@@ -35,6 +35,10 @@ module MesCourses
 
         # parameters for a client side login
         # def self.login_parameters(login, password)
+
+        # login and password parameters names
+        # def self.login_parameter
+        # def self.password_parameter
 
         # url at which a client browser can logout
         # def self.logout_url

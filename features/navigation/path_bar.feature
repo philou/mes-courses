@@ -61,7 +61,7 @@ Feature: Path bar
       """
 
   Scenario: Path bar when forwarding the cart
-    Given the "www.dummy-store.fr" store
+    Given the "www.dummy-store.com" store
     When I start to transfer my cart to the store
     Then  The path bar should be
       """

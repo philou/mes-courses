@@ -11,7 +11,7 @@ module MesCourses
       class DummyApi < Api
 
         def self.url
-          "http://www.#{DummyConstants::ROOT_DIR_NAME}.com"
+          DummyConstants::STORE_URL
         end
         def self.valid_email
           "valid@mail.com"
@@ -27,8 +27,15 @@ module MesCourses
           url+"/login"
         end
         def self.login_parameters(login,password)
-          [{'name' =>'login', 'value' => login, 'type' => 'text'},
-           {'name' =>'password', 'value' => password, 'type' => 'password'}]
+          [{'name' => 'session_data', 'value' => 'crypted_data', 'type' => 'hidden'},
+           {'name' => login_parameter, 'value' => login, 'type' => 'text'},
+           {'name' => password_parameter, 'value' => password, 'type' => 'password'}]
+        end
+        def self.login_parameter
+          'login'
+        end
+        def self.password_parameter
+          'password'
         end
 
         attr_reader :login, :password, :log

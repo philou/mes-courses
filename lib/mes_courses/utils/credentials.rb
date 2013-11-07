@@ -6,7 +6,12 @@ module MesCourses
     class Credentials
       def initialize(email,password)
         @email = email
-        @password = password.encrypt(key: encryption_key)
+        @password = ''
+        @password = password.encrypt(key: encryption_key) unless password.blank?
+      end
+
+      def self.blank
+        self.new('','')
       end
 
       def email
@@ -14,6 +19,8 @@ module MesCourses
       end
 
       def password
+        return '' if @password.blank?
+
         @password.decrypt(key: encryption_key)
       end
 

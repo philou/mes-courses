@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 <!-- Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau -->
 
 <div class="section">
@@ -34,13 +35,26 @@
   <div class="section">
     <span class="section-title">Passer cette commande sur <%=h store.name %></span>
     <p> Entrez vos identifiant et mot de passe <%=h store.name %></p>
-    <%= form_for :store, :url => url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id), :html => {:class => "store-login"} do |form| %>
+    <form accept-charset="UTF-8" action="<%= url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id) %>" class="store-login" method="post">
+      <div style="margin:0;padding:0;display:inline">
+        <input name="utf8" type="hidden" value="✓">
+        <input name="authenticity_token" type="hidden" value="<%= session[:_csrf_token] %>">
+      </div>
+
+      <% store.login_parameters().each do |param| %>
+        <% if ![store.login_parameter, store.password_parameter].include?(param['name']) %>
+          <input name="<%= param['name'] %>" value="<%= param['value']%>" type="hidden">
+        <% end %>
+      <% end %>
+
       <span>Identifiant:</span>
-      <%= form.text_field "login", :size => 40 %> </input>
+      <input id="store_login" name="<%= store.login_parameter %>" size="40" type="text">
+
       <span>Mot de passe:</span>
-      <%= form.password_field "password", :size => 20 %> </input>
-      <%= submit_tag "Transférer le panier" %> </input>
-    <% end %>
+      <input id="store_password" name="<%= store.password_parameter %>" size="20" type="password">
+
+      <Input name="commit" type="submit" value="Transférer le panier">
+    </form>
   </div>
 <% end %>
 

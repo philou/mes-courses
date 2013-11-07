@@ -49,14 +49,8 @@ class Store < ActiveRecord::Base
     URI.parse(url).host
   end
 
-  # url for a client browser to logout of the store
-  def logout_url
-    cart_api.logout_url
-  end
-  def login_url
-    cart_api.login_url
-  end
-  def login_parameters(credentials)
+  delegate :logout_url, :login_url, :login_parameter, :password_parameter, to: :cart_api
+  def login_parameters(credentials = MesCourses::Utils::Credentials.blank)
     cart_api.login_parameters(credentials.email, credentials.password)
   end
 

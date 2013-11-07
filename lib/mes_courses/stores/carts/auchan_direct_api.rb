@@ -11,10 +11,6 @@ module MesCourses
       # Store API for AuchanDirect store
       class AuchanDirectApi < Api
 
-        FORMDATA_PARAMETER = 't:formdata'
-        LOGIN_PARAMETER = 'inputLogin'
-        PASSWORD_PARAMETER = 'inputPwd'
-
         # main url of the store
         def self.url
           "http://www.auchandirect.fr"
@@ -41,6 +37,13 @@ module MesCourses
           default_params + user_params
         end
 
+        # login and password parameters names
+        def self.login_parameter
+          LOGIN_PARAMETER
+        end
+        def self.password_parameter
+          PASSWORD_PARAMETER
+        end
 
         # url at which a client browser can logout
         def self.logout_url
@@ -145,6 +148,10 @@ module MesCourses
         def delegate_to_class?(method_sym)
           self.class.respond_to?(method_sym)
         end
+
+        FORMDATA_PARAMETER = 't:formdata'
+        LOGIN_PARAMETER = 'inputLogin'
+        PASSWORD_PARAMETER = 'inputPwd'
       end
     end
   end

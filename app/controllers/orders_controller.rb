@@ -12,14 +12,14 @@ class OrdersController < ApplicationController
 
   # Builds the session cart on an online store
   def create
-    order = Order.create!(:store => find_store, :cart => find_cart)
+    @order = Order.create!(:store => find_store, :cart => find_cart)
 
     session[:store_credentials] = credentials = find_credentials
-    order.delay.pass(credentials)
+    @order.delay.pass(credentials)
 
     respond_to do |format|
-      format.html { redirect_to order_path(order) }
-      format.json { render json: {redirect: order_path(order)} }
+      format.html { redirect_to order_path(@order) }
+      format.json { render json: {redirect: order_path(@order)} }
     end
   end
 
@@ -77,7 +77,7 @@ class OrdersController < ApplicationController
     Store.find_by_id(params[:store_id].to_i)
   end
   def find_credentials
-    MesCourses::Utils::Credentials.new(params[:store][:login],params[:store][:password])
+    MesCourses::Utils::Credentials.new(params[@order.store_login_parameter],params[@order.store_password_parameter])
   end
 
   def unsuccessful_order_redirected_to_show

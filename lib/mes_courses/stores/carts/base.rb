@@ -7,6 +7,7 @@ module MesCourses
 
       # Providers of Store cart session
       class Base
+        extend Forwardable
 
         # A new provider of store cart sessions for a given url
         def self.for_url(store_url)
@@ -18,20 +19,7 @@ module MesCourses
           Session.new(@api_factory.login(login, password))
         end
 
-        # url for a client browser to log off the store
-        def logout_url
-          @api_factory.logout_url
-        end
-
-        # url at which a client browser can login
-        def login_url
-          @api_factory.login_url
-        end
-
-        # parameters for a client side login
-        def login_parameters(login, password)
-          @api_factory.login_parameters(login, password)
-        end
+        def_delegators :@api_factory, :logout_url, :login_url, :login_parameters, :login_parameter, :password_parameter
 
         private
         def initialize(api_factory)

@@ -63,8 +63,8 @@ module KnowsCart
 
   def enter_store_account_identifiers(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
     visit_cart_page
-    fill_in("store[login]", :with => email)
-    fill_in("store[password]", :with => password)
+    fill_in(MesCourses::Stores::Carts::DummyApi.login_parameter, :with => email)
+    fill_in(MesCourses::Stores::Carts::DummyApi.password_parameter, :with => password)
   end
 
   def start_transfering_the_cart
