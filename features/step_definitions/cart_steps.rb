@@ -39,6 +39,10 @@ When(/^I try transfer my cart to the store, with wrong account (#{CAPTURE_EMAIL}
   try_to_transfer_the_cart_with_wrong_identifiers(email)
 end
 
+When(/^I am about to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
+  ready_to_transfer_the_cart
+end
+
 When(/^I start to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
   enter_store_account_identifiers
   start_transfering_the_cart

@@ -15,7 +15,7 @@ describe "cart_lines/index" do
     buy_a_dish
     buy_a_dish
 
-    assign :stores, @stores = [FactoryGirl.create(:store)]
+    assign :stores, @stores = FactoryGirl.create_list(:store, 2)
     render
   end
 
@@ -72,9 +72,6 @@ describe "cart_lines/index" do
   context "store forwarding" do
 
     it "displays store forwarding forms" do
-      assign :stores, @stores = FactoryGirl.create_list(:store, 2)
-      render
-
       @stores.each do |store|
         expect(rendered).to have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
                                        "[starts-with(@action, '#{url_for(:controller => 'orders', :action => 'create')}')]" +
@@ -94,6 +91,11 @@ describe "cart_lines/index" do
       expect(rendered).to have_xpath('//form[@class="store-login"]//input[@type="submit"]')
     end
 
+    it 'logs the client out before the transfer' do
+      @stores.each do |store|
+        expect(rendered).to have_xpath("//iframe[@class='remote-store-iframe' and @src='#{store.logout_url}']")
+      end
+    end
   end
 
 end

@@ -17,22 +17,29 @@ Feature: Cart Forwarding
     It is important to be clear about what is happening and
     to make sure it is as straightforward as possible.
 
+    If no AuchanDirect 'signed-in' cookies yet exist on the client machine before the
+    transfer, the client will see an empty cart at the end ... That's why we have to go
+    through javascript hoops to make the client logout/login before anything.
+
     Opening a standard POST form in a new tab fails (it it transformed as
-    a GET ...) Because it is usefull to be able to check what was not transfered while
+    a GET ...). Because it is usefull to be able to check what was not transfered while
     searching substitutes on auchan, the final button to log into the store
     should always open a new tab.
 
-    When I start to transfer my cart to the store "www.dummy-store.com"
+    When I am about to transfer my cart to the store
+    Then the client should be automaticaly logged out from the store
 
-    When no items have yet actually been transfered to the store "www.dummy-store.com"
+    When I start to transfer my cart to the store
+
+    When no items have yet actually been transfered to the store
     Then I should see that between 1% and 15% of the cart have been transfered to the store
 
-    When items are actually being transfered to the store "www.dummy-store.com"
+    When items are actually being transfered to the store
     Then I should see that between 15% and 90% of the cart have been transfered to the store
 
-    When all items have actually been transfered to the store "www.dummy-store.com"
+    When all items have actually been transfered to the store
     Then I should see that between 90% and 100% of the cart have been transfered to the store
-    And the client should be automaticaly logged out from the store "www.dummy-store.com"
+    And the client should be automaticaly logged out from the store
 
     When the transfer is completely finished
-    Then there should be a button to log into the store "www.dummy-store.com" in a new tab
+    Then there should be a button to log into the store in a new tab

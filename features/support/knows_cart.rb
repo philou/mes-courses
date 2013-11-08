@@ -43,6 +43,10 @@ module KnowsCart
     click_button('Vider le panier')
   end
 
+  def ready_to_transfer_the_cart
+    visit_cart_page
+  end
+
   def transfer_the_cart(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
     enter_store_account_identifiers(email, password)
     start_transfering_the_cart

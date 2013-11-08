@@ -61,9 +61,6 @@ div.section p {
     padding: 10px;
     margin: 1em 0;
 }
-#remote-store-iframe-loading-message {
-    display: none;
-}
-#remote-store-iframe {
+iframe.remote-store-iframe {
     display: none;
 }
