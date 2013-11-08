@@ -147,9 +147,6 @@ module MesCourses
       puts "\nChecking database rollback"
       bundled_rake "db:migrate", "RAILS_ENV" => "ci", "VERSION" => "0"
 
-      puts "\nPrecompiling assets"
-      precompile_assets
-
       puts "\nPushing to main source repository"
       push "main"
 
