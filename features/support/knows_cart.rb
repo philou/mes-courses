@@ -72,8 +72,10 @@ module KnowsCart
   end
 
   def start_transfering_the_cart
-    click_button("Transférer le panier")
+    form = first('form.store-login')
+    page.driver.submit('post', form[:action], params_for(form))
   end
+
 
   def wait_while_no_items_are_transfered
     Timecop.travel(Time.now + 15)
@@ -182,5 +184,14 @@ module KnowsCart
     end
   end
 
+  def params_for(form)
+    params = {}
+    form.all("input").each do |input|
+      unless input['type'] == 'submit'
+        params[input['name']] = input['value']
+      end
+    end
+    params
+  end
 end
 World(KnowsCart)
