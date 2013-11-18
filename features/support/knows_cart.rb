@@ -49,7 +49,7 @@ module KnowsCart
 
   def transfer_the_cart(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
     enter_store_account_identifiers(email, password)
-    start_transfering_the_cart
+    submit_the_cart_transfer
     run_the_transfer_to_the_end
     refresh_page
     current_route_should_be(:order_logout_path, /\d+/)
@@ -59,7 +59,7 @@ module KnowsCart
 
   def try_to_transfer_the_cart_with_wrong_identifiers(email = MesCourses::Stores::Carts::Api.invalid_email, password = MesCourses::Stores::Carts::Api.invalid_password)
     enter_store_account_identifiers(email, password)
-    start_transfering_the_cart
+    submit_the_cart_transfer
     run_the_transfer_to_the_end
     refresh_page
     current_route_should_be(:cart_lines_path)
@@ -71,11 +71,9 @@ module KnowsCart
     fill_in(MesCourses::Stores::Carts::DummyApi.password_parameter, :with => password)
   end
 
-  def start_transfering_the_cart
-    form = first('form.store-login')
-    page.driver.submit('post', form[:action], params_for(form))
+  def submit_the_cart_transfer
+    simulate_ajax_submit('form.store-login', :ajax_action)
   end
-
 
   def wait_while_no_items_are_transfered
     Timecop.travel(Time.now + 15)
@@ -165,6 +163,13 @@ module KnowsCart
     page_should_contain_an_iframe("remote-store-iframe", cart_api.logout_url)
   end
 
+  def the_client_should_be_automaticaly_logged_into(store_name)
+    cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
+
+    page_should_contain_an_iframe("remote-store-iframe")
+    expect(page).to have_xpath("//form[@class='store-login' and @action='#{cart_api.login_url}' and @target='remote-store-iframe']")
+  end
+
   def there_should_be_a_button_to_a_new_tab_to_log_into(store_name)
     cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
 
@@ -176,6 +181,11 @@ module KnowsCart
 
   def visit_cart_page
     visit path_to("the cart page")
+  end
+
+  def simulate_ajax_submit(form_selector, action_attribute)
+    form = first(form_selector)
+    page.driver.submit('post', form[action_attribute], params_for(form))
   end
 
   def each_quantity_and_name_in(table)

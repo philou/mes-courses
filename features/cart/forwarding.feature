@@ -30,6 +30,7 @@ Feature: Cart Forwarding
     Then the client should be automaticaly logged out from the store
 
     When I start to transfer my cart to the store
+    Then the client should be automaticaly logged into the store
 
     When no items have yet actually been transfered to the store
     Then I should see that between 1% and 15% of the cart have been transfered to the store

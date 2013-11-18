@@ -45,10 +45,10 @@ end
 
 When(/^I start to transfer my cart to #{CAPTURE_STORE_NAME}$/) do
   enter_store_account_identifiers
-  start_transfering_the_cart
 end
 
 When(/^no items have yet actually been transfered to #{CAPTURE_STORE_NAME}$/) do
+  submit_the_cart_transfer
   wait_while_no_items_are_transfered
   refresh_page
   current_route_should_be(:order_path, /\d+/)
@@ -107,6 +107,10 @@ end
 
 Then(/^the client should be automaticaly logged out from (#{CAPTURE_STORE_NAME})$/) do |store_name|
   the_client_should_be_automaticaly_logged_out_from(store_name)
+end
+
+Then(/^the client should be automaticaly logged into (#{CAPTURE_STORE_NAME})$/) do |store_name|
+  the_client_should_be_automaticaly_logged_into(store_name)
 end
 
 Then(/^there should be a button to log into (#{CAPTURE_STORE_NAME}) in a new tab$/) do |store_name|
