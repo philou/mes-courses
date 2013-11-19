@@ -72,7 +72,7 @@ module KnowsCart
   end
 
   def submit_the_cart_transfer
-    simulate_ajax_submit('form.store-login', :ajax_action)
+    simulate_ajax_submit('form.store-login', 'ajax-action')
   end
 
   def wait_while_no_items_are_transfered
@@ -166,8 +166,8 @@ module KnowsCart
   def the_client_should_be_automaticaly_logged_into(store_name)
     cart_api = MesCourses::Stores::Carts::Api.for_url("http://#{store_name}")
 
-    page_should_contain_an_iframe("remote-store-iframe")
-    expect(page).to have_xpath("//form[@class='store-login' and @action='#{cart_api.login_url}' and @target='remote-store-iframe']")
+    iframe = first('iframe.remote-store-iframe')
+    expect(page).to have_xpath("//form[@class='store-login' and @action='#{cart_api.login_url}' and @target='#{iframe['id']}']")
   end
 
   def there_should_be_a_button_to_a_new_tab_to_log_into(store_name)

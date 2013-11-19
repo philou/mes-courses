@@ -3,14 +3,19 @@ window.mesCourses.cartLines or= {}
 window.mesCourses.cartLines.index = {
   setUp: ->
     setUpStoreLoginFormAjax()
+
+  continueDefaultSubmit: true
+  storeIFrameLoadTimeSpan: 5000
 }
+
+self = window.mesCourses.cartLines.index
 
 setUpStoreLoginFormAjax = ->
   $('form.store-login').submit(ajaxForwardStore)
 
 ajaxForwardStore = ->
   valuesToSubmit = $(this).serialize();
-  url = $(this).attr('action')
+  url = $(this).attr('ajax-action')
   $.ajax({
     type: 'POST',
     url: url,
@@ -22,7 +27,9 @@ ajaxForwardStore = ->
     beforeSend: beforeForwardStore,
     complete: afterForwardStore
   })
-  false
+  self.continueDefaultSubmit
+
+continueDefaultSubmit = ->
 
 beforeForwardStore = ->
   window.mesCourses.cursor.startWaiting()
@@ -30,5 +37,5 @@ beforeForwardStore = ->
   window.mesCourses.scrollToTop()
 
 afterForwardStore = ->
-  window.mesCourses.cursor.stopWaiting()
+  setTimeout(window.mesCourses.cursor.stopWaiting, self.storeIFrameLoadTimeSpan)
 

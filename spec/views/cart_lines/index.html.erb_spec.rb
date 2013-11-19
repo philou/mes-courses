@@ -15,7 +15,7 @@ describe "cart_lines/index" do
     buy_a_dish
     buy_a_dish
 
-    assign :stores, @stores = FactoryGirl.create_list(:store, 2)
+    assign :stores, [@store = FactoryGirl.create(:store)]
     render
   end
 
@@ -71,13 +71,28 @@ describe "cart_lines/index" do
 
   context "store forwarding" do
 
-    it "displays store forwarding forms" do
-      @stores.each do |store|
-        expect(rendered).to have_xpath("//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form" +
-                                       "[starts-with(@action, '#{url_for(:controller => 'orders', :action => 'create')}')]" +
-                                       "[contains(@action, 'store_id=#{store.id}')]" +
-                                       "[contains(@action, 'cart_id=#{@cart.id}')]")
+    it 'logs the client out before the transfer' do
+      iframe_id = remote_store_iframe_id(@store)
+      expect(rendered).to have_xpath("//iframe[@class='remote-store-iframe' and @src='#{@store.logout_url}' and @name='#{iframe_id}' and @id='#{iframe_id}']")
+    end
+
+    it "displays one forwarding form for every store" do
+      assign :stores, stores = FactoryGirl.create_list(:store, 2)
+      render
+
+      stores.each do |store|
+        expect(rendered).to have_xpath(forwarding_form_xpath(store))
       end
+    end
+
+    it "logs the client into the store at the beginning of the transfer" do
+      expect(rendered).to have_xpath(forwarding_form_xpath(@store) +
+                                     "[@action='#{@store.login_url}' and @target='#{remote_store_iframe_id(@store)}']")
+    end
+
+    it "starts the actual transfer through ajax" do
+      expect(rendered).to have_xpath(forwarding_form_xpath(@store) +
+                                     "[@ajax-action='#{url_for(controller: 'orders', action: 'create', store_id: @store.id, cart_id: @cart.id)}']")
     end
 
     MesCourses::Stores::Carts::DummyApi.login_parameters('','').each do |parameter|
@@ -91,10 +106,11 @@ describe "cart_lines/index" do
       expect(rendered).to have_xpath('//form[@class="store-login"]//input[@type="submit"]')
     end
 
-    it 'logs the client out before the transfer' do
-      @stores.each do |store|
-        expect(rendered).to have_xpath("//iframe[@class='remote-store-iframe' and @src='#{store.logout_url}']")
-      end
+    def remote_store_iframe_id(store)
+      "remote-store-iframe-#{store.id}"
+    end
+    def forwarding_form_xpath(store)
+      "//div[contains(span[@class=\"section-title\"], \"#{store.name}\")]/form"
     end
   end
 

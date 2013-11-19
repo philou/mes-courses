@@ -31,10 +31,11 @@
 
 
 <% @stores.each do |store| %>
+  <% iframe_id= "remote-store-iframe-#{store.id}" %>
   <div class="section">
     <span class="section-title">Passer cette commande sur <%=h store.name %></span>
     <p> Entrez vos identifiant et mot de passe <%=h store.name %></p>
-    <form accept-charset="UTF-8" action="<%= url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id) %>" class="store-login" method="post">
+    <form accept-charset="UTF-8" action="<%= store.login_url %>" ajax-action="<%= url_for(:controller => 'orders', :action => 'create', :store_id => store.id, :cart_id => @cart.id) %>" class="store-login" method="post" target="<%=iframe_id%>">
       <div style="margin:0;padding:0;display:inline">
         <input name="utf8" type="hidden" value="✓">
         <input name="authenticity_token" type="hidden" value="<%= session[:_csrf_token] %>">
@@ -55,7 +56,7 @@
       <Input name="commit" type="submit" value="Transférer le panier">
     </form>
 
-    <iframe class="remote-store-iframe" src="<%= store.logout_url %>" ></iframe>
+    <iframe id="<%=iframe_id%>" name="<%=iframe_id%>" class="remote-store-iframe" src="<%= store.logout_url %>" ></iframe>
   </div>
 <% end %>
 
