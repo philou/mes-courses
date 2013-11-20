@@ -19,6 +19,9 @@ describe 'mesCourses.cartLines.index', ->
       index.setUp()
       spyAjax = spyOn($, 'ajax')
 
+    afterEach ->
+      cursor.stopWaiting()
+
     it 'makes store-login POST go through ajax', ->
       $('#login').val('gyzmo')
       $('#password').val('cinema-party')
@@ -44,6 +47,7 @@ describe 'mesCourses.cartLines.index', ->
 
       beforeEach ->
         ajaxParams = {}
+        $.fx.off = true
         spyAjax.andCallFake((params) -> ajaxParams = params)
         $('#submit').click()
 
@@ -65,11 +69,13 @@ describe 'mesCourses.cartLines.index', ->
         window.scrollTo(0,100)
 
         ajaxParams.beforeSend()
+
         thereShouldBeNotice('Votre panier va être transféré dans quelques secondes')
         noticeShouldBeVisible()
 
       windowShouldBeAtTop = ->
         expect(window.pageYOffset).toEqual(0)
+
       noticeShouldBeVisible = windowShouldBeAtTop
 
       thereShouldBeNotice = (message) ->

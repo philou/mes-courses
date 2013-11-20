@@ -1,3 +1,8 @@
+* [DESIGN] use mustache templates to reuse them both in client and server
+* [DEVENV] improve some testing with selenium
+** JS ok
+** auchan pas ok, il faudrait un autre store
+*** j'ai déjà un générateur de store, et ce qu'il ne faudrait pas qu'on ajoute le login/logout dedans ?
 * [DESIGN] extract cucumber macros to their own gem
 ** monkey patch the dsl ?
 ** extract the table_extenssions as well ?
