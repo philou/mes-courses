@@ -1,3 +1,4 @@
+* [DEVENV] refactoring: repasser login_parameters en {name => value} si c'est ok (j'ai l'impression que ça servait à rien !)
 * [DESIGN] use mustache templates to reuse them both in client and server
 * [DEVENV] improve some testing with selenium
 ** JS ok
