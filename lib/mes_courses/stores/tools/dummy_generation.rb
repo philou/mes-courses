@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2012 by Philippe Bourgau
+# Copyright (C) 2012, 2013 by Philippe Bourgau
 
-require 'factory_girl_rails'
-require File.join(Rails.root, 'spec/lib/mes_courses/stores/items/real_dummy_generator')
+require 'storexplore/testing'
 
-MesCourses::Stores::Items::RealDummy.host_dir_name = "local_stores"
+Storexplore::Testing.config do |config|
+  config.dummy_store_generation_dir = "local_stores"
+end
+
