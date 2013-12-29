@@ -10,7 +10,7 @@ Given /^an old order on "(.*)" with$/ do |store_name, table|
     line = CartLine.create(cart: cart, quantity: quantity, item: item)
   end
 
-  store = Store.find_by_url(MesCourses::Stores::Items::RealDummy.uri(store_name))
+  store = Store.find_by_url(Storexplore::Testing::DummyStore.uri(store_name))
   order = Order.create(store: store, cart: cart, status: Order::SUCCEEDED)
 end
 

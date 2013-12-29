@@ -3,7 +3,7 @@
 
 require 'spec_helper'
 require_relative 'api_shared_examples'
-require_relative '../items/real_dummy_generator'
+require 'storexplore/testing'
 
 module MesCourses
   module Stores
@@ -15,11 +15,11 @@ module MesCourses
         before(:all) do
           store_name = "www.cart-dummy-api-spec.com"
 
-          Items::RealDummy.wipe_out_store(store_name)
-          Items::RealDummy.open(store_name).generate(3).categories.and(3).categories.and(3).items
+          Storexplore::Testing::DummyStore.wipe_out_store(store_name)
+          Storexplore::Testing::DummyStore.open(store_name).generate(3).categories.and(3).categories.and(3).items
 
           @store_cart_api = DummyApi
-          @store_items_url = Items::RealDummy.uri(store_name)
+          @store_items_url = Storexplore::Testing::DummyStore.uri(store_name)
         end
       end
     end

@@ -37,6 +37,11 @@ require 'factory_girl_rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+# dummy store generation
+require 'storexplore/testing'
+Storexplore::Testing.config do |config|
+  config.dummy_store_generation_dir= File.join(Rails.root, 'tmp')
+end
 
 extend MesCourses::Utils::HerokuHelper
 include OfflineTestHelper

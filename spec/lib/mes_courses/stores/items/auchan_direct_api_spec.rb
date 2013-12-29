@@ -2,7 +2,6 @@
 # Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
 
 require 'spec_helper'
-require_relative 'api_shared_examples'
 
 when_online "AuchanDirectStoreItemsAPI remote spec" do
 
@@ -11,7 +10,7 @@ when_online "AuchanDirectStoreItemsAPI remote spec" do
       module Items
 
         describe "AuchanDirectAPI", slow: true, remote: true do
-          include ApiSpecMacros
+          include Storexplore::Testing::ApiSpecMacros
 
           before :all do
             @store = Api.browse("http://www.auchandirect.fr")

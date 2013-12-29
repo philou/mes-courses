@@ -276,6 +276,8 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     sqlite3 (1.3.8)
+    storexplore (0.0.1)
+      mechanize (~> 2.0)
     thin (1.6.1)
       daemons (>= 1.0.9)
       eventmachine (>= 1.0.0)
@@ -350,6 +352,7 @@ DEPENDENCIES
   spec_combos
   spring
   sqlite3
+  storexplore
   thin
   timecop
   uglifier

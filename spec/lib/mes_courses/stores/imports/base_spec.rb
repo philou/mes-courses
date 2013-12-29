@@ -265,7 +265,7 @@ module MesCourses
           end
 
           it "should continue on unimportable store pages" do
-            @item.stub(:attributes).and_raise(::MesCourses::Stores::Items::BrowsingError.new())
+            @item.stub(:attributes).and_raise(::Storexplore::BrowsingError.new())
 
             no_exception_should_climb_up_the_stack
           end

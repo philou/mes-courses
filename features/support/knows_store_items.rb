@@ -4,7 +4,7 @@
 module KnowsStoreItems
 
   def generate_store(store_name, item_table = :no_extra_items)
-    store = MesCourses::Stores::Items::RealDummy.open(store_name)
+    store = Storexplore::Testing::DummyStore.open(store_name)
     store.generate(3).categories.and(3).categories.and(3).items
 
     unless item_table == :no_extra_items
@@ -15,11 +15,11 @@ module KnowsStoreItems
   end
 
   def import_real_dummy_store(store_name)
-    Store.find_by_url(MesCourses::Stores::Items::RealDummy.uri(store_name)).import
+    Store.find_by_url(Storexplore::Testing::DummyStore.uri(store_name)).import
   end
 
   def add_items_to_generated_store(store_name, item_table)
-    store = MesCourses::Stores::Items::RealDummy.open(store_name)
+    store = Storexplore::Testing::DummyStore.open(store_name)
 
     item_table.each_item do |category, sub_category, item, explicit_attributes|
       store.category(category).category(sub_category).item(item).generate().attributes(explicit_attributes)
@@ -27,7 +27,7 @@ module KnowsStoreItems
   end
 
   def remove_items_from_generated_store(store_name, item_table)
-    store = MesCourses::Stores::Items::RealDummy.open(store_name)
+    store = Storexplore::Testing::DummyStore.open(store_name)
 
     item_table.each_item do |category, sub_category, item|
       store.category(category).category(sub_category).remove_item(item)
@@ -35,7 +35,7 @@ module KnowsStoreItems
   end
 
   def raise_prices_in_generated_store(store_name)
-    store = MesCourses::Stores::Items::RealDummy.open(store_name)
+    store = Storexplore::Testing::DummyStore.open(store_name)
     store.categories.each do |category|
       category.categories.each do |sub_category|
         sub_category.items.each do |item|
@@ -47,7 +47,7 @@ module KnowsStoreItems
   end
 
   def items_count_in_generated_store(store_name)
-    items_count(MesCourses::Stores::Items::RealDummy.open(store_name))
+    items_count(Storexplore::Testing::DummyStore.open(store_name))
   end
 
   def simulate_network_issues(&raise_predicate)

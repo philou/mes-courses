@@ -108,11 +108,14 @@ def reimport(store)
   Store.import
 end
 
-# real dummy stores
-require_relative "../../spec/lib/mes_courses/stores/items/real_dummy_generator"
+# dummy store generation
+require "storexplore/testing"
+Storexplore::Testing.config do |config|
+  config.dummy_store_generation_dir= File.join(Rails.root, 'tmp')
+end
 
 Before do
-  MesCourses::Stores::Items::RealDummy.wipe_out
+  Storexplore::Testing::DummyStore.wipe_out
 end
 
 AfterStep('@pause') do
