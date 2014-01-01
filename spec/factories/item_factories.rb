@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 FactoryGirl.define do
 
@@ -10,16 +10,16 @@ FactoryGirl.define do
     n.to_s
   end
 
+  sequence :price do |n|
+    (n.to_f / 100 + 1.0).to_f
+  end
+
   factory :item do
     name { FactoryGirl.generate(:item_name) }
-    brand { |a| "#{a.name} Inc." }
-    image { |a| "http://www.photofabric.com/#{a.name}" }
+    brand { |a| "#{a.name} Corp." }
+    image { |a| "http://www.image.org/#{a.name}" }
     remote_id { FactoryGirl.generate(:remote_id) }
-    price do |a|
-      hash = a.name.hash.abs
-      digits = Math.log(hash, 10).round
-      (hash/10.0**(digits-2)).round(2)
-    end
+    price { FactoryGirl.generate(:price) }
 
     factory :item_with_categories do
       after :create do |item|
