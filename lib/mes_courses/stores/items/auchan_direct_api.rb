@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 module MesCourses
   module Stores
@@ -9,7 +9,7 @@ module MesCourses
         NAMES_SEPARATOR = ', '
       end
 
-      Storexplore::define_api "auchandirect.fr" do
+      Storexplore::Api.define "auchandirect.fr" do
 
         categories '#footer-menu h2 a' do
           attributes do
