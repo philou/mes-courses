@@ -1,4 +1,4 @@
-# Copyright (C) 2010, 2011, 2012 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2014 by Philippe Bourgau
 
 require "mes_courses/stores/tools/dummy_generation"
 
@@ -22,7 +22,7 @@ namespace :stores do
 
   desc "Generates a real dummy store and registers it in the DB"
   task :generate_real_dummy_store => :environment do
-    generated_store = RealDummyStore.open("by-rake")
+    generated_store = Storexplore::Testing::DummyStore.open("by-rake")
     generated_store.generate(3).categories.and(3).categories.and(3).items
 
     Store.find_or_create_by_url(generated_store.uri) do |store|
