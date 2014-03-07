@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -93,8 +93,11 @@ shared_examples_for "Any Api" do
     it "should synchronize different sessions with logout login" do
       @api.add_to_cart(1, sample_item_id)
 
-      @store_cart_api.login(@store_cart_api.valid_email, @store_cart_api.valid_password).with_logout do |api2|
+      api2 = @store_cart_api.login(@store_cart_api.valid_email, @store_cart_api.valid_password)
+      begin
         api2.empty_the_cart
+      ensure
+        api2.logout
       end
 
       @api.logout

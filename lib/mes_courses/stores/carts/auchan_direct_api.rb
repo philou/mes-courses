@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require_relative 'api'
 require 'json'
@@ -9,7 +9,7 @@ module MesCourses
     module Carts
 
       # Store API for AuchanDirect store
-      class AuchanDirectApi < Api
+      class AuchanDirectApi < BaseApi
 
         # main url of the store
         def self.url

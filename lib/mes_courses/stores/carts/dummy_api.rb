@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require_relative "api"
 
@@ -8,7 +8,7 @@ module MesCourses
     module Carts
 
       # Logger mock api
-      class DummyApi < Api
+      class DummyApi < BaseApi
 
         def self.url
           DummyConstants::STORE_URL

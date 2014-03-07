@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2010, 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -148,7 +148,7 @@ describe Cart do
     end
 
     def forward_to_store
-      @cart.forward_to(@store_api.new_session, @order)
+      @cart.forward_to(MesCourses::Stores::Carts::Session.new(@store_api), @order)
     end
 
     def some_cart_lines_are_missing
