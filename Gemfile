@@ -17,7 +17,7 @@ gem 'jquery-rails'
 gem 'rack-ssl-enforcer'
 gem 'rack-cache', :require => 'rack/cache'
 gem 'encryptor'
-gem 'storexplore'
+gem 'auchandirect-scrAPI', :path => '/home/philou/Code/auchandirect-scrAPI'
 
 # databases
 gem 'pg'

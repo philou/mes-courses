@@ -32,7 +32,7 @@ module MesCourses
         it "collects secondary titles" do
           item_infos = items_with('titre-secondaire', '#produit-infos .titre-secondaire').first
 
-          expect(item_infos[:item].attributes[:name]).to include(AuchanDirectApi::NAMES_SEPARATOR + item_infos[:elements].first.text)
+          expect(item_infos[:item].attributes[:name]).to include(::Auchandirect::ScrAPI::Items::NAMES_SEPARATOR + item_infos[:elements].first.text)
         end
 
         private

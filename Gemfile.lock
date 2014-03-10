@@ -5,6 +5,12 @@ GIT
     net-ping (1.7.1)
       ffi (>= 1.0.0)
 
+PATH
+  remote: /home/philou/Code/auchandirect-scrAPI
+  specs:
+    auchandirect-scrAPI (0.0.1)
+      storexplore (~> 0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -319,6 +325,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_tree
+  auchandirect-scrAPI!
   blogit
   coffee-rails
   cucumber-rails
@@ -352,7 +359,6 @@ DEPENDENCIES
   spec_combos
   spring
   sqlite3
-  storexplore
   thin
   timecop
   uglifier
