@@ -47,21 +47,21 @@ describe Store do
 
     [:logout_url, :login_url, :login_parameter, :password_parameter].each do |method|
       it "knows the #{method} of the cart api" do
-        expect(@store.send(method)).to eq MesCourses::Stores::Carts::DummyApi.send(method)
+        expect(@store.send(method)).to eq Auchandirect::ScrAPI::DummyCart.send(method)
       end
     end
     it "knows the login parameters of the cart api" do
       credentials = FactoryGirl.build(:credentials)
-      expect(@store.login_parameters(credentials)).to eq MesCourses::Stores::Carts::DummyApi.login_parameters(credentials.email, credentials.password)
+      expect(@store.login_parameters(credentials)).to eq Auchandirect::ScrAPI::DummyCart.login_parameters(credentials.email, credentials.password)
     end
     it "'s login_parameters are for blank credentials by default" do
       expect(@store.login_parameters).to eq @store.login_parameters(MesCourses::Utils::Credentials.blank)
     end
 
     it "should yield the session to the cart api" do
-      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+      capture_result_from(Auchandirect::ScrAPI::DummyCart, :login, into: :dummy_api)
 
-      @store.with_session(MesCourses::Stores::Carts::DummyApi.valid_email, MesCourses::Stores::Carts::DummyApi.valid_password) do |session|
+      @store.with_session(Auchandirect::ScrAPI::DummyCart.valid_email, Auchandirect::ScrAPI::DummyCart.valid_password) do |session|
         expect(session).not_to be_nil
         expect(@dummy_api.log).to include(:login)
       end

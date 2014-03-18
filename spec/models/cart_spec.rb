@@ -101,7 +101,7 @@ describe Cart do
       @order = FactoryGirl.create(:order)
       @cart = @order.cart
 
-      @store_api = MesCourses::Stores::Carts::DummyApi.new
+      @store_api = Auchandirect::ScrAPI::DummyCart.new
     end
 
     it "should empty the remote cart first" do

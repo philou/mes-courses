@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2013 by Philippe Bourgau
+# Copyright (C) 2013, 2014 by Philippe Bourgau
 
 module KnowsCart
 
@@ -67,8 +67,8 @@ module KnowsCart
 
   def enter_store_account_identifiers(email = MesCourses::Stores::Carts::Api.valid_email, password = MesCourses::Stores::Carts::Api.valid_password)
     visit_cart_page
-    fill_in(MesCourses::Stores::Carts::DummyApi.login_parameter, :with => email)
-    fill_in(MesCourses::Stores::Carts::DummyApi.password_parameter, :with => password)
+    fill_in(Auchandirect::ScrAPI::DummyCart.login_parameter, :with => email)
+    fill_in(Auchandirect::ScrAPI::DummyCart.password_parameter, :with => password)
   end
 
   def submit_the_cart_transfer

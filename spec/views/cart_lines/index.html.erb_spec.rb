@@ -95,7 +95,7 @@ describe "cart_lines/index" do
                                      "[@ajax-action='#{url_for(controller: 'orders', action: 'create', store_id: @store.id, cart_id: @cart.id)}']")
     end
 
-    MesCourses::Stores::Carts::DummyApi.login_parameters('','').each do |parameter|
+    Auchandirect::ScrAPI::DummyCart.login_parameters('','').each do |parameter|
       param_name = parameter['name']
       it "'s forwarding store has the store required parameter '#{param_name}'" do
         expect(rendered).to have_xpath("//form[@class=\"store-login\"]//input[@name=\"#{param_name}\"]")

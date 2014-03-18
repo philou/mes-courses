@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require 'spec_helper'
 
@@ -98,7 +98,7 @@ describe Order do
   context "when passing" do
 
     before :each do
-      capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :api)
+      capture_result_from(Auchandirect::ScrAPI::DummyCart, :login, into: :api)
     end
 
     it "should forward the cart instance to the store" do
@@ -165,7 +165,7 @@ describe Order do
     end
 
     context "when pass fails because of invalid store login and password" do
-      it_aborts_passing_orders_on(MesCourses::Stores::Carts::InvalidAccountError.new)
+      it_aborts_passing_orders_on(Auchandirect::ScrAPI::InvalidAccountError.new)
 
       it "should not let any exception climb up" do
         expect(lambda { pass_order }).not_to raise_error

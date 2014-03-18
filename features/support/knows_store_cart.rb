@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2013 by Philippe Bourgau
+# Copyright (C) 2013, 2014 by Philippe Bourgau
 
 require 'cucumber/rspec/doubles'
 
 module KnowsStoreCart
 
   def cart_api
-    @cart_api ||= MesCourses::Stores::Carts::DummyApi.new
+    @cart_api ||= Auchandirect::ScrAPI::DummyCart.new
   end
 
   def given_the_store(store_name)
-    MesCourses::Stores::Carts::DummyApi.stub(:login) do |login,password|
+    Auchandirect::ScrAPI::DummyCart.stub(:login) do |login,password|
       cart_api.relog(login, password)
       cart_api
     end

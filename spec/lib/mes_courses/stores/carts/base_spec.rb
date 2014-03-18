@@ -10,27 +10,29 @@ module MesCourses
       describe Base do
 
         before :each do
-          capture_result_from(DummyApi, :login, into: :dummy_api)
+          @dummy_api_class = Auchandirect::ScrAPI::DummyCart
+
+          capture_result_from(@dummy_api_class, :login, into: :dummy_api)
           @store_cart = Base.for_url(DummyConstants::STORE_URL)
         end
 
         it "should create a session wrapper on a loged in cart api" do
-          expect(@store_cart.login(DummyApi.valid_email, DummyApi.valid_password)).to be_instance_of(Session)
+          expect(@store_cart.login(@dummy_api_class.valid_email, @dummy_api_class.valid_password)).to be_instance_of(Session)
 
-          expect(@dummy_api.login).to eq(DummyApi.valid_email)
-          expect(@dummy_api.password).to eq(DummyApi.valid_password)
+          expect(@dummy_api.login).to eq(@dummy_api_class.valid_email)
+          expect(@dummy_api.password).to eq(@dummy_api_class.valid_password)
         end
 
         it "should know the logout_url of the api" do
-          expect(@store_cart.logout_url).to eq(DummyApi.logout_url)
+          expect(@store_cart.logout_url).to eq(@dummy_api_class.logout_url)
         end
 
         it "should know the client login url of the api" do
-          expect(@store_cart.login_url).to eq(DummyApi.login_url)
+          expect(@store_cart.login_url).to eq(@dummy_api_class.login_url)
         end
 
         it "should know the client login parameters of the api" do
-          expect(@store_cart.login_parameters(DummyApi.valid_email, DummyApi.valid_password)).to eq(DummyApi.login_parameters(DummyApi.valid_email, DummyApi.valid_password))
+          expect(@store_cart.login_parameters(@dummy_api_class.valid_email, @dummy_api_class.valid_password)).to eq(@dummy_api_class.login_parameters(@dummy_api_class.valid_email, @dummy_api_class.valid_password))
         end
       end
     end

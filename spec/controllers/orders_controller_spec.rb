@@ -126,11 +126,11 @@ describe OrdersController do
     it "login should assign store login parameters" do
       get_with_status('login', Order::SUCCEEDED)
 
-      expect(assigns[:store_login_parameters]).to eq(MesCourses::Stores::Carts::DummyApi.login_parameters(@credentials.email, @credentials.password))
+      expect(assigns[:store_login_parameters]).to eq(Auchandirect::ScrAPI::DummyCart.login_parameters(@credentials.email, @credentials.password))
     end
 
     it "redirects to the cart if the login fails" do
-      MesCourses::Stores::Carts::DummyApi.stub(:login_parameters).and_raise(SocketError.new)
+      Auchandirect::ScrAPI::DummyCart.stub(:login_parameters).and_raise(SocketError.new)
 
       get_with_status('login', Order::SUCCEEDED)
 
@@ -164,7 +164,7 @@ describe OrdersController do
 
       it "should pass the order" do
         Order.on_result_from(:create!) {|order| order.skip_delay}
-        capture_result_from(MesCourses::Stores::Carts::DummyApi, :login, into: :dummy_api)
+        capture_result_from(Auchandirect::ScrAPI::DummyCart, :login, into: :dummy_api)
 
         forward_to_valid_store_account(extra_params)
 
@@ -172,7 +172,7 @@ describe OrdersController do
       end
 
       it "should pass the order asynchronously, later" do
-        expect(MesCourses::Stores::Carts::DummyApi).not_to receive(:login)
+        expect(Auchandirect::ScrAPI::DummyCart).not_to receive(:login)
 
         forward_to_valid_store_account(extra_params)
       end
@@ -184,8 +184,8 @@ describe OrdersController do
       end
 
       it "handles store specific login/password parameters" do
-        MesCourses::Stores::Carts::DummyApi.stub(:login_parameter).and_return(:different_login)
-        MesCourses::Stores::Carts::DummyApi.stub(:password_parameter).and_return(:different_password)
+        Auchandirect::ScrAPI::DummyCart.stub(:login_parameter).and_return(:different_login)
+        Auchandirect::ScrAPI::DummyCart.stub(:password_parameter).and_return(:different_password)
 
         forward_to_valid_store_account(extra_params)
       end
@@ -218,8 +218,8 @@ describe OrdersController do
     def forward_to_valid_store_account(extra_params = {})
       post 'create', params = extra_params.merge(:store_id => @store.id,
                                                  :cart_id => @cart.id,
-                                                 MesCourses::Stores::Carts::DummyApi.login_parameter => @credentials.email,
-                                                 MesCourses::Stores::Carts::DummyApi.password_parameter => @credentials.password)
+                                                 Auchandirect::ScrAPI::DummyCart.login_parameter => @credentials.email,
+                                                 Auchandirect::ScrAPI::DummyCart.password_parameter => @credentials.password)
     end
 
   end

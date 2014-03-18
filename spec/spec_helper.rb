@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2010, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2010, 2012, 2013, 2014 by Philippe Bourgau
 
 # figure out where we are being loaded from
 if $LOADED_FEATURES.grep(/spec\/spec_helper\.rb/).any?
@@ -44,7 +44,6 @@ Storexplore::Testing.config do |config|
 end
 
 extend MesCourses::Utils::HerokuHelper
-include OfflineTestHelper
 
 RSpec.configure do |config|
 

@@ -17,7 +17,7 @@ gem 'jquery-rails'
 gem 'rack-ssl-enforcer'
 gem 'rack-cache', :require => 'rack/cache'
 gem 'encryptor'
-gem 'auchandirect-scrAPI', :path => '/home/philou/Code/auchandirect-scrAPI'
+gem 'auchandirect-scrAPI'
 
 # databases
 gem 'pg'
@@ -37,7 +37,6 @@ gem 'factory_girl_rails', :require => false # lazy require for guard/spring
 gem 'webrat'
 gem 'cucumber-rails', :require => false
 gem 'database_cleaner'
-gem 'net-ping', :github => 'djberg96/net-ping'
 gem 'timecop'
 gem 'email_spec'
 gem 'spec_combos'

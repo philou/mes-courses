@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 class Order < ActiveRecord::Base
   include MesCourses::Notifications::ByMail
@@ -50,7 +50,7 @@ class Order < ActiveRecord::Base
 
       self.status = Order::SUCCEEDED
 
-    rescue MesCourses::Stores::Carts::InvalidAccountError
+    rescue Auchandirect::ScrAPI::InvalidAccountError
       self.status = Order::FAILED
       self.error_notice = Order.invalid_store_login_notice(self.store.name)
 
