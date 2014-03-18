@@ -1,4 +1,4 @@
-# Copyright (C) 2011, 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2011, 2012, 2013, 2014 by Philippe Bourgau
 
 require "uri"
 require "net/http"
@@ -132,8 +132,8 @@ module MesCourses
       puts "\nUnlocking ssh keys"
       shell "ssh-add"
 
-      puts "\nLaunching stores import in integration environment"
-      deployments = start_deploying_test_and_integration_apps
+      # puts "\nLaunching deployment to test and integration environments"
+      # deployments = start_deploying_test_and_integration_apps
 
       puts "\nInstalling dependencies"
       bundle "install"
@@ -150,11 +150,11 @@ module MesCourses
       puts "\nPushing to main source repository"
       push "main"
 
-      puts "\nDeploying to test and integration environments"
-      end_deploying_test_and_integration_apps(deployments)
+      # puts "\nFinishing deployment to test and integration environments"
+      # end_deploying_test_and_integration_apps(deployments)
 
-      puts "\nFinishing stores import in integration environment"
-      launch_stores_import("integ")
+      # puts "\nLaunching stores import in integration environment"
+      # launch_stores_import("integ")
 
       puts "\nIntegration successful :-)"
     end
