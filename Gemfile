@@ -3,7 +3,7 @@ ruby '2.0.0'
 
 gem 'thin'
 gem 'rails', '< 4.0'
-gem 'nokogiri', :require => 'nokogiri' # to avoid could not find nokogir-xxx in any of the sources while running rake db:migrate on heroku
+gem 'nokogiri', :require => 'nokogiri' # to avoid could not find nokogiri-xxx in any of the sources while running rake db:migrate on heroku
 gem 'mechanize'
 gem 'exception_notification', '< 4.0', :require => 'exception_notifier'
 gem 'delayed_job_active_record', '< 4.0'
@@ -40,6 +40,9 @@ gem 'database_cleaner'
 gem 'timecop'
 gem 'email_spec'
 gem 'spec_combos'
+gem 'xpath-specs'
+gem 'rspecproxies'
+gem 'cucumber_tricks'
 
 # developpment only tools
 group :test, :development, :ci do

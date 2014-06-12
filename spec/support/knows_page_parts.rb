@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2012, 2013 by Philippe Bourgau
+# Copyright (C) 2012, 2013, 2014 by Philippe Bourgau
 
 module KnowsPageParts
 
   def notice
-    PagePart.new("a notice", "//div[@class='notice']")
+    Xpath::Specs::PagePart.new("a notice", "//div[@class='notice']")
   end
 
   def buying_confirmation_notice(name)
@@ -12,7 +12,7 @@ module KnowsPageParts
   end
 
   def items_panel
-    PagePart.new("an items panel", "//div[@id='items-panel']")
+    Xpath::Specs::PagePart.new("an items panel", "//div[@id='items-panel']")
   end
 
   def item_with_name(name)
@@ -40,7 +40,7 @@ module KnowsPageParts
   end
 
   def dish_panel
-    PagePart.new("the dish panel", "//table[@id='dish-panel']")
+    Xpath::Specs::PagePart.new("the dish panel", "//table[@id='dish-panel']")
   end
 
   def dish_line
@@ -60,7 +60,7 @@ module KnowsPageParts
   end
 
   def cart_line
-    PagePart.new("a cart line", "//tr[not(td/text()='Total')]")
+    Xpath::Specs::PagePart.new("a cart line", "//tr[not(td/text()='Total')]")
   end
 
   def cart_line_with_long_name(long_name)
@@ -75,11 +75,11 @@ module KnowsPageParts
   end
 
   def cart_total(amount)
-    PagePart.new("the cart total amount of #{amount}", "//tr[td/text()='Total'][td[contains(.,'#{amount}€')]]")
+    Xpath::Specs::PagePart.new("the cart total amount of #{amount}", "//tr[td/text()='Total'][td[contains(.,'#{amount}€')]]")
   end
 
   def blog_body
-    PagePart.new("a blog body", "//body[@id='blog']")
+    Xpath::Specs::PagePart.new("a blog body", "//body[@id='blog']")
   end
 
   def blog_sidebar
@@ -91,11 +91,11 @@ module KnowsPageParts
   end
 
   def link_to_posts_with_tag(name)
-    PagePart.new("a link to blog posts with tag '#{name}'", "//a[@href='#{blog.tagged_blog_posts_path(name)}']")
+    Xpath::Specs::PagePart.new("a link to blog posts with tag '#{name}'", "//a[@href='#{blog.tagged_blog_posts_path(name)}']")
   end
 
   def link_to_post(name)
-    PagePart.new("a link to blog post '#{name}'", "//a[text()='#{name}' and matches(@href,'/blog/posts/.*#{name})]")
+    Xpath::Specs::PagePart.new("a link to blog post '#{name}'", "//a[text()='#{name}' and matches(@href,'/blog/posts/.*#{name})]")
   end
 
   def blog_post

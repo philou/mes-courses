@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
-# Copyright (C) 2013 by Philippe Bourgau
+# Copyright (C) 2013, 2014 by Philippe Bourgau
+
+require 'cucumber_tricks'
 
 CAPTURE_PERCENTAGE = Transform(/^\d+%$/) do |digits|
   digits.to_f
