@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 class HelloWorldController < ApplicationController
   def up
   end

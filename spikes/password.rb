@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 #!/bin/ruby
 
 def RandSmartPass(size = 6)

@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 describe 'mesCourses.orders.logout', ->
   logout = window.mesCourses.orders.logout
 

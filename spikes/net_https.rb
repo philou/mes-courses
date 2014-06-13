@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 require "net/http"
 
 uri = URI('https://mes-courses-integ.heroku.com/dishes')

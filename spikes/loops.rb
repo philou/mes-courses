@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 
 
 [1,2,3,4,5,6,7,8,9,10].each do |i|

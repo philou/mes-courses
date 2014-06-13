@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 window.mesCourses or= {}
 window.mesCourses.cartLines or= {}
 window.mesCourses.cartLines.index = {

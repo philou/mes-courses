@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 require 'test_helper'
 
 class HelloWorldControllerTest < ActionController::TestCase

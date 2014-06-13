@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # This migration comes from blogit (originally 20110814103306)
 class ActsAsTaggableOnMigration < ActiveRecord::Migration
   def self.up

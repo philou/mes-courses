@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 rout, wout = IO.pipe
 
 # IO.popen(["ruby", "sub_process_ex.rb", {STDERR => STDOUT}]) do |subprocess|

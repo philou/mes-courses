@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 require 'spec_helper'
 
 describe CguController do

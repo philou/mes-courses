@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # -*- coding: utf-8 -*-
 
 require "fileutils"

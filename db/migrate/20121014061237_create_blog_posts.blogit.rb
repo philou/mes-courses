@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # This migration comes from blogit (originally 20110814091434)
 class CreateBlogPosts < ActiveRecord::Migration
   def change

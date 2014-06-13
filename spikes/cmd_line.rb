@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 #!/usr/bin/env ruby
 
 if ARGV.count == 0 or ["-h","--help"].include?(ARGV[0])

@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 class AddQueueToDelayedJobs < ActiveRecord::Migration
   def self.up
     add_column :delayed_jobs, :queue, :string

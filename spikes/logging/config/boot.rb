@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # Don't change this file!
 # Configure your app in config/environment.rb and config/environments/*.rb
 

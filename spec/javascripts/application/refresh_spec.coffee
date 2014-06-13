@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 describe 'refresh', ->
   redirect = window.mesCourses.redirect
   refresh = window.mesCourses.refresh

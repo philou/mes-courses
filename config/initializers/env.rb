@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # Loads local env at application startup
 
 env_file = File.join(Rails.root, 'config', 'local_env.yml')

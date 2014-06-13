@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 
 t = Thread.new do
   puts "do you want to start this stuff ?"

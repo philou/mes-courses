@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 # This pulls in all your specs from the javascripts directory into Jasmine:
 #
 # spec/javascripts/*_spec.js.coffee

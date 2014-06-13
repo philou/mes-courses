@@ -1,3 +1,6 @@
+# Copyright (C) 2014 by Philippe Bourgau
+
+
 describe 'mesCourses.cartLines.index', ->
   cursor = redirect = index = spyAjax = null
 
