@@ -1,3 +1,6 @@
+// Copyright (C) 2014 by Philippe Bourgau
+
+
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 
