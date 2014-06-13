@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# Copyright (C) 2014 by Philippe Bourgau
+
 class AddRemoteIdIndexToItem < ActiveRecord::Migration
 
   def self.up

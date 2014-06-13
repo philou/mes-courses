@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# Copyright (C) 2014 by Philippe Bourgau
+
 class CreateOrders < ActiveRecord::Migration
   def self.up
     create_table :orders do |t|

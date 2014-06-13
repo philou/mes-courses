@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# Copyright (C) 2014 by Philippe Bourgau
+
 class AddPricePhotoSummaryToItem < ActiveRecord::Migration
   def self.up
     add_column :items, :price, :decimal
